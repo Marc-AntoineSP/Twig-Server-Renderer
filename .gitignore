@@ -23,3 +23,5 @@
 /assets/styles/app.css
 /test-results/
 /playwright-report/
+/workers/*/vendor/
+/workers/*/node_modules/

@@ -2,7 +2,7 @@ name: styleguide-studio
 
 services:
   app:
-    build:
+    build: &studio_build
       context: .
       dockerfile: docker/frankenphp/Dockerfile
       target: dev
@@ -14,11 +14,16 @@ services:
     networks:
       default:
         aliases: [studio]
-    environment:
+      workers: {}
+    environment: &studio_environment
       APP_ENV: dev
       APP_DEBUG: "1"
       APP_SECRET: local-development-only-do-not-deploy
       DATABASE_URL: postgresql://styleguide:local-dev-only@database:5432/styleguide?serverVersion=17&charset=utf8
+      RENDER_WORKER_URL: http://render-worker:8080
+      BUILD_WORKER_URL: http://build-worker:8080
+      RENDER_WORKER_TOKEN: local-render-only
+      BUILD_WORKER_TOKEN: local-build-only
     volumes:
       - ./:/app
       - caddy_data:/data
@@ -26,6 +31,10 @@ services:
       - catalogue_blobs:/app/var/catalogue
     depends_on:
       database:
+        condition: service_healthy
+      render-worker:
+        condition: service_healthy
+      build-worker:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "php", "-r", "exit(@file_get_contents('http://localhost/health/ready') === false ? 1 : 0);"]
@@ -56,6 +65,67 @@ services:
     volumes:
       - ./:/app
 
+  render-worker:
+    build:
+      context: .
+      dockerfile: workers/render/Dockerfile
+    environment:
+      WORKER_TOKEN: local-render-only
+    networks: [workers]
+    read_only: true
+    tmpfs: ["/tmp:size=16777216,mode=1777"]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 32
+    mem_limit: 256m
+    cpus: 1
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://localhost:8080/health') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  preview-consumer:
+    build: *studio_build
+    command: ["php", "bin/console", "messenger:consume", "async", "--memory-limit=128M", "--time-limit=3600", "--sleep=0.1", "--no-interaction"]
+    restart: unless-stopped
+    init: true
+    environment: *studio_environment
+    networks: [default, workers]
+    volumes:
+      - ./:/app
+      - catalogue_blobs:/app/var/catalogue
+    depends_on:
+      app:
+        condition: service_healthy
+    mem_limit: 256m
+    cpus: 1
+    pids_limit: 64
+    healthcheck:
+      test: ["CMD", "php", "-r", "foreach(glob('/proc/[0-9]*/cmdline') as $$p){if(in_array('messenger:consume',explode(chr(0),@file_get_contents($$p)?:''),true))exit(0);}exit(1);"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  build-worker:
+    build:
+      context: .
+      dockerfile: workers/build/Dockerfile
+    environment:
+      WORKER_TOKEN: local-build-only
+    networks: [workers]
+    read_only: true
+    tmpfs: ["/tmp:size=33554432,mode=1777"]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 64
+    mem_limit: 512m
+    cpus: 1
+    init: true
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8080/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   browser:
     image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:47b510dd9230bf0b9bfc9b20102241e577ea7a99334ab4c3ca19f19770e9b8ea
     working_dir: /app
@@ -76,3 +146,7 @@ volumes:
   catalogue_blobs:
   caddy_data:
   caddy_config:
+
+networks:
+  workers:
+    internal: true

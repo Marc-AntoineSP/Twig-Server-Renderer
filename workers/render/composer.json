@@ -1,0 +1,12 @@
+{
+    "name": "styleguide/render-worker",
+    "description": "Finite, process-isolated Twig sandbox worker.",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.5",
+        "symfony/process": "8.1.*",
+        "twig/twig": "3.30.*"
+    },
+    "config": {"allow-plugins": false, "sort-packages": true}
+}

@@ -120,3 +120,50 @@ Keep the same random accounts between prepare and verify. This creates and edits
 component, restarts both services, then checks source, title, tags, revision and search
 from a new browser. It retains the acceptance item. The studio targets browsers with
 native import maps; AssetMapper's external CDN polyfill is disabled.
+
+## Isolated previews (M02)
+
+`make build` builds the studio and both workers from locks. `make up` starts the app,
+PostgreSQL, render-worker, build-worker and the app-side Messenger preview consumer.
+After changing consumer PHP code, run `docker compose restart preview-consumer`.
+After changing worker code/dependencies, rebuild that worker and recreate it.
+
+On a draft's edit page, **Build preview** uses the current unsaved manifest/source/props.
+The server validates and snapshots input, resolves exact immutable dependencies, stores
+an owner-scoped job and sends its ID through the existing Doctrine Messenger queue.
+The app-side consumer calls two internal workers and stores the resulting document
+outside public/. The browser polls and places the returned document only in an opaque
+`sandbox="allow-scripts"` srcdoc frame. Reset and disable-scripts controls are available.
+Publishing remains M06. The bundled alert can already render and dismiss in preview.
+
+Render uses a fresh PHP process with 128 MiB, a 2-second wall limit and 1 MiB HTML cap.
+The dedicated Twig 3.30 `Sandbox` has a strict policy and finite ArrayLoader; props
+are bounded arrays/scalars without app/request/user/services. All template includes
+must be literal names in the locked closure. Cycles, unknown includes, raw/PHP-call
+paths and unsupported tags/functions/filters fail. Compilation parses untrusted JS
+with fixed Acorn/esbuild, bundles only Stimulus and declared local modules, and never
+imports user JavaScript into Node. Tailwind scans materialized database source text.
+Uploaded CSS plugins/configuration and network/filesystem/dynamic JS imports fail.
+
+Workers run non-root with no studio source, DB credentials or Docker socket, read-only
+filesystems, bounded tmpfs, CPU/memory/PID caps and an internal network separate from
+PostgreSQL. Render and build have distinct scoped development auth tokens. No worker
+ports are published. The build supervisor kills a fresh child process group after 10
+seconds; its normal/error paths remove temporary job data. Render's supervisor survives
+child failures. Readiness now checks PostgreSQL and both workers.
+
+The iframe CSP denies network resources, objects, forms and nested frames; embedded
+scripts use a random nonce. Messages are accepted only from the current iframe window,
+with the current random channel and an exact bounded resize schema. Parent DOM/storage
+and studio CSS stay outside the preview. Opaque isolation is not a promise against all
+browser navigation/network abuse or a JS loop freezing a browser; reset/disable scripts
+is a recovery control, and preview inputs must never contain studio secrets.
+
+Preview API: `POST /api/v1/preview-jobs` requires itemId, sequence and a 32-hex random
+channel, with optional unsaved manifestData/sourceMap/props; returns 202 plus job ID.
+`GET /api/v1/preview-jobs/{id}` reports actual state/error; `/document` returns JSON
+html/sequence only for a successful owner-authorized job. `DELETE` cancels queued or
+marks running work cancelled so its eventual output is discarded. All mutations use
+header CSRF. There are at most three pending jobs per account, guarded across containers
+by Symfony Lock's PostgreSQL advisory store; jobs expire after 30 minutes. Retention
+cleanup and production configuration are completed in later milestones.

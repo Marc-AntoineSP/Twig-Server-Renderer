@@ -1,0 +1,16 @@
+{
+    "name": "styleguide-build-worker",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=24 <25"
+    },
+    "dependencies": {
+        "@hotwired/stimulus": "3.2.2",
+        "@tailwindcss/cli": "4.3.3",
+        "acorn": "8.19.0",
+        "daisyui": "5.7.50",
+        "esbuild": "0.28.2",
+        "tailwindcss": "4.3.3"
+    }
+}

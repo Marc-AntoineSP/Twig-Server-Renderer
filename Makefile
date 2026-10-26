@@ -16,7 +16,7 @@ assets-install:
 assets:
 	$(COMPOSE) run --rm node npm run build:css
 up:
-	$(COMPOSE) up -d --wait app database
+	$(COMPOSE) up -d --wait app database render-worker build-worker preview-consumer
 down:
 	$(COMPOSE) down
 migrate:

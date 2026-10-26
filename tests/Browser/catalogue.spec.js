@@ -17,13 +17,15 @@ test('editor creates, edits, reloads and searches a draft while sources stay ine
     await page.getByLabel('Source files JSON').fill(JSON.stringify(sources, null, 2));
     await page.getByLabel('Title', { exact: true }).fill('Browser saved component');
     await page.getByRole('button', { name: 'Save draft' }).click();
-    await expect(page.getByRole('status')).toContainText('Draft saved.');
+    await expect(page.locator('[data-flash]')).toContainText('Draft saved.');
     await page.reload();
     await expect(page.getByLabel('Title', { exact: true })).toHaveValue('Browser saved component');
     expect(JSON.parse(await page.getByLabel('Source files JSON').inputValue())[path]).toBe(sources[path]);
     await page.getByRole('link', { name: 'Catalogue', exact: true }).click();
     await page.getByRole('searchbox').fill(name);
     await page.getByRole('button', { name: 'Find items' }).click();
+    await page.waitForURL(url => url.searchParams.get('q') === name);
+    await expect(page.locator('article')).toHaveCount(1);
     await page.getByRole('link', { name: 'Browser saved component', exact: true }).click();
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Browser saved component');
     expect(await page.evaluate(() => window.studioExecuted)).toBeUndefined();
@@ -50,7 +52,7 @@ test('a stale second tab keeps its unsaved text and cannot overwrite the first',
     await second.goto(url);
     await page.getByLabel('Title', { exact: true }).fill('First tab saved');
     await page.getByRole('button', { name: 'Save draft' }).click();
-    await expect(page.getByRole('status')).toContainText('Draft saved.');
+    await expect(page.locator('[data-flash]')).toContainText('Draft saved.');
     await second.getByLabel('Title', { exact: true }).fill('Second tab unsaved');
     const response = second.waitForResponse(r => r.request().method() === 'POST' && r.url() === url);
     await second.getByRole('button', { name: 'Save draft' }).click();

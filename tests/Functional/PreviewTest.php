@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Tests\Functional;
+
+use App\Catalogue\CatalogueWriter;
+use App\Catalogue\CreateItemInput;
+use App\Entity\PreviewJob;
+use App\Tests\DatabaseTestCase;
+use Symfony\Component\Uid\Ulid;
+
+final class PreviewTest extends DatabaseTestCase
+{
+    public function testRealPreviewJobRunsWorkersAndDocumentIsOwnerOnly(): void
+    {
+        $client = self::createClient();
+        $user = $this->account();
+        $this->signIn($client, $user);
+        $draft = self::getContainer()->get(CatalogueWriter::class)->create(new CreateItemInput('tests/preview-'.strtolower((string) new Ulid()), 'component', 'Preview'), $user);
+        $client->request('GET', '/api/v1/csrf');
+        $token = json_decode($client->getResponse()->getContent(), true)['token'];
+        $client->jsonRequest('POST', '/api/v1/preview-jobs', ['itemId' => $draft->getItem()->getId(), 'sequence' => 7, 'channel' => str_repeat('a', 32)], ['HTTP_X_CSRF_TOKEN' => $token]);
+        self::assertResponseStatusCodeSame(202, $client->getResponse()->getContent());
+        $job = json_decode($client->getResponse()->getContent(), true);
+        $client->request('GET', '/api/v1/preview-jobs/'.$job['id']);
+        $status = json_decode($client->getResponse()->getContent(), true);
+        self::assertSame('succeeded', $status['status'], json_encode($status));
+        $client->request('GET', '/api/v1/preview-jobs/'.$job['id'].'/document');
+        self::assertResponseIsSuccessful();
+        self::assertStringContainsString('no-store', $client->getResponse()->headers->get('Cache-Control'));
+        $document = json_decode($client->getResponse()->getContent(), true);
+        self::assertSame(7, $document['sequence']);
+        self::assertStringContainsString('Your component is ready.', $document['html']);
+        self::assertStringContainsString('Content-Security-Policy', $document['html']);
+        $this->signIn($client, $this->account('ROLE_ADMIN'));
+        $client->request('GET', '/api/v1/preview-jobs/'.$job['id'].'/document');
+        self::assertResponseStatusCodeSame(404);
+    }
+}

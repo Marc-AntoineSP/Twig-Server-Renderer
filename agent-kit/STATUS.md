@@ -1,12 +1,13 @@
 # Implementation status
 
-Last updated: 2026-10-26. Scope: M00–M08, including a local production build; no remote deployment or push.
+Last updated: 2026-10-27. Scope: M00–M08, including a local production build; no remote deployment or push.
 
 | Milestone | Status | Evidence |
 | --- | --- | --- |
 | M00 Bootstrap | Complete | Fresh clone Docker bootstrap, lint, PHPUnit and Chromium all pass |
 | M01 Catalogue/authentication | Complete | 43 PHPUnit tests/160 assertions, 5 Chromium tests, app/database restart verified |
-| M02–M08 | Not started | Existing design/contracts only |
+| M02 Isolated preview | Complete | 66 PHPUnit tests/230 assertions, 9 Chromium tests; worker limits and isolation verified |
+| M03–M08 | Not started | Existing design/contracts only |
 
 ## Repository audit and preservation
 
@@ -190,3 +191,62 @@ migrations applied, clean Composer/npm installs and CSS compilation succeeded, s
 became healthy, **43 PHPUnit tests/160 assertions** and **5 Chromium tests** passed.
 Only directly needed example packages and the normative package schema were added to
 Git; the staged README, AGENTS edits and unrelated kit/IDE files remain untouched.
+
+## M02 work in progress
+
+Branch `feature/m02-isolated-preview`. Both workers are built from independent lockfiles,
+with no studio source/credentials mounted. Twig uses installed 3.30.0 Sandbox API with
+strict SecurityPolicy and bounded fresh PHP subprocesses. Fixed Node compiler uses
+Tailwind/CLI 4.3.3, daisyUI 5.7.50, esbuild 0.28.2, Stimulus 3.2.2 and Acorn **8.19.0**.
+Worker Composer lock: Twig 3.30.0, Symfony Process 8.1.9 plus polyfills/contracts.
+Root symfony/lock **8.1.9** added with Flex; advisory locks serialize preview quota checks.
+
+Generated/reviewed/applied `Version20261026225507` for private expiring preview jobs.
+Doctrine Messenger orchestration, job polling/document/cancel endpoints, finite dependency
+resolution through verified immutable archives, restrictive srcdoc/CSP and strict resize
+messages are implemented. Initial real checks passed 59 PHPUnit tests/204 assertions,
+then 61/211 after explicit wall-time and CSS-plugin tests. Nine Chromium tests passed,
+including actual alert dismissal, a new unsaved responsive utility, parent DOM/storage
+and CSS isolation, wrong-source/channel/schema message rejection. Additional dependency
+and full-template policy checks are now in final verification; M02 not yet marked done.
+
+Docker inspection/probes actually confirmed: both workers have only the internal workers
+network, no published ports, no bind/volume mounts, no APP_SECRET/DATABASE_URL in their
+environment, non-root users, read-only root filesystems. Renderer: 256 MiB, 32 PIDs, 1 CPU;
+compiler: 512 MiB, 64 PIDs, 1 CPU. Both cannot resolve the database service. Worker network
+Internal=true. Parent worker tokens are removed from render/build child environments.
+
+Resolved checks during implementation: render image initially lacked ZIP tooling for
+Composer; installs now run in a separate Composer build stage, leaving a narrow runtime.
+Consumer inherited a web-server health check; it now checks for the real Messenger process.
+Compose health-check PHP variables need doubled dollars. A repeated browser search exposed
+a test synchronization race; the test now waits for the filtered URL and one matching item.
+
+M02 additional results: dependency resolver tests use real ZIP archives and PostgreSQL
+release records to exercise exact-version conflicts, cycles, missing releases and archive
+integrity. The expanded PHPUnit run passed **66 tests/230 assertions**. The new static
+sandbox policy pass then caught a real alert regression: Twig inserts a safe boolean
+`true` test for `if`; the policy now explicitly permits boolean tests, with a backend
+conditional-render regression case. Browser acceptance is being re-run before completion.
+A test helper initially collided with PHPUnit's final name() method; renamed it.
+Runtime `npm audit` cannot reach the registry from the intentionally internal compiler
+network; running the audit in the designated network-enabled tooling container reports
+**zero vulnerabilities**. Worker runtime networking was left restricted.
+
+M02 completion gate: final `make check test browser` **exit 0**, with **66 PHPUnit
+tests / 230 assertions** and **9 Chromium tests passed** after the conditional policy
+fix and atomic queue transaction. This includes real wall-time termination plus recovery,
+memory/output failures, all source/compile boundaries, dependency archive/graph checks,
+alert rendering/dismissal, disabling scripts, live unsaved responsive CSS, closing script
+tags/Unicode assembly, parent DOM/storage/CSS isolation, and message source/channel/bounds.
+`doctrine:schema:validate`, strict root/worker Composer validation and root Composer audit
+pass; build-worker lock audit in the tooling container reports zero vulnerabilities.
+App, workers and Messenger consumer are healthy. User AGENTS.md and staged README hashes
+remain identical to the initial audit. Next: verify fresh M02 bootstrap, then M03.
+
+M02 fresh-clone verification (2026-10-27): `/tmp/styleguide-m02-clean`, separate fresh
+PostgreSQL/blob volumes and port 8099, ran `STUDIO_PORT=8099 make COMPOSE='docker compose
+-p styleguide-m02-clean' bootstrap check test browser`: **exit 0**. Locked root and worker
+images built, fresh Composer/npm install + stylesheet compilation and all three migrations
+succeeded; app, database, workers and consumer became healthy; **66 PHPUnit tests/230
+assertions** and **9 Chromium tests passed**. M02 is complete before beginning M03.

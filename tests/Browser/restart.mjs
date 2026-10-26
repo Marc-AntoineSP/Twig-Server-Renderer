@@ -23,7 +23,7 @@ try {
         await page.getByLabel('Source files JSON').fill(JSON.stringify(sources, null, 2));
         await page.getByLabel('Tags', { exact: true }).fill('restart, acceptance');
         await page.getByRole('button', { name: 'Save draft' }).click();
-        await expect(page.getByRole('status')).toContainText('Draft saved.');
+        await expect(page.locator('[data-flash]')).toContainText('Draft saved.');
         writeFileSync(statePath, JSON.stringify({ name, title, path, source, editUrl: new URL(page.url()).pathname }));
         console.log('PASS: created and edited a real draft before container restart.');
     } else if (process.argv[2] === 'verify') {

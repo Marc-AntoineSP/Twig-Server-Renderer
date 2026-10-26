@@ -3,6 +3,8 @@
 .codex
 vendor
 node_modules
+**/node_modules
+**/vendor
 var
 public/assets
 .env.local

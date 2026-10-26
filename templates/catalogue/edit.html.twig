@@ -4,7 +4,7 @@
     <a class="link" href="{{ path('catalogue_show', {id: item.id}) }}">← {{ item.name }}</a>
     <h1 class="mt-4 text-3xl font-bold">Edit draft</h1>
     <p class="mt-2">{{ item.kind|capitalize }} · Saved revision <span data-saved-revision>{{ draft.revision }}</span></p>
-    <p class="alert mt-5">Publishing and preview will be available after isolated render and build validation.</p>
+    <p class="alert mt-5">Preview runs in isolated workers and a sandboxed frame. Publishing will be available after release validation is implemented.</p>
     <div class="mt-6 rounded-box border border-base-300 bg-base-100 p-6">
         {{ form_start(form, {attr: {'data-turbo': 'false'}}) }}
             <div role="alert">{{ form_errors(form) }}</div>
@@ -12,4 +12,20 @@
             <button type="submit" class="btn btn-primary mt-4">Save draft</button>
         {{ form_end(form) }}
     </div>
+    <section class="mt-8 rounded-box border border-base-300 bg-base-100 p-6" data-controller="preview"
+             data-preview-item-id-value="{{ item.id }}" data-preview-csrf-value="{{ csrf_token('api') }}"
+             data-preview-create-url-value="{{ path('preview_create') }}"
+             data-preview-status-url-value="{{ path('preview_status', {id: '__JOB__'}) }}"
+             data-preview-document-url-value="{{ path('preview_document', {id: '__JOB__'}) }}">
+        <h2 class="text-xl font-semibold">Isolated preview</h2>
+        <label class="mt-4 block" for="preview-props">Preview props (JSON)</label>
+        <textarea id="preview-props" class="textarea textarea-bordered mt-2 w-full font-mono" rows="5" data-preview-target="props">{{ draft.manifestData.defaults|json_encode(constant('JSON_PRETTY_PRINT')) }}</textarea>
+        <div class="my-4 flex flex-wrap items-center gap-4">
+            <button class="btn btn-primary" type="button" data-action="preview#run">Build preview</button>
+            <button class="btn btn-ghost" type="button" data-action="preview#reset">Reset preview</button>
+            <label class="flex items-center gap-2"><input type="checkbox" class="checkbox" data-preview-target="disableJs" data-action="preview#toggleScripts">Disable preview scripts</label>
+        </div>
+        <p class="mb-4 text-sm" role="status" data-preview-target="status">No preview yet</p>
+        <iframe title="Component preview" sandbox="allow-scripts" class="w-full rounded-box border border-base-300" style="height:250px" data-preview-target="frame"></iframe>
+    </section>
 {% endblock %}
