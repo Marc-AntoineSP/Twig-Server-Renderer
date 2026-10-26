@@ -1,25 +1,78 @@
+name: styleguide-studio
 
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
+  app:
+    build:
+      context: .
+      dockerfile: docker/frankenphp/Dockerfile
+      target: dev
+      args:
+        LOCAL_UID: ${LOCAL_UID:-1000}
+        LOCAL_GID: ${LOCAL_GID:-1000}
+    ports:
+      - "127.0.0.1:${STUDIO_PORT:-8095}:80"
+    networks:
+      default:
+        aliases: [studio]
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
-    healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
-      timeout: 5s
-      retries: 5
-      start_period: 60s
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      APP_SECRET: local-development-only-do-not-deploy
+      DATABASE_URL: postgresql://styleguide:local-dev-only@database:5432/styleguide?serverVersion=17&charset=utf8
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - ./:/app
+      - caddy_data:/data
+      - caddy_config:/config
+      - catalogue_blobs:/app/var/catalogue
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://localhost/health/ready') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 15s
+  database:
+    image: postgres:17-trixie@sha256:b8faeff7712663c2773a190181e1246e37e364b887611c04658c28b44e2408fe
+    environment:
+      POSTGRES_DB: styleguide
+      POSTGRES_USER: styleguide
+      POSTGRES_PASSWORD: local-dev-only
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "styleguide", "-d", "styleguide"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  node:
+    image: node:24-trixie-slim@sha256:43b9ba1142b8dcf33fa8f922ca1be85714adc444e0586c7cf7726daaeabc1bea
+    profiles: [tools]
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    working_dir: /app
+    environment:
+      npm_config_cache: /tmp/npm-cache
+    volumes:
+      - ./:/app
+
+  browser:
+    image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:47b510dd9230bf0b9bfc9b20102241e577ea7a99334ab4c3ca19f19770e9b8ea
+    working_dir: /app
+    profiles: [tools]
+    init: true
+    ipc: host
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    environment:
+      STUDIO_BASE_URL: http://studio
+    volumes:
+      - ./:/app
+    depends_on:
+      app:
+        condition: service_healthy
 
 volumes:
-###> doctrine/doctrine-bundle ###
   database_data:
-###< doctrine/doctrine-bundle ###
+  catalogue_blobs:
+  caddy_data:
+  caddy_config:

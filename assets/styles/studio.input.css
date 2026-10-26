@@ -1,0 +1,9 @@
+@import "tailwindcss" source(none);
+@source "../../templates";
+@source "../controllers";
+@plugin "daisyui" { themes: light --default, dark --prefersdark; }
+
+@layer base {
+    :focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+    textarea { tab-size: 2; }
+}

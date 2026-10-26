@@ -1,5 +1,6 @@
 framework:
     asset_mapper:
+        excluded_patterns: ['*/studio.input.css']
         # The paths to make available to the asset mapper.
         paths:
             - assets/

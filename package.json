@@ -1,0 +1,20 @@
+{
+  "name": "styleguide-studio-toolchain",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:css": "tailwindcss -i ./assets/styles/studio.input.css -o ./assets/styles/app.css --minify",
+    "test:browser": "playwright test"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "devDependencies": {
+    "@hotwired/stimulus": "3.2.2",
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/cli": "4.3.3",
+    "daisyui": "5.7.50",
+    "esbuild": "0.28.2",
+    "tailwindcss": "4.3.3"
+  }
+}

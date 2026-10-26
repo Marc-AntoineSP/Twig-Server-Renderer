@@ -1,0 +1,9 @@
+.git
+.idea
+.codex
+vendor
+node_modules
+var
+public/assets
+.env.local
+.env.*.local
