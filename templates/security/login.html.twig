@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}Sign in · Styleguide Studio{% endblock %}
+{% block body %}
+    <section class="card mx-auto max-w-md border border-base-300 bg-base-100 shadow-sm">
+        <div class="card-body">
+            <h1 class="card-title text-2xl">Sign in to your studio</h1>
+            <p class="mb-4">This catalogue is private. An administrator creates accounts.</p>
+            {% if error %}<p class="alert alert-error" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</p>{% endif %}
+            <form method="post" action="{{ path('studio_login') }}" class="grid gap-4" data-turbo="false">
+                <label class="form-control"><span class="label">Email</span><input class="input input-bordered w-full" type="email" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus></label>
+                <label class="form-control"><span class="label">Password</span><input class="input input-bordered w-full" type="password" name="_password" autocomplete="current-password" required></label>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <button class="btn btn-primary" type="submit">Sign in</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

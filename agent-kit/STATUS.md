@@ -1,11 +1,11 @@
 # Implementation status
 
-Last updated: 2026-10-26. Scope of this implementation: M00 and M01 only.
+Last updated: 2026-10-26. Scope: M00–M08, including a local production build; no remote deployment or push.
 
 | Milestone | Status | Evidence |
 | --- | --- | --- |
 | M00 Bootstrap | Complete | Fresh clone Docker bootstrap, lint, PHPUnit and Chromium all pass |
-| M01 Catalogue/authentication | Not started | Starts only after M00 gates |
+| M01 Catalogue/authentication | In progress | Authentication verified; catalogue/validation next |
 | M02–M08 | Not started | Existing design/contracts only |
 
 ## Repository audit and preservation
@@ -94,3 +94,33 @@ is blockified); corrected the assertion to verify actual component styling.
 M00 gates completed and recorded before starting M01. Next step: M01 authentication.
 Production images, isolated preview execution, release publishing, registry and consumer
 installation remain M02–M08. No claim that those boundaries have been tested yet.
+
+## M01 authentication feature
+
+Branch `feature/m01-authentication` stacks on verified M00. Added PostgreSQL User,
+Symfony form login with role hierarchy (admin → editor → reader), account status checks,
+stateful CSRF on login/logout/forms, secure-auto/HttpOnly/SameSite=Lax host-only cookies,
+login throttling, and hidden/confirmed interactive `styleguide:user:create --admin`.
+No registration or default account. A development-only command creates/removes random
+browser accounts with credentials in ignored mode-0600 storage; cleanup passed.
+
+Migration `Version20261026222319` was generated with `make:migration`, reviewed and
+applied to both development and test PostgreSQL. It creates studio_user plus the table
+for the skeleton's pre-existing Doctrine Messenger transport. Unique canonical email
+is enforced by both the service and database. Added symfony/rate-limiter **8.1.6**
+with Composer/Flex; no existing dependency versions changed.
+
+Actual checks before continuing to catalogue:
+
+- `make check test browser`: **exit 0**; strict Composer/container/YAML/Twig checks;
+  **8 PHPUnit tests, 47 assertions**; **2 Chromium tests passed**.
+- PHPUnit exercises real form login, missing login CSRF, valid/invalid logout CSRF,
+  private access, disabled accounts, persisted interactive admin/password hashing,
+  duplicate canonical email and noninteractive command rejection.
+- `doctrine:schema:validate`: mapping valid and database in sync.
+- Studio CSS recompiled after adding the login page; Chromium verifies styling/action.
+- No failed authentication checks remain. Catalogue permissions, revisions and package
+  validation are still pending and M01 is not yet declared complete.
+
+User extended scope to M02–M08 on 2026-10-26: continue in order after M01, completing
+all milestone gates and a local production build only. No remote deployment or push.

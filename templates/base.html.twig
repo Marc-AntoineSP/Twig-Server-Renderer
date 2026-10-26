@@ -13,6 +13,15 @@
             <nav class="navbar mx-auto max-w-6xl px-6" aria-label="Main">
                 <a href="{{ path('studio_home') }}" class="text-xl font-semibold tracking-tight">Styleguide Studio</a>
                 {% block navigation %}{% endblock %}
+                {% if app.user %}
+                    <div class="ml-auto flex items-center gap-4 text-sm">
+                        <span>{{ app.user.userIdentifier }}</span>
+                        <form action="{{ path('studio_logout') }}" method="post" data-turbo="false">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                            <button class="btn btn-ghost btn-sm" type="submit">Sign out</button>
+                        </form>
+                    </div>
+                {% endif %}
             </nav>
         </header>
         <main id="main" class="mx-auto max-w-6xl p-6 md:p-10">

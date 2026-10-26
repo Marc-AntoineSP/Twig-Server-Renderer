@@ -2,13 +2,14 @@
 
 namespace App\Tests\Functional;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\DatabaseTestCase;
 
-final class BootstrapTest extends WebTestCase
+final class BootstrapTest extends DatabaseTestCase
 {
     public function testHomeUsesTwigAndLocalAssets(): void
     {
         $client = self::createClient();
+        $this->signIn($client, $this->account('ROLE_READER'));
         $client->request('GET', '/');
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('h1', 'Build a language');

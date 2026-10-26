@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { login } from './helpers.js';
 
 test('Twig page has compiled styles and a working Stimulus action', async ({ page }) => {
     const failures = [];
     page.on('pageerror', error => failures.push(error.message));
-    await page.goto('/');
+    await login(page);
     await expect(page.getByRole('heading', { name: 'Build a language for your interface.' })).toBeVisible();
     const button = page.getByRole('button', { name: 'About this workshop' });
     const help = page.locator('#studio-help');

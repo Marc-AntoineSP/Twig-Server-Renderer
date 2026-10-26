@@ -34,6 +34,7 @@ check:
 	$(COMPOSE) exec app php bin/console lint:yaml config
 	$(COMPOSE) exec app php bin/console lint:twig templates
 browser:
-	$(COMPOSE) run --rm browser npm run test:browser
+	$(COMPOSE) exec -T app php bin/console styleguide:test:accounts
+	@status=0; $(COMPOSE) run --rm browser npm run test:browser || status=$$?; $(COMPOSE) exec -T app php bin/console styleguide:test:accounts --cleanup; exit $$status
 logs:
 	$(COMPOSE) logs --tail=100 -f app

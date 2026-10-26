@@ -35,6 +35,24 @@ on the private Compose network; no host browser is required. `make test` creates
 migrates a separate PostgreSQL `styleguide_test` database. It never resets the studio
 database. Test fixtures own their test data.
 
+Create your first administrator interactively (no default account or password):
+
+```sh
+docker compose exec app php bin/console styleguide:user:create --admin
+```
+
+The command asks for email and a hidden, confirmed password of at least 12 characters.
+For other accounts use `--role=ROLE_EDITOR` or `--role=ROLE_READER`. Administrators
+inherit editor and reader permissions. Accounts are stored in PostgreSQL; registration
+is private. Login and every mutation require CSRF. Publishing is deferred until render
+and build validation exist.
+
+`make browser` provisions random, temporary dev/test accounts for all three roles,
+stores credentials in ignored `var/browser/accounts.json` (mode 0600), and removes the
+accounts and file after the test run. Interrupted runs can be cleaned with
+`make console ARGS='styleguide:test:accounts --cleanup'`. No browser-test account is
+available in production.
+
 `GET /health` checks HTTP liveness; `GET /health/ready` checks database connectivity
 and returns 503 on failure. The Compose readiness check uses the latter. Framework
 commands and migrations run explicitly; the web entrypoint does not run migrations.
