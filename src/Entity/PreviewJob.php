@@ -35,10 +35,6 @@ class PreviewJob
         $this->expiresAt = $this->createdAt->modify('+30 minutes');
     }
 
-    public function running(): void { $this->status = 'running'; }
-    public function succeed(): void { $this->status = 'succeeded'; }
-    public function fail(array $error): void { $this->status = 'failed'; $this->error = $error; }
-    public function cancel(): void { if (in_array($this->status, ['queued', 'running'], true)) { $this->status = 'cancelled'; } }
     public function getId(): string { return $this->id; }
     public function getOwner(): User { return $this->owner; }
     public function getRequestSequence(): int { return $this->requestSequence; }

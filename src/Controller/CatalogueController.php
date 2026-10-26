@@ -11,6 +11,7 @@ use App\Entity\Release;
 use App\Form\DraftType;
 use App\Form\NewItemType;
 use App\Repository\CatalogueRepository;
+use App\Rendering\RendererPresets;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -64,7 +65,7 @@ final class CatalogueController extends AbstractController
 
     #[Route('/catalogue/{id}/edit', name: 'catalogue_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_EDITOR')]
-    public function edit(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, FormInput $input): Response
+    public function edit(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, FormInput $input, RendererPresets $presets): Response
     {
         $draft = $writer->draft($item);
         $jsonOptions = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR;
@@ -87,7 +88,7 @@ final class CatalogueController extends AbstractController
             }
         }
 
-        return $this->render('catalogue/edit.html.twig', ['item' => $item, 'draft' => $draft, 'form' => $form], new Response(status: $status));
+        return $this->render('catalogue/edit.html.twig', ['item' => $item, 'draft' => $draft, 'form' => $form, 'rendererSettings' => $presets->read($item, $this->getUser())], new Response(status: $status));
     }
 
     private function errors(FormInterface $form, CatalogueException $error): void

@@ -167,3 +167,35 @@ marks running work cancelled so its eventual output is discarded. All mutations 
 header CSRF. There are at most three pending jobs per account, guarded across containers
 by Symfony Lock's PostgreSQL advisory store; jobs expire after 30 minutes. Retention
 cleanup and production configuration are completed in later milestones.
+
+## Live editor and renderer workspace (M03)
+
+The source editor has keyboard-accessible Twig, JavaScript, Props and Examples tabs.
+File selectors edit existing sources; Add Stimulus controller creates an owned source
+and registration, then shows the identifier to bind in Twig. Advanced JSON remains
+available for full manifests/source maps. Save draft explicitly persists source and
+metadata with the loaded revision; unsaved previews never alter the draft. Unsaved
+changes are labelled and warn before navigation. Invalid advanced/default JSON cannot
+silently submit older editor data.
+
+Preview starts on open and rebuilds 300 ms after the latest edit. Pending/error states
+mark an existing frame stale. Syntax failures include the logical file and line while
+keeping the last good frame. Requests/jobs that become obsolete are cancelled or their
+bounded in-flight output is discarded. Creation responses are collected even when old,
+so their job IDs can be cancelled; each poll/document response is checked against the
+latest sequence. PostgreSQL conditional claim/finish transitions prevent duplicate
+claims and stop a cancelled job becoming successful after a late result.
+
+Viewport buttons set real iframe widths of 375/768/1280 px; custom width is 320–1920.
+Zoom is 50/75/100% visual scaling and preserves CSS viewport width. Root font size
+12–24 px also scales rem spacing. Text size is inherited; explicit component classes
+retain their sizes. Body/heading fonts use the local system font registry. Reset frame
+works immediately; Reset settings restores defaults; Reset to example restores selected
+example/default props. None executes code in the studio DOM.
+
+Save renderer settings persists a private workspace preset per user/item, separate
+from the draft, including viewport, zoom, fonts, text, script toggle and sample props.
+Reload restores it. `GET/PUT /api/v1/items/{id}/renderer-preset` enforce editor access,
+owner-specific selection, header CSRF on PUT, bounds and props validation. Saving a
+preset validates against the saved props schema; save a changed schema as a draft first.
+Binary assets and named shared design-system presets are later capabilities.

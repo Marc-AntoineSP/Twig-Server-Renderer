@@ -20,6 +20,7 @@ try {
         const path = `templates/catalogue/${name}/component.html.twig`;
         const source = '<div class="grid md:grid-cols-3">{{ message }}</div>\n';
         sources[path] = source;
+        await page.getByText('Advanced JSON', { exact: true }).click();
         await page.getByLabel('Source files JSON').fill(JSON.stringify(sources, null, 2));
         await page.getByLabel('Tags', { exact: true }).fill('restart, acceptance');
         await page.getByRole('button', { name: 'Save draft' }).click();

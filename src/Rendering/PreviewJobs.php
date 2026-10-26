@@ -71,7 +71,9 @@ final readonly class PreviewJobs
             $schema = json_decode($sources->{$manifest->propsSchema}, false, 24, JSON_THROW_ON_ERROR);
             $this->props->validateValue($props, $schema);
             $closure = $this->dependencies->resolve($manifest, $sources);
-            $payload = (object) [...$closure, 'props' => $props, 'channel' => $input->channel];
+            $preset = $input->preset ?? new RendererSettings();
+            $closure['safelist'] = array_values(array_unique([...$closure['safelist'], $preset->textClass]));
+            $payload = (object) [...$closure, 'props' => $props, 'channel' => $input->channel, 'preset' => $preset->toArray()];
             $policyDigest = hash_file('sha256', $this->projectDirectory.'/workers/render/composer.lock').hash_file('sha256', $this->projectDirectory.'/workers/build/package-lock.json').'sandbox-v1';
             $hash = hash('sha256', json_encode($payload, JSON_THROW_ON_ERROR).$policyDigest);
             $job = new PreviewJob($user, $input->sequence, $hash, $payload);

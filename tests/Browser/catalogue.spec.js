@@ -14,6 +14,7 @@ test('editor creates, edits, reloads and searches a draft while sources stay ine
     const sources = JSON.parse(await page.getByLabel('Source files JSON').inputValue());
     const path = `templates/catalogue/${name}/component.html.twig`;
     sources[path] = '<div>{{ app.secret }}</div><script>window.studioExecuted = true;</script>';
+    await page.getByText('Advanced JSON', { exact: true }).click();
     await page.getByLabel('Source files JSON').fill(JSON.stringify(sources, null, 2));
     await page.getByLabel('Title', { exact: true }).fill('Browser saved component');
     await page.getByRole('button', { name: 'Save draft' }).click();
@@ -58,7 +59,7 @@ test('a stale second tab keeps its unsaved text and cannot overwrite the first',
     await second.getByRole('button', { name: 'Save draft' }).click();
     expect((await response).status()).toBe(412);
     await expect(second.getByLabel('Title', { exact: true })).toHaveValue('Second tab unsaved');
-    await expect(second.getByRole('alert')).toContainText('Your changes were not saved');
+    await expect(second.locator('[data-form-errors]')).toContainText('Your changes were not saved');
     await page.reload();
     await expect(page.getByLabel('Title', { exact: true })).toHaveValue('First tab saved');
 });

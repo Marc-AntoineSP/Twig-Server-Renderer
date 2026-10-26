@@ -7,7 +7,8 @@ Last updated: 2026-10-27. Scope: M00–M08, including a local production build; 
 | M00 Bootstrap | Complete | Fresh clone Docker bootstrap, lint, PHPUnit and Chromium all pass |
 | M01 Catalogue/authentication | Complete | 43 PHPUnit tests/160 assertions, 5 Chromium tests, app/database restart verified |
 | M02 Isolated preview | Complete | 66 PHPUnit tests/230 assertions, 9 Chromium tests; worker limits and isolation verified |
-| M03–M08 | Not started | Existing design/contracts only |
+| M03 Live editor | Complete | 68 PHPUnit tests/248 assertions and 15 Chromium tests pass |
+| M04–M08 | Not started | Existing design/contracts only |
 
 ## Repository audit and preservation
 
@@ -250,3 +251,43 @@ PostgreSQL/blob volumes and port 8099, ran `STUDIO_PORT=8099 make COMPOSE='docke
 images built, fresh Composer/npm install + stylesheet compilation and all three migrations
 succeeded; app, database, workers and consumer became healthy; **66 PHPUnit tests/230
 assertions** and **9 Chromium tests passed**. M02 is complete before beginning M03.
+
+## M03 work in progress
+
+Branch `feature/m03-live-editor`. Added tabbed source/file editors, unsaved indicators,
+300 ms debounce, automatic preview, stale/error diagnostics and sequence/cancellation
+handling. Added 375/768/1280/custom widths, zoom, root/text/body/heading font controls,
+reset/disable scripts/example controls and PostgreSQL per-user/item renderer workspace
+presets. `Version20261026232516` was generated/reviewed/applied; schema validation passes.
+Preview claim/finish/cancel use atomic conditional database transitions; cancellation
+cannot be overwritten by a late completion. Snapshot+queue enqueue remain transactional.
+No new dependencies. Compiler now also scans the actual rendered HTML for prop-driven
+literal classes. Presets and previews do not mutate the saved draft.
+
+Actual checks so far: `make check test` passes **68 tests / 248 assertions**, including
+preset persistence, owner separation, CSRF/bounds and exclusive claims/cancellation.
+Chromium passes **14 flows**, including live Twig + Stimulus edits with no source writes,
+save/reload, invalid Twig location + retained stale frame, real delayed HTTP responses,
+375/768/1280 breakpoints, zoom preserving viewport, root/body/heading typography, saved
+presets, keyboard tabs, examples and reset. The browser test uses real worker responses;
+it delays a real document response to exercise the ordering race. Final explicit debounce
+and invalid-JavaScript checks are pending before marking M03 complete.
+
+Resolved: renderer selects initially used implicit labels containing option text; added
+explicit labelled controls. Legacy viewport tests now use the real new width buttons,
+since resize handling correctly reapplies the selected viewport. Reset no longer waits
+for network cancellation before clearing the frame. Invalid editor JSON blocks stale
+source submission rather than discarding the current text.
+
+Follow-up during M06 contract consolidation: extend controller path/identifier validation
+to owned nested controllers, centralize URL-like value checks and duplicate JSON-key
+rejection for imports. Current fixtures use the validated primary-controller profile.
+
+M03 completion gate (2026-10-27): final `make check test browser` **exit 0**. Composer,
+container, 25 YAML and 7 Twig checks pass; **68 PHPUnit tests/248 assertions** and
+**15 Chromium tests** pass. Explicit rapid-edit test confirms no request before the
+300 ms debounce and one request for three rapid edits; invalid JavaScript reports its
+syntax location and retains the same good frame. Responsive widths, zoom, private
+settings persistence, source persistence, keyboard tabs, examples and immediate reset
+all ran in Chromium against real workers. Schema validation and git diff checks pass.
+M03 is complete before starting M04. Source and renderer settings remain separate.

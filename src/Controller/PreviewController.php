@@ -7,6 +7,7 @@ use App\Entity\PreviewJob;
 use App\Rendering\PreviewInput;
 use App\Rendering\PreviewJobs;
 use App\Rendering\PreviewStorage;
+use App\Rendering\PreviewLifecycle;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,11 +52,10 @@ final class PreviewController extends AbstractController
 
     #[Route('/api/v1/preview-jobs/{id}', name: 'preview_cancel', methods: ['DELETE'], format: 'json')]
     #[IsCsrfTokenValid('api', tokenKey: 'X-CSRF-Token', tokenSource: IsCsrfTokenValid::SOURCE_HEADER)]
-    public function cancel(#[MapEntity(id: 'id')] PreviewJob $job, EntityManagerInterface $entityManager): JsonResponse
+    public function cancel(#[MapEntity(id: 'id')] PreviewJob $job, PreviewLifecycle $lifecycle): JsonResponse
     {
         $this->owner($job);
-        $job->cancel();
-        $entityManager->flush();
+        $lifecycle->cancel($job);
 
         return new JsonResponse(['status' => $job->getStatus()], headers: ['Cache-Control' => 'private, no-store']);
     }

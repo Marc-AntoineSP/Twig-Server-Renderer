@@ -13,6 +13,7 @@ final readonly class PreviewInput
         public mixed $manifestData = null,
         public mixed $sourceMap = null,
         public mixed $props = null,
+        #[Assert\Valid] public ?RendererSettings $preset = null,
     ) {
     }
 }
