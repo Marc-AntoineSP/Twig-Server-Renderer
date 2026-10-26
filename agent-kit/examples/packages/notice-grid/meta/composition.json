@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "root": {
+    "type": "container",
+    "tag": "section",
+    "classes": [
+      "grid",
+      "gap-4",
+      "md:grid-cols-2"
+    ],
+    "children": [
+      {
+        "type": "reference",
+        "name": "awui/alert",
+        "version": "1.0.0",
+        "props": {
+          "message": "Your component is ready.",
+          "tone": "success",
+          "dismissible": true,
+          "dismissLabel": "Dismiss notification"
+        }
+      },
+      {
+        "type": "reference",
+        "name": "awui/alert",
+        "version": "1.0.0",
+        "props": {
+          "message": "A second component, with its own props.",
+          "tone": "info",
+          "dismissible": true,
+          "dismissLabel": "Dismiss notification"
+        }
+      }
+    ]
+  }
+}

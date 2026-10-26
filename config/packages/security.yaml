@@ -32,6 +32,7 @@ security:
     access_control:
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/health(?:/ready)?$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/v1/items, roles: ROLE_EDITOR, methods: [POST, PUT, PATCH, DELETE] }
         - { path: ^/, roles: ROLE_READER }
 
 when@test:

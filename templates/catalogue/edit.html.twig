@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Edit {{ item.title }} · Styleguide Studio{% endblock %}
+{% block body %}
+    <a class="link" href="{{ path('catalogue_show', {id: item.id}) }}">← {{ item.name }}</a>
+    <h1 class="mt-4 text-3xl font-bold">Edit draft</h1>
+    <p class="mt-2">{{ item.kind|capitalize }} · Saved revision <span data-saved-revision>{{ draft.revision }}</span></p>
+    <p class="alert mt-5">Publishing and preview will be available after isolated render and build validation.</p>
+    <div class="mt-6 rounded-box border border-base-300 bg-base-100 p-6">
+        {{ form_start(form, {attr: {'data-turbo': 'false'}}) }}
+            <div role="alert">{{ form_errors(form) }}</div>
+            {{ form_rest(form) }}
+            <button type="submit" class="btn btn-primary mt-4">Save draft</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

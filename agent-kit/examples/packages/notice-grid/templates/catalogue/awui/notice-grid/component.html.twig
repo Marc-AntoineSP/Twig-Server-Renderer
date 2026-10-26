@@ -1,0 +1,11 @@
+{# Generated from meta/composition.json; edit the tree in composition mode. #}
+<section class="grid gap-4 md:grid-cols-2">
+    {% include 'catalogue/awui/alert/component.html.twig' with {
+        message: 'Your component is ready.', tone: 'success',
+        dismissible: true, dismissLabel: 'Dismiss notification'
+    } only %}
+    {% include 'catalogue/awui/alert/component.html.twig' with {
+        message: 'A second component, with its own props.', tone: 'info',
+        dismissible: true, dismissLabel: 'Dismiss notification'
+    } only %}
+</section>

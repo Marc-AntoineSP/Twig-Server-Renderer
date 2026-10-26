@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "name": "awui/notice-grid",
+  "version": "1.0.0",
+  "kind": "block",
+  "title": "Notice grid",
+  "description": "Source fixture for the Styleguide Studio implementation kit.",
+  "entry": "templates/catalogue/awui/notice-grid/component.html.twig",
+  "dependencies": [
+    {
+      "name": "awui/alert",
+      "version": "1.0.0"
+    }
+  ],
+  "controllers": [],
+  "safelist": [],
+  "compatibility": {
+    "php": ">=8.4",
+    "twig": "^3.0",
+    "tailwind": "^4.0",
+    "daisyui": "^5.0",
+    "stimulus": "^3.0"
+  },
+  "files": [
+    {
+      "path": "meta/LICENSE",
+      "sha256": "ebc1e873ca057de650f4c9508c6a9441fffec8e5ded18ccae565531ee88d4c90",
+      "bytes": 1087
+    },
+    {
+      "path": "meta/README.md",
+      "sha256": "4084bffbba5371032aee89fc5211c887b6bed07e996d034654eb4e8b11f0e55d",
+      "bytes": 275
+    },
+    {
+      "path": "meta/composition.json",
+      "sha256": "528b88b5f4039cbd88fdf5187a947c10688c54ac9cc1426658c6f64026e10cb9",
+      "bytes": 782
+    },
+    {
+      "path": "meta/examples.json",
+      "sha256": "79b2630e8189fad6a3e792d74e77fb07682302fa4f9b3db1be77002c83ed0186",
+      "bytes": 51
+    },
+    {
+      "path": "meta/props.schema.json",
+      "sha256": "84d2b97612ab693e84a4bf8b9870cbf30602fd669f90b7c7dee0fd88d1769bd6",
+      "bytes": 155
+    },
+    {
+      "path": "templates/catalogue/awui/notice-grid/component.html.twig",
+      "sha256": "116f823390b027bda59f90ce7ecfb5fb758ab9bfedcb7fd0a4077d52a12ad764",
+      "bytes": 556
+    }
+  ],
+  "license": "MIT",
+  "propsSchema": "meta/props.schema.json",
+  "defaults": {}
+}

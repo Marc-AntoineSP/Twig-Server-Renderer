@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "name": "awui/alert",
+  "version": "1.0.0",
+  "kind": "component",
+  "title": "Dismissible alert",
+  "description": "Source fixture for the Styleguide Studio implementation kit.",
+  "entry": "templates/catalogue/awui/alert/component.html.twig",
+  "dependencies": [],
+  "controllers": [
+    {
+      "identifier": "catalogue--awui--alert",
+      "path": "assets/controllers/catalogue/awui/alert_controller.js"
+    }
+  ],
+  "safelist": [],
+  "compatibility": {
+    "php": ">=8.4",
+    "twig": "^3.0",
+    "tailwind": "^4.0",
+    "daisyui": "^5.0",
+    "stimulus": "^3.0"
+  },
+  "files": [
+    {
+      "path": "assets/controllers/catalogue/awui/alert_controller.js",
+      "sha256": "9a09cc583ff8750e327b00dd558f017a3c257e19307f66c68cbe717d59a6bb33",
+      "bytes": 147
+    },
+    {
+      "path": "meta/LICENSE",
+      "sha256": "ebc1e873ca057de650f4c9508c6a9441fffec8e5ded18ccae565531ee88d4c90",
+      "bytes": 1087
+    },
+    {
+      "path": "meta/README.md",
+      "sha256": "74ec0a06701928befe61e290cc2d5c90ad635ee15ee3e625635c6245e78eac79",
+      "bytes": 523
+    },
+    {
+      "path": "meta/examples.json",
+      "sha256": "0ddc8122815f1f27ed008911b3c6e1d79bcca957d18d94a54a0aa04531be9523",
+      "bytes": 413
+    },
+    {
+      "path": "meta/props.schema.json",
+      "sha256": "22800745b288cf5bcab75290752ba527e1efcec793aff2ebb3c67bac514b2da8",
+      "bytes": 582
+    },
+    {
+      "path": "templates/catalogue/awui/alert/component.html.twig",
+      "sha256": "756ebd3b650c192320294d6840646b6e5b5d174c8792e746fc51ddb87b37af52",
+      "bytes": 591
+    }
+  ],
+  "license": "MIT",
+  "propsSchema": "meta/props.schema.json",
+  "defaults": {
+    "message": "Your component is ready.",
+    "tone": "success",
+    "dismissible": true,
+    "dismissLabel": "Dismiss notification"
+  }
+}

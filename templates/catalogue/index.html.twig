@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block title %}Catalogue · Styleguide Studio{% endblock %}
+{% block body %}
+    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div><p class="text-sm text-primary">Your private library</p><h1 class="text-3xl font-bold">Catalogue</h1></div>
+        {% if is_granted('ROLE_EDITOR') %}<a class="btn btn-primary" href="{{ path('catalogue_new') }}">New item</a>{% endif %}
+    </div>
+    <form method="get" action="{{ path('catalogue_index') }}" class="mb-8 grid gap-4 rounded-box border border-base-300 bg-base-100 p-4 md:grid-cols-4" role="search">
+        <label>Search<input type="search" name="q" value="{{ query.q }}" placeholder="Name, title, tag or description"></label>
+        <label>Kind<select name="kind"><option value="">All kinds</option>{% for kind in ['component', 'block', 'layout'] %}<option value="{{ kind }}" {{ query.kind == kind ? 'selected' : '' }}>{{ kind|capitalize }}</option>{% endfor %}</select></label>
+        <label>Sort<select name="sort"><option value="updated" {{ query.sort == 'updated' ? 'selected' : '' }}>Recently updated</option><option value="name" {{ query.sort == 'name' ? 'selected' : '' }}>Name</option></select></label>
+        <button type="submit" class="btn btn-neutral self-end">Find items</button>
+    </form>
+    <p class="mb-4 text-sm" role="status">{{ total }} {{ total == 1 ? 'item' : 'items' }} · Page {{ page }} of {{ pages }}</p>
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {% for item in items %}
+            <article class="card border border-base-300 bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <div class="flex gap-2"><span class="badge badge-outline">{{ item.kind }}</span><span class="badge badge-ghost">Draft</span></div>
+                    <h2 class="card-title"><a class="link-hover" href="{{ path('catalogue_show', {id: item.id}) }}">{{ item.title }}</a></h2>
+                    <p class="font-mono text-xs">{{ item.name }}</p><p>{{ item.description }}</p>
+                    <div class="flex flex-wrap gap-2">{% for tag in item.tags %}<span class="badge badge-soft">{{ tag }}</span>{% endfor %}</div>
+                    <p class="mt-3 text-xs opacity-70">Updated {{ item.updatedAt|date('Y-m-d H:i', 'UTC') }} UTC</p>
+                    <div class="card-actions mt-2"><a class="btn btn-sm btn-ghost" href="{{ path('catalogue_show', {id: item.id}) }}">Open</a></div>
+                </div>
+            </article>
+        {% else %}<p class="rounded-box bg-base-100 p-6">No items match this search.</p>{% endfor %}
+    </div>
+    {% if pages > 1 %}
+        <nav class="mt-8 flex gap-4" aria-label="Catalogue pages">
+            {% if page > 1 %}<a class="btn" rel="prev" href="{{ path('catalogue_index', {q: query.q, kind: query.kind, sort: query.sort, page: page - 1}) }}">Previous</a>{% endif %}
+            {% if page < pages %}<a class="btn" rel="next" href="{{ path('catalogue_index', {q: query.q, kind: query.kind, sort: query.sort, page: page + 1}) }}">Next</a>{% endif %}
+        </nav>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Success",
+    "props": {
+      "message": "Your component is ready.",
+      "tone": "success",
+      "dismissible": true,
+      "dismissLabel": "Dismiss notification"
+    }
+  },
+  {
+    "name": "Warning",
+    "props": {
+      "message": "Check the exported source before installing.",
+      "tone": "warning",
+      "dismissible": true,
+      "dismissLabel": "Dismiss notification"
+    }
+  }
+]

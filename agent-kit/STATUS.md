@@ -5,7 +5,7 @@ Last updated: 2026-10-26. Scope: M00–M08, including a local production build; 
 | Milestone | Status | Evidence |
 | --- | --- | --- |
 | M00 Bootstrap | Complete | Fresh clone Docker bootstrap, lint, PHPUnit and Chromium all pass |
-| M01 Catalogue/authentication | In progress | Authentication verified; catalogue/validation next |
+| M01 Catalogue/authentication | Complete | 43 PHPUnit tests/160 assertions, 5 Chromium tests, app/database restart verified |
 | M02–M08 | Not started | Existing design/contracts only |
 
 ## Repository audit and preservation
@@ -124,3 +124,69 @@ Actual checks before continuing to catalogue:
 
 User extended scope to M02–M08 on 2026-10-26: continue in order after M01, completing
 all milestone gates and a local production build only. No remote deployment or push.
+
+## M01 catalogue feature and completion gate
+
+Branch `feature/m01-catalogue` stacks on verified authentication. Added CatalogueItem,
+versioned Draft and read-only Release metadata. Generated/reviewed migration
+`Version20261026223512` applies cleanly to dev/test PostgreSQL; schema validation passes.
+Names are unique across kinds, drafts use Doctrine optimistic version locking inside
+an atomic metadata/source transaction, and releases have a database item/version unique
+constraint and defensive immutable snapshots. Sources are JSONB objects outside the
+studio template loader; the UI escapes them. Empty JSON objects survive round-trips.
+
+SSR pages implement name/title/description/tag search, kind filtering, sorting and
+12-item database pagination; detail/create/edit forms; preserved form input on 412.
+The JSON API uses MapRequestPayload/MapQueryString, role checks, header CSRF, quoted
+If-Match revisions and structured private/no-store errors. Missing If-Match is 428.
+Publishing/preview remain explicitly unavailable at the M01 checkpoint.
+
+`opis/json-schema` **2.6.0** (opis/string 2.1.0, opis/uri 1.1.0) was resolved/locked in
+Docker. Symfony has no JSON Schema component; Opis validates the normative package
+schema. Semantic validation enforces owned portable paths/types, no PHP/foreign trees,
+case/duplicate inventory collisions, source/JSON/depth limits, file integrity, controller
+identity, dependency uniqueness and bounded props with defaults/examples. Remote refs,
+recursive refs and unsupported schema keywords are rejected. Draft checksums are
+regenerated; immutable/import checks verify exact supplied hashes. Bundled alert and
+notice-grid drafts validate and load idempotently without replacing existing edits.
+No imported source is executed at this milestone. Binary assets are a later profile.
+
+Actual completed checks, run before continuing:
+
+- `make check test browser`: **exit 0**, Composer/container/24 YAML/7 Twig checks;
+  **43 PHPUnit tests / 160 assertions** and **5 Chromium tests passed**.
+- After the last service changes, `make check test` again passed **43 / 160**.
+- `doctrine:schema:validate`: mapping valid and database in sync.
+- `composer audit --locked`: no advisories. CSS rebuilt using the locked toolchain.
+- `styleguide:fixtures` twice: two valid examples created, then both skipped unchanged.
+  PHPUnit separately edits a fixture and proves re-running the command preserves it.
+- Browser `restart.mjs prepare` creates/edits a component, then actual
+  `docker compose restart app database` + `up -d --wait`, followed by
+  `restart.mjs verify`: **PASS**. Source, title, tags, revision 2 and database search
+  survive both container restarts. Temporary accounts are removed afterward.
+- PHPUnit covers real form/API persistence, reader/anonymous denial, CSRF, stale API
+  and HTML saves returning **412** with first data preserved and second input retained,
+  duplicate names, bad JSON, missing revisions, pagination, invalid paths/props/defaults,
+  checksums, local/remote/recursive schema refs, URL injection and immutable version
+  uniqueness. Chromium covers login/logout, actual styling/Stimulus, source-inertness,
+  full create/edit/reload/search, reader denial and two-tab conflicts.
+
+Failures corrected: Doctrine's Version mapping requires an explicit integer column
+before type inference; generated the migration after fixing it. Symfony 8.1 Choice
+requires named `choices:` rather than legacy positional options. API errors must run
+before the firewall exception handler (priority 10) to return JSON 401. Twig loops
+need an array view of JSONB source objects. A source-isolation assertion initially
+matched AssetMapper's own script; it now checks the untrusted script itself. The
+external importmap polyfill is disabled to keep studio browser assets local.
+
+M00 and M01 gates are complete. Next: M02 isolated renderer/compiler, then M03–M08
+in order with local production verification. No remote deployment, package publication
+or branch push. M02–M08 are not yet implemented or claimed complete.
+
+M01 fresh-clone verification: `/tmp/styleguide-m01-clean`, with separate fresh volumes
+and loopback port 8098, ran `STUDIO_PORT=8098 make COMPOSE='docker compose -p
+styleguide-m01-clean' bootstrap check test browser`: **exit 0**. Both generated
+migrations applied, clean Composer/npm installs and CSS compilation succeeded, services
+became healthy, **43 PHPUnit tests/160 assertions** and **5 Chromium tests** passed.
+Only directly needed example packages and the normative package schema were added to
+Git; the staged README, AGENTS edits and unrelated kit/IDE files remain untouched.
