@@ -2,7 +2,8 @@
 
 This maps the supplied A01–A38 scenarios to executed tests and operator checks. Detailed
 commands, versions, failures and corrections are in agent-kit/STATUS.md. The final clean
-checkout and latest production policy run are recorded there when they finish. No remote
+checkout passes 108 tests/544 assertions, 25 Chromium flows and real consumer installation;
+production recovery and the latest focused browser corrections also pass. No remote
 CI/deployment/public certificate/Packagist result is implied by these local checks.
 
 | Scenario | Evidence |

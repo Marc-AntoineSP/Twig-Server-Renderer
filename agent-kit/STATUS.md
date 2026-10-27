@@ -1,6 +1,8 @@
 # Implementation status
 
-Last updated: 2026-10-27. Scope: M00–M08, including a local production build; no remote deployment or push.
+Last updated: 2026-10-27. Scope: M00–M08 complete, including a local production build; no remote deployment or push.
+
+Earlier sections retain historical checkpoints. The final handoff below supersedes their in-progress notes.
 
 | Milestone | Status | Evidence |
 | --- | --- | --- |
@@ -12,7 +14,7 @@ Last updated: 2026-10-27. Scope: M00–M08, including a local production build; 
 | M05 Composition | Complete | 75 PHPUnit tests/325 assertions and 19 Chromium flows pass |
 | M06 Imports/exports/registry | Complete | 93 tests/469 assertions, 21 browser flows, clean-store pixel-identical round-trip |
 | M07 Consumer installer | Complete | 98 PHPUnit tests/494 assertions, 21 browser flows, fresh consumer production and SIGKILL recovery gates |
-| M08 Production/recovery | In progress | Immutable images boot; 101 tests/516 assertions, 21 production Chromium flows and local TLS pass; final recovery/showcase gates pending |
+| M08 Production/recovery | Complete | Fresh checkout: 108 tests/544 assertions, 25 Chromium flows and consumer; production restart/backup/fresh restore/install and HTTPS verified |
 
 ## Repository audit and preservation
 
@@ -693,3 +695,75 @@ The showcase helper now waits for actual render completion before interaction in
 assuming a preview completes within Playwright's default five seconds. Final clean tests
 are rerun with an explicitly recreated task-owned test database, followed by browser and
 consumer gates. Main development/production/user data are not reset.
+
+
+## Final handoff — M00–M08 complete
+
+All requested milestone and A01–A38 acceptance gates have executed evidence in this file
+and docs/styleguide/VERIFICATION.md. No required implementation/check remains pending.
+Final source is on `feature/m08-composition-save-race`, with **17 local feature branches**
+stacked from main c5d2497. Existing AGENTS.md and staged README.md are preserved byte-for-byte;
+their final hashes still match the arrival hashes recorded above. Unrelated untracked files
+remain untouched. No branch push, remote deployment or Packagist publication occurred.
+
+Final completed checks:
+
+- Fresh clone `/tmp/styleguide-m08-clean-050940`: locked Docker build/dependency installation,
+  AssetMapper/studio CSS, migrations and bootstrap pass. After fixing the exposed legacy
+  fixture dependency and composition race, fetched committed source e3655a2 into that clean
+  checkout, explicitly dropped/recreated **only its task-owned styleguide_test database**,
+  then `STUDIO_PORT=8115 CONSUMER_PORT=8116 make COMPOSE='docker compose -p styleguide-m08-clean'
+  check test browser consumer`: **exit 0**, **108 PHPUnit tests / 544 assertions**, **25 Chromium
+  flows**, fresh Symfony consumer production compilation/browser, immutable registry and
+  offline install, changed=0 reinstall, conflicts, real install SIGKILL recovery and protected
+  update/remove all pass. Its accounts are removed and project stopped with volumes retained.
+- Latest complete security-policy production consumer/recovery gate:
+  `PRODUCTION_FROM=consumer make prod-test`: **exit 0**. It reuses the recorded full 25-flow
+  production/browser/TLS/boundary stage explicitly, then repeats actual authoring/export,
+  fresh consumer install (including escaped CSS/forbidden JS rejection), graceful stop,
+  SIGKILL redelivery, stale compiler directory cleanup, logged metrics/secret-redaction,
+  consistent backup, restart, fresh database/blob restore and repeated export/install.
+- That run's snapshot is `var/backups/production-20261027T050945Z`; restored target is
+  `styleguide-restore-20261027051029` using `var/restore-20261027051029/compose.env`.
+  Referenced archives/schema validate, saved drafts/tokens match and re-exported collection
+  bytes match exactly. The restored independent consumer renders actual Twig/Stimulus/theme,
+  responsive CSS and no studio/CDN runtime requests. Restored project is stopped; volumes
+  and private snapshots remain available. All temporary production roles are disabled.
+- After the final fixture/JS race corrections, rebuilt the handoff image and ran the real
+  production fixture command: both drafts plus a validated immutable alert dependency are
+  created correctly. Latest focused production browser suite: **5 passed**, including an
+  intentionally delayed POST arriving after Save's PUT and returning an ignored 412.
+  `prod-check` passes schema/container/cleanup/archive checks; **48 referenced releases**
+  verify successfully. Production SQL confirms **zero enabled test/default accounts**.
+- Final local HTTPS uses the actual Caddy internal root certificate with curl --cacert:
+  /health/ready returns ready and /login sets Secure/HttpOnly/SameSite=Lax. Exact-proxy and
+  forged-forwarded-header browser checks passed earlier. Reapplied the complete local TLS
+  override after standalone HTTP browser tools so app/proxy retain their shared network;
+  all seven production services are healthy at handoff. This is local/internal-CA evidence,
+  not a claim of public certificate issuance or remote deployment.
+- Final Composer audit: **no advisories**. Fixed build toolchain npm audit: **0 vulnerabilities**.
+  Git diff checks pass. Remote GitHub-hosted CI was not run; its checked-in pinned workflow
+  invokes these same Docker/local gates without publishing anything.
+
+Final local image tag: `local-20261027053217-handoff` (built from committed source e3655a2;
+this final status-only commit does not change runtime code). Actual local image IDs:
+
+| Image | Local ID (not a registry digest) |
+| --- | --- |
+| app / preview-consumer / maintenance | sha256:2c5bfe42d68b3ed6cfb6410ec9697e9926e3045c3cbed63f5e3e7f4669ea92a4 |
+| build-worker | sha256:ddd7ae37edd30220580638ea43d54e20e11a50720244780fcc672f42b83e1a2a |
+| render-worker | sha256:14d39a8fd08bce645182474310e95cfa384cda28b8db87c932359267589f1007 |
+| local TLS proxy | sha256:c2f1eca12a3a38066f60ff92d4a1da4d77a0a8e486c08a6e121f45eccb055085 |
+
+Local URLs: development http://localhost:8095; production http://localhost:8096;
+local HTTPS https://localhost:8443 (internal CA); independent consumer http://localhost:8110.
+Production secrets/config are in ignored private var/production-final and var/production;
+there is no enabled default account. Exact operator/admin setup, release, shutdown and
+backup/restore commands are in docs/styleguide/PRODUCTION.md. Source/profile limits remain
+intentional: system fonts and bounded text-only packages, Chromium verification, private
+local catalogue. Public TLS, remote CI, remote hosting and package publication were not
+requested or claimed. The browser checks are not a full accessibility certification.
+
+Exact next step: create your own administrator with the documented hidden-password command
+and use/review the local production build. Review real hostnames/proxy/secrets/capacity and
+run your own authorized release procedure before any future remote deployment.
