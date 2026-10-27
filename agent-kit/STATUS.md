@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-10-27. Scope: M00–M08 complete, including a local production build; no remote deployment or push.
+Last updated: 2026-10-27. Scope: M00–M08, font/theme library and M10–M12 complete, including local immutable production verification; no remote deployment or push.
 
 Earlier sections retain historical checkpoints. The final handoff below supersedes their in-progress notes.
 
@@ -15,6 +15,10 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | M06 Imports/exports/registry | Complete | 93 tests/469 assertions, 21 browser flows, clean-store pixel-identical round-trip |
 | M07 Consumer installer | Complete | 98 PHPUnit tests/494 assertions, 21 browser flows, fresh consumer production and SIGKILL recovery gates |
 | M08 Production/recovery | Complete | Fresh checkout: 108 tests/544 assertions, 25 Chromium flows and consumer; production restart/backup/fresh restore/install and HTTPS verified |
+| Font/theme library | Complete |42families/208faces;25presets/18references; real imports, exports and retained source evidence |
+| M10 Application appearance | Complete | Saved preferences, light/dark, trials and new themes with immutable production assets |
+| M11 Component reference | Complete |65panels/7categories; catalogue native fragments preserve opaque sandbox isolation |
+| M12 Inline detail layout | Complete |123PHPUnit/752assertions;20production flows; all50 development flows verified across full/focused runs;24existing-theme responsive renders |
 
 ## Repository audit and preservation
 
@@ -1159,3 +1163,69 @@ navigated iframe. Local anchors now remain in the preview; there is no need to s
 inside it. The original component and saved application preferences remain intact.
 Temporary development browser accounts and their credential file were removed after
 verification; no task-owned browser/production fixture remains running.
+
+## M12 — Full-width inline theme detail reference — completed 2026-10-27
+
+All detail pages now have a300px desktop sidebar and flexible full-width showcase, using
+normal document scrolling. A detail-only base main-class block preserves create/edit and
+other route layouts. The sidebar owns all existing theme metadata, Apply/Edit/Duplicate,
+variants, provenance, contrast, draft downloads, immutable releases and package controls.
+Native Theme details disclosure starts collapsed on mobile and opens on desktop; a
+breakpoint collapse restores focus. Long sources/identifiers wrap and tables scroll locally.
+
+All65 trusted panels reuse existing Twig partials directly in the one main element:
+no detail iframe, nested document, height cap, scroll panel, resize messages or preview
+job. User/imported Twig/JS remains in the original opaque sandbox and its about:srcdoc
+fragment policy is unchanged. The existing generator shares validated declarations with
+a fixed showcase root/hash scope; registered font bytes use ThemeFontAssets embedding
+and namespaced face names. Geometry/type/spacing, colours and scheme stay local without
+a second reset or changes to saved appearance. The reader-protected hashed CSS link has
+SRI/private caching. The existing Stimulus instance registers the trusted/portable
+controllers once. Native overlays inherit the owning theme; demos are root-scoped,
+fragment links preserve local state, drawers trap/restore focus and toasts expire.
+
+Completed checks:
+
+- make assets/check/diff: pass;26YAML/31Twig. Full PHPUnit:123tests/752assertions, exit0.
+- Full development browser run:49passed/1old30s renderer-flow timeout,11.4m. Its specific
+  sequential-build deadline is now90s; focused rerun passes1/1 in15.5s with every original
+  feature assertion. All50 distinct flows have passing evidence across those runs; no
+  second all50 passing command is claimed. All8 new detail workflows pass together.
+- make theme-showcase-production:20browser flows pass/3.4m, exit0, real immutable image
+  local-20261027192214-db878b0a, fixture var/appearance-20261027192213-13661. Actual JSON/ZIP
+  downloads, all draft/release exports, private package publication, legacy sandbox
+  selection, Apply/edit/duplicate/create, keyboard overlays, layout, complete CSS classes,
+  decoded fonts and new post-build themes pass. Read-only manifest before=after:
+  2ff923422b68587eed6d82d934c8b9db5c0c139d99e0eb5cf9eeedac102d631c.
+- Reader survey:8existing website variants/24renders at1440/768/375, including the exact
+  YouTube reference, both modes and multiple fonts, no iframe/overflow or preference
+  change. Desktop dark/light and mobile screenshots visually reviewed.
+- Application CSS is byte-identical to HEAD for all474 then-current themes. Every
+  original406themes/461items/461drafts/97releases/1renderer preset/299snapshots retain
+  their full row hashes after cleanup. The original admin preference changed through7
+  successful non-test Apply requests during the work (19:19–19:25UTC); request history
+  is retained and the latest choice is preserved, not reset. Fonts verify42families/
+  208faces/6,713,012bytes/errors=[]. Test accounts disabled/removed and credentials cleaned;
+  task-owned fixtures stopped. Original development8095, production8096 and consumer8110
+  remain running. Evidence:var/theme-layout-verification and the production fixture.
+
+Corrected failures: unsupported cache assertion; former iframe selectors; drawer Tab
+loop; Turbo fragment reload; filtered-height assertion; overall renderer-test deadline.
+The first overlapping production/browser/survey attempt caused CPU contention, one real
+bounded worker build failure and slow appearance assertions. It is retained as failed
+19/20 production evidence; the final sequential20/20 run passes without weakened feature
+assertions or changed worker resource limits. Full details: docs/styleguide/VERIFICATION.md.
+
+Changed files: detail/base/provenance/sidebar and catalogue/macros/layout/action Twig;
+ThemeController, ThemeComponentShowcase, shared ThemeCssGenerator; theme_details controller,
+scoped showcase layout CSS, studio/ESM/bootstrap/build/Docker rules; focused functional,
+showcase and existing header/renderer-deadline browser checks; architecture/security/
+milestone/showcase/verification/status docs. Exact inventory: THEME_SHOWCASE.md.
+Versions remain Symfony8.1.9, PHP8.5.12, FrankenPHP1.13.4/Trixie, Tailwind4.3.3,
+daisyUI5.7.50, Stimulus3.2.2. No new dependency, lockfile, model or migration change.
+
+Remaining limitations: Chromium is verified; no full cross-browser/WCAG certification.
+Existing external calendar adapters/full-page megamenu/second theme-controller omissions
+remain. No required M12 work remains. No agent edit to original content or personal preferences, external deployment,
+external publication or branch push. Exact next step: reload
+http://localhost:8095/themes/01M5Y4RDN0XQMGW1HAJ6WZ4ZGE (all theme detail routes use this layout).

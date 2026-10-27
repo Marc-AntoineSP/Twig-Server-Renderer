@@ -503,3 +503,71 @@ denied connections/forms/frames and opaque parent isolation remain enforced. No 
 component, account credential, migration or dependency change was required. Reload the
 editor or Build preview to replace an already navigated login frame. Background session
 cookie settings and the production8096 instance were not modified.
+
+## M12 — Full-width inline theme detail reference — 2026-10-27
+
+All theme detail routes now use the full-width main block, a300px desktop sidebar and
+normal document scrolling through65 trusted Twig example panels. Mobile Theme details
+starts collapsed. There is no detail iframe, height-capped scroll panel, nested document
+or resize-message bootstrap. Other route layouts and user/imported-code sandboxes remain.
+Scoped validated tokens, namespaced real font faces, native modal/drawer focus and the
+single existing Stimulus application keep the selected theme independent of the shell.
+Complete file inventory and browser/version limitations: [THEME_SHOWCASE.md](THEME_SHOWCASE.md).
+
+Actual commands/results, with evidence under `var/theme-layout-verification`:
+
+- `make assets`: exit0; Tailwind4.3.3/daisyUI5.7.50 compile the studio stylesheet including
+  all Twig/JS showcase classes; esbuild emits an ESM controller bundle using the existing
+  Stimulus3.2.2 module. The obsolete standalone showcase reset/build was removed.
+- `make check`: exit0, including strict Composer/Compose/container,26YAML/31Twig checks.
+  Final `git diff --check` passes. Runtime remains Symfony8.1.9/PHP8.5.12/
+  FrankenPHP1.13.4/Trixie; no dependency or lockfile change.
+- `docker compose exec -T -e APP_ENV=test app php bin/phpunit`: **123 tests /752 assertions**,
+  exit0. Reader/privacy/hash/SRI/no-mutation checks cover the inline catalogue and new CSS
+  route. Existing font, packaging, renderer, source-isolation and import contracts pass.
+- `docker compose run --rm browser npm run test:browser -- --output=var/theme-layout-verification/browser-final --reporter=list`:
+  **49 passed /1 timed out /11.4m**. The old multi-build renderer-preset flow exceeded its
+  overall30s default; its deadline now allows90s for real sequential builds/save/reload.
+  The focused unchanged feature assertions rerun with `npx playwright test tests/Browser/editor.spec.js --grep 'viewport, zoom, typography and private preset survive reload'`:
+  **1 passed /15.5s**, exit0. Thus all50 distinct flows have passing evidence across these
+  runs; no single all50 passing run is claimed. All8 theme-detail flows pass in the full
+  run, including actual browser JSON/ZIP downloads and legacy Apply-to-showcase submission.
+- `make theme-showcase-production`: **20 passed /3.4m**, exit0, actual immutable production
+  images (`APP_ENV=prod`, debug off). Fixture `var/appearance-20261027192213-13661`, tag
+  `local-20261027192214-db878b0a`. New families/variants were created after compilation;
+  all65 panels, complete emitted class coverage, fonts, independent schemes/root sizes,
+  keyboard interactions, overlays,375/768/1920px widths, edit/create layout, duplicate,
+  all draft/release endpoints, actual downloads, private package action and sandbox
+  preview selection pass. Manifest is read-only, before=after SHA256:
+  `2ff923422b68587eed6d82d934c8b9db5c0c139d99e0eb5cf9eeedac102d631c`.
+  Offline fixture fonts:3families/12faces/511,916bytes/errors=[]. Its accounts are disabled
+  and its own containers stopped; the existing production8096 and consumer8110 remain.
+- Read-only reader survey: **8 existing variants /24 renders**,1440/768/375px: the exact
+  YouTube reference route, Airbnb, Atlassian dark/light, Discord, Figma and GitHub dark/
+  light. Selected colours/decoded fonts, no iframe/horizontal overflow and identical
+  reader preference are recorded in `survey/results.json`; screenshots are retained.
+  YouTube desktop/mobile and Airbnb desktop screenshots were visually reviewed.
+- Application CSS compatibility: byte-for-byte identical to HEAD for **all474 then-current
+  themes**, including old system/local fonts, with the shared generator's application mode.
+  Original406 themes/461 items/461 drafts/97 releases/1renderer preset/299 appearance
+  snapshots retain their complete row hashes after the work and account cleanup. The
+  existing administrator preference changed through7 successful non-test Apply requests
+  between19:19–19:25UTC during the run. Profiler request history is retained in
+  `preference-requests.json`; its latest choice was preserved instead of restoring the
+  starting value. Automated flows used separate accounts and their read-only checks
+  retained identical preferences. Registry remains42families/208faces/6,713,012bytes/errors=[].
+
+Corrected intermediate checks are retained. The first new PHPUnit assertion used a
+nonexistent Response::isPrivate method; it now checks the actual private cache directive.
+Focused browser corrections cover old iframe assumptions, native drawer Shift+Tab,
+Turbo fragment reload/input loss, and a filtered-only height assertion. An initial
+production run overlapped a full development run and survey; under heavy CPU load it
+passed19/20, with a bounded Tailwind worker command failure. The development overlap was
+stopped after appearance preparation exceeded5s assertions. The sequential production
+rerun passes20/20 without changing assertions or worker limits. Logs/traces are retained
+as `production-overlap.log`, `browser-overlap.log` and the corresponding fixture outputs.
+
+No new component omission or functional limitation was introduced. Chromium is the
+verified browser; this is not cross-browser or full WCAG certification. Existing calendar
+adapter/megamenu/theme-controller omissions remain documented. No migration, user data
+rewrite, external deployment, external publication or branch push occurred.

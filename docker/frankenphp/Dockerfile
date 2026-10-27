@@ -51,7 +51,6 @@ RUN --mount=type=cache,target=/tmp/composer-cache \
  && composer install --no-dev --no-scripts --no-interaction --optimize-autoloader \
  && php bin/console importmap:install --env=prod --no-debug
 COPY --from=studio-assets /app/assets/styles/app.css ./assets/styles/app.css
-COPY --from=studio-assets /app/assets/styles/showcase.css ./assets/styles/showcase.css
 COPY --from=studio-assets /app/assets/showcase/showcase.js ./assets/showcase/showcase.js
 RUN php bin/console asset-map:compile --env=prod --no-debug \
  && rm -rf var/cache var/log \

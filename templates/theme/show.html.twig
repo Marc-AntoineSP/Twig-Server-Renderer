@@ -1,26 +1,20 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{ theme.name }} · Themes{% endblock %}
+{% block main_class %}w-full min-w-0 px-4 py-6 sm:px-6 xl:px-8{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% if showcase %}<link rel="stylesheet" href="{{ path('theme_showcase_css', {id: theme.id, hash: showcase.hash}) }}" integrity="{{ showcase.integrity }}" crossorigin="anonymous" data-showcase-stylesheet data-turbo-track="dynamic">{% endif %}
+{% endblock %}
 {% block body %}
-{% set family = theme_family(theme) %}
-<div class="my-3 flex flex-wrap items-center gap-3"><button type="button" class="btn btn-primary" data-action="appearance#applyTheme" data-theme-id="{{ theme.id }}" data-theme-revision="{{ theme.revision }}">Apply theme</button><span hidden class="badge badge-success" data-appearance-target="applied" data-family-id="{{ family.id }}" data-variant-mode="{{ theme.document.colorScheme }}">Applied</span><span>Family: {{ family.label }} · {{ family.variants|keys|join(' / ') }}</span></div>
-<div class="flex flex-wrap items-center justify-between gap-3"><h1 class="text-3xl font-bold">{{ theme.document.provenance.title|default(theme.name) }}</h1>{% if is_granted('ROLE_EDITOR') %}{% if not family.builtIn and not theme.document.provenance.managed|default(false) %}<a class="btn btn-primary" href="{{ path('theme_edit', {id: theme.id}) }}">Edit theme</a>{% endif %}<form method="post" action="{{ path('theme_duplicate',{id:theme.id}) }}" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('theme-duplicate') }}"><button class="btn btn-outline">Duplicate/Edit</button></form>{% if releases|length %}<form method="post" action="{{ path('theme_apply',{id:theme.id}) }}" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('theme-apply') }}"><button class="btn btn-primary">Apply to showcase</button></form>{% endif %}{% endif %}</div>
-<p class="my-4">Draft revision {{ theme.revision }} · proposed version {{ theme.document.version }}</p>
-{% include 'theme/_provenance.html.twig' %}
-<section id="component-showcase" class="my-8" aria-labelledby="component-showcase-heading">
-    <div class="flex flex-wrap items-center justify-between gap-3">
-        <h2 id="component-showcase-heading" class="text-2xl font-semibold">Component showcase</h2>
-        <nav class="join" aria-label="Showcase theme variant">
-            {% for mode, variant in family.variants %}<a class="btn join-item {{ mode == theme.document.colorScheme ? 'btn-primary' : 'btn-outline' }}" href="{{ path('theme_show', {id: variant.id}) }}#component-showcase" {% if variant.id == theme.id %}aria-current="page"{% endif %}>Showcase {{ mode }}</a>{% endfor %}
-        </nav>
+    {% set family = theme_family(theme) %}
+    <div class="grid min-w-0 items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]" data-theme-detail-layout>
+        {% include 'theme/_detail_sidebar.html.twig' %}
+        <div class="min-w-0" data-showcase-column>
+            {% if showcase %}
+                {% include 'theme/showcase/_catalogue.html.twig' with showcase only %}
+            {% else %}
+                <section id="component-showcase" aria-labelledby="component-showcase-heading"><h2 id="component-showcase-heading" class="mb-4 text-2xl font-semibold">Component showcase</h2><p class="alert alert-warning" role="alert">{{ showcaseError }}</p></section>
+            {% endif %}
+        </div>
     </div>
-    <p class="my-3 text-sm">Browse working daisyUI examples in this theme's {{ theme.document.colorScheme }} variant. Controls are local demonstrations. Your application's appearance and saved preferences stay independent.</p>
-    {% if showcaseDocument %}<iframe title="Theme component showcase" class="h-[75vh] min-h-[32rem] max-h-[64rem] w-full rounded-box border border-base-300 bg-base-100" sandbox="allow-scripts" referrerpolicy="no-referrer" srcdoc="{{ showcaseDocument|e('html_attr') }}"></iframe>
-    {% else %}<p class="alert alert-warning" role="alert">{{ showcaseError }}</p>{% endif %}
-</section>
-<details class="my-4"><summary>Semantic text contrast</summary><p>Solid sRGB token pairs; rendered focus, hover, selected, disabled and error states are separate checks.</p><table class="table"><thead><tr><th>Background / its content</th><th>Ratio</th></tr></thead><tbody>{% for pair,ratio in ratios %}<tr><td>{{ pair }}</td><td>{{ ratio }}:1</td></tr>{% endfor %}</tbody></table></details>
-<h2 class="mt-6 text-xl font-semibold">Draft outputs</h2>{% include 'theme/_exports.html.twig' with {route: 'theme_export', id: theme.id} %}
-<a class="link mt-3 inline-block" href="{{ path('theme_export', {id: theme.id, file: 'theme.yaml'}) }}">theme.yaml</a>
-<h2 class="my-4 text-xl font-semibold">Immutable theme releases</h2>
-{% for release in releases %}<article class="mb-4 rounded border border-base-300 bg-base-100 p-4"><h3 class="font-semibold">{{ release.version }}</h3>{% include 'theme/_exports.html.twig' with {route: 'theme_release_export', id: release.id} %}
-{% if is_granted('ROLE_EDITOR') %}<div class="mt-4" data-controller="theme-package" data-theme-package-url-value="{{ path('theme_package_publish',{id:release.id}) }}" data-theme-package-csrf-value="{{ csrf_token('api') }}" data-theme-package-source-url-value="{{ path('release_source_download',{id:'__RELEASE__'}) }}"><button class="btn btn-outline" type="button" data-action="theme-package#publish">Publish package {{ release.version }} to private registry</button><p role="status" class="my-2" data-theme-package-target="status"></p><a hidden class="link" data-theme-package-target="link">Download immutable theme package</a></div>{% endif %}</article>{% else %}<p>No published theme release.</p>{% endfor %}
 {% endblock %}

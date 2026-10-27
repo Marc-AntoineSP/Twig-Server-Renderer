@@ -65,9 +65,18 @@ final class ThemeController extends AbstractController
     public function show(#[MapEntity(id: 'id')] Theme $theme, EntityManagerInterface $entityManager, Contrast $contrast, ThemeComponentShowcase $showcase): Response
     {
         $document = null; $error = null;
-        try { $document = $showcase->document($theme); }
+        try { $document = $showcase->presentation($theme); }
         catch (CatalogueException) { $error = 'A selected font asset is unavailable. Restore its local files or choose another theme variant, then reload the showcase.'; }
-        return $this->render('theme/show.html.twig', ['theme' => $theme, 'showcaseDocument' => $document, 'showcaseError' => $error, 'ratios' => $contrast->ratios($theme->getDocument()), 'releases' => $entityManager->getRepository(ThemeRelease::class)->findBy(['theme' => $theme], ['createdAt' => 'DESC'])]);
+        return $this->render('theme/show.html.twig', ['theme' => $theme, 'showcase' => $document, 'showcaseError' => $error, 'ratios' => $contrast->ratios($theme->getDocument()), 'releases' => $entityManager->getRepository(ThemeRelease::class)->findBy(['theme' => $theme], ['createdAt' => 'DESC'])]);
+    }
+
+    #[Route('/themes/{id}/showcase/{hash}.css', name: 'theme_showcase_css', requirements: ['hash' => '[a-f0-9]{64}'], methods: ['GET'])]
+    public function showcaseCss(#[MapEntity(id: 'id')] Theme $theme, string $hash, ThemeComponentShowcase $showcase): Response
+    {
+        $presentation = $showcase->presentation($theme);
+        if (!hash_equals($presentation['hash'], $hash)) throw $this->createNotFoundException('This theme stylesheet has changed. Reload the detail page.');
+
+        return new Response($presentation['css'], headers: ['Content-Type' => 'text/css; charset=UTF-8', 'Cache-Control' => 'private, max-age=3600', 'X-Content-Type-Options' => 'nosniff']);
     }
 
     #[Route('/themes/{id}/duplicate', name: 'theme_duplicate', methods: ['POST'])]

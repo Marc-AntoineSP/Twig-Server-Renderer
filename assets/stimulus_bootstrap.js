@@ -1,5 +1,7 @@
 import { startStimulusApp } from '@symfony/stimulus-bundle';
+import {Showcase, ShowcaseTabs, ShowcaseDialog} from './showcase/showcase.js';
 
 const app = startStimulusApp();
-// register any custom, 3rd party controllers here
-// app.register('some_controller_name', SomeImportedController);
+app.register('showcase', Showcase);
+app.register('showcase-tabs', ShowcaseTabs);
+app.register('showcase-dialog', ShowcaseDialog);

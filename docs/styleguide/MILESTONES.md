@@ -129,3 +129,21 @@ preferences/data. Run the relevant existing PHPUnit/browser regressions and immu
 production build. Record omissions, corrected failures and actual results in
 THEME_SHOWCASE.md, VERIFICATION.md and agent-kit/STATUS.md. No theme-model migration or
 new generator is part of this milestone.
+
+## M12 — Full-width inline theme reference
+
+Make the trusted component catalogue the primary detail-page content, with a 300px
+metadata/action sidebar and normal document scrolling. Extract/reuse Twig partials and
+share the application Stimulus instance. Keep user/imported code in the existing sandbox.
+Reuse validated token CSS and registered font bytes under a bounded showcase selector,
+including namespaced font faces; never load a second global reset or change preferences.
+
+### Completion gate
+
+Verify all 65 panels, category search/anchors, keyboard and overlay focus, mobile details,
+desktop/tablet/mobile widths, contrasting palettes/both modes, real local fonts and
+application independence. Exercise sidebar Apply/Edit/Duplicate, every draft/release
+output and private package action; preserve edit/create layouts and sandbox isolation.
+Check compiled class coverage and new post-build themes in immutable production assets.
+Run existing contracts, PHPUnit and relevant browser regressions; preserve original row
+hashes and record actual checks/limitations in STATUS.md and VERIFICATION.md.

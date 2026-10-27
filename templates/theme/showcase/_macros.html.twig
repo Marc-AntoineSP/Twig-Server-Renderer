@@ -1,5 +1,5 @@
 {% macro card(id, title, keywords = '') %}
-<article class="rounded-box border border-base-300 bg-base-100 p-4 sm:p-5" data-showcase-card data-component="{{ id }}" data-search="{{ (title~' '~keywords)|lower }}" aria-labelledby="component-{{ id }}"><h3 id="component-{{ id }}" class="font-semibold">{{ title }}</h3>
+<article class="{{ id in ['tables', 'navbar', 'heroes', 'footers', 'browser', 'code'] ? 'showcase-wide ' : '' }}rounded-box border border-base-300 bg-base-100 p-4 sm:p-5" data-showcase-card data-component="{{ id }}" data-search="{{ (title~' '~keywords)|lower }}" aria-labelledby="component-{{ id }}"><h4 id="component-{{ id }}" class="font-semibold">{{ title }}</h4>
 {% endmacro %}
 
 {% macro icon(name) %}

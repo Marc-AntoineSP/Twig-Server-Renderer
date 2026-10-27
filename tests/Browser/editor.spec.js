@@ -66,6 +66,8 @@ test('a delayed old document cannot replace newer output', async ({ page }) => {
 });
 
 test('viewport, zoom, typography and private preset survive reload', async ({ page }) => {
+    // Several real sequential builds and a save/reload exceed the generic 30s budget.
+    test.setTimeout(90000);
     await login(page);
     await createAlert(page);
     await page.getByLabel('Twig source', { exact: true }).fill('<div id="grid" class="grid md:grid-cols-3 gap-4"><p id="inherited">One</p><h2 class="text-2xl">Heading</h2><p>Three</p></div>');

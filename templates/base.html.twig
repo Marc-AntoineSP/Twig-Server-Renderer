@@ -39,7 +39,7 @@
             <strong>Trying unsaved changes</strong> · Only this editor tab. <button type="button" data-action="appearance#revert">Revert trial</button> <button type="button" data-action="appearance#saveTrial">Save &amp; Apply trial</button>
         </div>
         <dialog id="appearance-details-dialog" class="modal"><div class="modal-box bg-base-100 text-base-content"><h2 class="text-xl font-bold">Application appearance</h2><p class="my-4" data-appearance-target="details"></p><p class="alert">Catalogue previews and export settings remain independently selected.</p><button type="button" class="btn mt-4" data-action="appearance#closeDetails">Close appearance details</button></div></dialog>
-        <main id="main" class="mx-auto max-w-6xl p-6 md:p-10">
+<main id="main" class="{% block main_class %}mx-auto max-w-6xl p-6 md:p-10{% endblock %}">
             {% for message in app.flashes('success') %}<div class="alert alert-success mb-6" role="status" data-flash>{{ message }}</div>{% endfor %}
             {% block body %}{% endblock %}
         </main>

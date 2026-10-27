@@ -1,0 +1,34 @@
+/* Trusted catalogue styles. No preflight, root selectors, global demo handlers or resets. */
+[data-theme-sidebar] { overflow-wrap: anywhere; }
+[data-theme-sidebar] :is(a, button) { max-width: 100%; }
+[data-theme-sidebar] .table td { white-space: normal; }
+[data-theme-sidebar] details > summary { border-radius: .25rem; }
+[data-theme-sidebar] details > summary:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+@media (min-width: 1024px) { .theme-details[open] > summary { display: none; } }
+
+#component-showcase { scroll-margin-top: 1rem; }
+#component-showcase [data-showcase-target="section"] { scroll-margin-top: 16rem; }
+#component-showcase [data-showcase-card] { min-width: 0; overflow-wrap: anywhere; scroll-margin-top: 11rem; }
+#component-showcase [data-showcase-card] > h4 { margin-bottom: 1rem; font-size: var(--text-lg); }
+#component-showcase [data-showcase-card] > p { margin-block: .75rem; }
+#component-showcase [data-showcase-card] :is(.input,.select,.textarea,.file-input) { min-width: 0; max-width: 100%; }
+#component-showcase [data-showcase-card] .fieldset { min-width: 0; grid-template-columns: minmax(0,1fr); }
+#component-showcase [data-showcase-card] .label { white-space: normal; }
+#component-showcase .otp { font-size: clamp(1rem, 4vw, 1.75rem); }
+#component-showcase [data-demo-dock] { position: relative; z-index: auto; }
+#component-showcase [data-demo-fab] { position: relative; inset: auto; min-height: 13rem; }
+#component-showcase [data-demo-fab] .fab { position: absolute; inset-inline-end: 1rem; bottom: 1rem; }
+#component-showcase [data-demo-toast] { z-index: 60; max-width: min(100%, 36rem); bottom: 5rem; }
+#component-showcase [data-showcase-toolbar] { position: sticky; top: 0; z-index: 40; background: var(--color-base-200); }
+#component-showcase :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+#component-showcase .swap:has(input:focus-visible) { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+#component-showcase .tooltip::before { max-width: min(14rem, calc(100vw - 4rem)); white-space: normal; }
+#component-showcase .showcase-drawer { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; color: var(--color-base-content); }
+#component-showcase .showcase-drawer[open] { display: flex; }
+#component-showcase .showcase-drawer > aside { overflow-y: auto; }
+#component-showcase .showcase-drawer::backdrop { background: #0008; }
+#component-showcase .showcase-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
+#component-showcase .showcase-wide { grid-column: 1 / -1; }
+@media (prefers-reduced-motion: reduce) {
+    #component-showcase *, #component-showcase *::before, #component-showcase *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

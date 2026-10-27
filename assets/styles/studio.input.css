@@ -1,5 +1,8 @@
 @import "tailwindcss" source(none);
+@import "./showcase.layout.css";
 @source "../../templates";
+@source "../../fixtures/theme-showcase";
+@source "../../fixtures/showcase/tabs/controller.js";
 @source "../controllers";
 @plugin "daisyui" { themes: light --default, dark; }
 @custom-variant dark (&:where([data-color-mode="dark"], [data-color-mode="dark"] *));

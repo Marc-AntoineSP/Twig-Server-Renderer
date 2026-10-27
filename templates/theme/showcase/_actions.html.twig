@@ -13,12 +13,12 @@
 
 {{ sample.card('dropdowns', 'Dropdowns', 'menu details open close') }}
     <details class="dropdown"><summary class="btn btn-primary">Project actions</summary><ul class="menu dropdown-content z-50 mt-2 w-52 rounded-box border border-base-300 bg-base-200 p-2 shadow"><li><button type="button" data-action="showcase#announce">View activity</button></li><li><button type="button" data-action="showcase#announce">Duplicate sample</button></li><li><button type="button" disabled>Delete unavailable</button></li></ul></details>
-    <p>Native details: click again or press Escape to close. Actions report only inside this preview.</p>
+    <p>Native details: click again or press Escape to close. Actions report only in this showcase.</p>
 </article>
 
 {{ sample.card('modals', 'Modals', 'dialog overlay focus escape') }}
     <div data-controller="showcase-dialog"><button class="btn btn-primary" type="button" data-action="showcase-dialog#open">Open sample dialog</button><dialog class="modal" data-showcase-dialog-target="dialog"><div class="modal-box border border-base-300 bg-base-100 text-base-content"><h3 class="text-xl font-semibold" data-showcase-dialog-target="title">Review your sample</h3><p class="py-4">This dialog uses the showcased theme, including its body and heading fonts. Nothing will be saved.</p><div class="modal-action"><button class="btn btn-outline" type="button" data-action="showcase-dialog#close">Cancel dialog</button><button class="btn btn-primary" type="button" data-action="showcase-dialog#close">Close sample dialog</button></div></div></dialog></div>
-    <p>Native modal focus and Escape support; it cannot cover the studio outside this preview.</p>
+    <p>Native modal focus and Escape support. Close or press Escape to return to this example.</p>
 </article>
 
 {{ sample.card('swaps', 'Swaps', 'checkbox checked rotate') }}

@@ -130,12 +130,17 @@ no-store; only the built-in system-font default CSS is available without a login
 See APPEARANCE.md for request, stylesheet, tab-slot and trial-history limits.
 
 The theme-detail component reference renders only repository-owned Twig partials and
-bundled Stimulus, using validated theme tokens and registered embedded fonts. It retains
-the existing srcdoc sandbox and restrictive preview CSP, including connect-src 'none'
-and form-action 'none'; no extra iframe permissions, upload handler or preference API is
-provided to examples. Viewing requires the existing reader role and personalized HTML
-cache policy. Repeated input groups have unique IDs/names; overlays and their focus stay
-inside the preview. No user component source is rendered by the studio Twig service.
+bundled controllers directly in the application. User-created/imported Twig, CSS and
+JavaScript remain in the isolated renderer/frame; this trusted presentation does not
+relax that sandbox. Its stylesheet uses the existing bounded validator, registered
+embedded font bytes, a fixed showcase root/snapshot selector and namespaced font faces.
+It has no global reset or root selectors. The content-hashed CSS endpoint requires the
+reader role before returning private CSS, and its link carries a content integrity hash.
+Personalized HTML keeps its existing private/no-store policy. Viewing never writes a
+preference, theme or catalogue record. Demo actions are scoped to the showcase root,
+with no upload, persistence or submission handler; sidebar forms keep their CSRF checks.
+Native dialogs/drawers stay within that root's DOM/theming, make the background inert,
+and close with focus restoration. Toasts expire and dismiss. IDs/input groups are unique.
 
 Preview documents have a trusted `about:srcdoc` base, keeping fragment-only links inside
 the current opaque document instead of resolving against an authenticated studio route.

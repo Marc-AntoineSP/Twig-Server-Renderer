@@ -165,15 +165,27 @@ work through documented configuration and commands without a public Flex reposit
 
 ## Theme detail component reference
 
-Theme detail renders repository-owned Twig partials/macros into a complete srcdoc
-showcase, reusing ThemeCssGenerator::applicationCss, DocumentAssembler and its registered
-font embedding. Static component utilities and the small Stimulus bundle are built in
-the existing Docker asset pipeline and copied into production; the request only supplies
-validated root tokens and embedded font bytes. It creates no catalogue item, revision,
-preference or preview job and needs no worker compilation. The same opaque iframe/CSP
-boundary contains all dialogs, drawers, toasts and example actions. Variant links use
-existing family relationships and never change the studio's saved appearance. See
-THEME_SHOWCASE.md for inventory and acceptance evidence.
+Theme detail renders repository-owned Twig partials/macros directly in the studio's
+existing main element. Its full-width grid has a 300px information/action sidebar and a
+flexible catalogue with normal document scrolling. A native mobile disclosure keeps
+metadata short. Edit/create and other routes retain their original main-width block.
+
+ThemeComponentShowcase shares the existing validated ThemeCssGenerator token logic and
+ThemeFontAssets registered-byte embedding, under a fixed showcase selector and snapshot
+hash. Font-face families are also namespaced, because face definitions have global scope.
+A reader-protected, integrity-checked, content-hashed CSS route supplies only tokens,
+role typography and local font bytes: no document resets, imports or global root rules.
+The application utility CSS covers every repository-owned example. An ESM bundle reuses
+the portable tabs/dialog controllers and registers them once with the application's
+Stimulus instance. Root-scoped actions cannot intercept sidebar forms. Native modal
+dialogs and drawers inherit their owning theme in the top layer; drawers trap/restore
+focus and toasts expire or dismiss. No preview job, preference, theme or component is
+written by viewing. New themes work after production asset compilation.
+
+User-created/imported templates and JavaScript continue to use the isolated worker and
+opaque iframe in catalogue/theme editors. Trusted application examples are the only
+inline exception. Variant links retain existing family relationships and never change
+the studio's saved appearance. See THEME_SHOWCASE.md for inventory and verification.
 
 The shared preview assembler sets its base URL to `about:srcdoc`, under a matching
 about-only base CSP directive. This makes native fragment links local for both catalogue

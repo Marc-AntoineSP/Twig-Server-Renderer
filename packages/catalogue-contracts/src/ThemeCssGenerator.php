@@ -52,12 +52,29 @@ final readonly class ThemeCssGenerator
     /** Application tokens need no utility rebuild. The only accepted scope is a snapshot hash. */
     public function applicationCss(\stdClass $theme, string $snapshot): string
     {
+        return $this->scopedCss($theme, $snapshot, false);
+    }
+
+    /** Trusted inline catalogue: scoped tokens and namespaced font faces, without a reset. */
+    public function showcaseCss(\stdClass $theme, string $snapshot): string
+    {
+        return $this->scopedCss($theme, $snapshot, true);
+    }
+
+    private function scopedCss(\stdClass $theme, string $snapshot, bool $showcase): string
+    {
         $this->validator->validate($theme);
         if (!preg_match('/^[a-f0-9]{64}$/D', $snapshot)) throw new \InvalidArgumentException('Invalid application snapshot scope.');
-        $root = 'html[data-appearance-'.$theme->colorScheme.'="'.$snapshot.'"][data-color-mode="'.$theme->colorScheme.'"]';
+        if ($showcase) {
+            // Font-face names are global even when their consuming selectors are scoped.
+            // Clone presentation data so another version cannot replace the app's font.
+            $theme = json_decode($this->json->encode($theme), false, 24, JSON_THROW_ON_ERROR);
+            foreach ($theme->fonts as $font) if ('local' === $font->kind) $font->family = 'Showcase-'.substr($snapshot, 0, 16).' '.$font->family;
+        }
+        $root = $showcase ? '#component-showcase[data-showcase-snapshot="'.$snapshot.'"][data-color-mode="'.$theme->colorScheme.'"]' : 'html[data-appearance-'.$theme->colorScheme.'="'.$snapshot.'"][data-color-mode="'.$theme->colorScheme.'"]';
         $css = $root.'{color-scheme:'.$theme->colorScheme.';font-size:'.$theme->typography->rootFontSizePx.'px;';
         foreach (ThemeValidator::COLORS as $color) $css .= '--color-'.$color.':'.$theme->colors->$color.';';
-        foreach (self::GEOMETRY as $key => [$variable, $unit]) $css .= '--'.$variable.':'.$this->number($theme->geometry->$key).$unit.';';
+        foreach (self::GEOMETRY as $key => [$variable, $unit]) $css .= '--'.$variable.':'.$this->number($showcase && 'rem' === $unit ? $theme->geometry->$key * $theme->typography->rootFontSizePx : $theme->geometry->$key).($showcase && 'rem' === $unit ? 'px' : $unit).';';
         $map = []; $definitions = []; $weights = [];
         foreach ($theme->fonts as $font) { $map[$font->id] = FontRegistry::cssFamily($font); $definitions[$font->id] = $font; }
         foreach (['body', 'heading', 'code'] as $role) {
@@ -66,10 +83,15 @@ final readonly class ThemeCssGenerator
         }
         foreach (['body', 'heading', 'code'] as $role) $css .= '--sg-font-'.$role.':'.($map[$theme->typography->{$role.'FontId'} ?? 'system-mono'] ?? FontRegistry::SYSTEM['system-mono']).';';
         $sizes = ['text-xs' => '.75rem', 'text-sm' => '.875rem', 'text-base' => '1rem', 'text-lg' => '1.125rem', 'text-xl' => '1.25rem'];
+        if ($showcase) {
+            // rem belongs to the application root; keep the selected type scale local.
+            foreach (['xs' => .75, 'sm' => .875, 'base' => 1, 'lg' => 1.125, 'xl' => 1.25, '2xl' => 1.5, '3xl' => 1.875, '4xl' => 2.25] as $name => $scale) $css .= '--text-'.$name.':'.$this->number($theme->typography->rootFontSizePx * $scale).'px;';
+            $css .= '--spacing:'.$this->number($theme->typography->rootFontSizePx / 4).'px;';
+        }
         $css .= '--font-sans:var(--sg-font-body);--font-heading:var(--sg-font-heading);--font-mono:var(--sg-font-code);font-family:var(--sg-font-body);}'."\n";
         foreach (['body' => 'body', 'heading' => ':is(h1,h2,h3,h4,h5,h6,.font-heading)', 'code' => ':is(code,pre,kbd,samp,.font-mono)'] as $role => $selector) {
-            $css .= $root.' '.$selector.'{font-family:var(--sg-font-'.$role.');font-synthesis:none;font-weight:'.$weights[$role].';font-style:'.($theme->typography->{$role.'Style'} ?? 'normal').';';
-            if ('body' === $role) $css .= 'font-size:'.$sizes[$theme->typography->textClass].';line-height:'.$this->number($theme->typography->lineHeight).';';
+            $css .= $root.($showcase && 'body' === $role ? '' : ' '.$selector).'{font-family:var(--sg-font-'.$role.');font-synthesis:none;font-weight:'.$weights[$role].';font-style:'.($theme->typography->{$role.'Style'} ?? 'normal').';';
+            if ('body' === $role) $css .= 'font-size:'.($showcase ? 'var(--'.$theme->typography->textClass.')' : $sizes[$theme->typography->textClass]).';line-height:'.$this->number($theme->typography->lineHeight).';';
             $css .= "}\n";
         }
         if ($theme->geometry->highContrastBorders ?? false) $css .= $root.' :is(.input,.select,.textarea){border-color:var(--color-base-content)}'.$root.' :is(.input-error,.select-error,.textarea-error,[aria-invalid="true"]){border-color:var(--color-error)}'."\n";

@@ -31,7 +31,7 @@ test('Apply changes the real shell, fonts, forms, menu and dialog while catalogu
     const a=await family(page,{localFonts:true}),b=await family(page,{primary:'#64204C',base:'#FFF1FA'});
     const {item}=await createAlert(page);const before=await(await page.request.get(`/api/v1/items/${item.id}/renderer-preset`)).json();
     await apply(page,a);
-    await expect(page.locator('header')).toHaveCSS('background-color',rgb('#F1F8FA'));
+    await expect(page.locator('body > header')).toHaveCSS('background-color',rgb('#F1F8FA'));
     await expect(page.locator('body')).toHaveCSS('background-color',rgb('#F1F8FA'));
     await expect(page.getByRole('button',{name:'Apply theme',exact:true})).toHaveCSS('background-color',rgb('#164E63'));
     await expect(page.locator('body')).toHaveCSS('font-family',/^Inter,/);await expect(page.locator('body')).toHaveCSS('font-weight','472');await expect(page.locator('h1')).toHaveCSS('font-family',/^Lora,/);
@@ -41,7 +41,7 @@ test('Apply changes the real shell, fonts, forms, menu and dialog while catalogu
     await expect(page.getByLabel('Application theme family',{exact:true})).toHaveCSS('background-color',rgb('#F1F8FA'));
     await page.getByRole('button',{name:'Appearance details',exact:true}).click();await expect(page.locator('#appearance-details-dialog')).toBeVisible();await expect(page.locator('#appearance-details-dialog .modal-box')).toHaveCSS('background-color',rgb('#F1F8FA'));await page.keyboard.press('Escape');await expect(page.locator('#appearance-details-dialog')).toBeHidden();
     await screenshot(page,'light-shell');
-    await apply(page,b);await expect(page.locator('header')).toHaveCSS('background-color',rgb('#FFF1FA'));
+    await apply(page,b);await expect(page.locator('body > header')).toHaveCSS('background-color',rgb('#FFF1FA'));
     const after=await(await page.request.get(`/api/v1/items/${item.id}/renderer-preset`)).json();expect(after).toEqual(before);
     await page.goto(`/catalogue/${item.id}/edit`);await expect(page.locator('[data-controller~="preview"]')).toHaveAttribute('data-preview-state','current',{timeout:30000});
     await expect(page.locator('iframe[title="Component preview"]')).toHaveAttribute('sandbox','allow-scripts');

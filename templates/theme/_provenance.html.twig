@@ -1,8 +1,8 @@
 {% if theme.document.provenance is defined %}{% set p = theme.document.provenance %}
-<section class="my-5 rounded-box border border-base-300 p-4"><h2 class="text-xl font-semibold">Reference and provenance</h2><p class="my-2">{{ p.title }} · {{ p.surface }} · {{ p.modeOrigin }} mode. Retrieved {{ p.retrievedAt }}.</p>
+{% if compact|default(false) %}<details class="border-t border-base-300 pt-3"><summary class="cursor-pointer font-semibold">Reference and provenance</summary>{% else %}<section class="my-5 rounded-box border border-base-300 p-4"><h2 class="text-xl font-semibold">Reference and provenance</h2>{% endif %}<p class="my-2">{{ p.title }} · {{ p.surface }} · {{ p.modeOrigin }} mode. Retrieved {{ p.retrievedAt }}.</p>
 <p>Independent adaptation, without endorsement. Source colours are retained beside any usability adjustments.</p>
 <details class="mt-3"><summary>Sources, observed values and adaptations</summary><ul class="my-3 list-disc pl-5">{% for source in p.sources %}<li><a class="link" href="{{ source.url }}" rel="noreferrer">{{ source.url }}</a><p>{{ source.method }} · SHA-256 {{ source.sha256 }}</p><p>{{ source.attribution }}</p></li>{% endfor %}</ul>
 <div class="overflow-x-auto"><table class="table"><thead><tr><th>Token</th><th>Kind</th><th>Observed</th><th>Applied</th><th>Reason</th></tr></thead><tbody>{% for token, value in p.values %}<tr><td>{{ token }}</td><td>{{ value.kind }}</td><td>{{ value.observed|default('—') }}</td><td>{{ value.value }}</td><td>{{ value.reason }}</td></tr>{% endfor %}</tbody></table></div>
 {% for font in p.fontSubstitutions %}<p class="my-2">{{ font.role }}: observed {{ font.observed }} → {{ font.selected }}. {{ font.reason }}</p>{% endfor %}
-{% for omitted in p.omitted %}<p class="my-2">Omitted: {{ omitted }}</p>{% endfor %}</details></section>
+{% for omitted in p.omitted %}<p class="my-2">Omitted: {{ omitted }}</p>{% endfor %}</details>{% if compact|default(false) %}</details>{% else %}</section>{% endif %}
 {% endif %}
