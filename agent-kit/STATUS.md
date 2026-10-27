@@ -321,3 +321,16 @@ exposed genuine worker busy responses; WorkerClient now retries 429/busy within 
 bounded request deadline. Final suites ran successfully in sequence. Unrelated AGENTS/README
 hashes and staged README are preserved. Next: M05 real release publication foundation,
 then bounded composition authoring; no remote push/publication/deployment.
+
+## M05 release publication foundation
+
+Branch `feature/m05-release-publication` adds actual immutable component/block/layout
+publication ahead of composition references. Stable version + expected revision and CSRF
+are required. Defaults/examples pass the dedicated sandbox and actual compiler; invalid
+source creates no release. Canonical inventories, licence declaration/integration README,
+content-addressed staged ZIP installation and a final optimistic revision check precede
+the immutable database record. Stored ZIP entries avoid false expansion-ratio rejection.
+Actual feature checks: `make check test` exit 0, **72 tests/298 assertions**; targeted real
+Chromium publication flow **1 passed**. Archive reader verifies published bytes/checksums;
+invalid include, stale revision, duplicate version, role/CSRF and immutable snapshots tested.
+M05 remains in progress. Next: bounded composition builder on a new stacked branch.

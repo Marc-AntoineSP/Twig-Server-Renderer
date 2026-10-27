@@ -9,7 +9,8 @@
     <div class="mt-5 flex flex-wrap gap-2"><span class="badge badge-outline">{{ item.kind }}</span><span class="badge badge-ghost">Revision {{ draft.revision }}</span>{% for tag in item.tags %}<span class="badge badge-soft">{{ tag }}</span>{% endfor %}</div>
     <section class="my-8 rounded-box border border-base-300 bg-base-100 p-6">
         <h2 class="text-xl font-semibold">Releases</h2>
-        {% for release in releases %}<p class="mt-3">{{ release.version }} · {{ release.createdAt|date('Y-m-d') }}</p>{% else %}<p class="mt-3">No published releases. Publishing requires isolated render and build validation.</p>{% endfor %}
+        {% for release in releases %}<p class="mt-3">{{ release.version }} · {{ release.createdAt|date('Y-m-d') }} · <code>styleguide:require {{ item.name }}@{{ release.version }}</code></p>{% else %}<p class="mt-3">No published releases.</p>{% endfor %}
+        {% if is_granted('ROLE_EDITOR') %}<form action="{{ path('release_publish', {id: item.id}) }}" method="post" class="mt-5" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('publish') }}"><input type="hidden" name="revision" value="{{ draft.revision }}"><label for="release-version">Release version</label><input id="release-version" name="version" value="{{ draft.manifestData.version }}" required pattern="[0-9]+\.[0-9]+\.[0-9]+"><p class="my-2 text-sm">Runs isolated render/build validation of defaults and examples. Existing versions cannot be replaced.</p><button class="btn btn-outline" type="submit">Publish release</button></form>{% endif %}
     </section>
     <section>
         <h2 class="mb-4 text-xl font-semibold">Saved source files</h2>
