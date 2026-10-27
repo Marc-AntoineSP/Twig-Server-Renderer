@@ -1,0 +1,209 @@
+[
+  {
+    "slug": "button",
+    "title": "Button variants",
+    "defaults": {
+      "label": "Try the button",
+      "variant": "primary"
+    },
+    "properties": {
+      "label": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "variant": {
+        "type": "string",
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral",
+          "outline"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "alert",
+    "title": "Dismissible alert",
+    "defaults": {
+      "message": "Your component is ready.",
+      "tone": "success",
+      "dismissible": true,
+      "dismissLabel": "Dismiss notification"
+    },
+    "properties": {
+      "message": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      },
+      "tone": {
+        "enum": [
+          "info",
+          "success",
+          "warning",
+          "error"
+        ]
+      },
+      "dismissible": {
+        "type": "boolean"
+      },
+      "dismissLabel": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 80
+      }
+    },
+    "license": "MIT"
+  },
+  {
+    "slug": "accordion",
+    "title": "Native details accordion",
+    "defaults": {
+      "title": "How does this work?",
+      "content": "This native details panel works with the keyboard and without JavaScript."
+    },
+    "properties": {
+      "title": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "content": {
+        "type": "string",
+        "maxLength": 1000
+      }
+    }
+  },
+  {
+    "slug": "progress",
+    "title": "Progress with bounded demo values",
+    "defaults": {
+      "label": "Demo progress",
+      "start": 20,
+      "autoStart": true
+    },
+    "properties": {
+      "label": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "start": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "autoStart": {
+        "type": "boolean"
+      }
+    }
+  },
+  {
+    "slug": "card",
+    "title": "Information card",
+    "defaults": {
+      "title": "Portable by design",
+      "body": "A real component, with source and exact dependencies.",
+      "details": "The consumer renders its own Twig and serves all assets locally."
+    },
+    "properties": {
+      "title": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "body": {
+        "type": "string",
+        "maxLength": 500
+      },
+      "details": {
+        "type": "string",
+        "maxLength": 1000
+      }
+    }
+  },
+  {
+    "slug": "tabs",
+    "title": "Keyboard tabs",
+    "defaults": {
+      "first": "Overview",
+      "second": "Activity"
+    },
+    "properties": {
+      "first": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "second": {
+        "type": "string",
+        "maxLength": 80
+      }
+    }
+  },
+  {
+    "slug": "navigation",
+    "title": "Section navigation",
+    "defaults": {
+      "label": "Sample navigation"
+    },
+    "properties": {
+      "label": {
+        "type": "string",
+        "maxLength": 80
+      }
+    }
+  },
+  {
+    "slug": "stats",
+    "title": "Descriptive stats",
+    "defaults": {
+      "label": "Published components",
+      "value": "24",
+      "description": "Example catalogue metric"
+    },
+    "properties": {
+      "label": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "value": {
+        "type": "string",
+        "maxLength": 30
+      },
+      "description": {
+        "type": "string",
+        "maxLength": 150
+      }
+    }
+  },
+  {
+    "slug": "fields",
+    "title": "Labelled form fields",
+    "defaults": {
+      "legend": "Profile fields"
+    },
+    "properties": {
+      "legend": {
+        "type": "string",
+        "maxLength": 80
+      }
+    }
+  },
+  {
+    "slug": "dialog",
+    "title": "Native modal dialog",
+    "defaults": {
+      "title": "Review your choice",
+      "content": "This native dialog traps focus and returns it to the opener."
+    },
+    "properties": {
+      "title": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "content": {
+        "type": "string",
+        "maxLength": 1000
+      }
+    }
+  }
+]

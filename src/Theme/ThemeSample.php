@@ -31,15 +31,19 @@ final readonly class ThemeSample
 </section>
 TWIG;
 
-    public function __construct(private CatalogueRepository $catalogue, private CatalogueWriter $writer, private SourceFactory $factory)
+    public function __construct(private CatalogueRepository $catalogue, private CatalogueWriter $writer, private SourceFactory $factory, private \Doctrine\ORM\EntityManagerInterface $em)
     {
     }
 
     public function item(): CatalogueItem
     {
-        $existing = $this->catalogue->named('studio/theme-sample');
-        if ($existing) { return $existing; }
-        $input = new CreateItemInput('studio/theme-sample', 'component', 'Theme workshop sample', 'Palette, typography and geometry reference.', ['theme', 'example']);
+        $name=null;
+        for($i=1;$i<=100;$i++){$candidate='studio/theme-sample'.($i===1?'':'-'.$i);$existing=$this->catalogue->named($candidate);
+            if($existing&&$existing->getKind()!=='theme')return $existing;
+            if($existing||$this->em->getRepository(\App\Entity\Theme::class)->findOneBy(['name'=>$candidate]))continue;$name=$candidate;break;
+        }
+        if(null===$name)throw new \Styleguide\Contracts\CatalogueException(409,'No free theme sample name; choose a catalogue component.');
+        $input = new CreateItemInput($name, 'component', 'Theme workshop sample', 'Palette, typography and geometry reference.', ['theme', 'example']);
         [$manifest, $sources] = $this->factory->initial($input);
         $sources->{$manifest->entry} = self::TWIG;
 

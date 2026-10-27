@@ -579,3 +579,39 @@ M08 remains in progress. Next: finish sample/renderer acceptance controls, run f
 production end-to-end including interrupted consumer/redelivery, consistent backup/restore
 into new volumes and repeat export/consumer installation; then record the acceptance matrix.
 No remote deployment, push or public package publication.
+
+
+## M08 showcase and authoring controls feature
+
+Branch `feature/m08-showcase-and-controls` adds twelve validated local sample packages:
+button literal variants, MIT alert, native accordion, reduced-motion-aware progress,
+card, keyboard tabs, navigation, stats, labelled fields, native dialog, pricing block and
+dashboard layout. `styleguide:showcase --publish` validates real default/example builds,
+then reruns idempotently without changing immutable releases or edited drafts. Source
+and composition ownership, exact releases and licences remain authoritative.
+
+Added bounded schema-driven transient prop fields, colour scheme/surface/device frame,
+persisted older-preset defaults, theme comparison reset/script toggles, bounded theme
+choices retaining the selected older release and typed-theme/sample collision avoidance.
+Catalogue metadata reflects actual revision/release/dependencies. Default-render thumbnail
+caches are optional, bounded at 256 KiB each/50 MiB total and shown in lazy opaque
+script-disabled iframes. Source duplication remaps controller/template ownership and
+preserves original records. Installation commands include the required registry alias;
+copy either writes the clipboard or selects the actual command for manual copying.
+
+Actual gates: final `make assets check test` exit 0, **103 tests / 528 assertions**;
+final `make browser` exit 0, **25 Chromium flows**. The real showcase publish command
+creates all twelve releases; its next run reports twelve verified releases preserved.
+Schema validation and git diff checks pass. Tests exercise accordion Enter, tab arrow/focus,
+native dialog Escape/focus return, progress actual value updates, interval cleanup after
+DOM removal, reduced-motion pause/manual advance, prop form/theme/surface persistence,
+unchanged CSS viewport under device framing, duplicate controller behaviour, static cached
+thumbnails and theme reset/script controls. Original AGENTS/README hashes still match.
+
+Corrected gate: the longer live-edit browser suite correctly hit the initial 60-job request
+limit. Retention now expires oldest terminal history as new jobs arrive while preserving
+pending jobs and the latest 60, instead of blocking sustained authoring. A new real preview
+HTTP/worker test verifies continued editing and pending-job protection. The full 25-flow
+rerun above is clean. Remaining M08 work: final production rebuild, real interrupted queue
+redelivery, consistent backup/fresh restore and export/consumer reinstallation, CI/local
+verification script and final acceptance evidence. M08 is not yet declared complete.

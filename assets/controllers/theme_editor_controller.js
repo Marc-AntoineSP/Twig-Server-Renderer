@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['frame', 'status', 'compare', 'component', 'publishStatus'];
+    static targets = ['frame', 'status', 'compare', 'component', 'publishStatus', 'disableJs'];
     static values = { document: Object, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, themeUrl: String, publishUrl: String, revision: Number };
 
     connect() {
@@ -79,7 +79,7 @@ export default class extends Controller {
             for (let index = 0; index < documents.length; index++) {
                 const theme = documents[index];
                 const channel = [...crypto.getRandomValues(new Uint8Array(16))].map(value => value.toString(16).padStart(2, '0')).join('');
-                const preset = { width: 768, zoom: 100, rootSize: theme.typography.rootFontSizePx, bodyFont: 'theme', headingFont: 'theme', textClass: theme.typography.textClass, scripts: true };
+                const preset = { width: 768, zoom: 100, rootSize: theme.typography.rootFontSizePx, bodyFont: 'theme', headingFont: 'theme', textClass: theme.typography.textClass, scripts: !this.disableJsTarget.checked };
                 const created = await this.json(this.createUrlValue, { method: 'POST', body: JSON.stringify({ itemId: this.componentTarget.value, sequence: epoch, channel, themeData: theme, preset }) });
                 if (epoch !== this.epoch) { this.cancel(created.id); return; }
                 this.jobs[index] = created.id;
@@ -94,6 +94,7 @@ export default class extends Controller {
                 if (epoch !== this.epoch || result.sequence !== epoch) return;
                 this.channels[index] = channel;
                 this.lastDocuments[index] = result.html;
+                this.frameTargets[index].setAttribute('sandbox',this.disableJsTarget.checked?'':'allow-scripts');
                 this.frameTargets[index].srcdoc = result.html;
             }
             this.statusTarget.textContent = 'Theme previews current';
@@ -108,6 +109,12 @@ export default class extends Controller {
         if (index < 0 || !value || typeof value !== 'object' || value.channel !== this.channels[index] || Object.keys(value).sort().join(',') !== 'channel,height,type' || value.type !== 'resize' || !Number.isInteger(value.height) || value.height < 100 || value.height > 4000) return;
         this.frameTargets[index].style.height = `${value.height}px`;
     }
+
+    reset() {
+        clearTimeout(this.timer);this.epoch++;this.jobs.forEach(id=>this.cancel(id));this.jobs=[];this.channels=[];this.lastDocuments=[];
+        this.frameTargets.forEach(frame=>{frame.srcdoc='<!doctype html><html><body></body></html>';});this.statusTarget.textContent='Theme previews reset';
+    }
+    toggleScripts() {this.frameTargets.forEach((frame,index)=>{frame.setAttribute('sandbox',this.disableJsTarget.checked?'':'allow-scripts');if(this.lastDocuments[index])frame.srcdoc=this.lastDocuments[index];});}
 
     async publish() {
         if (this.dirty) { this.publishStatusTarget.textContent = 'Save the theme before publishing this revision.'; return; }

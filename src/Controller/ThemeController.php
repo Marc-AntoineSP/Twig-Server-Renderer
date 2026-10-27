@@ -80,6 +80,8 @@ final class ThemeController extends AbstractController
             } catch (CatalogueException $error) { $form->addError(new FormError($error->getMessage())); $status = $error->getStatusCode(); }
         }
 
-        return $this->render('theme/edit.html.twig', ['theme' => $theme, 'form' => $form, 'ratios' => $contrast->ratios($document), 'sampleId' => $sampleItem->getId(), 'themes' => $entityManager->getRepository(Theme::class)->findBy([], ['name' => 'ASC']), 'components' => $entityManager->getRepository(CatalogueItem::class)->findBy([], ['title' => 'ASC'])], new Response(status: $status));
+        $components=$entityManager->getRepository(CatalogueItem::class)->createQueryBuilder('i')->where('i.kind IN (:kinds)')->setParameter('kinds',['component','block','layout'])->orderBy('i.title','ASC')->setMaxResults(200)->getQuery()->getResult();
+        if(!array_filter($components,static fn($i)=>$i->getId()===$sampleItem->getId()))$components[]=$sampleItem;
+        return $this->render('theme/edit.html.twig', ['theme' => $theme, 'form' => $form, 'ratios' => $contrast->ratios($document), 'sampleId' => $sampleItem->getId(), 'themes' => $entityManager->getRepository(Theme::class)->findBy([], ['name' => 'ASC']), 'components' => $components], new Response(status: $status));
     }
 }

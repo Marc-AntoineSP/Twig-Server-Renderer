@@ -14,7 +14,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 final readonly class ReleasePublisher
 {
-    public function __construct(private CatalogueWriter $catalogue, private PackageValidator $validator, private DependencyResolver $dependencies, private PreviewRenderer $renderer, private ArchiveStore $archives, private EntityManagerInterface $em, private ValidatorInterface $inputs, private \App\Composition\CompositionCompiler $compositions) {}
+    public function __construct(private CatalogueWriter $catalogue, private PackageValidator $validator, private DependencyResolver $dependencies, private PreviewRenderer $renderer, private ArchiveStore $archives, private EntityManagerInterface $em, private ValidatorInterface $inputs, private \App\Composition\CompositionCompiler $compositions, private \App\Rendering\ReleaseThumbnails $thumbnails) {}
     public function publish(CatalogueItem $item, PublishInput $input): Release
     {
         if (count($this->inputs->validate($input))) throw new CatalogueException(422, 'Stable version and expected revision are required.');
@@ -30,8 +30,10 @@ final readonly class ReleasePublisher
         $closure = $this->dependencies->resolve($manifest, $sources);
         $examples = isset($sources->{'meta/examples.json'}) ? json_decode($sources->{'meta/examples.json'}, false, 24, JSON_THROW_ON_ERROR) : [];
         if (count($examples) > 20) throw new CatalogueException(422, 'Publication supports at most 20 examples.');
+        $thumbnail=null;
         foreach ([$manifest->defaults, ...array_map(static fn ($example) => $example->props, $examples)] as $props) {
             $result = $this->renderer->render([...$closure, 'props' => $props, 'channel' => bin2hex(random_bytes(16))]);
+            if($result['ok'])$thumbnail??=$result['html'];
             if (!$result['ok']) throw new CatalogueException(422, 'Publication validation failed: '.$result['error']['message'], [], 'release_build_failed');
         }
         [$key, $hash] = $this->archives->put($manifest, $sources);
@@ -44,6 +46,7 @@ final readonly class ReleasePublisher
             });
         } catch (OptimisticLockException) { throw new CatalogueException(412, 'Draft changed during release validation.'); }
         catch (UniqueConstraintViolationException) { throw new CatalogueException(409, 'Release version already exists.'); }
+        if($thumbnail){try{$this->thumbnails->store($hash,$thumbnail);}catch(\Throwable){/* Derived thumbnails are optional; the immutable release is committed. */}}
         return $release;
     }
 }

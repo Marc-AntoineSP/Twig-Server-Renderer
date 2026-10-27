@@ -29,9 +29,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class CatalogueController extends AbstractController
 {
     #[Route('/catalogue', name: 'catalogue_index', methods: ['GET'])]
-    public function index(CatalogueRepository $catalogue, #[MapQueryString(validationFailedStatusCode: 400)] SearchQuery $query = new SearchQuery()): Response
+    public function index(CatalogueRepository $catalogue, \App\Rendering\ReleaseThumbnails $thumbnails, #[MapQueryString(validationFailedStatusCode: 400)] SearchQuery $query = new SearchQuery()): Response
     {
-        return $this->render('catalogue/index.html.twig', $catalogue->search($query));
+        $result=$catalogue->search($query);foreach($result['summaries'] as &$summary)$summary['thumbnail']=$thumbnails->read($summary['archive_hash']);unset($summary);
+        return $this->render('catalogue/index.html.twig', $result);
     }
 
     #[Route('/catalogue/new', name: 'catalogue_new', methods: ['GET', 'POST'])]
@@ -98,12 +99,15 @@ final class CatalogueController extends AbstractController
             }
         }
 
+        $rendererSettings=$presets->read($item,$this->getUser());
         $themeChoices = [];
-        foreach ($entityManager->getRepository(ThemeRelease::class)->findBy([], ['createdAt' => 'DESC']) as $release) {
+        foreach ($entityManager->getRepository(ThemeRelease::class)->findBy([], ['createdAt' => 'DESC'],200) as $release) {
             $themeChoices[$release->getId()] = ['label' => $release->getTheme()->getName().'@'.$release->getVersion(), 'document' => $release->getDocument()];
         }
 
-        return $this->render('catalogue/edit.html.twig', ['item' => $item, 'draft' => $draft, 'form' => $form, 'rendererSettings' => $presets->read($item, $this->getUser()), 'themeChoices' => $themeChoices], new Response(status: $status));
+        if(($rendererSettings->themeReleaseId??null)&&!isset($themeChoices[$rendererSettings->themeReleaseId])){if($selected=$entityManager->find(ThemeRelease::class,$rendererSettings->themeReleaseId))$themeChoices[$selected->getId()]=['label'=>$selected->getTheme()->getName().'@'.$selected->getVersion(),'document'=>$selected->getDocument()];}
+
+        return $this->render('catalogue/edit.html.twig', ['item' => $item, 'draft' => $draft, 'form' => $form, 'rendererSettings' => $rendererSettings, 'themeChoices' => $themeChoices], new Response(status: $status));
     }
 
     private function errors(FormInterface $form, CatalogueException $error): void

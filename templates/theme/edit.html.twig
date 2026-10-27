@@ -16,6 +16,8 @@
 <div><label for="theme-component">Preview component</label><select id="theme-component" data-theme-editor-target="component" data-action="change->theme-editor#schedule">{% for component in components %}<option value="{{ component.id }}" {% if component.id == sampleId %}selected{% endif %}>{{ component.title }} ({{ component.name }})</option>{% endfor %}</select></div>
 <div><label for="compare-theme">Compare with saved theme</label><select id="compare-theme" data-theme-editor-target="compare" data-action="change->theme-editor#schedule"><option value="">This theme at page load</option>{% for other in themes %}<option value="{{ other.id }}">{{ other.name }}</option>{% endfor %}</select></div>
 <button type="button" class="btn btn-outline" data-action="theme-editor#run">Refresh comparison</button>
+<button type="button" class="btn btn-ghost" data-action="theme-editor#reset">Reset comparison frames</button>
+<label><input type="checkbox" class="checkbox" data-theme-editor-target="disableJs" data-action="theme-editor#toggleScripts"> Disable comparison scripts</label>
 </div>
 <p role="status" class="my-3" data-theme-editor-target="status">Preparing theme previews…</p>
 <div class="grid gap-4 lg:grid-cols-2"><div class="overflow-x-auto"><h2 class="mb-2 font-semibold">Current token edits</h2><iframe title="Edited theme preview" sandbox="allow-scripts" class="border border-base-300" style="width:768px;height:500px" data-theme-editor-target="frame"></iframe></div><div class="overflow-x-auto"><h2 class="mb-2 font-semibold">Saved comparison</h2><iframe title="Comparison theme preview" sandbox="allow-scripts" class="border border-base-300" style="width:768px;height:500px" data-theme-editor-target="frame"></iframe></div></div>

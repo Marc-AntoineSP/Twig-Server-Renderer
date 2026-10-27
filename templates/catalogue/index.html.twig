@@ -15,12 +15,13 @@
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {% for item in items %}
             <article class="card border border-base-300 bg-base-100 shadow-sm">
+                {% if summaries[item.id].thumbnail %}<div class="h-32 overflow-hidden border-b border-base-300" aria-hidden="true"><iframe title="Release thumbnail {{ item.name }}" tabindex="-1" sandbox="" loading="lazy" class="pointer-events-none" style="width:768px;height:320px;transform:scale(.4);transform-origin:top left;border:0" srcdoc="{{ summaries[item.id].thumbnail|e('html_attr') }}"></iframe></div>{% endif %}
                 <div class="card-body">
-                    <div class="flex gap-2"><span class="badge badge-outline">{{ item.kind }}</span><span class="badge badge-ghost">Draft</span></div>
+                    <div class="flex gap-2"><span class="badge badge-outline">{{ item.kind }}</span><span class="badge badge-ghost">Draft r{{ summaries[item.id].revision }}</span>{% if summaries[item.id].release_version %}<span class="badge badge-success">{{ summaries[item.id].release_version }}</span>{% endif %}</div>
                     <h2 class="card-title"><a class="link-hover" href="{{ path('catalogue_show', {id: item.id}) }}">{{ item.title }}</a></h2>
                     <p class="font-mono text-xs">{{ item.name }}</p><p>{{ item.description }}</p>
                     <div class="flex flex-wrap gap-2">{% for tag in item.tags %}<span class="badge badge-soft">{{ tag }}</span>{% endfor %}</div>
-                    <p class="mt-3 text-xs opacity-70">Updated {{ item.updatedAt|date('Y-m-d H:i', 'UTC') }} UTC</p>
+                    <p class="text-xs">{{ summaries[item.id].dependency_count }} exact dependencies</p><p class="mt-3 text-xs opacity-70">Updated {{ item.updatedAt|date('Y-m-d H:i', 'UTC') }} UTC</p>
                     <div class="card-actions mt-2"><a class="btn btn-sm btn-ghost" href="{{ path('catalogue_show', {id: item.id}) }}">Open</a></div>
                 </div>
             </article>

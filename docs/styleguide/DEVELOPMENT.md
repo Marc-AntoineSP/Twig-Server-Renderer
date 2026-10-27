@@ -371,3 +371,32 @@ edits. Retain such journals for manual review. Dry-run/conflict candidates under
 .styleguide/staging have no active journal and may be removed after review. Do not remove
 active journals or .styleguide/packages. Run install as an offline release preparation;
 then compile AssetMapper/clear cache and switch the consumer deployment atomically.
+
+## Showcase and renderer acceptance
+
+`php bin/console styleguide:showcase --publish` adds twelve local sample packages and
+validates their defaults/examples through the real workers. Button variants use full
+literal class maps; the alert keeps its supplied MIT licence. New sample code retains
+UNLICENSED declarations. Native accordion, cards/navigation/fields, keyboard tabs,
+focus-restoring dialog and a progress controller demonstrate real portable behaviour.
+Progress clears its interval/listener on disconnect, pauses for reduced motion and supports
+manual advance/reset. Pricing and dashboard are exact-release compositions. Re-running
+seeding preserves modified drafts and every immutable release; changed bundled definitions
+never overwrite old versions or silently enter a composition. This is optional operator
+seeding, not production startup or a default account.
+
+Preview property fields come from bounded schema properties alongside raw JSON. They alter
+transient props; explicit Save renderer settings persists them without changing the draft.
+Colour scheme, bounded surfaces and a decorative device frame are real renderer controls.
+The frame leaves CSS viewport width unchanged. Theme comparisons have reset and script
+controls. Theme choices are bounded but include the currently stored older selection.
+Typed-theme names cannot steal the workshop sample; it chooses a free sample suffix.
+
+Catalogue cards show actual revision/release/dependency metadata and cached release
+thumbnails. Thumbnails are default-prop render results, displayed in lazy opaque iframes
+with scripts disabled. This derived cache is optional (256 KiB/thumbnail, 50 MiB total);
+large or uncached releases still open normally. It grants no new source execution path.
+Only validated immutable source is authoritative. Copy-command controls use the Clipboard
+API or select the real command for manual copying; credentials stay outside it. Duplicate
+draft remaps owned template/controller paths, retains composition/source ownership and
+leaves original drafts/releases untouched.

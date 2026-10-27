@@ -41,6 +41,7 @@
                     <div class="mt-4" role="tabpanel" id="panel-props" aria-labelledby="tab-props" data-panel="props" data-editor-target="panel" hidden>
                         <label for="schema-editor">Props schema JSON</label><textarea id="schema-editor" class="textarea textarea-bordered w-full font-mono text-sm" rows="10" data-editor-target="schema" data-action="input->editor#sourceChanged"></textarea>
                         <label for="defaults-editor" class="mt-4">Default props JSON</label><textarea id="defaults-editor" class="textarea textarea-bordered w-full font-mono text-sm" rows="5" data-editor-target="defaults" data-action="input->editor#sourceChanged"></textarea>
+                        <div class="mt-4 grid gap-3" data-preview-target="propForm" aria-label="Preview property fields"></div>
                         <label for="preview-props" class="mt-4">Preview props (JSON)</label><textarea id="preview-props" class="textarea textarea-bordered w-full font-mono text-sm" rows="5" data-preview-target="props" data-action="input->preview#schedule"></textarea>
                         <p class="mt-2 text-xs">Preview props are transient. Save renderer settings to restore them on reload.</p>
                     </div>
@@ -63,7 +64,10 @@
                     {% for width in [375, 768, 1280] %}<button type="button" class="btn btn-sm" data-width="{{ width }}" data-action="preview#widthPreset">{{ width }} px</button>{% endfor %}
                 </div>
                 <div class="grid gap-3 sm:grid-cols-2">
-                    <div class="sm:col-span-2"><label for="renderer-theme">Published theme</label><select id="renderer-theme" class="select select-bordered w-full" data-preview-target="theme" data-action="preview#themeChanged"><option value="">Studio light</option>{% for id, choice in themeChoices %}<option value="{{ id }}">{{ choice.label }}</option>{% endfor %}</select></div>
+                    <div class="sm:col-span-2"><label for="renderer-theme">Published theme</label><select id="renderer-theme" class="select select-bordered w-full" data-preview-target="theme" data-action="preview#themeChanged"><option value="">Package default (studio light if absent)</option>{% for id, choice in themeChoices %}<option value="{{ id }}">{{ choice.label }}</option>{% endfor %}</select></div>
+                    <div><label for="renderer-scheme">Colour scheme</label><select id="renderer-scheme" data-preview-target="colorScheme" data-action="preview#typographyChanged"><option value="theme">Theme default</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
+                    <div><label for="renderer-surface">Preview surface</label><select id="renderer-surface" data-preview-target="surface" data-action="preview#typographyChanged"><option value="base-100">Base 100</option><option value="base-200">Base 200</option><option value="transparent">Transparent</option></select></div>
+                    <label><input type="checkbox" class="checkbox" data-preview-target="deviceFrame" data-action="preview#viewportChanged"> Device frame</label>
                     <label>Viewport width<input class="input input-bordered w-full" type="number" min="320" max="1920" data-preview-target="width" data-action="input->preview#viewportChanged"></label>
                     <div><label for="renderer-zoom">Zoom</label><select id="renderer-zoom" class="select select-bordered w-full" data-preview-target="zoom" data-action="preview#viewportChanged">{% for zoom in [50, 75, 100] %}<option value="{{ zoom }}">{{ zoom }}%</option>{% endfor %}</select></div>
                     <label>Root font size<input class="input input-bordered w-full" type="number" min="12" max="24" data-preview-target="rootSize" data-action="input->preview#typographyChanged"></label>
@@ -82,7 +86,7 @@
                 <p class="text-sm" role="status" data-preview-target="presetStatus"></p>
                 <p class="my-4 rounded-box bg-base-200 p-3 text-sm" role="status" aria-live="polite" data-preview-target="status">No preview yet</p>
                 <div class="max-w-full overflow-auto rounded-box border border-base-300"><div data-preview-target="stage"><iframe title="Component preview" sandbox="allow-scripts" style="height:250px;border:0" data-preview-target="frame"></iframe></div></div>
-                <p class="mt-4 text-xs">Source saves and preview jobs are separate. Publishing will be available after release validation.</p>
+                <p class="mt-4 text-xs">Source saves and preview jobs are separate. Publish validated immutable releases from the item detail page.</p>
             </section>
         </div>
     </div>

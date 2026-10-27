@@ -23,7 +23,7 @@ final readonly class RendererPresets
     {
         $stored = $this->entityManager->getRepository(RendererPreset::class)->findOneBy(['item' => $item, 'owner' => $owner]);
 
-        return $stored?->getSettings() ?? (object) [...(new RendererSettings())->toArray(), 'props' => $this->catalogue->draft($item)->getManifestData()->defaults];
+        return $stored ? (object) [...(new RendererSettings())->toArray(),...(array)$stored->getSettings()] : (object) [...(new RendererSettings())->toArray(), 'props' => $this->catalogue->draft($item)->getManifestData()->defaults];
     }
 
     public function save(CatalogueItem $item, User $owner, RendererSettings $settings): \stdClass

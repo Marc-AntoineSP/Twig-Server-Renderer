@@ -34,7 +34,7 @@ final readonly class PreviewJobs
         private ValidatorInterface $validator,
         private ThemeValidator $themes,
         private \App\Composition\CompositionCompiler $compositions,
-        Connection $connection,
+        private Connection $connection,
         #[Autowire('%kernel.project_dir%')] private string $projectDirectory,
     ) {
         // PostgreSQL advisory locks work across the web and consumer containers.
@@ -54,8 +54,6 @@ final readonly class PreviewJobs
         try {
             $pending = $this->entityManager->createQuery('SELECT COUNT(j.id) FROM App\Entity\PreviewJob j WHERE j.owner = :owner AND j.status IN (:statuses) AND j.expiresAt > :now')
                 ->setParameters(['owner' => $user, 'statuses' => ['queued', 'running'], 'now' => new \DateTimeImmutable()])->getSingleScalarResult();
-            $recent=$this->entityManager->createQuery('SELECT COUNT(j.id) FROM App\\Entity\\PreviewJob j WHERE j.owner = :owner AND j.expiresAt > :now')->setParameters(['owner'=>$user,'now'=>new \DateTimeImmutable()])->getSingleScalarResult();
-            if($recent>=60)throw new CatalogueException(429,'Preview quota reached: at most 60 retained jobs per account for 30 minutes.');
             if ($pending >= 3) {
                 throw new CatalogueException(429, 'At most three previews may be pending per account.');
             }
@@ -93,6 +91,8 @@ final readonly class PreviewJobs
             $payload = (object) [...$closure, 'props' => $props, 'channel' => $input->channel, 'preset' => $preset->toArray(), 'theme' => $theme];
             $policyDigest = hash_file('sha256', $this->projectDirectory.'/workers/render/composer.lock').hash_file('sha256', $this->projectDirectory.'/workers/build/package-lock.json').'sandbox-v1';
             $hash = hash('sha256', json_encode($payload, JSON_THROW_ON_ERROR).$policyDigest);
+            // Keep the latest 60 jobs, retiring terminal history rather than blocking live editing.
+            $this->connection->executeStatement("UPDATE preview_job SET expires_at = CURRENT_TIMESTAMP WHERE id IN (SELECT id FROM preview_job WHERE owner_id = :owner AND status NOT IN ('queued','running') AND expires_at > CURRENT_TIMESTAMP ORDER BY created_at ASC,id ASC LIMIT GREATEST(0,(SELECT COUNT(*) FROM preview_job WHERE owner_id = :owner AND expires_at > CURRENT_TIMESTAMP)-59))",['owner'=>$user->getId()]);
             $job = new PreviewJob($user, $input->sequence, $hash, $payload);
             $this->entityManager->wrapInTransaction(function () use ($job): void {
                 $this->entityManager->persist($job);

@@ -1,0 +1,18 @@
+{% set toneClasses = {
+    info: 'alert-info',
+    success: 'alert-success',
+    warning: 'alert-warning',
+    error: 'alert-error'
+} %}
+<div role="status" class="alert {{ toneClasses[tone] }} flex items-center gap-3"
+     data-controller="__CONTROLLER__">
+    <span class="grow">{{ message }}</span>
+    {% if dismissible %}
+        <button type="button" class="btn btn-ghost btn-sm"
+                aria-label="{{ dismissLabel }}"
+                data-action="__CONTROLLER__#dismiss">
+            <span aria-hidden="true">×</span>
+        </button>
+    {% endif %}
+</div>
+

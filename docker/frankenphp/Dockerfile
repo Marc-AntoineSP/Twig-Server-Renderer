@@ -40,6 +40,7 @@ COPY templates ./templates
 COPY public/index.php ./public/index.php
 COPY assets ./assets
 COPY agent-kit/examples ./agent-kit/examples
+COPY fixtures ./fixtures
 COPY workers/render/composer.lock ./workers/render/composer.lock
 COPY workers/build/package-lock.json ./workers/build/package-lock.json
 RUN rm src/Command/BrowserAccountsCommand.php \

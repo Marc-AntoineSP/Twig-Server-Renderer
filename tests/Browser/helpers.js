@@ -45,3 +45,11 @@ export async function preview(page) {
     expect(await section.getAttribute('data-preview-state'), await page.locator('[data-preview-target="status"]').textContent()).toBe('current');
     return page.frameLocator('iframe[title="Component preview"]');
 }
+
+export async function createShowcase(page,slug){
+    const definition=JSON.parse(readFileSync('fixtures/showcase/index.json','utf8')).find(d=>d.slug===slug);const csrf=(await(await page.request.get('/api/v1/csrf')).json()).token;const name=`browser/${slug}-${randomBytes(5).toString('hex')}`;
+    const response=await page.request.post('/api/v1/items',{headers:{'X-CSRF-Token':csrf},data:{name,kind:'component',title:definition.title}});expect(response.status()).toBe(201);const item=await response.json();const draft=await(await page.request.get(`/api/v1/items/${item.id}/draft`)).json();const manifest=draft.manifestData;const sources=draft.sourceMap;
+    manifest.defaults=definition.defaults;sources['meta/props.schema.json']=JSON.stringify({type:'object',properties:definition.properties,required:Object.keys(definition.properties),additionalProperties:false});sources['meta/examples.json']=JSON.stringify([{name:'Default',props:definition.defaults}]);const identifier=`catalogue--${name.replace('/','--')}`;sources[manifest.entry]=readFileSync(`fixtures/showcase/${slug}/component.html.twig`,'utf8').replaceAll('__CONTROLLER__',identifier);
+    if(['button','alert','progress','tabs','dialog'].includes(slug)){const path=`assets/controllers/catalogue/${name}_controller.js`;sources[path]=readFileSync(`fixtures/showcase/${slug}/controller.js`,'utf8');manifest.controllers=[{identifier,path}];}
+    const saved=await page.request.put(`/api/v1/items/${item.id}/draft`,{headers:{'X-CSRF-Token':csrf,'If-Match':'"1"'},data:{title:definition.title,manifestData:manifest,sourceMap:sources}});expect(saved.status(),await saved.text()).toBe(200);await page.goto(`/catalogue/${item.id}/edit`);return {item,manifest,sources};
+}

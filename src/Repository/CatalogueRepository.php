@@ -46,6 +46,7 @@ final class CatalogueRepository extends ServiceEntityRepository
             $items[] = $this->find($id);
         }
 
-        return ['items' => $items, 'total' => $total, 'page' => $page, 'pages' => $pages, 'query' => $query];
+        $summaries=[];if($ids){foreach($connection->fetchAllAssociative("SELECT i.id,(SELECT r.version FROM catalogue_release r WHERE r.item_id=i.id ORDER BY r.created_at DESC,r.id DESC LIMIT 1) AS release_version,(SELECT r.archive_hash FROM catalogue_release r WHERE r.item_id=i.id ORDER BY r.created_at DESC,r.id DESC LIMIT 1) AS archive_hash,COALESCE(jsonb_array_length(d.manifest_data->'dependencies'),0) AS dependency_count,d.revision FROM catalogue_item i JOIN draft d ON d.item_id=i.id WHERE i.id IN (?)",[$ids],[\Doctrine\DBAL\ArrayParameterType::STRING]) as $row)$summaries[$row['id']]=$row;}
+        return ['summaries'=>$summaries,'items' => $items, 'total' => $total, 'page' => $page, 'pages' => $pages, 'query' => $query];
     }
 }

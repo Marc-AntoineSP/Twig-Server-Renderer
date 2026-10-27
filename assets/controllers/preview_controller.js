@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['frame', 'stage', 'status', 'props', 'disableJs', 'width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'textClass', 'presetStatus', 'example', 'theme'];
+    static targets = ['frame', 'stage', 'status', 'props', 'disableJs', 'width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'textClass', 'presetStatus', 'example', 'theme', 'colorScheme', 'surface', 'deviceFrame', 'propForm'];
     static values = { itemId: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, presetUrl: String, settings: Object, defaultProps: Object, themes: Object };
 
     connect() {
@@ -107,11 +107,12 @@ export default class extends Controller {
     }
 
     settings() {
-        return { width: Number(this.widthTarget.value), zoom: Number(this.zoomTarget.value), rootSize: Number(this.rootSizeTarget.value), bodyFont: this.bodyFontTarget.value, headingFont: this.headingFontTarget.value, textClass: this.textClassTarget.value, scripts: !this.disableJsTarget.checked, props: JSON.parse(this.propsTarget.value), themeReleaseId: this.hasThemeTarget ? this.themeTarget.value || null : null };
+        return { width: Number(this.widthTarget.value), zoom: Number(this.zoomTarget.value), rootSize: Number(this.rootSizeTarget.value), bodyFont: this.bodyFontTarget.value, headingFont: this.headingFontTarget.value, textClass: this.textClassTarget.value, scripts: !this.disableJsTarget.checked, props: JSON.parse(this.propsTarget.value), colorScheme:this.colorSchemeTarget.value,surface:this.surfaceTarget.value,deviceFrame:this.deviceFrameTarget.checked,themeReleaseId: this.hasThemeTarget ? this.themeTarget.value || null : null };
     }
 
     applySettings(settings) {
         for (const key of ['width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'textClass']) this[`${key}Target`].value = settings[key];
+        this.colorSchemeTarget.value=settings.colorScheme||'theme';this.surfaceTarget.value=settings.surface||'base-100';this.deviceFrameTarget.checked=settings.deviceFrame===true;
         this.disableJsTarget.checked = settings.scripts === false;
         if (this.hasThemeTarget) this.themeTarget.value = settings.themeReleaseId || '';
         this.propsTarget.value = JSON.stringify(settings.props || this.defaultPropsValue, null, 2);
@@ -124,6 +125,7 @@ export default class extends Controller {
         this.frameTarget.style.width = `${width}px`;
         this.frameTarget.style.transform = `scale(${scale})`;
         this.frameTarget.style.transformOrigin = 'top left';
+        this.stageTarget.style.boxShadow=this.deviceFrameTarget.checked?'0 0 0 10px #1f2937':'none';this.stageTarget.style.borderRadius=this.deviceFrameTarget.checked?'1.5rem':'0';this.frameTarget.style.borderRadius=this.deviceFrameTarget.checked?'1.5rem':'0';
         this.stageTarget.style.width = `${width * scale}px`;
         this.stageTarget.style.height = `${(parseInt(this.frameTarget.style.height) || 250) * scale}px`;
     }
@@ -159,11 +161,39 @@ export default class extends Controller {
         if (!this.hasExampleTarget) return;
         try {
             const sources = JSON.parse(document.getElementById('draft_sourceMapJson').value);
+            this.refreshPropsForm(sources,JSON.parse(document.getElementById('draft_manifestJson').value));
             this.examples = JSON.parse(sources['meta/examples.json'] || '[]');
             const selected = this.exampleTarget.value;
             this.exampleTarget.replaceChildren(new Option('Choose example', ''), ...this.examples.map((example, index) => new Option(example.name, String(index))));
             this.exampleTarget.value = selected;
         } catch { this.examples = []; }
+    }
+
+    refreshPropsForm(sources,manifest) {
+        if(!this.hasPropFormTarget)return;
+        try{
+            const schema=JSON.parse(sources[manifest.propsSchema]);const key=JSON.stringify(schema);
+            if(key!==this.propSchemaKey){
+                this.propSchemaKey=key;this.propFormTarget.replaceChildren();this.propFields=[];
+                for(const [name,rule] of Object.entries(schema.properties||{}).slice(0,30)){
+                    const id=`preview-property-${this.propFields.length}`;const wrap=document.createElement('div');const label=document.createElement('label');label.htmlFor=id;label.textContent=rule.title||name;
+                    let input;if(Array.isArray(rule.enum)&&rule.enum.length<=30){input=document.createElement('select');for(const option of rule.enum)input.add(new Option(String(option),JSON.stringify(option)));}
+                    else{input=document.createElement(['array','object'].includes(rule.type)?'textarea':'input');if(input.tagName==='INPUT')input.type=rule.type==='boolean'?'checkbox':['integer','number'].includes(rule.type)?'number':'text';if(rule.type==='integer')input.step='1';if(typeof rule.minimum==='number')input.min=rule.minimum;if(typeof rule.maximum==='number')input.max=rule.maximum;if(typeof rule.maxLength==='number')input.maxLength=rule.maxLength;}
+                    input.id=id;input.dataset.propName=name;input.dataset.propType=rule.type;input.dataset.propEnum=String(Array.isArray(rule.enum));input.dataset.action='input->preview#propsFieldChanged';input.className=rule.type==='boolean'?'checkbox':'input input-bordered w-full';wrap.append(label,input);this.propFormTarget.append(wrap);this.propFields.push(input);
+                }
+            }
+            const props=JSON.parse(this.propsTarget.value);
+            for(const input of this.propFields){if(document.activeElement===input)continue;const value=props[input.dataset.propName];if(input.type==='checkbox')input.checked=value===true;else input.value=input.dataset.propEnum==='true'||['array','object'].includes(input.dataset.propType)?JSON.stringify(value??null):value??'';}
+        }catch{}
+    }
+
+    propsFieldChanged(event) {
+        try{
+            const input=event.target;const props=JSON.parse(this.propsTarget.value);let value=input.type==='checkbox'?input.checked:input.value;
+            if(input.dataset.propEnum==='true'||['array','object'].includes(input.dataset.propType))value=JSON.parse(value);
+            else if(['integer','number'].includes(input.dataset.propType)){value=Number(value);if(!Number.isFinite(value)||input.value==='')throw Error('Enter a finite property number.');}
+            Object.defineProperty(props,input.dataset.propName,{value,enumerable:true,writable:true,configurable:true});this.propsTarget.value=JSON.stringify(props,null,2);this.schedule();
+        }catch(error){this.invalid({detail:{message:error.message}});}
     }
 
     chooseExample() {

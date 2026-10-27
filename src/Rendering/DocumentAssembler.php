@@ -21,10 +21,11 @@ final class DocumentAssembler
         $bodyFont = ($preset['bodyFont'] ?? '') === 'theme' ? 'var(--sg-font-body, ui-sans-serif, system-ui, sans-serif)' : $this->fonts->family($preset['bodyFont'] ?? 'system-sans');
         $headingFont = ($preset['headingFont'] ?? '') === 'theme' ? 'var(--sg-font-heading, ui-sans-serif, system-ui, sans-serif)' : $this->fonts->family($preset['headingFont'] ?? 'system-sans');
         $textClass = htmlspecialchars($preset['textClass'] ?? 'text-base', ENT_QUOTES);
-        $themeName = htmlspecialchars($theme['cssName'] ?? 'light', ENT_QUOTES);
-        $scheme = ($theme['colorScheme'] ?? 'light') === 'dark' ? 'dark' : 'light';
+        $themeName = htmlspecialchars($theme['cssName'] ?? (($preset['colorScheme']??'theme')==='dark'?'dark':'light'), ENT_QUOTES);
+        $scheme = in_array($preset['colorScheme']??'theme',['light','dark'],true)?$preset['colorScheme']:(($theme['colorScheme'] ?? 'light') === 'dark' ? 'dark' : 'light');
+        $surface=match($preset['surface']??'base-100'){'base-200'=>'var(--color-base-200)', 'transparent'=>'transparent',default=>'var(--color-base-100)'};
 
         return '<!doctype html><html lang="en" data-theme="'.$themeName.'" style="font-size:'.$rootSize.'px"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="'.htmlspecialchars($csp, ENT_QUOTES).'">'
-            .'<style>'.$css."\nhtml{color-scheme:".$scheme.'}body{margin:0;padding:1rem;font-family:'.$bodyFont.'}h1,h2,h3,h4,h5,h6{font-family:'.$headingFont.'}</style></head><body class="'.$textClass.'">'.$html.'<script nonce="'.$nonce.'">'.$js.'</script><script nonce="'.$nonce.'">'.$bridge.'</script></body></html>';
+            .'<style>'.$css."\nhtml{color-scheme:".$scheme.'}body{margin:0;padding:1rem;background:'.$surface.';font-family:'.$bodyFont.'}h1,h2,h3,h4,h5,h6{font-family:'.$headingFont.'}</style></head><body class="'.$textClass.'">'.$html.'<script nonce="'.$nonce.'">'.$js.'</script><script nonce="'.$nonce.'">'.$bridge.'</script></body></html>';
     }
 }

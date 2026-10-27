@@ -21,7 +21,9 @@ final readonly class Cleanup
             foreach(glob($this->root.'/exports/*/*.bin')?:[] as $file)if(!is_file(substr($file,0,-4).'.json')&&filemtime($file)<$now-3600)$candidates[$file]=true;
             $referenced=array_fill_keys($this->connection->fetchFirstColumn('SELECT archive_key FROM catalogue_release'),true);
             foreach(glob($this->root.'/releases/*.zip')?:[] as $file)if(!isset($referenced['releases/'.basename($file)])&&filemtime($file)<$now-86400)$candidates[$file]=true;
-            foreach(['releases/.stage-*','exports/*/.stage-*'] as $pattern)foreach(glob($this->root.'/'.$pattern)?:[] as $file)if(filemtime($file)<$now-3600)$candidates[$file]=true;
+            $hashes=array_fill_keys($this->connection->fetchFirstColumn('SELECT archive_hash FROM catalogue_release'),true);
+            foreach(glob($this->root.'/thumbnails/*.html')?:[]as$file)if(!isset($hashes[basename($file,'.html')])&&filemtime($file)<$now-86400)$candidates[$file]=true;
+            foreach(['thumbnails/.stage-*','releases/.stage-*','exports/*/.stage-*'] as $pattern)foreach(glob($this->root.'/'.$pattern)?:[] as $file)if(filemtime($file)<$now-3600)$candidates[$file]=true;
             // Re-check age under the storage lock: reuse refreshes immutable blob mtime.
             $removed=0;foreach(array_keys($candidates) as $file){if(is_link($file)||!is_file($file))continue;$bytes+=filesize($file);if($apply){if(!unlink($file))throw new \RuntimeException('Cleanup could not remove a candidate.');$removed++;}}
             $expired=(int)$this->connection->fetchOne('SELECT COUNT(*) FROM preview_job WHERE expires_at <= CURRENT_TIMESTAMP');

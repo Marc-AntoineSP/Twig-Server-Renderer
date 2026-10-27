@@ -86,7 +86,8 @@ if required. PHP CLI pcntl lets Messenger finish bounded work on SIGTERM. A kill
 leaves its queue message for 60-second redelivery; 45-second attempt leases and attempt-
 specific output files prevent an old worker from completing/replacing the new attempt.
 
-Preview jobs expire after 30 minutes: at most three pending and 60 retained per account;
+Preview jobs expire after 30 minutes: at most three pending and the latest 60 retained per account; older terminal jobs
+are expired as new work arrives, so sustained editing remains usable;
 preview files share a 512 MiB quota. Exports expire after 30 minutes with 20/100 MiB per
 account, serialized across processes. Immutable archives have a 2 GiB/20,000-object initial
 profile. These are deliberately bounded initial limits; adjust reviewed code/config and

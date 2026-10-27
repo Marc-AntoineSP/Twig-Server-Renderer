@@ -13,6 +13,14 @@ test('theme tokens persist, compare in isolated frames and round-trip exports', 
     const url = page.url();
     const status = page.locator('[data-theme-editor-target="status"]');
     await expect(status).toHaveText('Theme previews current', { timeout: 20000 });
+    await page.getByLabel('Disable comparison scripts',{exact:true}).check();
+    await expect(page.locator('iframe[title="Edited theme preview"]')).toHaveAttribute('sandbox','');
+    await page.getByRole('button',{name:'Reset comparison frames',exact:true}).click();
+    await expect(status).toHaveText('Theme previews reset');
+    await expect(page.frameLocator('iframe[title="Edited theme preview"]').locator('body')).toHaveText('');
+    await page.getByLabel('Disable comparison scripts',{exact:true}).uncheck();
+    await page.getByRole('button',{name:'Refresh comparison',exact:true}).click();
+    await expect(status).toHaveText('Theme previews current',{timeout:20000});
     const studioBackground = await page.locator('body').evaluate(el => getComputedStyle(el).backgroundColor);
     await page.getByLabel('primary', { exact: true }).fill('#123456');
     await page.getByLabel('Theme body font', { exact: true }).selectOption('system-serif');

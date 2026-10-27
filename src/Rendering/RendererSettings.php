@@ -16,6 +16,9 @@ final readonly class RendererSettings
         public bool $scripts = true,
         public mixed $props = null,
         #[Assert\Ulid] public ?string $themeReleaseId = null,
+        #[Assert\Choice(choices: ['theme','light','dark'])] public string $colorScheme = 'theme',
+        #[Assert\Choice(choices: ['base-100','base-200','transparent'])] public string $surface = 'base-100',
+        public bool $deviceFrame = false,
     ) {
     }
 

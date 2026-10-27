@@ -1,0 +1,2 @@
+{% set styles = {primary: 'btn btn-primary', secondary: 'btn btn-secondary', accent: 'btn btn-accent', neutral: 'btn btn-neutral', outline: 'btn btn-outline'} %}
+<div data-controller="__CONTROLLER__"><button type="button" class="{{ styles[variant]|default(styles.primary) }}" data-action="__CONTROLLER__#press">{{ label }}</button><p role="status" data-__CONTROLLER__-target="status" class="mt-3">No button presses yet.</p></div>
