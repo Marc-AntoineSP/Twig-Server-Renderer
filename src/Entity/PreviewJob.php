@@ -22,6 +22,11 @@ class PreviewJob
     #[ORM\Column(type: Types::JSONB, nullable: true)]
     private ?array $error = null;
 
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $startedAt = null;
+    #[ORM\Column(length: 32, nullable: true)]
+    private ?string $runToken = null;
+
     public function __construct(
         #[ORM\ManyToOne]
         #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -41,5 +46,6 @@ class PreviewJob
     public function getInputHash(): string { return $this->inputHash; }
     public function getStatus(): string { return $this->expiresAt < new \DateTimeImmutable() ? 'expired' : $this->status; }
     public function getError(): ?array { return $this->error; }
+    public function getRunToken(): ?string { return $this->runToken; }
     public function getPayload(): array { return json_decode(json_encode($this->payload, JSON_THROW_ON_ERROR), true, 64, JSON_THROW_ON_ERROR); }
 }

@@ -1,0 +1,19 @@
+# Test tools only. This file is not part of the production service topology.
+services:
+  browser:
+    extends: {file: compose.yaml, service: browser}
+    depends_on:
+      app: {condition: service_healthy}
+    environment:
+      STUDIO_BASE_URL: http://studio:8080
+      STUDIO_ACCOUNTS_FILE: var/production-test/accounts.json
+    networks: [edge]
+  node:
+    extends: {file: compose.yaml, service: node}
+    networks: [edge]
+  consumer:
+    extends: {file: compose.yaml, service: consumer}
+    networks: [edge]
+  consumer-tools:
+    extends: {file: compose.yaml, service: consumer-tools}
+    networks: [edge]

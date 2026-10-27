@@ -9,3 +9,6 @@ var
 public/assets
 .env.local
 .env.*.local
+assets/vendor
+tests/Consumer/project/var
+tests/Consumer/project/public/assets

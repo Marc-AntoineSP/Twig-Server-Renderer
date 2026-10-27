@@ -10,7 +10,7 @@ if ('/health' === parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) {
     echo '{"status":"ok"}';
     return;
 }
-$token = getenv('WORKER_TOKEN');
+$token = getenv('WORKER_TOKEN_FILE') ? trim(file_get_contents(getenv('WORKER_TOKEN_FILE'))) : getenv('WORKER_TOKEN');
 $authorization = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
 if (!$token || !hash_equals('Bearer '.$token, $authorization)) {
     http_response_code(403);
@@ -38,6 +38,7 @@ try {
         '-d', 'disable_functions=exec,passthru,shell_exec,system,proc_open,popen,pcntl_exec,dl,putenv',
         __DIR__.'/render.php',
     ], __DIR__, $environment, $body, 2.0);
+    if(function_exists('pcntl_async_signals')){pcntl_async_signals(true);pcntl_signal(SIGTERM,static function()use($process):void{$process->stop(0.2);exit(0);});}
     $bytes = 0;
     $process->run(static function (string $type, string $buffer) use (&$bytes, $process): void {
         $bytes += strlen($buffer);

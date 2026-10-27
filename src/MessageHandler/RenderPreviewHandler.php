@@ -13,27 +13,29 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final readonly class RenderPreviewHandler
 {
-    public function __construct(private EntityManagerInterface $entityManager, private PreviewRenderer $renderer, private PreviewStorage $storage, private PreviewLifecycle $lifecycle)
+    public function __construct(private EntityManagerInterface $entityManager, private PreviewRenderer $renderer, private PreviewStorage $storage, private PreviewLifecycle $lifecycle, private \Psr\Log\LoggerInterface $logger)
     {
     }
 
     public function __invoke(RenderPreview $message): void
     {
         $job = $this->entityManager->find(PreviewJob::class, $message->jobId);
-        if (!$job || !$this->lifecycle->claim($message->jobId)) {
+        if (!$job || !($token=$this->lifecycle->claim($message->jobId))) {
             return;
         }
+        $started=microtime(true);
         try {
             $result = $this->renderer->render($job->getPayload());
             if ($result['ok']) {
-                $this->storage->write($job->getId(), $result);
-                $this->lifecycle->finish($job->getId(), 'succeeded');
+                $this->storage->write($job->getId(), $result, $token);
+                $this->lifecycle->finish($job->getId(), $token, 'succeeded');
             } else {
-                $this->lifecycle->finish($job->getId(), 'failed', $result['error']);
+                $this->lifecycle->finish($job->getId(), $token, 'failed', $result['error']);
             }
         } catch (\Throwable) {
-            $this->lifecycle->finish($job->getId(), 'failed', ['code' => 'worker_unavailable', 'message' => 'Preview could not be completed. Retry later.']);
+            $this->lifecycle->finish($job->getId(), $token, 'failed', ['code' => 'worker_unavailable', 'message' => 'Preview could not be completed. Retry later.']);
         }
+        $this->logger->info('Preview finished.',['jobId'=>$job->getId(),'inputHash'=>$job->getInputHash(),'durationMs'=>(int)((microtime(true)-$started)*1000)]);
         try {
             $this->entityManager->refresh($job);
         } catch (\Doctrine\ORM\EntityNotFoundException) {

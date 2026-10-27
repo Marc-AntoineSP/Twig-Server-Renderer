@@ -10,6 +10,13 @@ final readonly class ExportArtifacts
     public function __construct(#[Autowire('%kernel.project_dir%/var/catalogue/exports')]private string $root){}
     public function create(User $owner,array $output):array
     {
+        $directory=$this->root.'/'.$owner->getId();if(!is_dir($directory)&&!mkdir($directory,0770,true)&&!is_dir($directory))throw new \RuntimeException('Export storage unavailable.');
+        $global=fopen(dirname($this->root).'/.storage.lock','c+');if(!$global||!flock($global,LOCK_EX))throw new \RuntimeException('Export storage unavailable.');
+        $lock=fopen($directory.'/.quota.lock','c+');if(!$lock||!flock($lock,LOCK_EX))throw new \RuntimeException('Export storage unavailable.');
+        try{return $this->store($owner,$output);}finally{flock($lock,LOCK_UN);fclose($lock);flock($global,LOCK_UN);fclose($global);}
+    }
+    private function store(User $owner,array $output):array
+    {
         $directory=$this->root.'/'.$owner->getId();if(!is_dir($directory) && !mkdir($directory,0770,true) && !is_dir($directory))throw new \RuntimeException('Export storage unavailable.');
         $count=0;$bytes=0;
         foreach(glob($directory.'/*.json') as $meta){$m=StrictJson::decode(file_get_contents($meta),2048,8);$file=substr($meta,0,-5).'.bin';if(($m->expiresAt??0)<time()){if(is_file($file))unlink($file);unlink($meta);continue;}$count++;$bytes+=is_file($file)?filesize($file):0;}

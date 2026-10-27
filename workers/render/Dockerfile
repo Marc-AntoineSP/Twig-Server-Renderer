@@ -3,6 +3,7 @@ WORKDIR /worker
 COPY workers/render/composer.json workers/render/composer.lock ./
 RUN composer install --no-dev --no-scripts --no-plugins --no-interaction --optimize-autoloader
 FROM dunglas/frankenphp:1.13-php8.5-trixie@sha256:ada77754f475352a9105b7961f89ab17ece97048514799532d2d27a1dea2fda7
+RUN install-php-extensions pcntl
 WORKDIR /worker
 COPY --from=dependencies /worker/vendor ./vendor
 COPY workers/render/index.php workers/render/render.php ./

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 
 export async function login(page, role = 'editor') {
-    const account = JSON.parse(readFileSync('var/browser/accounts.json', 'utf8'))[role];
+    const account = JSON.parse(readFileSync(process.env.STUDIO_ACCOUNTS_FILE || 'var/browser/accounts.json', 'utf8'))[role];
     await page.goto('/login');
     await page.getByLabel('Email', { exact: true }).fill(account.email);
     await page.getByLabel('Password', { exact: true }).fill(account.password);

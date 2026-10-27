@@ -1,0 +1,37 @@
+# Local HTTPS/proxy verification. Internal CA, not a public certificate/deployment.
+services:
+  app:
+    environment:
+      TRUSTED_PROXIES: ${LOCAL_PROXY_IP:-10.250.187.2}
+      TRUSTED_HOSTS: '^(localhost|127\.0\.0\.1|studio|app|proxy)$'
+    networks:
+      proxy-link: {ipv4_address: "${LOCAL_APP_PROXY_IP:-10.250.187.3}"}
+  proxy:
+    image: styleguide/local-proxy:${STUDIO_RELEASE:?Set STUDIO_RELEASE}
+    build: {context: ., dockerfile: docker/frankenphp/Dockerfile, target: https-proxy}
+    ports: ["127.0.0.1:${STUDIO_TLS_PORT:-8443}:8443"]
+    networks:
+      proxy-link: {ipv4_address: "${LOCAL_PROXY_IP:-10.250.187.2}"}
+    volumes: [proxy_data:/data]
+    tmpfs: ["/tmp:size=8388608,mode=1777", "/config:size=8388608,uid=33,gid=33,mode=0700"]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 64
+    mem_limit: 128m
+    cpus: 0.5
+    init: true
+    stop_grace_period: 15s
+    healthcheck:
+      test: ["CMD", "php", "-r", "$$c=stream_context_create(['ssl'=>['verify_peer'=>false,'verify_peer_name'=>false]]);exit(@file_get_contents('https://localhost:8443/health',false,$$c)===false?1:0);"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    depends_on:
+      app: {condition: service_healthy}
+volumes:
+  proxy_data: {}
+networks:
+  proxy-link:
+    ipam:
+      config: [{subnet: "${LOCAL_PROXY_SUBNET:-10.250.187.0/24}"}]

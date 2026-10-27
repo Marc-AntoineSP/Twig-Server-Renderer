@@ -47,7 +47,7 @@ final class PreviewController extends AbstractController
             throw new CatalogueException(409, 'A current successful preview document is required.');
         }
 
-        return new JsonResponse(['html' => $storage->read($job->getId())['html'], 'sequence' => $job->getRequestSequence()], headers: ['Cache-Control' => 'private, no-store']);
+        return new JsonResponse(['html' => $storage->read($job->getId(),$job->getRunToken())['html'], 'sequence' => $job->getRequestSequence()], headers: ['Cache-Control' => 'private, no-store']);
     }
 
     #[Route('/api/v1/preview-jobs/{id}', name: 'preview_cancel', methods: ['DELETE'], format: 'json')]

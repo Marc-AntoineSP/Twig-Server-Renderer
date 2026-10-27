@@ -54,6 +54,8 @@ final readonly class PreviewJobs
         try {
             $pending = $this->entityManager->createQuery('SELECT COUNT(j.id) FROM App\Entity\PreviewJob j WHERE j.owner = :owner AND j.status IN (:statuses) AND j.expiresAt > :now')
                 ->setParameters(['owner' => $user, 'statuses' => ['queued', 'running'], 'now' => new \DateTimeImmutable()])->getSingleScalarResult();
+            $recent=$this->entityManager->createQuery('SELECT COUNT(j.id) FROM App\\Entity\\PreviewJob j WHERE j.owner = :owner AND j.expiresAt > :now')->setParameters(['owner'=>$user,'now'=>new \DateTimeImmutable()])->getSingleScalarResult();
+            if($recent>=60)throw new CatalogueException(429,'Preview quota reached: at most 60 retained jobs per account for 30 minutes.');
             if ($pending >= 3) {
                 throw new CatalogueException(429, 'At most three previews may be pending per account.');
             }

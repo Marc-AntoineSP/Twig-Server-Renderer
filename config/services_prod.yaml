@@ -1,0 +1,6 @@
+services:
+    App\Rendering\WorkerClient:
+        autowire: true
+        arguments:
+            $renderToken: '%env(trim:file:RENDER_WORKER_TOKEN_FILE)%'
+            $buildToken: '%env(trim:file:BUILD_WORKER_TOKEN_FILE)%'

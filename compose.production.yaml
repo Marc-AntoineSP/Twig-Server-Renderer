@@ -1,0 +1,178 @@
+name: ${STUDIO_PROJECT:-styleguide-production}
+services:
+  app:
+    image: styleguide/studio:${STUDIO_RELEASE:?Set STUDIO_RELEASE to a local immutable build tag}
+    build:
+      context: .
+      dockerfile: docker/frankenphp/Dockerfile
+      target: production
+    environment: &production_environment
+      APP_ENV: prod
+      APP_DEBUG: "0"
+      APP_SECRET_FILE: /run/secrets/app_secret
+      DATABASE_URL_FILE: /run/secrets/database_url
+      RENDER_WORKER_TOKEN_FILE: /run/secrets/render_token
+      BUILD_WORKER_TOKEN_FILE: /run/secrets/build_token
+      RENDER_WORKER_URL: http://render-worker:8080
+      BUILD_WORKER_URL: http://build-worker:8080
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-}
+      TRUSTED_HOSTS: ${TRUSTED_HOSTS:-^(localhost|127\.0\.0\.1|studio|app)$}
+      DEFAULT_URI: ${STUDIO_BASE_URI:-http://localhost:8096}
+    ports: ["127.0.0.1:${STUDIO_PRODUCTION_PORT:-8096}:8080"]
+    networks:
+      edge: {aliases: [studio]}
+      database: {}
+      workers: {}
+    secrets: &studio_secrets [app_secret, database_url, render_token, build_token]
+    volumes: [catalogue_blobs:/app/var/catalogue, session_data:/app/var/sessions]
+    tmpfs: ["/data:size=8388608,uid=1000,gid=1000,mode=0700", "/tmp:size=33554432,mode=1777", "/app/var/cache:size=67108864,uid=1000,gid=1000,mode=0770", "/app/var/log:size=8388608,uid=1000,gid=1000,mode=0770"]
+    # Session files persist independently of compiled cache.
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    init: true
+    pids_limit: 128
+    mem_limit: 512m
+    cpus: 1
+    restart: unless-stopped
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://localhost:8080/health/ready') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 20s
+    depends_on:
+      database: {condition: service_healthy}
+      render-worker: {condition: service_healthy}
+      build-worker: {condition: service_healthy}
+
+  preview-consumer:
+    image: styleguide/studio:${STUDIO_RELEASE:?Set STUDIO_RELEASE}
+    command: ["php", "bin/console", "messenger:consume", "async", "--memory-limit=128M", "--time-limit=3600", "--sleep=0.1", "--no-interaction"]
+    environment: *production_environment
+    secrets: *studio_secrets
+    volumes: [catalogue_blobs:/app/var/catalogue]
+    networks: [database, workers]
+    tmpfs: ["/tmp:size=33554432,mode=1777", "/app/var/cache:size=67108864,uid=1000,gid=1000,mode=0770", "/app/var/log:size=8388608,uid=1000,gid=1000,mode=0770"]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    init: true
+    pids_limit: 64
+    mem_limit: 256m
+    cpus: 1
+    restart: unless-stopped
+    stop_grace_period: 30s
+    depends_on:
+      app: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "php", "-r", "foreach(glob('/proc/[0-9]*/cmdline') as $$p){if(in_array('messenger:consume',explode(chr(0),@file_get_contents($$p)?:''),true))exit(0);}exit(1);"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  maintenance:
+    image: styleguide/studio:${STUDIO_RELEASE:?Set STUDIO_RELEASE}
+    command: ["php", "bin/console", "styleguide:cleanup", "--apply", "--loop=60", "--no-interaction"]
+    environment: *production_environment
+    secrets: [database_url]
+    volumes: [catalogue_blobs:/app/var/catalogue]
+    networks: [database]
+    tmpfs: ["/tmp:size=16777216,mode=1777", "/app/var/cache:size=67108864,uid=1000,gid=1000,mode=0770", "/app/var/log:size=8388608,uid=1000,gid=1000,mode=0770"]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    init: true
+    pids_limit: 32
+    mem_limit: 128m
+    cpus: 0.25
+    restart: unless-stopped
+    stop_grace_period: 5s
+    depends_on:
+      app: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "php", "-r", "foreach(glob('/proc/[0-9]*/cmdline') as $$p){if(in_array('styleguide:cleanup',explode(chr(0),@file_get_contents($$p)?:''),true))exit(0);}exit(1);"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  database:
+    image: postgres:17-trixie@sha256:b8faeff7712663c2773a190181e1246e37e364b887611c04658c28b44e2408fe
+    environment:
+      POSTGRES_DB: styleguide
+      POSTGRES_USER: styleguide
+      POSTGRES_PASSWORD_FILE: /run/secrets/database_password
+    secrets: [database_password]
+    networks: [database]
+    volumes: [database_data:/var/lib/postgresql/data]
+    shm_size: 128m
+    mem_limit: 512m
+    cpus: 1
+    pids_limit: 128
+    restart: unless-stopped
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "styleguide", "-d", "styleguide"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  render-worker:
+    image: styleguide/render-worker:${STUDIO_RELEASE:?Set STUDIO_RELEASE}
+    build: {context: ., dockerfile: workers/render/Dockerfile}
+    environment: {WORKER_TOKEN_FILE: /run/secrets/render_token}
+    secrets: [render_token]
+    networks: [workers]
+    read_only: true
+    tmpfs: ["/tmp:size=16777216,mode=1777"]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 32
+    mem_limit: 256m
+    cpus: 1
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 5s
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://localhost:8080/health') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  build-worker:
+    image: styleguide/build-worker:${STUDIO_RELEASE:?Set STUDIO_RELEASE}
+    build: {context: ., dockerfile: workers/build/Dockerfile}
+    environment: {WORKER_TOKEN_FILE: /run/secrets/build_token}
+    secrets: [build_token]
+    networks: [workers]
+    read_only: true
+    tmpfs: ["/tmp:size=33554432,mode=1777"]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 64
+    mem_limit: 512m
+    cpus: 1
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 15s
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8080/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+secrets:
+  app_secret: {file: '${STUDIO_SECRET_DIR:?Set STUDIO_SECRET_DIR}/app_secret'}
+  database_password: {file: '${STUDIO_SECRET_DIR}/database_password'}
+  database_url: {file: '${STUDIO_SECRET_DIR}/database_url'}
+  render_token: {file: '${STUDIO_SECRET_DIR}/render_token'}
+  build_token: {file: '${STUDIO_SECRET_DIR}/build_token'}
+volumes:
+  database_data: {}
+  catalogue_blobs: {}
+  session_data: {}
+networks:
+  edge: {}
+  database: {internal: true}
+  workers: {internal: true}

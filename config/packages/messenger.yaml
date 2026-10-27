@@ -6,6 +6,8 @@ framework:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    redeliver_timeout: 60
                 retry_strategy:
                     max_retries: 3
                     multiplier: 2
@@ -30,4 +32,6 @@ when@test:
     framework:
         messenger:
             transports:
-                async: 'sync://'
+                async:
+                    dsn: 'sync://'
+                    options: {}

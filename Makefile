@@ -42,3 +42,23 @@ logs:
 .PHONY: consumer
 consumer:
 	COMPOSE='$(COMPOSE)' bash tests/Consumer/run.sh
+
+PRODUCTION ?= docker compose --env-file var/production/compose.env -f compose.production.yaml
+.PHONY: prod-init prod-build prod-up prod-migrate prod-check prod-down
+prod-init:
+	docker run --rm --user $(LOCAL_UID):$(LOCAL_GID) --workdir /workspace --volume '$(CURDIR):/workspace' --entrypoint php dunglas/frankenphp:1.13-php8.5-trixie@sha256:ada77754f475352a9105b7961f89ab17ece97048514799532d2d27a1dea2fda7 tools/production/init.php
+prod-build:
+	$(PRODUCTION) config --quiet
+	$(PRODUCTION) build --pull
+prod-migrate:
+	$(PRODUCTION) up -d --wait database render-worker build-worker
+	$(PRODUCTION) run --rm --no-deps app php bin/console doctrine:migrations:migrate --no-interaction
+prod-up:
+	$(PRODUCTION) up -d --wait
+prod-check:
+	$(PRODUCTION) exec -T app php bin/console doctrine:schema:validate
+	$(PRODUCTION) exec -T app php bin/console lint:container --env=prod --no-debug
+	$(PRODUCTION) exec -T app php bin/console styleguide:cleanup
+	$(PRODUCTION) exec -T app php bin/console styleguide:storage:verify
+prod-down:
+	$(PRODUCTION) down

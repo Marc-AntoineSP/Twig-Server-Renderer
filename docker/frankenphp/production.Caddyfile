@@ -1,0 +1,21 @@
+{
+	frankenphp
+	admin off
+	auto_https off
+	persist_config off
+}
+:8080 {
+	root * /app/public
+	encode zstd gzip
+	request_body {
+		max_size 12MB
+	}
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy same-origin
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		X-Frame-Options DENY
+		-Server
+	}
+	php_server
+}

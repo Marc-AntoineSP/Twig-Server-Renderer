@@ -12,7 +12,7 @@ Last updated: 2026-10-27. Scope: M00–M08, including a local production build; 
 | M05 Composition | Complete | 75 PHPUnit tests/325 assertions and 19 Chromium flows pass |
 | M06 Imports/exports/registry | Complete | 93 tests/469 assertions, 21 browser flows, clean-store pixel-identical round-trip |
 | M07 Consumer installer | Complete | 98 PHPUnit tests/494 assertions, 21 browser flows, fresh consumer production and SIGKILL recovery gates |
-| M08 Production/recovery | Not started | Next milestone; local production only |
+| M08 Production/recovery | In progress | Immutable images boot; 101 tests/516 assertions, 21 production Chromium flows and local TLS pass; final recovery/showcase gates pending |
 
 ## Repository audit and preservation
 
@@ -524,3 +524,58 @@ as studio rendering. All corrected gates were repeated on the fresh consumer abo
 M07 is complete. Next: M08 immutable production app/workers, limits/cleanup, acceptance
 fixtures, local production end-to-end and fresh database/blob restore with consumer install.
 No remote deployment, package publication or branch push is authorized or performed.
+
+
+## M08 production runtime feature
+
+Branch `feature/m08-production-runtime` adds locked immutable application/worker images,
+production AssetMapper/CSS builds, runtime file secrets, separate private DB/worker networks,
+non-root/read-only/capability-free services and explicit memory/CPU/PID/tmpfs limits. No
+production dev dependencies or browser-account command. Persistent sessions/blobs are owned
+volumes. Node compiler temp cleanup also handles killed children; shutdown is bounded. PHP
+CLI **pcntl** is now built for proper Messenger/supervisor signal handling. Production log
+processing retains diagnostic IDs/categories, drops private messages/context/arguments and
+turns off Doctrine SQL/profiling. Health remains DB/worker-aware. Local TLS override uses an
+internal Caddy CA and an exact proxy IP; it is not public certificate/deployment evidence.
+
+Generated/reviewed/applied migration `Version20261027030742` adds nullable start time and
+attempt tokens. A durable Doctrine message redelivers after 60 seconds; a 45-second lease
+permits recovery, and conditional completion plus attempt-specific files reject old results.
+Legacy successful preview files remain readable. Preview retained-job/storage, export and
+immutable-archive quotas are serialized; scheduled cleanup defaults to safe dry-run, applies
+once/minute, preserves every referenced release and gives orphan archives a 24-hour grace.
+Added archive verifier, consistent stop-writes backup and fresh-target restore scripts,
+operator account disable command and detailed docs/styleguide/PRODUCTION.md.
+
+Actual feature checks before further M08 work:
+
+- Final `make check test`: exit 0, **101 tests / 516 assertions**, including stale lease
+  exclusion, cleanup dry-run/apply/reference retention and private-log redaction.
+- Clean production database/blob/session volumes: `prod-init prod-build prod-migrate`
+  succeeds, seven migrations applied. Image build consumes locks and compiles studio assets
+  without production secrets. `prod-up prod-check` succeeds after fixes below; schema and
+  production container lint pass. Production CLI confirms pcntl, APP_DEBUG=0, no profiler/
+  debug/PHPUnit packages and no plaintext APP_SECRET/DATABASE_URL environment values.
+- Full studio Chromium suite against production app: **21 passed**. Real edit/preview/
+  composition/theme/publish/transfer and source isolation run on production assets.
+- Actual Docker inspection passes non-root identities, read-only filesystems, dropped
+  capabilities, limits, private networks/ports and no application/source mount or secret
+  in either worker. Initial tested app image config ID b1054dc72bb8177dbf72ea6b70ba7acd98d38796f24f1293bda7a07833e6bc10;
+  worker IDs are recorded in ignored production-test/containers.json. These are local
+  image IDs, not invented registry digests; final acceptance rebuild still follows.
+- Local TLS/proxy Chromium check passes Secure/HttpOnly/SameSite cookie assertions,
+  HSTS and rejection of direct forged X-Forwarded-Proto. Current services remain local.
+
+Corrected real checks: dropping all capabilities exposed the base binary's file capability
+and prevented exec; production removes it and listens above 1024. Caddy's multiline syntax
+is validated during build. CLI maintenance/proxy override inherited web health checks.
+Caddy data uses bounded writable tmpfs; TLS data has its own volume. The initial local TLS
+subnet overlapped an existing unrelated network; that network was preserved and the override
+uses a separate configurable subnet with explicit app/proxy IPs. Cleanup test metadata is
+now removed after assertions; leaving it in the test DB correctly caused warnings in a
+subsequent real composition query. The final 101-test rerun above is warning-free.
+
+M08 remains in progress. Next: finish sample/renderer acceptance controls, run fresh final
+production end-to-end including interrupted consumer/redelivery, consistent backup/restore
+into new volumes and repeat export/consumer installation; then record the acceptance matrix.
+No remote deployment, push or public package publication.

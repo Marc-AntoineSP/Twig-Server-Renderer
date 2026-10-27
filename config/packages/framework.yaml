@@ -16,3 +16,10 @@ when@test:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
+
+when@prod:
+    framework:
+        secret: '%env(trim:file:APP_SECRET_FILE)%'
+        trusted_proxies: '%env(TRUSTED_PROXIES)%'
+        trusted_hosts: ['%env(TRUSTED_HOSTS)%']
+        trusted_headers: [x-forwarded-for, x-forwarded-host, x-forwarded-proto, x-forwarded-port]

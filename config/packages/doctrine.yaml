@@ -28,6 +28,10 @@ when@test:
 
 when@prod:
     doctrine:
+        dbal:
+            url: '%env(trim:file:DATABASE_URL_FILE)%'
+            logging: false
+            profiling: false
         orm:
             query_cache_driver:
                 type: pool
