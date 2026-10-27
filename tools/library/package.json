@@ -1,0 +1,12 @@
+{
+  "name": "styleguide-library-maintenance",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=24 <25"},
+  "dependencies": {
+    "culori": "4.0.2",
+    "fontkit": "2.0.4",
+    "ipaddr.js": "2.5.0",
+    "tar-stream": "3.2.2"
+  }
+}

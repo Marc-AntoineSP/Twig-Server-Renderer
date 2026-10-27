@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 1,
+  "collection": "popular",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "families": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "geist",
+      "family": "Geist",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "roboto",
+      "family": "Roboto",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "lato",
+      "family": "Lato",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "montserrat",
+      "family": "Montserrat",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "poppins",
+      "family": "Poppins",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "nunito-sans",
+      "family": "Nunito Sans",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "source-sans-3",
+      "family": "Source Sans 3",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "noto-sans",
+      "family": "Noto Sans",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "work-sans",
+      "family": "Work Sans",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "dm-sans",
+      "family": "DM Sans",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "manrope",
+      "family": "Manrope",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "ibm-plex-sans",
+      "family": "IBM Plex Sans",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "public-sans",
+      "family": "Public Sans",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "figtree",
+      "family": "Figtree",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "outfit",
+      "family": "Outfit",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "plus-jakarta-sans",
+      "family": "Plus Jakarta Sans",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "urbanist",
+      "family": "Urbanist",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "rubik",
+      "family": "Rubik",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "mulish",
+      "family": "Mulish",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "ubuntu",
+      "family": "Ubuntu",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "barlow",
+      "family": "Barlow",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "atkinson-hyperlegible",
+      "family": "Atkinson Hyperlegible",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "lexend",
+      "family": "Lexend",
+      "category": "sans",
+      "tags": [
+        "sans",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "merriweather",
+      "family": "Merriweather",
+      "category": "serif",
+      "tags": [
+        "serif",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "lora",
+      "family": "Lora",
+      "category": "serif",
+      "tags": [
+        "serif",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "source-serif-4",
+      "family": "Source Serif 4",
+      "category": "serif",
+      "tags": [
+        "serif",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "noto-serif",
+      "family": "Noto Serif",
+      "category": "serif",
+      "tags": [
+        "serif",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "libre-baskerville",
+      "family": "Libre Baskerville",
+      "category": "serif",
+      "tags": [
+        "serif",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "playfair-display",
+      "family": "Playfair Display",
+      "category": "display",
+      "tags": [
+        "serif",
+        "headings",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "dm-serif-display",
+      "family": "DM Serif Display",
+      "category": "display",
+      "tags": [
+        "serif",
+        "headings",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "cormorant-garamond",
+      "family": "Cormorant Garamond",
+      "category": "display",
+      "tags": [
+        "serif",
+        "headings",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "eb-garamond",
+      "family": "EB Garamond",
+      "category": "serif",
+      "tags": [
+        "serif",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "roboto-slab",
+      "family": "Roboto Slab",
+      "category": "serif",
+      "tags": [
+        "serif",
+        "body",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "jetbrains-mono",
+      "family": "JetBrains Mono",
+      "category": "mono",
+      "tags": [
+        "mono",
+        "code",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "geist-mono",
+      "family": "Geist Mono",
+      "category": "mono",
+      "tags": [
+        "mono",
+        "code",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "fira-code",
+      "family": "Fira Code",
+      "category": "mono",
+      "tags": [
+        "mono",
+        "code",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "source-code-pro",
+      "family": "Source Code Pro",
+      "category": "mono",
+      "tags": [
+        "mono",
+        "code",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "ibm-plex-mono",
+      "family": "IBM Plex Mono",
+      "category": "mono",
+      "tags": [
+        "mono",
+        "code",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "roboto-mono",
+      "family": "Roboto Mono",
+      "category": "mono",
+      "tags": [
+        "mono",
+        "code",
+        "english",
+        "french"
+      ]
+    },
+    {
+      "id": "inconsolata",
+      "family": "Inconsolata",
+      "category": "mono",
+      "tags": [
+        "mono",
+        "code",
+        "english",
+        "french"
+      ]
+    }
+  ]
+}

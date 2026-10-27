@@ -1,0 +1,1761 @@
+{
+  "schemaVersion": 1,
+  "collection": "popular",
+  "families": {
+    "inter": {
+      "package": "@fontsource-variable/inter",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/inter/-/inter-5.3.0.tgz",
+      "integrity": "sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA==",
+      "tarballSha256": "d26710dd38e7217484a1d47ee76c024977ec550548876f26d06ed1844af09a14",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/inter/METADATA.pb",
+        "sha256": "79e4721ef4f72251c6080a40dfd9efb6728b4df1fc690f0c70eb4b1b5303a5b0",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/71254244ccb1ec21e14db3480fef6f6826d1136dc4aca1c7d3ca7ce31294fcce.woff2",
+          "sha256": "71254244ccb1ec21e14db3480fef6f6826d1136dc4aca1c7d3ca7ce31294fcce",
+          "bytes": 91900
+        },
+        {
+          "path": "fonts/7291b5970da2237441273c03b424a504b70b18f09791473fab99687dcc314720.woff2",
+          "sha256": "7291b5970da2237441273c03b424a504b70b18f09791473fab99687dcc314720",
+          "bytes": 51832
+        },
+        {
+          "path": "fonts/34b9c504cab7a73e37b746343a449132e56cf7b5481af2cb81dc74dcff25c956.woff2",
+          "sha256": "34b9c504cab7a73e37b746343a449132e56cf7b5481af2cb81dc74dcff25c956",
+          "bytes": 85068
+        },
+        {
+          "path": "fonts/3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62.woff2",
+          "sha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
+          "bytes": 48256
+        }
+      ],
+      "licenseSha256": "3b0a5fca3d17942cde889069889dedbbbd075e9b599968c82a95f4d944e9b345",
+      "metadataSha256": "fd1e5ce284bef6c8e708e902e229fa0c7510a9a13330fdacdc989a0bf7405810",
+      "authorityLicense": "OFL"
+    },
+    "geist": {
+      "package": "@fontsource-variable/geist",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/geist/-/geist-5.3.0.tgz",
+      "integrity": "sha512-j0m+vLQuG5XAYoHtGCVu0spvlGreR3EzpECUVzkFmI1mTVnAO38l/NEPDCFgZ177JxzYJCLSmTQibIiYPilGrA==",
+      "tarballSha256": "533dd66117795ac12316fb05fce27736c4bc63c31613b302d0a5285ca3a291d7",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/geist/METADATA.pb",
+        "sha256": "62d302155bfbf778e9c488ef00671a4ad71a8a4cdc808ec66ceb668373afe900",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/56dc9ac98e3fc45e7ee487d03ee205b35858c672f2e15053eabbb119c0bc1e74.woff2",
+          "sha256": "56dc9ac98e3fc45e7ee487d03ee205b35858c672f2e15053eabbb119c0bc1e74",
+          "bytes": 17892
+        },
+        {
+          "path": "fonts/9b10496762af92659f3b05d2b084b0c8f962c3ecdf637aa764e3b7fd17f5acaf.woff2",
+          "sha256": "9b10496762af92659f3b05d2b084b0c8f962c3ecdf637aa764e3b7fd17f5acaf",
+          "bytes": 31008
+        },
+        {
+          "path": "fonts/824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f.woff2",
+          "sha256": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+          "bytes": 16512
+        },
+        {
+          "path": "fonts/19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1.woff2",
+          "sha256": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+          "bytes": 29400
+        }
+      ],
+      "licenseSha256": "71609cbb5c78b5870d712eab73a31d76622635c6ed034ab5cee3b9ecbda8685f",
+      "metadataSha256": "ed62cd8df7215adf6e506660bace74f95048c33ca4645b6e3cfa932fa1d7531a",
+      "authorityLicense": "OFL"
+    },
+    "roboto": {
+      "package": "@fontsource-variable/roboto",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/roboto/-/roboto-5.3.0.tgz",
+      "integrity": "sha512-BoaaZiQf8fgtxv07KXkTwx1bKz/EoqIlTXq2OOKKXINxp6qXWdnlChqV+hSaDANS49yyUASFl3OVBMMDTCIHFA==",
+      "tarballSha256": "03510ae8a8159543ebef8d35280cf6821099ef3f61d31858458ac8bf1a8e983e",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/roboto/METADATA.pb",
+        "sha256": "6fef19da54fb62d152f0c7b21710e6849950db7ecf852ea29511c593dad462f0",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/7f21d061a9de1ea78a858938ff3b8e677869656b10bad470fc6039f8f3daf329.woff2",
+          "sha256": "7f21d061a9de1ea78a858938ff3b8e677869656b10bad470fc6039f8f3daf329",
+          "bytes": 31820
+        },
+        {
+          "path": "fonts/14f23757c6b41b4b6c0b967ca3fa74ff47a868728158373461c4e6e4b6368f19.woff2",
+          "sha256": "14f23757c6b41b4b6c0b967ca3fa74ff47a868728158373461c4e6e4b6368f19",
+          "bytes": 47208
+        },
+        {
+          "path": "fonts/cedb374b05a35034cf96db185db4eeb8f8ce49e1a56197673702ff11b5533d6e.woff2",
+          "sha256": "cedb374b05a35034cf96db185db4eeb8f8ce49e1a56197673702ff11b5533d6e",
+          "bytes": 29392
+        },
+        {
+          "path": "fonts/1404ca348bd75ef836f4dd8b6f2cc719458642d1237c368296b2fc652dca47dc.woff2",
+          "sha256": "1404ca348bd75ef836f4dd8b6f2cc719458642d1237c368296b2fc652dca47dc",
+          "bytes": 43136
+        }
+      ],
+      "licenseSha256": "84044c09058803d87a241bd28abb4ce30a433d7db9c27a04da3efad6a0ca539c",
+      "metadataSha256": "c67318a803d1fa9ff224079c42b731bd88904d8d12cd470cbbe3f3153866968e",
+      "authorityLicense": "OFL"
+    },
+    "open-sans": {
+      "package": "@fontsource-variable/open-sans",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/open-sans/-/open-sans-5.3.0.tgz",
+      "integrity": "sha512-VOfhZfLIOBVa6K/dTEu7scqQXYdGa4jBX8quFpQ0S6574B+W2EOBJf9PkqyVtMEI7WWIWNEbpvPc3vY1mN2mmQ==",
+      "tarballSha256": "8f4c371d85381ef59af7ce93db9e0687fc7418409d366f6cace8f5d53c81711f",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/opensans/METADATA.pb",
+        "sha256": "50305d75a1b32bc4b5f59a037a71b0db45be509479519f7fded5b9cfa86217e8",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/a6fa0e8ac2a665c121a19c2e2434fb286e3afdef7b9288739a73c7cb6849108c.woff2",
+          "sha256": "a6fa0e8ac2a665c121a19c2e2434fb286e3afdef7b9288739a73c7cb6849108c",
+          "bytes": 37752
+        },
+        {
+          "path": "fonts/186836b74ceac07b2764c07c0379420e3014efb30fe918461c235e0ef6cbc4a2.woff2",
+          "sha256": "186836b74ceac07b2764c07c0379420e3014efb30fe918461c235e0ef6cbc4a2",
+          "bytes": 50216
+        },
+        {
+          "path": "fonts/d5bab8e28732fe3d10dcef4f77b9c248605bbb2a87d289a2539251ceafab536a.woff2",
+          "sha256": "d5bab8e28732fe3d10dcef4f77b9c248605bbb2a87d289a2539251ceafab536a",
+          "bytes": 35156
+        },
+        {
+          "path": "fonts/d8e4fe0452aa2076429a9bb5d8757d00a994dd95986cf950e9a1a371b9a072a0.woff2",
+          "sha256": "d8e4fe0452aa2076429a9bb5d8757d00a994dd95986cf950e9a1a371b9a072a0",
+          "bytes": 48320
+        }
+      ],
+      "licenseSha256": "9e7f12fafee50a9b4f7b3004c0fa58990805620d9debb0daf7f75de0d3ad5548",
+      "metadataSha256": "20a57eff7999903f9e4d33132819fc929f8f334fc7426671f33149a5d0242c2d",
+      "authorityLicense": "OFL"
+    },
+    "lato": {
+      "package": "@fontsource/lato",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource/lato/-/lato-5.3.0.tgz",
+      "integrity": "sha512-0WhF/4rhrw+ErIyneKvhHn2YAl+xf8GDtllgOgOzDmeaSlLQtjpChXaQOpWhG2BchQW0WJy2zLV12Hdg0ndOMw==",
+      "tarballSha256": "50db251f16e9a6c35fe0177b4692b7ec78478b9734c9272d980a75343638aa5c",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/lato/METADATA.pb",
+        "sha256": "b01e6d38725c22f991321800baf7a71af2dca3a381184eb80557c5308d5e34c5",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/077a69d5b698467f49de34980815c848fecb40e35f4b3969b42a703b8b916953.woff2",
+          "sha256": "077a69d5b698467f49de34980815c848fecb40e35f4b3969b42a703b8b916953",
+          "bytes": 5776
+        },
+        {
+          "path": "fonts/bca1d88ada544d9c80872d4da27133fab6d347361fa26e932b47ec9559088fd0.woff2",
+          "sha256": "bca1d88ada544d9c80872d4da27133fab6d347361fa26e932b47ec9559088fd0",
+          "bytes": 24408
+        },
+        {
+          "path": "fonts/72373c5fe499b7b978e186b6550ee6c4a8dc0c9b77fb46a4d76a572c1986466e.woff2",
+          "sha256": "72373c5fe499b7b978e186b6550ee6c4a8dc0c9b77fb46a4d76a572c1986466e",
+          "bytes": 5792
+        },
+        {
+          "path": "fonts/6c84348296ebe2e2a0830c3962eb02156419d9bc76371c2eadaf7329d827d550.woff2",
+          "sha256": "6c84348296ebe2e2a0830c3962eb02156419d9bc76371c2eadaf7329d827d550",
+          "bytes": 24448
+        },
+        {
+          "path": "fonts/8b9fc9737043f88c1a9a7195c27a239bd329cc33d928ffb67736c61ae7a1dbbd.woff2",
+          "sha256": "8b9fc9737043f88c1a9a7195c27a239bd329cc33d928ffb67736c61ae7a1dbbd",
+          "bytes": 5612
+        },
+        {
+          "path": "fonts/918b7dc3e2e2d015c16ce08b57bcb64d2253bafc1707658f361e72865498e537.woff2",
+          "sha256": "918b7dc3e2e2d015c16ce08b57bcb64d2253bafc1707658f361e72865498e537",
+          "bytes": 23580
+        },
+        {
+          "path": "fonts/3a5797f440bc67b59830cad81e59a71011e35cb45ed7f747b61a69b0a9b0d6ae.woff2",
+          "sha256": "3a5797f440bc67b59830cad81e59a71011e35cb45ed7f747b61a69b0a9b0d6ae",
+          "bytes": 5552
+        },
+        {
+          "path": "fonts/c447dd7677b419db7b21dbdfc6277c7816a913ffda76fd2e52702df538de0e49.woff2",
+          "sha256": "c447dd7677b419db7b21dbdfc6277c7816a913ffda76fd2e52702df538de0e49",
+          "bytes": 23040
+        }
+      ],
+      "licenseSha256": "9648253641ec1d1f8ba2fbe8997909f7bfc48cc38537946f6272321788465b84",
+      "metadataSha256": "079e36fc866653d9a7c51a8eddfd3fefa19c9b54de0f55a3343e4f0fbd4f11bb",
+      "authorityLicense": "OFL"
+    },
+    "montserrat": {
+      "package": "@fontsource-variable/montserrat",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/montserrat/-/montserrat-5.3.0.tgz",
+      "integrity": "sha512-7PaZoxaxrWLAyrhO46v65An9LhUhfkTExWLhfbywYZCnZEgg/W1rEHnlNmZKjNZ3nJTVYyicqxlJt10z/26yTA==",
+      "tarballSha256": "d51603ef08d0087a07497488cf20007b3499fd4f4466c8a791389468bc941dfb",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/montserrat/METADATA.pb",
+        "sha256": "c48dbcaee013b8f6a33e7e6a79191adbf098a36839367d9750598594ff664e5f",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/9f7c3dc0c1fdbc8b09d53d1beb4aca048a5aff376ac5423878e03e83e89a7fe8.woff2",
+          "sha256": "9f7c3dc0c1fdbc8b09d53d1beb4aca048a5aff376ac5423878e03e83e89a7fe8",
+          "bytes": 74892
+        },
+        {
+          "path": "fonts/0eb22e3d769a66a92dbd82e3aefa5740e5bc21afa4485f62f92b22656d49182a.woff2",
+          "sha256": "0eb22e3d769a66a92dbd82e3aefa5740e5bc21afa4485f62f92b22656d49182a",
+          "bytes": 39632
+        },
+        {
+          "path": "fonts/54d9a78b7ff60b689ad9f3017ffac8547b5d871afec733f6c1c3ae36577ee504.woff2",
+          "sha256": "54d9a78b7ff60b689ad9f3017ffac8547b5d871afec733f6c1c3ae36577ee504",
+          "bytes": 70688
+        },
+        {
+          "path": "fonts/06b16db7a969135d48d38c49183be7fb88d4452e2a3011957c7851941f4e4879.woff2",
+          "sha256": "06b16db7a969135d48d38c49183be7fb88d4452e2a3011957c7851941f4e4879",
+          "bytes": 37956
+        }
+      ],
+      "licenseSha256": "f429f739351287574c0c3175a9222bb3e49c7cad3f568a04f2c08d74c107724e",
+      "metadataSha256": "6bf3af7bf8c41cb073fe950744a7d009113cf90422ab71b9e5e949b0314bf27e",
+      "authorityLicense": "OFL"
+    },
+    "poppins": {
+      "package": "@fontsource/poppins",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource/poppins/-/poppins-5.3.0.tgz",
+      "integrity": "sha512-cms1nM7U6SN8epIV1WMVOV8VsA645aSm3wHfzIQnkk188U341ThbJGSl2Sv54V29gnDbT2arMPfLzvVIIVCceQ==",
+      "tarballSha256": "f4779bb12acaaa07dc7dd8da82ab0f61515fea2f30664535f7a249eeb0dd5bcf",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/poppins/METADATA.pb",
+        "sha256": "8121646e47a90cbcd2f4664e0df036944880035522b4f25ec51cb9465428b346",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/1e91b430ebe5aa347934e70dcd76ca3c594e34d41d14ba3e2f1a7e1dcbc0cfc6.woff2",
+          "sha256": "1e91b430ebe5aa347934e70dcd76ca3c594e34d41d14ba3e2f1a7e1dcbc0cfc6",
+          "bytes": 5964
+        },
+        {
+          "path": "fonts/50d0c1742d80ac71f4cde20e8c04d41a24806af342831f479938b527fbff0972.woff2",
+          "sha256": "50d0c1742d80ac71f4cde20e8c04d41a24806af342831f479938b527fbff0972",
+          "bytes": 8668
+        },
+        {
+          "path": "fonts/248a4c140325101536a69bff763665e7356390cbf0ce326b35bad968e42b5743.woff2",
+          "sha256": "248a4c140325101536a69bff763665e7356390cbf0ce326b35bad968e42b5743",
+          "bytes": 5856
+        },
+        {
+          "path": "fonts/1ddb074f9963be8f6275c42dbd54d18625da8f91c85803121094ec81649f488b.woff2",
+          "sha256": "1ddb074f9963be8f6275c42dbd54d18625da8f91c85803121094ec81649f488b",
+          "bytes": 8504
+        },
+        {
+          "path": "fonts/10a9b6414cbebd6948c3a3a96838480b1ee019e0468033245ea1ddf1143bcda8.woff2",
+          "sha256": "10a9b6414cbebd6948c3a3a96838480b1ee019e0468033245ea1ddf1143bcda8",
+          "bytes": 6012
+        },
+        {
+          "path": "fonts/3ad6c8bd3624555dd79177efe91f0aca20e7f28597fa6b49762c27f337500d8d.woff2",
+          "sha256": "3ad6c8bd3624555dd79177efe91f0aca20e7f28597fa6b49762c27f337500d8d",
+          "bytes": 8724
+        },
+        {
+          "path": "fonts/4c05ae2d20c308c3b949b4578256e5438d0af62a7d32ac6dfcc63a230246adb0.woff2",
+          "sha256": "4c05ae2d20c308c3b949b4578256e5438d0af62a7d32ac6dfcc63a230246adb0",
+          "bytes": 5860
+        },
+        {
+          "path": "fonts/4b0864712c6e7ca75f8c003f7bc1a9270af33d6becd4119463771593274c48d2.woff2",
+          "sha256": "4b0864712c6e7ca75f8c003f7bc1a9270af33d6becd4119463771593274c48d2",
+          "bytes": 8596
+        },
+        {
+          "path": "fonts/0b1fcab42c18b69bcfe9ce4799fcbff5af1621c53ffcfdc4723c6f5ec4ee3ffb.woff2",
+          "sha256": "0b1fcab42c18b69bcfe9ce4799fcbff5af1621c53ffcfdc4723c6f5ec4ee3ffb",
+          "bytes": 5644
+        },
+        {
+          "path": "fonts/7d93459d86585bfcdbb7e0376056226adb25821ee54b96236fe2123e9560929f.woff2",
+          "sha256": "7d93459d86585bfcdbb7e0376056226adb25821ee54b96236fe2123e9560929f",
+          "bytes": 7884
+        },
+        {
+          "path": "fonts/af5fda16a19169e029a132374616728e1bf326d90bef5a552395c5053e21cd0f.woff2",
+          "sha256": "af5fda16a19169e029a132374616728e1bf326d90bef5a552395c5053e21cd0f",
+          "bytes": 5484
+        },
+        {
+          "path": "fonts/cd36de204aca2d5fa263a731f7c20009b5e3d754ba1f1e03c33e93a48f3e7446.woff2",
+          "sha256": "cd36de204aca2d5fa263a731f7c20009b5e3d754ba1f1e03c33e93a48f3e7446",
+          "bytes": 7748
+        },
+        {
+          "path": "fonts/bb1f2d582e7fba586ab70c91ef062d3becaf78b887654953863521b73665d171.woff2",
+          "sha256": "bb1f2d582e7fba586ab70c91ef062d3becaf78b887654953863521b73665d171",
+          "bytes": 5524
+        },
+        {
+          "path": "fonts/f4e80d9dfd374d02989b87a27b5ed4cb78fbb177c27f1478e9a8b0afb7513149.woff2",
+          "sha256": "f4e80d9dfd374d02989b87a27b5ed4cb78fbb177c27f1478e9a8b0afb7513149",
+          "bytes": 8000
+        },
+        {
+          "path": "fonts/ccfd87f69ef00d811da3d06488cec4e79ec99d289cfbcbe4be42031cecae775a.woff2",
+          "sha256": "ccfd87f69ef00d811da3d06488cec4e79ec99d289cfbcbe4be42031cecae775a",
+          "bytes": 5432
+        },
+        {
+          "path": "fonts/9338e65fc077355c7a87ae0d64cc101e23b9bf8ad78ae65f0f319c857311b526.woff2",
+          "sha256": "9338e65fc077355c7a87ae0d64cc101e23b9bf8ad78ae65f0f319c857311b526",
+          "bytes": 7816
+        }
+      ],
+      "licenseSha256": "5c4a92c8f8ce0ab211f4c72889d82383c9644546115d9ba39a4f2d5b8f37014b",
+      "metadataSha256": "cb69cfc2dcbfc350507659915985864c4332bf2e4056cab04f94942006d8ce67",
+      "authorityLicense": "OFL"
+    },
+    "nunito-sans": {
+      "package": "@fontsource-variable/nunito-sans",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/nunito-sans/-/nunito-sans-5.3.0.tgz",
+      "integrity": "sha512-Vk1PSfckNDwgw2yGcsvJP3o/0zEW8Rp6KzbD8Ql/6iRHQshnhhAjt+cSIfAUyp5vQuSlleGHFW2LfYaaex0diw==",
+      "tarballSha256": "a392db6bc0a83e9a1dd0dc0684e09903a441fdaf8e1ff89b87b553a5dd4a8239",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/nunitosans/METADATA.pb",
+        "sha256": "b60c93a2cdadb477316d22d22c8d43fa957899a4e4fe75cbb2b9e39e03c5e96e",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/f3093f72aabbc08b8f00f185aef1b9503519a227c3d75a057dc7a3c47d7c6151.woff2",
+          "sha256": "f3093f72aabbc08b8f00f185aef1b9503519a227c3d75a057dc7a3c47d7c6151",
+          "bytes": 30344
+        },
+        {
+          "path": "fonts/8904d953726b43ded1a16bfd43398325d2382dd50780c10f18d048e0e73f84a8.woff2",
+          "sha256": "8904d953726b43ded1a16bfd43398325d2382dd50780c10f18d048e0e73f84a8",
+          "bytes": 33080
+        },
+        {
+          "path": "fonts/c648ee5bfda70d44b9fb628f4114d1cc4f984d050cbb4881052237ede3638a2e.woff2",
+          "sha256": "c648ee5bfda70d44b9fb628f4114d1cc4f984d050cbb4881052237ede3638a2e",
+          "bytes": 27908
+        },
+        {
+          "path": "fonts/29e3890496844a9ea81975c52771c587c872b4eb317026422d1995b88d21b57d.woff2",
+          "sha256": "29e3890496844a9ea81975c52771c587c872b4eb317026422d1995b88d21b57d",
+          "bytes": 31076
+        }
+      ],
+      "licenseSha256": "6632e6c45fcc18cc03909a0a53d84e9775185e06203ff80d6367cf93959b91a8",
+      "metadataSha256": "693d4774ff09eb619acbe2461a07748cd966125c9649c097104413020b2e8e75",
+      "authorityLicense": "OFL"
+    },
+    "source-sans-3": {
+      "package": "@fontsource-variable/source-sans-3",
+      "version": "5.3.1",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/source-sans-3/-/source-sans-3-5.3.1.tgz",
+      "integrity": "sha512-u0p5Z/PM2e1uxYOMiodLM6NVzxHwULcB6Oi7QSr2WU/sdoLBFP/BeOZ3YYHeJ6rHsjPZA1nZweZVaV7sf2MAyQ==",
+      "tarballSha256": "dfa23bee63f9cc5c2871149a453215093bd8f1b694a5c1d999ecdc7560435fcf",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/sourcesans3/METADATA.pb",
+        "sha256": "f855c7833e0c780c90e5a797a003f86e1201990c0af65b9c75d0a04c9be05ed7",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/6fe10a66ec416f77a26309b645471d032ad8175063bb605b886e9b7e57efaaa8.woff2",
+          "sha256": "6fe10a66ec416f77a26309b645471d032ad8175063bb605b886e9b7e57efaaa8",
+          "bytes": 59496
+        },
+        {
+          "path": "fonts/5fbc14d56cea35e60596c72ca969b349443c6a536f74e11748eed8b3a396e61d.woff2",
+          "sha256": "5fbc14d56cea35e60596c72ca969b349443c6a536f74e11748eed8b3a396e61d",
+          "bytes": 28460
+        },
+        {
+          "path": "fonts/a85a7459bdb3cdc1136751e151a506bae653fc29ada3ca86237477df6f1b59e6.woff2",
+          "sha256": "a85a7459bdb3cdc1136751e151a506bae653fc29ada3ca86237477df6f1b59e6",
+          "bytes": 60088
+        },
+        {
+          "path": "fonts/19143dca075972bc84e3fd9eab7416dd40cc565dccb2435a044bdfabe060c7d5.woff2",
+          "sha256": "19143dca075972bc84e3fd9eab7416dd40cc565dccb2435a044bdfabe060c7d5",
+          "bytes": 28872
+        }
+      ],
+      "licenseSha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3",
+      "metadataSha256": "29210fef4b2e0fb61f294e4ef229aee578c6e4a6290d05ab01f8260e43607a56",
+      "authorityLicense": "OFL"
+    },
+    "noto-sans": {
+      "package": "@fontsource-variable/noto-sans",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/noto-sans/-/noto-sans-5.3.0.tgz",
+      "integrity": "sha512-e3ZuxzY9AL2psXPZlhwhnYrHUHv6PMoyK9MQ7croF0CUgURLqu9EMjW7q2FgVLwij1tjLsIHQrnwQ8aUcg4BiA==",
+      "tarballSha256": "2cd97f3573b6e8ceaaa54ddf5df3f8e64d89a5bb31954013700d36a7ec01dcd6",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/notosans/METADATA.pb",
+        "sha256": "9fd9566184e9833ae3a33b8950e2782a8abb1f0a9d6fb2c51b3fb615f2d78cfe",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/7eccdb25aca0edb020461eff7ce779debc787c08b1e7d2abbd7d1c4ee18ff816.woff2",
+          "sha256": "7eccdb25aca0edb020461eff7ce779debc787c08b1e7d2abbd7d1c4ee18ff816",
+          "bytes": 189372
+        },
+        {
+          "path": "fonts/b21ff49befe2af5b88a3b622b3446e83199229f15ea7571a9313b15ed706298b.woff2",
+          "sha256": "b21ff49befe2af5b88a3b622b3446e83199229f15ea7571a9313b15ed706298b",
+          "bytes": 39520
+        },
+        {
+          "path": "fonts/6d5a79315528df191b9d86f97b0c4272a8b588fcb166773fe6588ac795de0613.woff2",
+          "sha256": "6d5a79315528df191b9d86f97b0c4272a8b588fcb166773fe6588ac795de0613",
+          "bytes": 167960
+        },
+        {
+          "path": "fonts/51ca196f49a33e79e7870ff88ebd2829a3f627a51e7d690986618f0e7ad2b52d.woff2",
+          "sha256": "51ca196f49a33e79e7870ff88ebd2829a3f627a51e7d690986618f0e7ad2b52d",
+          "bytes": 35820
+        }
+      ],
+      "licenseSha256": "54ec7b5a35310ad66f9f3091426f7028484cbf9ae1ab5da30122ee412a3009e1",
+      "metadataSha256": "20fea4b34d75fe81831b91bb9ca3452dcfe28a37eb01384ed04276ce95cd7793",
+      "authorityLicense": "OFL"
+    },
+    "work-sans": {
+      "package": "@fontsource-variable/work-sans",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/work-sans/-/work-sans-5.3.0.tgz",
+      "integrity": "sha512-le8h/OIIuhm5Z7TdvuMw0yKg2gaCZUiMec8zaumsVVjzeJRBPEF0bQI/MkaZDHCVzZDvZoP/O2LiGOSfDLSbaw==",
+      "tarballSha256": "ec3d70db189a709fe81726f9e5bad356ce6c1cc977e12fc24d92091c21a1787e",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/worksans/METADATA.pb",
+        "sha256": "b55627dfda8d7bdb0b2500b0f6b2b942c1f8242bf756ca5c98e8a7cd22b28946",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/7ad4dd06ed7836bad7fef7c5cb75a93229d549c8db9671aff1aa798dc1682a70.woff2",
+          "sha256": "7ad4dd06ed7836bad7fef7c5cb75a93229d549c8db9671aff1aa798dc1682a70",
+          "bytes": 32280
+        },
+        {
+          "path": "fonts/73468c2b5cc7c31456ee0c297ac87b2bfb7eb626bc79688dc3a320151fddcd2f.woff2",
+          "sha256": "73468c2b5cc7c31456ee0c297ac87b2bfb7eb626bc79688dc3a320151fddcd2f",
+          "bytes": 48180
+        },
+        {
+          "path": "fonts/2aa17fc7b072e46652e84bbe3dbba9ec57cdea320d89e8c951ed7cf3218c300b.woff2",
+          "sha256": "2aa17fc7b072e46652e84bbe3dbba9ec57cdea320d89e8c951ed7cf3218c300b",
+          "bytes": 35716
+        },
+        {
+          "path": "fonts/1dd49afc07fb2231b2ff686cbf007725fb2742271bb1f28ebd98f22a0d817343.woff2",
+          "sha256": "1dd49afc07fb2231b2ff686cbf007725fb2742271bb1f28ebd98f22a0d817343",
+          "bytes": 50316
+        }
+      ],
+      "licenseSha256": "e7c426573d51f3d2e5e92254878c862344ffa0b9272f79a880f9f99010f002c7",
+      "metadataSha256": "64b6dc6a2cb25a66f78ac8f25bd25f321915a54dc77d9976e454196643e79571",
+      "authorityLicense": "OFL"
+    },
+    "dm-sans": {
+      "package": "@fontsource-variable/dm-sans",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/dm-sans/-/dm-sans-5.3.0.tgz",
+      "integrity": "sha512-BpUG5bqePiDFMBM4ZtLSlPdAIOM990uB1dlXzIf4aw21yQR7BmykedLXXXMqGWsR18aMLOsbWccwJNh3ztTQaA==",
+      "tarballSha256": "cea46ee690c31efea45c0fbee790c6fefefc979656e8515b12f5bdb7c5bc1876",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/dmsans/METADATA.pb",
+        "sha256": "55b3697a416f7d08c093918a4019a75cca7186c64bc56b1bb23e197a5d559dee",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/6e646d2022808fb4532e77d38a9348e4dcf832796be2acc43a79052b60900db2.woff2",
+          "sha256": "6e646d2022808fb4532e77d38a9348e4dcf832796be2acc43a79052b60900db2",
+          "bytes": 20808
+        },
+        {
+          "path": "fonts/f1a235db5bcb8730707844188d35201ecdf63e56c5dcce97bab24a9c7066091d.woff2",
+          "sha256": "f1a235db5bcb8730707844188d35201ecdf63e56c5dcce97bab24a9c7066091d",
+          "bytes": 39712
+        },
+        {
+          "path": "fonts/a5d38fe99f930275684999b462c7123faa063d9e44e73b4b241723d884aa0f49.woff2",
+          "sha256": "a5d38fe99f930275684999b462c7123faa063d9e44e73b4b241723d884aa0f49",
+          "bytes": 18228
+        },
+        {
+          "path": "fonts/9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543.woff2",
+          "sha256": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543",
+          "bytes": 36932
+        }
+      ],
+      "licenseSha256": "6fbd040a29c2037a765dfb9f2561e9965b5c95c6dcb5dce516089d63d5f17af7",
+      "metadataSha256": "9b87a09c7d7525584acb707546cf030e6a53703a0f3b61593c1e12301b89fd81",
+      "authorityLicense": "OFL"
+    },
+    "manrope": {
+      "package": "@fontsource-variable/manrope",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/manrope/-/manrope-5.3.0.tgz",
+      "integrity": "sha512-6D5dgokHsWDDMtmXHznKa0hK229NN+1a4BLPmUCLqcO1Pw5EEhWY5RFt0AcXnVRAljFFPfRtLkJePQj6LSsV6g==",
+      "tarballSha256": "9629a2474e2bd73944d83392c856e268193d42c3954455bd6adb3d1ea74aa27a",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/manrope/METADATA.pb",
+        "sha256": "fb204147a7c16d009d4fa53248b6075bc941d7adfa450a825bc5d4cef2f9ded9",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/3911b66d9f2e005a4b989223405d0e5032619c668597ba467cc76a23c8fffcfb.woff2",
+          "sha256": "3911b66d9f2e005a4b989223405d0e5032619c668597ba467cc76a23c8fffcfb",
+          "bytes": 15120
+        },
+        {
+          "path": "fonts/a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972.woff2",
+          "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972",
+          "bytes": 24836
+        }
+      ],
+      "licenseSha256": "d826ab6583b12c26807d8716a545bdbbb672df04f48608a364ba9efdbe501c30",
+      "metadataSha256": "c02a84fc3e3b18396c35d344cbd1d1fbf0cca7ef02769abfc79de8cad8ed7eaa",
+      "authorityLicense": "OFL"
+    },
+    "ibm-plex-sans": {
+      "package": "@fontsource-variable/ibm-plex-sans",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/ibm-plex-sans/-/ibm-plex-sans-5.3.0.tgz",
+      "integrity": "sha512-agG8tXFEo0hD9+J7npa4vbbWult52eMLVaQ6WQRlhs/iCAojrMAoejru85W9HTVXHfyUj96KM7gp/KGAS87XaQ==",
+      "tarballSha256": "0cdf43f91e27c4dcc53ffee829fd1ebe45c810c24684766bc1e5f5609d3ffc16",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/ibmplexsans/METADATA.pb",
+        "sha256": "85f7e73668461cfacc4d9ecf94a7b67dd14dc24a71c0ae2cecd36215f0ca856c",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/bf44b77cc751203b2f0ce95c048a9d8f984313f84b58106c7c4410ca50314016.woff2",
+          "sha256": "bf44b77cc751203b2f0ce95c048a9d8f984313f84b58106c7c4410ca50314016",
+          "bytes": 33900
+        },
+        {
+          "path": "fonts/4363757d2695c7633f98472855849f7c30528eba869d7968ee35b58c87cf14c1.woff2",
+          "sha256": "4363757d2695c7633f98472855849f7c30528eba869d7968ee35b58c87cf14c1",
+          "bytes": 50184
+        },
+        {
+          "path": "fonts/d160e20920ae4d6556518d352d3af27a74e9b0de3d8fe17b1c1044fc75aa2f81.woff2",
+          "sha256": "d160e20920ae4d6556518d352d3af27a74e9b0de3d8fe17b1c1044fc75aa2f81",
+          "bytes": 30964
+        },
+        {
+          "path": "fonts/e2291e842cf5af167122a22881a740c7f2dda7716f1e8cd76680264f4a859470.woff2",
+          "sha256": "e2291e842cf5af167122a22881a740c7f2dda7716f1e8cd76680264f4a859470",
+          "bytes": 45712
+        }
+      ],
+      "licenseSha256": "d0283623ef57e722fd0eb688a8041589670c608ab780cd3612d06ba6f153d3fd",
+      "metadataSha256": "112c25c8e09009c5bac0a7089d8f5a9927bc09250f641fc295d6eb6dfb7a0d94",
+      "authorityLicense": "OFL"
+    },
+    "public-sans": {
+      "package": "@fontsource-variable/public-sans",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/public-sans/-/public-sans-5.3.0.tgz",
+      "integrity": "sha512-AVfkmAt50BMXWpOO21FAntiJFKGX6xTc2dSL8dxtDteONe9IuRXJWGbs0EbG955vAMCq23ENeuopuW87cGWDSQ==",
+      "tarballSha256": "bf6187114c40190dab8a429eb90ddc44c0ef0b731ec3ea868cecea1d7f9179bd",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/publicsans/METADATA.pb",
+        "sha256": "a6bf37ce312a499068a820ae995601242aaf7c6d92fbcfe1e4c609392c1defb7",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/a071e35bbfc9c62756e0beb2475bff387d456dbfb2ec7e0d4e90cadeb543b54a.woff2",
+          "sha256": "a071e35bbfc9c62756e0beb2475bff387d456dbfb2ec7e0d4e90cadeb543b54a",
+          "bytes": 19312
+        },
+        {
+          "path": "fonts/16dc93252adb78785ae56a6465494f73b604b39817760ea92bd4046521bb5a35.woff2",
+          "sha256": "16dc93252adb78785ae56a6465494f73b604b39817760ea92bd4046521bb5a35",
+          "bytes": 28292
+        },
+        {
+          "path": "fonts/3a00a32f0242b723dcea79935747d6d27dd93675d03ef23f470dfe274e79586a.woff2",
+          "sha256": "3a00a32f0242b723dcea79935747d6d27dd93675d03ef23f470dfe274e79586a",
+          "bytes": 18472
+        },
+        {
+          "path": "fonts/5ed4d31c988e73b258894244f209069ebe77dc7e564861954b21198b6de90d68.woff2",
+          "sha256": "5ed4d31c988e73b258894244f209069ebe77dc7e564861954b21198b6de90d68",
+          "bytes": 26832
+        }
+      ],
+      "licenseSha256": "705a497c781f6463ff819abb513bb495f3fb05256f1d20321e3275813c0bafa5",
+      "metadataSha256": "626337f6ef37ed321a2237e71b7c7c31854d79fe2115df1f9018c7a538a3afdf",
+      "authorityLicense": "OFL"
+    },
+    "figtree": {
+      "package": "@fontsource-variable/figtree",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/figtree/-/figtree-5.3.0.tgz",
+      "integrity": "sha512-VRVodD7OiG7apQwE8/2fMjaqpY/a0qRJqL5HtYj8CKIVps+9amaFcdfKmDIf7iqYQx6iPLlArVXAfKeIZmVcNQ==",
+      "tarballSha256": "745eb850be26774948b5aa9342b7182660ed3a48ac40509c7babcfdcd90c39d7",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/figtree/METADATA.pb",
+        "sha256": "0f70233b05de662ffa31a5dc3d310cb4eb047dc3b776046f937219179d79d905",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/a0cc105b3241fe952fd58ba226633f8ba733b16fd5419affbda6c8cc5c627a0b.woff2",
+          "sha256": "a0cc105b3241fe952fd58ba226633f8ba733b16fd5419affbda6c8cc5c627a0b",
+          "bytes": 10376
+        },
+        {
+          "path": "fonts/7242fa62d13d46172816b266f03c027999faa3755a52c2124bc2c440f6f4b983.woff2",
+          "sha256": "7242fa62d13d46172816b266f03c027999faa3755a52c2124bc2c440f6f4b983",
+          "bytes": 20928
+        },
+        {
+          "path": "fonts/bf7828e2c258cffcfa50a048ee388a36b95bc16b452e8d36fa797635dbe15965.woff2",
+          "sha256": "bf7828e2c258cffcfa50a048ee388a36b95bc16b452e8d36fa797635dbe15965",
+          "bytes": 10280
+        },
+        {
+          "path": "fonts/4ba7d3d096695818fe0686be4f1e82c6b05134e18a22260336130335027462dd.woff2",
+          "sha256": "4ba7d3d096695818fe0686be4f1e82c6b05134e18a22260336130335027462dd",
+          "bytes": 20156
+        }
+      ],
+      "licenseSha256": "ee23e6c84000126692e112ff067b456470493349f993ceaa8b4d3766dd6fad5d",
+      "metadataSha256": "5a5e3751c35ae2ad3d4451ec38154024650898d900205075f7c98217640e455c",
+      "authorityLicense": "OFL"
+    },
+    "outfit": {
+      "package": "@fontsource-variable/outfit",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/outfit/-/outfit-5.3.0.tgz",
+      "integrity": "sha512-fPb5XnYK0k7SbR++HEmm4+ZqDszmLKQ+sPRUr8oQ/KNC0vy6r6hazJFe8iYozv4cqlHbvJ/JECkJWrfDodUMVQ==",
+      "tarballSha256": "06ab798b993eda0cfe3c8adf31030be5da4ccaaca3e226d93ab291c4a96e5957",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/outfit/METADATA.pb",
+        "sha256": "4cd9d2154f15495ca97de561060d535eaba9f7007be4a87e40f3b58ea8111cf2",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/0f53d1c03b3918d744a843b5039001ee31695ca1e255e3914188df81beb461e9.woff2",
+          "sha256": "0f53d1c03b3918d744a843b5039001ee31695ca1e255e3914188df81beb461e9",
+          "bytes": 14808
+        },
+        {
+          "path": "fonts/6c18d579fd87c3776be068b762cbc83fde3acb543d49eabd3ade842eb987e887.woff2",
+          "sha256": "6c18d579fd87c3776be068b762cbc83fde3acb543d49eabd3ade842eb987e887",
+          "bytes": 32292
+        }
+      ],
+      "licenseSha256": "0e5fcef5d93bfcae273c11c00f0bb453d3b5491860e1ac8b658767b7577c938f",
+      "metadataSha256": "ec05a571128362b6d019f1477397d137b8582e92a84c45e7dc5a0faa03387acd",
+      "authorityLicense": "OFL"
+    },
+    "plus-jakarta-sans": {
+      "package": "@fontsource-variable/plus-jakarta-sans",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/plus-jakarta-sans/-/plus-jakarta-sans-5.3.0.tgz",
+      "integrity": "sha512-/l/4r0yyWK9JzAlmA0LiYgGgmJe/Gswt4jTJEzr5QhJfwMbvJZDmYWyW0M4X7yCK69BajMVlV/Lx8g7WDc1+sw==",
+      "tarballSha256": "271d7863880f0de211d9d44534e16907fba50cf6d47245de1938ff392ab5a30a",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/plusjakartasans/METADATA.pb",
+        "sha256": "e7953d66e52a1e09235d75fc7aef7139c2733c0b5507afcf6e9afbe0fcef1de6",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/7524d4b5f829201192882f775b90d78dbd9f9b3014ea729cfb7a47f5261ec7cb.woff2",
+          "sha256": "7524d4b5f829201192882f775b90d78dbd9f9b3014ea729cfb7a47f5261ec7cb",
+          "bytes": 23224
+        },
+        {
+          "path": "fonts/bb113d8f5be89636a9a31ffa0966762126546b98be171d6fa81115abb2cd5352.woff2",
+          "sha256": "bb113d8f5be89636a9a31ffa0966762126546b98be171d6fa81115abb2cd5352",
+          "bytes": 29600
+        },
+        {
+          "path": "fonts/38e3b8fd8045048eb311d90170a4429ed2c8f405852dc3d91b5af8452758703f.woff2",
+          "sha256": "38e3b8fd8045048eb311d90170a4429ed2c8f405852dc3d91b5af8452758703f",
+          "bytes": 21728
+        },
+        {
+          "path": "fonts/153fc85b70298beeb1d61a5f723331649e7f23bb77302a66e61cb3e2fbdb5e79.woff2",
+          "sha256": "153fc85b70298beeb1d61a5f723331649e7f23bb77302a66e61cb3e2fbdb5e79",
+          "bytes": 27348
+        }
+      ],
+      "licenseSha256": "e07fd1167c2aaaa6fb965dd66e1e73b13c9c95b76b2d648b6e938780f30b37af",
+      "metadataSha256": "6205683f177489d26187d97a1c45bb3d8a9d26ac8e1b9fbc4f3be561553c056f",
+      "authorityLicense": "OFL"
+    },
+    "urbanist": {
+      "package": "@fontsource-variable/urbanist",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/urbanist/-/urbanist-5.3.0.tgz",
+      "integrity": "sha512-riHbcRgoOhEdCwVw3n3R1JLEwvRD1N9GlXtBcwl/UJ2KabfyDBuryE2Yq10308QJgbXw3F/IFF+VoMuuqwVfIA==",
+      "tarballSha256": "ef3a1647d0351a95049b35efc084610b9829bc8011e52a09dafa451c5834a3bd",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/urbanist/METADATA.pb",
+        "sha256": "14f7a612b0fc6a2c6106e591c14ea2e8415a5837cf88e9872ca9b8a51c44e55e",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/8e52fb29866718ef070f1d8e9e99a3afaf057f35718e6546083ad898badc2240.woff2",
+          "sha256": "8e52fb29866718ef070f1d8e9e99a3afaf057f35718e6546083ad898badc2240",
+          "bytes": 17248
+        },
+        {
+          "path": "fonts/163e60078a8ae1d21e91ccf9dd475d7e7bff4b21d3fc919cde800bb1df9d3010.woff2",
+          "sha256": "163e60078a8ae1d21e91ccf9dd475d7e7bff4b21d3fc919cde800bb1df9d3010",
+          "bytes": 29632
+        },
+        {
+          "path": "fonts/f71047c01398a570cabbd2810cb0893992b3dd2e34c966afa0e54b3f12b6f329.woff2",
+          "sha256": "f71047c01398a570cabbd2810cb0893992b3dd2e34c966afa0e54b3f12b6f329",
+          "bytes": 16604
+        },
+        {
+          "path": "fonts/7981ef90c246352c7c217081b8d9337b9c95e9d17ae126bf56b0d3753d1e5ffb.woff2",
+          "sha256": "7981ef90c246352c7c217081b8d9337b9c95e9d17ae126bf56b0d3753d1e5ffb",
+          "bytes": 27752
+        }
+      ],
+      "licenseSha256": "d8c6282d9c21c49ecf65ed1f98e4eaefff8d6cd32e9725bb3c7360fe47d32f47",
+      "metadataSha256": "c7179775de35804ceb91302d4b4e44cf371b0148527c70c2baecb70a449d4c50",
+      "authorityLicense": "OFL"
+    },
+    "rubik": {
+      "package": "@fontsource-variable/rubik",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/rubik/-/rubik-5.3.0.tgz",
+      "integrity": "sha512-yQUf8qle24MJYA+EuauyF+cqjjN6I715nGjitt3sGmwZA0XfA4fWJcLq1C/diREZl4Qzn1E80nLMc0ipC/a4Lg==",
+      "tarballSha256": "df83b5a6cbccf05eb393dea2c5bfbbb13a5a4dfb5d6e52654d17be48665c4cf7",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/rubik/METADATA.pb",
+        "sha256": "2e81cc9a038e89bcf9a14cd4e2d4513c1b5959e8b9189b835d4ecf4af11968a6",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/51999fc7e45d93d8d34d3c0f1c32e58f85ae6e69d8dfb700771062e5c3945e49.woff2",
+          "sha256": "51999fc7e45d93d8d34d3c0f1c32e58f85ae6e69d8dfb700771062e5c3945e49",
+          "bytes": 21152
+        },
+        {
+          "path": "fonts/4d9f552c4b0a7f02f231e56198d80aed8550bdfb7e7541260b2b20455b14fb88.woff2",
+          "sha256": "4d9f552c4b0a7f02f231e56198d80aed8550bdfb7e7541260b2b20455b14fb88",
+          "bytes": 36616
+        },
+        {
+          "path": "fonts/09472f217ad1ebb61a7669cf532f9f2f80685e07652ee862fde9a79665aef479.woff2",
+          "sha256": "09472f217ad1ebb61a7669cf532f9f2f80685e07652ee862fde9a79665aef479",
+          "bytes": 19400
+        },
+        {
+          "path": "fonts/691cd1d9b4c0cdf31a1dcf04259c86f92c85e69f6622abab7964d81e36890691.woff2",
+          "sha256": "691cd1d9b4c0cdf31a1dcf04259c86f92c85e69f6622abab7964d81e36890691",
+          "bytes": 35348
+        }
+      ],
+      "licenseSha256": "46a250495a963b0b84f2736c0185d0e3af8df9d23427bd425b92a8ece020283c",
+      "metadataSha256": "9fac6c622747caac9302554696acb78dfce0170506bf5c06bdc6a6813c6ec133",
+      "authorityLicense": "OFL"
+    },
+    "mulish": {
+      "package": "@fontsource-variable/mulish",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/mulish/-/mulish-5.3.0.tgz",
+      "integrity": "sha512-CLh1WAcz2noJmoAun0/dsE7+0ZO6Kq/MBd+x00CcZ9dmThXqYqdhSssXGOdqb3G9YVaeGOmVkMS5yrZd1BHr9Q==",
+      "tarballSha256": "92e3fddbf9366437b20a9dcffb137e6f68b0face1f5428d31d552c802e5923b0",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/mulish/METADATA.pb",
+        "sha256": "2e774ba57517885f1bc14be86a010ee2fd0c5c524b8d0e243c0a76a2a355e520",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/081c49fccb3da90bee5f39c9b97cc40c8d52e13291c0c78d573a6def6a8f5402.woff2",
+          "sha256": "081c49fccb3da90bee5f39c9b97cc40c8d52e13291c0c78d573a6def6a8f5402",
+          "bytes": 29612
+        },
+        {
+          "path": "fonts/7380fb751bd9cbd89824588ddeb25a83395eb850e16eb24936c24c7de2ff4d2e.woff2",
+          "sha256": "7380fb751bd9cbd89824588ddeb25a83395eb850e16eb24936c24c7de2ff4d2e",
+          "bytes": 32264
+        },
+        {
+          "path": "fonts/e1ccc8579a0437969464ba8bb1bb5e423306fa16746521d1f05040243b9a7a58.woff2",
+          "sha256": "e1ccc8579a0437969464ba8bb1bb5e423306fa16746521d1f05040243b9a7a58",
+          "bytes": 26820
+        },
+        {
+          "path": "fonts/8d1d33d6beea5a722b8f336d79c61c07405949457e37b5e65454c72dc10aba1a.woff2",
+          "sha256": "8d1d33d6beea5a722b8f336d79c61c07405949457e37b5e65454c72dc10aba1a",
+          "bytes": 29968
+        }
+      ],
+      "licenseSha256": "e8c2c25954b4ff44e44ad6b2d900d0b3936a593a4579e8d65b2788aac7ebf8ca",
+      "metadataSha256": "1bb42c281667408cd028b8ef24fe0039d560bed8c20a8c045fe3eb2423aa6f82",
+      "authorityLicense": "OFL"
+    },
+    "ubuntu": {
+      "package": "@fontsource/ubuntu",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource/ubuntu/-/ubuntu-5.3.0.tgz",
+      "integrity": "sha512-LsjJXgE430QLs8LKfn1RIFbbdGAiZBU1gao8ASa4Z2kGNGh7lMb7Rzx09v3bLLuuK+3XA/JSLgPWTAbLD6r1fg==",
+      "tarballSha256": "d69a09b1f2dcf4e470da62fd9c767175d957eb77d1e56767c94357abd3d48287",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ufl/ubuntu/METADATA.pb",
+        "sha256": "fe1e0f3e0663e6ed9752de75a73b8a436fbfd47e55b5b309b191e0d75f9a93eb",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/b923867df5e5862a03c79e4d38ad76d5102da1a5a01d8ccadc75c05e0786e8bd.woff2",
+          "sha256": "b923867df5e5862a03c79e4d38ad76d5102da1a5a01d8ccadc75c05e0786e8bd",
+          "bytes": 49776
+        },
+        {
+          "path": "fonts/bc79d1b312559bbb2fec09c60895b411a60403586df8907fc022afaae3be7971.woff2",
+          "sha256": "bc79d1b312559bbb2fec09c60895b411a60403586df8907fc022afaae3be7971",
+          "bytes": 36468
+        },
+        {
+          "path": "fonts/3231e967d485ca4ce449f61ce4dbf754d00f43ea95ac299986979d5b51ba3b8a.woff2",
+          "sha256": "3231e967d485ca4ce449f61ce4dbf754d00f43ea95ac299986979d5b51ba3b8a",
+          "bytes": 46748
+        },
+        {
+          "path": "fonts/2c314f98cffbd264fa93de03becb6012215a145943389003f70c825bac0ac0c5.woff2",
+          "sha256": "2c314f98cffbd264fa93de03becb6012215a145943389003f70c825bac0ac0c5",
+          "bytes": 32580
+        },
+        {
+          "path": "fonts/794cd2c5767e39c9273da3a321c0f65a599d6c5a08d24a6c7c3798bea6de00d7.woff2",
+          "sha256": "794cd2c5767e39c9273da3a321c0f65a599d6c5a08d24a6c7c3798bea6de00d7",
+          "bytes": 42248
+        },
+        {
+          "path": "fonts/c43326719ec42ca99c5f6ee1c6107ebe59f636812c4a0e93a58a2e7051db4930.woff2",
+          "sha256": "c43326719ec42ca99c5f6ee1c6107ebe59f636812c4a0e93a58a2e7051db4930",
+          "bytes": 30732
+        },
+        {
+          "path": "fonts/7db064fa5c5d305d684608744d621aa724ec4f1c6b00bb647697f4d8d3e78df1.woff2",
+          "sha256": "7db064fa5c5d305d684608744d621aa724ec4f1c6b00bb647697f4d8d3e78df1",
+          "bytes": 46980
+        },
+        {
+          "path": "fonts/dabae363ac0ae6c3b2a137a32f7132b42520a8af252f87aa6c2198f2a79cf91c.woff2",
+          "sha256": "dabae363ac0ae6c3b2a137a32f7132b42520a8af252f87aa6c2198f2a79cf91c",
+          "bytes": 34924
+        },
+        {
+          "path": "fonts/a90dec375bfc6a8b7c568da98f28b844916c5973e346f12eb55f016177e254df.woff2",
+          "sha256": "a90dec375bfc6a8b7c568da98f28b844916c5973e346f12eb55f016177e254df",
+          "bytes": 42480
+        },
+        {
+          "path": "fonts/428ec293d3b79af16abdca704f630c6c951744f572eddbc80e970bc9a94a33d2.woff2",
+          "sha256": "428ec293d3b79af16abdca704f630c6c951744f572eddbc80e970bc9a94a33d2",
+          "bytes": 30508
+        },
+        {
+          "path": "fonts/30073583012b73a5c05c290e601325850ddbc7c7a1241561ec9264b8744c2a86.woff2",
+          "sha256": "30073583012b73a5c05c290e601325850ddbc7c7a1241561ec9264b8744c2a86",
+          "bytes": 38020
+        },
+        {
+          "path": "fonts/3658a0717e347c1db8d80dd565584b9dc56769fbf87909c50a4a7740206ec5f7.woff2",
+          "sha256": "3658a0717e347c1db8d80dd565584b9dc56769fbf87909c50a4a7740206ec5f7",
+          "bytes": 29844
+        }
+      ],
+      "licenseSha256": "52fdffecb23a020de527f68c516cac16dbbaf2dbb73fd9e29e2149703b881c82",
+      "metadataSha256": "4d1d553c0dc8b343bdde00f11062c80542a2cfe1033bfca76b57565ddd852072",
+      "authorityLicense": "UFL"
+    },
+    "barlow": {
+      "package": "@fontsource/barlow",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource/barlow/-/barlow-5.3.0.tgz",
+      "integrity": "sha512-tGR0y6QObRtKv71MOth44222+mdNFM/ZWFWDV1VLzNbG4oK9PNRlyJzmkck4vHAi9ibHBXgt4SlY51amFP55CA==",
+      "tarballSha256": "8ad808291f807367d10eadf915791608bd04cc393882e7e86e290daeeadd843c",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/barlow/METADATA.pb",
+        "sha256": "636e983a5a87c2d7aa3ff9f6544f65910eac0c8537a2a8b29c584d786770d878",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/dcc40914416cf9c17ca57deeed46b2eea1749b2b3a57db34147ed0ee004b866b.woff2",
+          "sha256": "dcc40914416cf9c17ca57deeed46b2eea1749b2b3a57db34147ed0ee004b866b",
+          "bytes": 15300
+        },
+        {
+          "path": "fonts/7a306c56f630df002deeafbd521738e20795d765feea65030def2e80f9a3d62f.woff2",
+          "sha256": "7a306c56f630df002deeafbd521738e20795d765feea65030def2e80f9a3d62f",
+          "bytes": 24484
+        },
+        {
+          "path": "fonts/48d125ab6f182bc8bb52f8fcdfb82ea4027bcecddc5a962dfef1d5e3fd08369b.woff2",
+          "sha256": "48d125ab6f182bc8bb52f8fcdfb82ea4027bcecddc5a962dfef1d5e3fd08369b",
+          "bytes": 15400
+        },
+        {
+          "path": "fonts/15fff91140576edddc04333d4a03c4634d25e327597db5f855dce6c92023e4ba.woff2",
+          "sha256": "15fff91140576edddc04333d4a03c4634d25e327597db5f855dce6c92023e4ba",
+          "bytes": 24356
+        },
+        {
+          "path": "fonts/b348d5eade8d61fb56782af290ffb68bed4a0ff71df48364b3b6e08ed22c8517.woff2",
+          "sha256": "b348d5eade8d61fb56782af290ffb68bed4a0ff71df48364b3b6e08ed22c8517",
+          "bytes": 15520
+        },
+        {
+          "path": "fonts/8eccc3c886206556e8aa3d585003d5fc1b8071a4f1d63a04fcd58d4b9a492e92.woff2",
+          "sha256": "8eccc3c886206556e8aa3d585003d5fc1b8071a4f1d63a04fcd58d4b9a492e92",
+          "bytes": 24360
+        },
+        {
+          "path": "fonts/cf54080f2ca3711deed8291a944d9f256a96ba0afb41309f30831b686ce488b1.woff2",
+          "sha256": "cf54080f2ca3711deed8291a944d9f256a96ba0afb41309f30831b686ce488b1",
+          "bytes": 15332
+        },
+        {
+          "path": "fonts/717f61f0f8cf46b1f2aa54283e91ae39b1a80c4769ccaa761c7fab813708bcff.woff2",
+          "sha256": "717f61f0f8cf46b1f2aa54283e91ae39b1a80c4769ccaa761c7fab813708bcff",
+          "bytes": 24332
+        },
+        {
+          "path": "fonts/122b24bc2a90b0abe189f5229768bf2e9ba641324fe2459b48850079625934f1.woff2",
+          "sha256": "122b24bc2a90b0abe189f5229768bf2e9ba641324fe2459b48850079625934f1",
+          "bytes": 14268
+        },
+        {
+          "path": "fonts/b0a8ad37ac45f5fb22ced461576db72e44e295107aad7a9c8a7a4bad728fd03b.woff2",
+          "sha256": "b0a8ad37ac45f5fb22ced461576db72e44e295107aad7a9c8a7a4bad728fd03b",
+          "bytes": 22196
+        },
+        {
+          "path": "fonts/3facdf66b60778c7e64693013be7799e6686b2488dad65525b4036e211ab03e0.woff2",
+          "sha256": "3facdf66b60778c7e64693013be7799e6686b2488dad65525b4036e211ab03e0",
+          "bytes": 14416
+        },
+        {
+          "path": "fonts/cd759df8ef9efc98fee14307b4eb5ba27f08b1f8f2f3ad2872432e25c89907a8.woff2",
+          "sha256": "cd759df8ef9efc98fee14307b4eb5ba27f08b1f8f2f3ad2872432e25c89907a8",
+          "bytes": 22008
+        },
+        {
+          "path": "fonts/b7f099c421968b583734bc631e6706bff8fc23908112a219f5f0e37f59b03b32.woff2",
+          "sha256": "b7f099c421968b583734bc631e6706bff8fc23908112a219f5f0e37f59b03b32",
+          "bytes": 14968
+        },
+        {
+          "path": "fonts/4b52ddd4836b592df0e4832b8286956883cdc651b015126bdd18f184b7f90cc3.woff2",
+          "sha256": "4b52ddd4836b592df0e4832b8286956883cdc651b015126bdd18f184b7f90cc3",
+          "bytes": 22772
+        },
+        {
+          "path": "fonts/88c786d5fa8700a201615bc7b8ede09d209ec5d08cc3dd0a30ea1c4baff3476f.woff2",
+          "sha256": "88c786d5fa8700a201615bc7b8ede09d209ec5d08cc3dd0a30ea1c4baff3476f",
+          "bytes": 14836
+        },
+        {
+          "path": "fonts/2d797dd8b35dcb3413e1af9d7052b3f4f8c341a147cdcb01f4f06af80db53289.woff2",
+          "sha256": "2d797dd8b35dcb3413e1af9d7052b3f4f8c341a147cdcb01f4f06af80db53289",
+          "bytes": 22788
+        }
+      ],
+      "licenseSha256": "4877e0c1b66f0b16cc3ebc4801c4def24c06252f618b9229428b20c7387aa0c0",
+      "metadataSha256": "e909013853e1dae84ca161616b4fb4c8496cf8979e25bb0e34064b17ab21fc93",
+      "authorityLicense": "OFL"
+    },
+    "atkinson-hyperlegible": {
+      "package": "@fontsource/atkinson-hyperlegible",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource/atkinson-hyperlegible/-/atkinson-hyperlegible-5.3.0.tgz",
+      "integrity": "sha512-Sp8Ve8+rQmENY2Lv02VH7sLpntzTTvnncnJMTbRE7DX6TLxGraN4ykZfzaUWIoCFmaomwkvNiqmlPkrKBuDoSA==",
+      "tarballSha256": "6c22186d05f555e1ebf58431ef2c154445e64b760e381c483a56a0a0c5dc2d43",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/atkinsonhyperlegible/METADATA.pb",
+        "sha256": "13d7f7361ca762420bc0b8a483fbcae6c94598b5a372aee4b8b6f4e382d3282f",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/90d887d541fe6e912d15f826aae6ca1190efcf172b65401704472475ed771049.woff2",
+          "sha256": "90d887d541fe6e912d15f826aae6ca1190efcf172b65401704472475ed771049",
+          "bytes": 9796
+        },
+        {
+          "path": "fonts/bc8825fd435d4aa8e31449937826d583a7daaae15a83832c91b38375131ebf08.woff2",
+          "sha256": "bc8825fd435d4aa8e31449937826d583a7daaae15a83832c91b38375131ebf08",
+          "bytes": 18292
+        },
+        {
+          "path": "fonts/43471ea6265ba9619c8c12d3f9f53c9e1741fa3af69f6b658100a841b09398c8.woff2",
+          "sha256": "43471ea6265ba9619c8c12d3f9f53c9e1741fa3af69f6b658100a841b09398c8",
+          "bytes": 9920
+        },
+        {
+          "path": "fonts/73e0c9e1e284128dda599558f7c15bd5f3c056442c31dfae950528a16b3835cf.woff2",
+          "sha256": "73e0c9e1e284128dda599558f7c15bd5f3c056442c31dfae950528a16b3835cf",
+          "bytes": 18484
+        },
+        {
+          "path": "fonts/61eeb0eb8b881a84d069e67be1723f5b353b0b9b866ad8e7ad9dba66cdc4dabd.woff2",
+          "sha256": "61eeb0eb8b881a84d069e67be1723f5b353b0b9b866ad8e7ad9dba66cdc4dabd",
+          "bytes": 9384
+        },
+        {
+          "path": "fonts/d64ba838ef5472bba248620ec4fd8b5aa7cf0db2908e0bb230600caf279ba7bc.woff2",
+          "sha256": "d64ba838ef5472bba248620ec4fd8b5aa7cf0db2908e0bb230600caf279ba7bc",
+          "bytes": 17208
+        },
+        {
+          "path": "fonts/840ced16f975d8abc2594b436d0206649e0c2a7327e36750ff849d3d37c3c02e.woff2",
+          "sha256": "840ced16f975d8abc2594b436d0206649e0c2a7327e36750ff849d3d37c3c02e",
+          "bytes": 9372
+        },
+        {
+          "path": "fonts/140e2bd25a7315c8a062508391426b0d8c3297400c947b8d847be28f73a199f0.woff2",
+          "sha256": "140e2bd25a7315c8a062508391426b0d8c3297400c947b8d847be28f73a199f0",
+          "bytes": 17524
+        }
+      ],
+      "licenseSha256": "e137caeef2ff7c04fbf87078ad09cf3dcba8a3a58a4aa4e2f399d42c50bc4b18",
+      "metadataSha256": "6492e914696cc5b4e27ac3b7b50d6bdeab8156230aba751edaf8aa7e16de82ae",
+      "authorityLicense": "OFL"
+    },
+    "lexend": {
+      "package": "@fontsource-variable/lexend",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/lexend/-/lexend-5.3.0.tgz",
+      "integrity": "sha512-3SXtiZ8rFbT0oaPzEboCG5RM3jtyhpNxandh1jWNLqvrJRfV/eP3R+GGw+o5e3hS1uqmAGutKxSvaWG5oyrimA==",
+      "tarballSha256": "16872fd283fcb74c9eaab6e806b9766dfaa49e7da79a2e9915b0794e78082444",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/lexend/METADATA.pb",
+        "sha256": "b49d2fc75e302d8961616bb2005309a8bd76c32787f0769fcb910a8b0f10fcb0",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/b5d815d42066da25e5894bdfe47a415e1f79ef436486e3f843b475806d2e613c.woff2",
+          "sha256": "b5d815d42066da25e5894bdfe47a415e1f79ef436486e3f843b475806d2e613c",
+          "bytes": 34476
+        },
+        {
+          "path": "fonts/b7e7538f59bff1812841d7627f8e49e70fe86438f9f7b397a028c0d05301c874.woff2",
+          "sha256": "b7e7538f59bff1812841d7627f8e49e70fe86438f9f7b397a028c0d05301c874",
+          "bytes": 39680
+        }
+      ],
+      "licenseSha256": "cdfed8f91b0660b004befb744757918b7c7d40dc2201b6c6d0a86b2fab9408f8",
+      "metadataSha256": "88718e7503c40c39995c8ca603a82759dce06f6f88f3eadc54b2828226baf002",
+      "authorityLicense": "OFL"
+    },
+    "merriweather": {
+      "package": "@fontsource-variable/merriweather",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/merriweather/-/merriweather-5.3.0.tgz",
+      "integrity": "sha512-wK7S4NtPXWUWll/sZCdub93pqSCnFkpKFbnoOE8fh+9Ut6JFjgkc9UlBxHJ0RVMkDpoWwGwMwYYTMvd3G9aAXA==",
+      "tarballSha256": "f2644472e639c25e8a32c14bf5c7a9d316c1d209666aadff98cca7f0d7d09d8a",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/merriweather/METADATA.pb",
+        "sha256": "50aa12ab94b75275eb90b6353dd3f9b187c101ce0a89071f5456c052490a4345",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/f11472cb2bef38bdb05eb91911e9672e8e45dd80756cb87a7f316ac9ec910e1f.woff2",
+          "sha256": "f11472cb2bef38bdb05eb91911e9672e8e45dd80756cb87a7f316ac9ec910e1f",
+          "bytes": 78260
+        },
+        {
+          "path": "fonts/caa1da88ecea68d5d4b79881792675c76e691f5141ae3fef85bd472920436053.woff2",
+          "sha256": "caa1da88ecea68d5d4b79881792675c76e691f5141ae3fef85bd472920436053",
+          "bytes": 100572
+        },
+        {
+          "path": "fonts/8ca0880997847953a13964d6769b6712c57aa2dc2f881f4e6e805719791daed8.woff2",
+          "sha256": "8ca0880997847953a13964d6769b6712c57aa2dc2f881f4e6e805719791daed8",
+          "bytes": 74960
+        },
+        {
+          "path": "fonts/4fbe8dd9c23b1fd62a988bb8a69b8e692d810f773d9ef6ebca2ba2760c7b11ee.woff2",
+          "sha256": "4fbe8dd9c23b1fd62a988bb8a69b8e692d810f773d9ef6ebca2ba2760c7b11ee",
+          "bytes": 97548
+        }
+      ],
+      "licenseSha256": "aa677c3f7682d9c4f7aa48fae3f3b9d0f8d70ac6ab47b9bc20a9cc2879e15af0",
+      "metadataSha256": "edc79d7100ba38df92c782f02047c4bd94b61037abd3aaedc44ede9cf17b4c78",
+      "authorityLicense": "OFL"
+    },
+    "lora": {
+      "package": "@fontsource-variable/lora",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/lora/-/lora-5.3.0.tgz",
+      "integrity": "sha512-2ph8KiZ8Bn141hWuC3ErtpJ+Ui8p2MJQn8TJNRSRmLmnCIOCtHfiBM9R7WLRPeUG/q6hXyHOxWQ8DvRSX+ixvQ==",
+      "tarballSha256": "754d8a7eefcf9fd6b11d2fee82377a0c92f82c29d5837c08dda57122d9abf5de",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/lora/METADATA.pb",
+        "sha256": "6d9e38cc8926e903359a1c4c358fd2e71864f422aae9550d0d9a2ae0c62ddb8d",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/45f989df83f3a9f40007d2ecdea98bff248c8767a1a0bbe60e94fb37b605ecee.woff2",
+          "sha256": "45f989df83f3a9f40007d2ecdea98bff248c8767a1a0bbe60e94fb37b605ecee",
+          "bytes": 21128
+        },
+        {
+          "path": "fonts/d824d807d4d832d12c87932d0b8ec1314dcfd502157a56dee6bb04cf8a3768ae.woff2",
+          "sha256": "d824d807d4d832d12c87932d0b8ec1314dcfd502157a56dee6bb04cf8a3768ae",
+          "bytes": 40772
+        },
+        {
+          "path": "fonts/2a2d9c22c9863086a23f5013fede1428585321812b25f2662542c39d02967c5e.woff2",
+          "sha256": "2a2d9c22c9863086a23f5013fede1428585321812b25f2662542c39d02967c5e",
+          "bytes": 20088
+        },
+        {
+          "path": "fonts/ddb8c66035104e233fc024669183aad3738b6daa16deee2ebb1241bd0f98ace1.woff2",
+          "sha256": "ddb8c66035104e233fc024669183aad3738b6daa16deee2ebb1241bd0f98ace1",
+          "bytes": 37788
+        }
+      ],
+      "licenseSha256": "948aed765160f7b974105606c21994715a171f89fca48e57bf1e0a23aca0bef1",
+      "metadataSha256": "8c805f5efa2260117418fc65254691340bea8b30f34ecfaff611667c874f20d6",
+      "authorityLicense": "OFL"
+    },
+    "source-serif-4": {
+      "package": "@fontsource-variable/source-serif-4",
+      "version": "5.3.1",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/source-serif-4/-/source-serif-4-5.3.1.tgz",
+      "integrity": "sha512-4Rtay22SC4lMvw11r/+9kxANB6P3M0X8s1NudBC2v0J1KU2y3DcMoNcT3lBoZ/CqLirzf+StlO6UlJilyrvaUg==",
+      "tarballSha256": "8c452853c74be1e43e9fbfe76321c26f4678a2d431e93209ff1d9faec03fd96f",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/sourceserif4/METADATA.pb",
+        "sha256": "f7b88902c1d2f41839a3f7bf6723d1e64044c7c183b82871ce770a95f24b84e3",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/14e38c2d6a4ea6effcddde38f0262c03af252cbf82dbc68037f2d6c9112f2097.woff2",
+          "sha256": "14e38c2d6a4ea6effcddde38f0262c03af252cbf82dbc68037f2d6c9112f2097",
+          "bytes": 44420
+        },
+        {
+          "path": "fonts/b4f56ddc9873487f1c9a3ad5bbce31982fe89b951f57e4604f62b4c8a540fb19.woff2",
+          "sha256": "b4f56ddc9873487f1c9a3ad5bbce31982fe89b951f57e4604f62b4c8a540fb19",
+          "bytes": 51576
+        },
+        {
+          "path": "fonts/d10ccbbd0dc4ebae2938958dc1f622a53460fe297e9c958564742dd684309c3f.woff2",
+          "sha256": "d10ccbbd0dc4ebae2938958dc1f622a53460fe297e9c958564742dd684309c3f",
+          "bytes": 42212
+        },
+        {
+          "path": "fonts/382475f38242c52d42a3e5ff8dc69b5d73f10d0d21e4550b5fe232984688779a.woff2",
+          "sha256": "382475f38242c52d42a3e5ff8dc69b5d73f10d0d21e4550b5fe232984688779a",
+          "bytes": 50936
+        }
+      ],
+      "licenseSha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3",
+      "metadataSha256": "843a721ffbeec6fcea00c67406f14b00f343174d9cc0db2eff23c7fa960d3080",
+      "authorityLicense": "OFL"
+    },
+    "noto-serif": {
+      "package": "@fontsource-variable/noto-serif",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/noto-serif/-/noto-serif-5.3.0.tgz",
+      "integrity": "sha512-GxGAScLRifXH02gDoJGroO/NIX83It7m1TYPPp1bhNPaii6/+GBYKxl/uL5GabFe0PBfiUV92wA4MdMdEDUu6A==",
+      "tarballSha256": "375a51217183452a0d26b8667d03d83448bca46bfb750c265bfc419939b4b218",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/notoserif/METADATA.pb",
+        "sha256": "659cf6a2475eabfa3e3bbb92e3ed15c604e6fb035b3b1057d469cc88e67357bb",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/5119ea51adaf6d65c7e0f25b19c57c09704e351468239bda59dfa65aa4eeeb3c.woff2",
+          "sha256": "5119ea51adaf6d65c7e0f25b19c57c09704e351468239bda59dfa65aa4eeeb3c",
+          "bytes": 237820
+        },
+        {
+          "path": "fonts/a1a6ebee6d69b2628ac102f55cb447135643a5401ae92eb77f4e2c6888dfce22.woff2",
+          "sha256": "a1a6ebee6d69b2628ac102f55cb447135643a5401ae92eb77f4e2c6888dfce22",
+          "bytes": 47936
+        },
+        {
+          "path": "fonts/2654f8d1261a420fc81628122bee9d494b493227e3d7d9baa4238360b92b11d3.woff2",
+          "sha256": "2654f8d1261a420fc81628122bee9d494b493227e3d7d9baa4238360b92b11d3",
+          "bytes": 186552
+        },
+        {
+          "path": "fonts/46281456234014ceb2a79bff447245de0f76b8d803be0738972ed374c3206c5b.woff2",
+          "sha256": "46281456234014ceb2a79bff447245de0f76b8d803be0738972ed374c3206c5b",
+          "bytes": 36756
+        }
+      ],
+      "licenseSha256": "45d545469122348b916bfa4d362f691c3f7f3af7169fd46f920845cae97923df",
+      "metadataSha256": "3e44f89eb1db5315edd642a39988c94d249f9900f42606a52c10e07b8113b969",
+      "authorityLicense": "OFL"
+    },
+    "libre-baskerville": {
+      "package": "@fontsource-variable/libre-baskerville",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/libre-baskerville/-/libre-baskerville-5.3.0.tgz",
+      "integrity": "sha512-lIjXwDhcdr0OxSdzlAU4G7Tnny1LhgAiPFdp3/PjwRMqYt2JLU6pQiLwz/M5lRBs/kRtHwxknPUqRt37AnqPFg==",
+      "tarballSha256": "11fd5bff05a93f4da8bd564d45c0019d5f281b05c56fb9433408677490bd3116",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/librebaskerville/METADATA.pb",
+        "sha256": "e29f1dcebfdf5918d29c4d373e1a6a0ae3bcb94538aa63362fdcc7bf095cc9c8",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/890c2ae602dfc42b941667f13dcb5ddb196a31e8d7aa76cea20f2afaa7531eff.woff2",
+          "sha256": "890c2ae602dfc42b941667f13dcb5ddb196a31e8d7aa76cea20f2afaa7531eff",
+          "bytes": 35228
+        },
+        {
+          "path": "fonts/1203eb6186789060d1376ca7ab20734b179e241c85ddc2d84502c818afb63210.woff2",
+          "sha256": "1203eb6186789060d1376ca7ab20734b179e241c85ddc2d84502c818afb63210",
+          "bytes": 31244
+        },
+        {
+          "path": "fonts/8f7537ce3a6c1c0d0e93a9530432df13953312d378713a059e9a6cf0d0cde8b9.woff2",
+          "sha256": "8f7537ce3a6c1c0d0e93a9530432df13953312d378713a059e9a6cf0d0cde8b9",
+          "bytes": 35468
+        },
+        {
+          "path": "fonts/22219fb90e3b9bd28debd1825fe8d9a0154a0e31f8b3fa601ac1a0a5aa5e6d1b.woff2",
+          "sha256": "22219fb90e3b9bd28debd1825fe8d9a0154a0e31f8b3fa601ac1a0a5aa5e6d1b",
+          "bytes": 33872
+        }
+      ],
+      "licenseSha256": "8490e863633e537100d6d18755d994ea30b0b44741876a17809d28becf45ce11",
+      "metadataSha256": "a03442e83fc3d27446cd9ba76eecf621483f99a32056add74d7a5ab2e32452ca",
+      "authorityLicense": "OFL"
+    },
+    "playfair-display": {
+      "package": "@fontsource-variable/playfair-display",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/playfair-display/-/playfair-display-5.3.0.tgz",
+      "integrity": "sha512-IHdzTvE8eGIXHteZql7KXoqdc3Gfm+Zs1u4XlSC3MeplkwviT3sx/P6gI0tLwg/xIYLF4ZJYveZ5V+bl9cnDwA==",
+      "tarballSha256": "5d9a6609ccc3c3bcba68c5b66981cce7d731bf5bb6e64a2ca6045ab05e527788",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/playfairdisplay/METADATA.pb",
+        "sha256": "c9e6a996754f710fb7ff2ba36f8dd807244318d561d63d247a22199ea1a5e94a",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/b9dff4aec6d8ef27af595330c808c455fcc3ff46881642aa6028ed4e27a96f89.woff2",
+          "sha256": "b9dff4aec6d8ef27af595330c808c455fcc3ff46881642aa6028ed4e27a96f89",
+          "bytes": 23380
+        },
+        {
+          "path": "fonts/54af24bd0f911f0fd7399d5445ea2023ff501d6a69f2d728f1213072f977ab14.woff2",
+          "sha256": "54af24bd0f911f0fd7399d5445ea2023ff501d6a69f2d728f1213072f977ab14",
+          "bytes": 38804
+        },
+        {
+          "path": "fonts/42898ad49a6b23f32b109243e1df596edf831015ed685f429e4dafbb181d599d.woff2",
+          "sha256": "42898ad49a6b23f32b109243e1df596edf831015ed685f429e4dafbb181d599d",
+          "bytes": 21140
+        },
+        {
+          "path": "fonts/e0c764a8e9e1cce92163c55bac4b2ad6cd4cf8c696ce2289ab5c41565e65b7e2.woff2",
+          "sha256": "e0c764a8e9e1cce92163c55bac4b2ad6cd4cf8c696ce2289ab5c41565e65b7e2",
+          "bytes": 38404
+        }
+      ],
+      "licenseSha256": "c052aafd2a71e90bcee6e69f475029d430a10d548c08ffcae350171f0e9668b1",
+      "metadataSha256": "1c12fc1a77bf57f2af674b467c74174087e2202ddc4abb1f604febd0667c2ba2",
+      "authorityLicense": "OFL"
+    },
+    "dm-serif-display": {
+      "package": "@fontsource/dm-serif-display",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource/dm-serif-display/-/dm-serif-display-5.3.0.tgz",
+      "integrity": "sha512-ecRclUcYeto9fB7ghkB36H4MtUoaUYFjjornWYYeLCMHzaWEDPk2kIWgZOq0mKBNRxclRSieKcFeLonlMYDTKg==",
+      "tarballSha256": "ddfb21109ee8a7c82703527f1f2df378511d0d5161410eb345bb4a893c9fca4c",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/dmserifdisplay/METADATA.pb",
+        "sha256": "3014380ddec81e774af2ab07a903542367573ce4e4d19ca8c01b928e970c1268",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/e026521e59b7b3e5d3257cc76069916111683b97c24e75f0c7a9f07621aa9460.woff2",
+          "sha256": "e026521e59b7b3e5d3257cc76069916111683b97c24e75f0c7a9f07621aa9460",
+          "bytes": 11124
+        },
+        {
+          "path": "fonts/ed8b291611e32fa2d2900488dd48fc95faf0957b2ef7ddf1527e8d21dd9cf2df.woff2",
+          "sha256": "ed8b291611e32fa2d2900488dd48fc95faf0957b2ef7ddf1527e8d21dd9cf2df",
+          "bytes": 24572
+        },
+        {
+          "path": "fonts/3af47815d6183efcee27a5717970acfe31153365e9b842e62d30c04e86c0613a.woff2",
+          "sha256": "3af47815d6183efcee27a5717970acfe31153365e9b842e62d30c04e86c0613a",
+          "bytes": 10804
+        },
+        {
+          "path": "fonts/fdf61e20fd2c0108e0ea28da4daca0035205b4b7fc031a3974b865b704de160a.woff2",
+          "sha256": "fdf61e20fd2c0108e0ea28da4daca0035205b4b7fc031a3974b865b704de160a",
+          "bytes": 24744
+        }
+      ],
+      "licenseSha256": "e9d4ced9825bf03a6b634c37fe8ae974f6d1b80fbb0bd3ae9b089987e4dc541b",
+      "metadataSha256": "39e3d1ef6d1f89a5de8dc4e5e5f7d2863b76e89a014cd0c9b42ac11d108726f0",
+      "authorityLicense": "OFL"
+    },
+    "cormorant-garamond": {
+      "package": "@fontsource-variable/cormorant-garamond",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/cormorant-garamond/-/cormorant-garamond-5.3.0.tgz",
+      "integrity": "sha512-rgZJ/5w3hi60swAPnrOXpZf5wEH6NTrvm4H8D9Y4b1QIFUqlX14eM3QTMU/eAznjfh0eXpO1QUqsFhiy58aoMg==",
+      "tarballSha256": "81d1d307be5bf24c09112189efa402e29ad3c7772db8d308c0c6f36f327199cf",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/cormorantgaramond/METADATA.pb",
+        "sha256": "faa16a5e79613ca7cadd599ada1f4cf6891f3cb6731631fbed2a0b18a342e556",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/cd5bf126b2c84ab41b254a6a9a1ffb5c326a0f9f82c22fb4704daa31c9aaa415.woff2",
+          "sha256": "cd5bf126b2c84ab41b254a6a9a1ffb5c326a0f9f82c22fb4704daa31c9aaa415",
+          "bytes": 34392
+        },
+        {
+          "path": "fonts/6f2f5c3b1abc3d0bb035a927f66a90ca873f94fc31c4966c8d024142c2036e55.woff2",
+          "sha256": "6f2f5c3b1abc3d0bb035a927f66a90ca873f94fc31c4966c8d024142c2036e55",
+          "bytes": 39260
+        },
+        {
+          "path": "fonts/cfa9a397d86f66c5c51775a2500a712d5f632a04f0c5eca6930dfaf612d4566d.woff2",
+          "sha256": "cfa9a397d86f66c5c51775a2500a712d5f632a04f0c5eca6930dfaf612d4566d",
+          "bytes": 33736
+        },
+        {
+          "path": "fonts/d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235.woff2",
+          "sha256": "d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235",
+          "bytes": 37640
+        }
+      ],
+      "licenseSha256": "732f37009943e7f4378cf37113c9bcc4716af002a8583511aa91ed5d37683e73",
+      "metadataSha256": "d2f72734ee8b78fbf13db9430b1abdb1aae8c4c0683175be6a0d081ea26f1b6c",
+      "authorityLicense": "OFL"
+    },
+    "eb-garamond": {
+      "package": "@fontsource-variable/eb-garamond",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/eb-garamond/-/eb-garamond-5.3.0.tgz",
+      "integrity": "sha512-656OJsA9Vv24yhqRZFEzXnzS2AYgKdEILLgHJYLzzXndgcWFKfSXFqzbRI5/6Yk1Yt7UfWrUeppE5nRQPQMwlQ==",
+      "tarballSha256": "783b65ba8a80adcc79498cbcb779644062d903597bafaa64dc7d580f34e63cab",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/ebgaramond/METADATA.pb",
+        "sha256": "be94098be975a66281842ed599baefa14959eff9da14c87250678e905f6043f2",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/fa866520f8b7fb646ebc730fd0d3cbf8945db74d92f25fdd6fee486808652fdf.woff2",
+          "sha256": "fa866520f8b7fb646ebc730fd0d3cbf8945db74d92f25fdd6fee486808652fdf",
+          "bytes": 88576
+        },
+        {
+          "path": "fonts/c664773f7e1d42d36326aa457becf7674236168c74cf7d74e87e5778ef7640f9.woff2",
+          "sha256": "c664773f7e1d42d36326aa457becf7674236168c74cf7d74e87e5778ef7640f9",
+          "bytes": 47940
+        },
+        {
+          "path": "fonts/f8d3fa06e20989a938972165406a1b731cdc7fe33ff2b0b6798c75aa63709901.woff2",
+          "sha256": "f8d3fa06e20989a938972165406a1b731cdc7fe33ff2b0b6798c75aa63709901",
+          "bytes": 113928
+        },
+        {
+          "path": "fonts/88603384163d301aebd5bd769832a8bfe3c9004ec24178417b9817f0ad32c63b.woff2",
+          "sha256": "88603384163d301aebd5bd769832a8bfe3c9004ec24178417b9817f0ad32c63b",
+          "bytes": 44336
+        }
+      ],
+      "licenseSha256": "f03c8eda63076cd52317dcd40aa04db8472d4cb592dfaafa385129dfdafc7f9c",
+      "metadataSha256": "007478f550c1d786303702d21fe3de03df11232b11c72d04236dd31c1d8ad543",
+      "authorityLicense": "OFL"
+    },
+    "roboto-slab": {
+      "package": "@fontsource-variable/roboto-slab",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/roboto-slab/-/roboto-slab-5.3.0.tgz",
+      "integrity": "sha512-eByKAjLM9td0qsXCOZhlUGfhsjen//epd6/cAJOg+o73RtYBijrI1jz+lTp2X0ebwTCLmKB1+Kt/QiRMgmNPTw==",
+      "tarballSha256": "5dad84b172c522a11e2350d057083f9c4563d502e9b8198aaadda776484028a6",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/apache/robotoslab/METADATA.pb",
+        "sha256": "d1b6fa86e355dc4b25a206ac9eb952495c30924f928a3b6965d45a8d7836e9cc",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/8ed24f94c25ecf99a50b806ef6ca02988cf8c1d443228ddbd6a8ac99c99df81e.woff2",
+          "sha256": "8ed24f94c25ecf99a50b806ef6ca02988cf8c1d443228ddbd6a8ac99c99df81e",
+          "bytes": 21188
+        },
+        {
+          "path": "fonts/50cf7d32c18e1001749b51f1565ef745bc0687b0297b2b13465ed577cc20a8ff.woff2",
+          "sha256": "50cf7d32c18e1001749b51f1565ef745bc0687b0297b2b13465ed577cc20a8ff",
+          "bytes": 34236
+        }
+      ],
+      "licenseSha256": "58fde637cb64b89166884b28067832233d8440e409b1666d6455c578bf135cf8",
+      "metadataSha256": "f4a8b460e3a945013e7c79340be0793aa714b1abd19ca4b0510ae662f1d94957",
+      "authorityLicense": "APACHE2"
+    },
+    "jetbrains-mono": {
+      "package": "@fontsource-variable/jetbrains-mono",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/jetbrains-mono/-/jetbrains-mono-5.3.0.tgz",
+      "integrity": "sha512-F32xpS2NsGYoQi2ADSkKTgpJj7ozajsGgDJ8woTnqjmIB+dxDIqImjl4pXZVEExu8UFZ2ndhmX18EBS/hdz3Lw==",
+      "tarballSha256": "996fe6368a480c9ce15d4de22a2682b7c40b403718fee2b15e7272f244fd993f",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/jetbrainsmono/METADATA.pb",
+        "sha256": "220f22dd4d2a3d9c77183fbbcb250779267725d90d9be673b403dc6bcfada0af",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/60652c78382d7e5021ce4c3ed8985fc41d8f3d1b1a3bedcec2a44ed8979fe5eb.woff2",
+          "sha256": "60652c78382d7e5021ce4c3ed8985fc41d8f3d1b1a3bedcec2a44ed8979fe5eb",
+          "bytes": 16520
+        },
+        {
+          "path": "fonts/a8afa085e9ca5e53434e2ee918ba6b65c7dd4dda56509976b36591478c99d62e.woff2",
+          "sha256": "a8afa085e9ca5e53434e2ee918ba6b65c7dd4dda56509976b36591478c99d62e",
+          "bytes": 42964
+        },
+        {
+          "path": "fonts/79bfdab9ba467e26eea4122e6f2567e188dd8a09a8c730d501fc487c4ab99c6e.woff2",
+          "sha256": "79bfdab9ba467e26eea4122e6f2567e188dd8a09a8c730d501fc487c4ab99c6e",
+          "bytes": 15196
+        },
+        {
+          "path": "fonts/18be452724bfdc236c074ca94a249a7f41a86752c7d04ab258ce9ed5651f6a7e.woff2",
+          "sha256": "18be452724bfdc236c074ca94a249a7f41a86752c7d04ab258ce9ed5651f6a7e",
+          "bytes": 40404
+        }
+      ],
+      "licenseSha256": "403581b69dac5cff4079205e01c6b467e56af449ecbd7247693ddb1baafa005b",
+      "metadataSha256": "344166a12828f8c75f48bd2b85b94dee01c6af2ff44d4411fd276b6010dc1230",
+      "authorityLicense": "OFL"
+    },
+    "geist-mono": {
+      "package": "@fontsource-variable/geist-mono",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/geist-mono/-/geist-mono-5.3.0.tgz",
+      "integrity": "sha512-vBbuwDEo9AkrqADMXOrlAR3DFcJi4/JxeuU43FoiQERnNwsfXNnvxvReZG02cQKmyk4DZkZdBZX3oTDvy2zBAw==",
+      "tarballSha256": "af7a9f156602b859efa95cd1acb824a5322c51a1eca53afb38ed033885736a70",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/geistmono/METADATA.pb",
+        "sha256": "55d2fe9078cf7debb333b4d294e945586e6b1c3b2bc68225f88a2e01d87a69a3",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/cde10355ce14bb325e89af19c7609fac1fe90ea741f03a278cb3a11b02fe7f1a.woff2",
+          "sha256": "cde10355ce14bb325e89af19c7609fac1fe90ea741f03a278cb3a11b02fe7f1a",
+          "bytes": 16440
+        },
+        {
+          "path": "fonts/7842d88c32207514dd03ddb9abc6c84b032d6fef58af1177e0b23f6554c80c75.woff2",
+          "sha256": "7842d88c32207514dd03ddb9abc6c84b032d6fef58af1177e0b23f6554c80c75",
+          "bytes": 25516
+        },
+        {
+          "path": "fonts/1a189eb997c3e2ece68373e387afaec9e8617424186c4b1ab3cff7c54ba6223b.woff2",
+          "sha256": "1a189eb997c3e2ece68373e387afaec9e8617424186c4b1ab3cff7c54ba6223b",
+          "bytes": 14696
+        },
+        {
+          "path": "fonts/684ad5b531f81d43c1e8c7038262d5db7cdc1f68006e04d6c7769efa8d33c8cc.woff2",
+          "sha256": "684ad5b531f81d43c1e8c7038262d5db7cdc1f68006e04d6c7769efa8d33c8cc",
+          "bytes": 23128
+        }
+      ],
+      "licenseSha256": "cc815ed4fc045f0e991abb10395b7932bd028c6a067deb13316d6002105074e6",
+      "metadataSha256": "ba741a658d411f1b9a18ccbd7dde4e118fa5bb7d1422fc529020a4769268a6bd",
+      "authorityLicense": "OFL"
+    },
+    "fira-code": {
+      "package": "@fontsource-variable/fira-code",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/fira-code/-/fira-code-5.3.0.tgz",
+      "integrity": "sha512-ZhvHeknlicraKVSJBa1NrJnXDVByUkC407zwgELYfmnx3p9g8vwIPfQCxx8YD3K7dAeCdLuHJOHlpMfRsIcApQ==",
+      "tarballSha256": "af619e11ef7aa082f8065594de942fa278a3860c0b9d429d5c9d9eb58fca8955",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/firacode/METADATA.pb",
+        "sha256": "815580aeae2482e87f5f033f8a43b3c61c3e81761b79db5d783612430133a366",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/801677342d1191c5e964719bbcb5834f5da3c39a00e1e1501f450b1379fcc116.woff2",
+          "sha256": "801677342d1191c5e964719bbcb5834f5da3c39a00e1e1501f450b1379fcc116",
+          "bytes": 13272
+        },
+        {
+          "path": "fonts/771bf4b79a97fc005d12866168bd39d868a9dd3d5903008fe8b796723c8a56f4.woff2",
+          "sha256": "771bf4b79a97fc005d12866168bd39d868a9dd3d5903008fe8b796723c8a56f4",
+          "bytes": 36276
+        }
+      ],
+      "licenseSha256": "126cd7bf732b86f42885f1fbf682e6aeea456672c7fdb99f2d557ec44e468a28",
+      "metadataSha256": "2ee5106ed8ddaaa23bdaa4632aae9ea8e5d825e9167e62426cb93782c87e6791",
+      "authorityLicense": "OFL"
+    },
+    "source-code-pro": {
+      "package": "@fontsource-variable/source-code-pro",
+      "version": "5.3.1",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/source-code-pro/-/source-code-pro-5.3.1.tgz",
+      "integrity": "sha512-N0nZDizh8CQ19+AHHA8Ssb1i/aQf4N2lpRl3qZVH4/9f1yNgWzTkBFpc26v+QQr2hm4By4aiv597BCoEg2SDQg==",
+      "tarballSha256": "1dcc7f2c5f4cae190ed582852a0180eebe87084cac9d06de7429e44c31a39a38",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/sourcecodepro/METADATA.pb",
+        "sha256": "1a0b7a468b627f45f2df8b71a873273c1b074b5d921a0085f36f4c7532662587",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/da6214a7b9f9eca88a7ae3b7b6fec00db41741774d8a38e6a899bd8e85968411.woff2",
+          "sha256": "da6214a7b9f9eca88a7ae3b7b6fec00db41741774d8a38e6a899bd8e85968411",
+          "bytes": 34012
+        },
+        {
+          "path": "fonts/97f01332aeda642a2f298030203dd4dd72802c0288ab2705d33daf691278e563.woff2",
+          "sha256": "97f01332aeda642a2f298030203dd4dd72802c0288ab2705d33daf691278e563",
+          "bytes": 22448
+        },
+        {
+          "path": "fonts/ab316ee7e4a28a149fe9f74a3e9173c3d14a11bb7d4df898dd2fe10da7b7fe24.woff2",
+          "sha256": "ab316ee7e4a28a149fe9f74a3e9173c3d14a11bb7d4df898dd2fe10da7b7fe24",
+          "bytes": 33568
+        },
+        {
+          "path": "fonts/8b774aaa5137a38ef40f4ac9d36db9a5eee152b2f66589dfdc82ff007fc87135.woff2",
+          "sha256": "8b774aaa5137a38ef40f4ac9d36db9a5eee152b2f66589dfdc82ff007fc87135",
+          "bytes": 22044
+        }
+      ],
+      "licenseSha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3",
+      "metadataSha256": "1f04497cc4b686861c69912ff7800072e5a13addd2b92b2c9aae5b67fa1fab40",
+      "authorityLicense": "OFL"
+    },
+    "ibm-plex-mono": {
+      "package": "@fontsource/ibm-plex-mono",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource/ibm-plex-mono/-/ibm-plex-mono-5.3.0.tgz",
+      "integrity": "sha512-eTgnZjZEGk1QtD3ZstF+Vclo2HLAni8YMy34/DxllwZvyz1lR/1RF/xTiAquOBO7MvqBx8D2Ig2WCPMVfdZu7Q==",
+      "tarballSha256": "60d3c0cfa549cb06fcb8867ee83f994d78e212abfac3bef3275436acb5c4d029",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/ibmplexmono/METADATA.pb",
+        "sha256": "006b605a8a45174a3f8ad9456006233ff8f13cf3cae7fe7602904334dc323c7c",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/1b07eee6df7d26b31864581c2365131d384077605e0b63ae67c4a0a64363a6de.woff2",
+          "sha256": "1b07eee6df7d26b31864581c2365131d384077605e0b63ae67c4a0a64363a6de",
+          "bytes": 14524
+        },
+        {
+          "path": "fonts/0840095faae86403735a8c04014b72cb29e7923646b222b360b7e8252932e4e3.woff2",
+          "sha256": "0840095faae86403735a8c04014b72cb29e7923646b222b360b7e8252932e4e3",
+          "bytes": 16448
+        },
+        {
+          "path": "fonts/57216564e5a42dde14048f03e32caa40c97d9b2b440be1aa2ea87ff324fbc95e.woff2",
+          "sha256": "57216564e5a42dde14048f03e32caa40c97d9b2b440be1aa2ea87ff324fbc95e",
+          "bytes": 14676
+        },
+        {
+          "path": "fonts/528cc360f6e6f5210526a33b6ed8f2c37084bd0c73b918f25a55f48b40c4ac52.woff2",
+          "sha256": "528cc360f6e6f5210526a33b6ed8f2c37084bd0c73b918f25a55f48b40c4ac52",
+          "bytes": 16484
+        },
+        {
+          "path": "fonts/979f73fb848c600282d2c2e48e6dc67eeb02d47b520c9fa48b0af65fbef09da4.woff2",
+          "sha256": "979f73fb848c600282d2c2e48e6dc67eeb02d47b520c9fa48b0af65fbef09da4",
+          "bytes": 15460
+        },
+        {
+          "path": "fonts/42a8ca72a19c5ee1612ac3e35f52d08f34a09856c9466dc87a21101ad230ed6b.woff2",
+          "sha256": "42a8ca72a19c5ee1612ac3e35f52d08f34a09856c9466dc87a21101ad230ed6b",
+          "bytes": 17356
+        },
+        {
+          "path": "fonts/18c8dc28d75ecbda23c88fb11126852b2232916ec2e6d6dc0225def886a0cc98.woff2",
+          "sha256": "18c8dc28d75ecbda23c88fb11126852b2232916ec2e6d6dc0225def886a0cc98",
+          "bytes": 14684
+        },
+        {
+          "path": "fonts/2bb0d4c82652472446ed1a5a89a0553f2db1e4ea17cbda66a45e690899d83e91.woff2",
+          "sha256": "2bb0d4c82652472446ed1a5a89a0553f2db1e4ea17cbda66a45e690899d83e91",
+          "bytes": 16540
+        },
+        {
+          "path": "fonts/6bc0f226a5b7884a8170e3f62c63d7675609d4631bdc5931b5cdab81821f00eb.woff2",
+          "sha256": "6bc0f226a5b7884a8170e3f62c63d7675609d4631bdc5931b5cdab81821f00eb",
+          "bytes": 13348
+        },
+        {
+          "path": "fonts/08949f728dc52d528e69b1667d15c89a5686a4ee9a296ff90983985f99c380f7.woff2",
+          "sha256": "08949f728dc52d528e69b1667d15c89a5686a4ee9a296ff90983985f99c380f7",
+          "bytes": 14708
+        },
+        {
+          "path": "fonts/6bb06407c97584b0867a959e05e8874693bfeb8c317de190811c51598f2d99ea.woff2",
+          "sha256": "6bb06407c97584b0867a959e05e8874693bfeb8c317de190811c51598f2d99ea",
+          "bytes": 13432
+        },
+        {
+          "path": "fonts/01d285447409c8a588692162439a038b8cbd7871309ee20267b0d2d91c6e8e22.woff2",
+          "sha256": "01d285447409c8a588692162439a038b8cbd7871309ee20267b0d2d91c6e8e22",
+          "bytes": 14888
+        },
+        {
+          "path": "fonts/32057cf50dd14bdb21a2c93766c4a2c43e4abe688ea3922df3203cac7751a98b.woff2",
+          "sha256": "32057cf50dd14bdb21a2c93766c4a2c43e4abe688ea3922df3203cac7751a98b",
+          "bytes": 14328
+        },
+        {
+          "path": "fonts/0d1f0b8d0722224e32e9f28261bdc86c79115be73444ae5eceb73976a1bcdf83.woff2",
+          "sha256": "0d1f0b8d0722224e32e9f28261bdc86c79115be73444ae5eceb73976a1bcdf83",
+          "bytes": 15620
+        },
+        {
+          "path": "fonts/5b9b81f54dd69635c7adcaacd4c4545a73fe4809c528e22734b238a83a74135f.woff2",
+          "sha256": "5b9b81f54dd69635c7adcaacd4c4545a73fe4809c528e22734b238a83a74135f",
+          "bytes": 13380
+        },
+        {
+          "path": "fonts/4f84d86cfd060f4ded334358ff8a4c81d4db2ed5addd568359d693f44a87765a.woff2",
+          "sha256": "4f84d86cfd060f4ded334358ff8a4c81d4db2ed5addd568359d693f44a87765a",
+          "bytes": 14908
+        }
+      ],
+      "licenseSha256": "23b0a9d0c6d3f140a0b77e483c5cfa6bba574325ef5cb189ed9f2fec4884533f",
+      "metadataSha256": "d68b11ac3e4a3aa756a96b4c3021e82ca016d8ea9e34d03f14153d556b73f217",
+      "authorityLicense": "OFL"
+    },
+    "roboto-mono": {
+      "package": "@fontsource-variable/roboto-mono",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/roboto-mono/-/roboto-mono-5.3.0.tgz",
+      "integrity": "sha512-h5r+KY/6qy8JEOj33JgcrFO81YAnvrc1EAwMpl/EPJLb2OIvOy0/jmB5M7qs7x/uXk5JUP5Ux4LrkeOK7faHkQ==",
+      "tarballSha256": "cdc12b7b50107613a627f757224a88937f25a6a7e0d122a48ef6889400daa751",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/robotomono/METADATA.pb",
+        "sha256": "8aa7709a44aa1f10bc5f4710af9440e364d2fb4e6056cc05a0e9d0d40826a9b5",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/f206990c959d138c477ec5a669f3a9703017799480a2531a4ba006be7ef3a332.woff2",
+          "sha256": "f206990c959d138c477ec5a669f3a9703017799480a2531a4ba006be7ef3a332",
+          "bytes": 24408
+        },
+        {
+          "path": "fonts/ae82dafb6340b538592b30dc18a367f56de3840b20669767adc011966405f6cf.woff2",
+          "sha256": "ae82dafb6340b538592b30dc18a367f56de3840b20669767adc011966405f6cf",
+          "bytes": 35328
+        },
+        {
+          "path": "fonts/4cc0d52e0fa37c28084e0cbce3589a8ab32dd21e6ea619489c5f7c6e8c43b922.woff2",
+          "sha256": "4cc0d52e0fa37c28084e0cbce3589a8ab32dd21e6ea619489c5f7c6e8c43b922",
+          "bytes": 22916
+        },
+        {
+          "path": "fonts/b81cd55177300649be8f95b3b747d721ce607e8ed2856e25bd0c630cfd631faf.woff2",
+          "sha256": "b81cd55177300649be8f95b3b747d721ce607e8ed2856e25bd0c630cfd631faf",
+          "bytes": 32796
+        }
+      ],
+      "licenseSha256": "b489132782690f2cc1ed23ab56d7057bbb08c42573603e8e704ae2e2ea9c8216",
+      "metadataSha256": "817d60c7635853c72224211897d126bba0fbe1ac25172084f8a8973f86636905",
+      "authorityLicense": "OFL"
+    },
+    "inconsolata": {
+      "package": "@fontsource-variable/inconsolata",
+      "version": "5.3.0",
+      "tarball": "https://registry.npmjs.org/@fontsource-variable/inconsolata/-/inconsolata-5.3.0.tgz",
+      "integrity": "sha512-3sJ98aPp9rBWhlt+niNQaqaRd5vKo5M5unVWRm4L8g3E73pi5P8DIS4ZuPAtYi0bugDllZRSxrtfPxM17+P6gg==",
+      "tarballSha256": "274b0bbc06ef8c74982eca67d4206ad0984767e9d72957e87724bedd0e405aea",
+      "upstream": {
+        "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/inconsolata/METADATA.pb",
+        "sha256": "d8318dfb63d4012e3b5686c535f922c9a71ddeb2f2e897363b21078ea8d48e3e",
+        "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+      },
+      "faces": [
+        {
+          "path": "fonts/8ca8881c29e485da4cfd38974399d070fe8fe934d626f774a32a59898117a676.woff2",
+          "sha256": "8ca8881c29e485da4cfd38974399d070fe8fe934d626f774a32a59898117a676",
+          "bytes": 31184
+        },
+        {
+          "path": "fonts/4914e68b98699a8f3d5d552fe60fd7a1c2cb631a0f66f0a148392f161d3155ab.woff2",
+          "sha256": "4914e68b98699a8f3d5d552fe60fd7a1c2cb631a0f66f0a148392f161d3155ab",
+          "bytes": 34084
+        }
+      ],
+      "licenseSha256": "11527366bb615a5246481b961bcc1f4e51cf5d44294a0bea01f59b61f400e299",
+      "metadataSha256": "37fecccefcd840118489b4a9885d4659055fd4a30d937ef2bb24d9d6ece9180f",
+      "authorityLicense": "OFL"
+    }
+  },
+  "upstreamRevision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+}
