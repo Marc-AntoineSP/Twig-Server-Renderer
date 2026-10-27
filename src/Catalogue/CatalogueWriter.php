@@ -21,6 +21,7 @@ final readonly class CatalogueWriter
         private SourceFactory $sources,
         private PackageValidator $packages,
         private ValidatorInterface $validator,
+        private \App\Composition\CompositionCompiler $compositions,
     ) {
     }
 
@@ -37,6 +38,7 @@ final readonly class CatalogueWriter
         $manifest->title = $input->title;
         $manifest->description = $input->description;
         $manifest = $this->packages->validate($manifest, $sources, true);
+        $this->compositions->verify($manifest, $sources);
         if ($manifest->name !== $input->name || $manifest->kind !== $input->kind) {
             throw new CatalogueException(422, 'Manifest identity does not match the catalogue item.');
         }
@@ -61,7 +63,11 @@ final readonly class CatalogueWriter
         $manifest = clone $input->manifestData;
         $manifest->title = $input->title;
         $manifest->description = $input->description;
+        if (isset($this->draft($item)->getSourceMap()->{'meta/composition.json'}) && !isset($input->sourceMap->{'meta/composition.json'})) {
+            throw new CatalogueException(409, 'Duplicate and convert to source before removing composition ownership.');
+        }
         $manifest = $this->packages->validate($manifest, $input->sourceMap, true);
+        $this->compositions->verify($manifest, $input->sourceMap);
         if ($manifest->name !== $item->getName() || $manifest->kind !== $item->getKind()) {
             throw new CatalogueException(422, 'Name and kind are immutable; create a new item to change them.');
         }

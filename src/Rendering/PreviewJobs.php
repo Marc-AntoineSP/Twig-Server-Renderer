@@ -33,6 +33,7 @@ final readonly class PreviewJobs
         private MessageBusInterface $bus,
         private ValidatorInterface $validator,
         private ThemeValidator $themes,
+        private \App\Composition\CompositionCompiler $compositions,
         Connection $connection,
         #[Autowire('%kernel.project_dir%')] private string $projectDirectory,
     ) {
@@ -64,6 +65,7 @@ final readonly class PreviewJobs
                 throw new CatalogueException(422, 'Manifest and source map must be JSON objects.');
             }
             $manifest = $this->packages->validate($manifest, $sources, true);
+            $this->compositions->verify($manifest, $sources);
             if ($manifest->name !== $item->getName() || $manifest->kind !== $item->getKind()) {
                 throw new CatalogueException(422, 'Preview identity does not match the catalogue item.');
             }

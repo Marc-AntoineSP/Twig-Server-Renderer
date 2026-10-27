@@ -23,6 +23,14 @@ final class SourceFactory
             'meta/examples.json' => json_encode([(object) ['name' => 'Default', 'props' => $manifest->defaults]], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)."\n",
         ];
 
+        if (in_array($input->kind, ['block', 'layout'], true)) {
+            $manifest->defaults = new \stdClass();
+            $sources->{$entry} = \App\Composition\CompositionCompiler::EMPTY_TEMPLATE;
+            $sources->{'meta/props.schema.json'} = '{"type":"object","properties":{},"additionalProperties":false}';
+            $sources->{'meta/examples.json'} = '[{"name":"Default","props":{}}]';
+            $sources->{'meta/composition.json'} = '{"schemaVersion":1,"root":{"type":"container","tag":"section","classes":["grid","gap-4"],"children":[]}}';
+        }
+
         return [$manifest, $sources];
     }
 }

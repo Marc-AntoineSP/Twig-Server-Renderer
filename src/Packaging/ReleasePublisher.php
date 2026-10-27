@@ -14,7 +14,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 final readonly class ReleasePublisher
 {
-    public function __construct(private CatalogueWriter $catalogue, private PackageValidator $validator, private DependencyResolver $dependencies, private PreviewRenderer $renderer, private ArchiveStore $archives, private EntityManagerInterface $em, private ValidatorInterface $inputs) {}
+    public function __construct(private CatalogueWriter $catalogue, private PackageValidator $validator, private DependencyResolver $dependencies, private PreviewRenderer $renderer, private ArchiveStore $archives, private EntityManagerInterface $em, private ValidatorInterface $inputs, private \App\Composition\CompositionCompiler $compositions) {}
     public function publish(CatalogueItem $item, PublishInput $input): Release
     {
         if (count($this->inputs->validate($input))) throw new CatalogueException(422, 'Stable version and expected revision are required.');
@@ -22,6 +22,7 @@ final readonly class ReleasePublisher
         if ($draft->getRevision() !== $input->expectedRevision) throw new CatalogueException(412, 'Draft revision changed.');
         if ($this->em->getRepository(Release::class)->findOneBy(['item' => $item, 'version' => $input->version])) throw new CatalogueException(409, 'Release version already exists and is immutable.');
         $manifest = $draft->getManifestData(); $sources = $draft->getSourceMap();
+        $this->compositions->verify($manifest, $sources);
         $manifest->version = $input->version;
         $sources->{'meta/LICENSE'} ??= 'Declared licence: '.$manifest->license."\nNo additional distribution rights are granted by the studio.\n";
         $sources->{'meta/README.md'} ??= '# '.$manifest->name."\n\n".$manifest->description."\n\nInclude `".substr($manifest->entry, 10)."` with the declared props only.\nInstall this package and its exact dependencies using the Symfony installer.\nTailwind/daisyUI sources must be compiled in the consumer. Browser JS is trusted there.\n";

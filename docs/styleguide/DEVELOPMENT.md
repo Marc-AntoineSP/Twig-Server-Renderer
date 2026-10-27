@@ -212,3 +212,15 @@ before import; applying over an existing theme requires its revision. Generated 
 canonical token data and must match regenerated declarations. Manual CSS/token conflicts
 are rejected. Downloads label editable Tailwind source separately from sample-only compiled
 `preview.css`; an output bundle includes integration instructions and grants no licence.
+
+Blocks and layouts created in the catalogue use composition mode. Publish component
+versions first, then add exact immutable references with concrete instance props. Tree
+buttons support reorder, indent/outdent, duplicate and remove; arrow keys select rows.
+Containers use bounded tags/literal utility classes. Text uses a Twig literal serializer
+and an explicit escape filter, including when it contains Twig delimiters. The same
+archive resolver, sandbox and compiler render nested compositions and standalone items.
+Save composition persists a revision; preview is transient. Generated Twig/dependencies
+are owned by meta/composition.json and cannot be edited through the source API. Duplicate
+and convert to source creates another named item and keeps the original tree unchanged.
+Source-owned items have their visual builder disabled. No database migration was needed:
+composition source belongs to the existing versioned, validated source map.

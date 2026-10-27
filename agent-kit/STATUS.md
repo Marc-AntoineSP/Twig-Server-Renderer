@@ -9,7 +9,8 @@ Last updated: 2026-10-27. Scope: M00–M08, including a local production build; 
 | M02 Isolated preview | Complete | 66 PHPUnit tests/230 assertions, 9 Chromium tests; worker limits and isolation verified |
 | M03 Live editor | Complete | 68 PHPUnit tests/248 assertions and 15 Chromium tests pass |
 | M04 Theme laboratory | Complete | 71 PHPUnit tests/285 assertions and 17 Chromium flows pass |
-| M05–M08 | Not started | Existing design/contracts only |
+| M05 Composition | Complete | 75 PHPUnit tests/325 assertions and 19 Chromium flows pass |
+| M06–M08 | Not started | Existing design/contracts only |
 
 ## Repository audit and preservation
 
@@ -334,3 +335,34 @@ Actual feature checks: `make check test` exit 0, **72 tests/298 assertions**; ta
 Chromium publication flow **1 passed**. Archive reader verifies published bytes/checksums;
 invalid include, stale revision, duplicate version, role/CSRF and immutable snapshots tested.
 M05 remains in progress. Next: bounded composition builder on a new stacked branch.
+
+
+M04 dependency reference: Ajv draft-2020-12 uses its dedicated Ajv2020 class, verified
+against https://ajv.js.org/json-schema.html#draft-2020-12 and the installed 8.20.0 lock.
+
+## M05 composition verification in progress
+
+Branch `feature/m05-composition` adds bounded schema-backed container/reference/text
+composition in existing draft sources, exact release props validation and dependency
+closure checks, serialized/generated Twig, keyboard selection/tree operations, transient
+previews, optimistic saves and explicit duplicate-to-source conversion. Generic source
+writes cannot bypass composition ownership. No new dependencies or database migration.
+Current `make check test` passes **75 tests/325 assertions**. Final full Chromium suite
+is running before declaring M05 complete. Actual rendering caught Twig's constant-string
+escaping behavior; text now explicitly uses escape. Canonical object-key ordering keeps
+emitted Twig stable after canonical JSON persistence. Other corrected checks: stdClass
+must be converted/presented appropriately for studio Twig; renamed duplicate inventories
+must be regenerated; test helper must not override PHPUnit's final name() method. Browser
+selector now uses the fixture's actual dismissLabel, rather than assuming another label.
+
+
+M05 completion gate: `make check test browser` **exit 0**, **75 tests/325 assertions**
+and **19 Chromium flows**. Real browser flow creates distinct alert instances, reorders by
+keyboard, nests/outdents/indents text and containers, duplicates/removes, saves/reloads,
+publishes a block, references it from a layout, exercises nested Stimulus dismissal and
+converts a duplicate to source. Backend tests render nested verified release archives,
+check exact order/props/CSS/literal HTML/Twig escaping, tree limits and invalid tags/classes,
+unknown/self/conflicting references, invalid props, CSRF/revisions and ownership protection.
+Existing dependency cycle/archive-integrity tests still pass. Schema and git diff checks
+pass; AGENTS/README hashes remain unchanged. M05 is complete before M06. Next: shared
+contract validation for studio/consumer, safe import/export, registry and scoped tokens.

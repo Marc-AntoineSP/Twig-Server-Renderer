@@ -11,6 +11,7 @@ final readonly class PackageValidator
 {
     public function __construct(
         private PropsValidator $props,
+        private \App\Composition\CompositionValidator $compositions,
         #[Autowire('%kernel.project_dir%/agent-kit/schemas/package.schema.json')]
         private string $schemaPath,
     ) {
@@ -100,6 +101,11 @@ final readonly class PackageValidator
                 $this->props->validateValue($example->props, $schema, 'examples.'.$index);
             }
         }
+        if (isset($sources->{'meta/composition.json'})) {
+            $tree = $this->json($sources->{'meta/composition.json'}, 'composition', 64);
+            if (!$tree instanceof \stdClass || !in_array($manifest->kind, ['block', 'layout'], true)) $this->fail('composition', 'Only blocks/layouts may own composition data.');
+            $this->compositions->validate($tree);
+        }
         $controllers = [];
         foreach ($manifest->controllers as $controller) {
             $expectedIdentifier = 'catalogue--'.str_replace('/', '--', $manifest->name);
@@ -157,13 +163,13 @@ final readonly class PackageValidator
         }
     }
 
-    private function json(string $source, string $field): mixed
+    private function json(string $source, string $field, int $depth = 24): mixed
     {
         if (strlen($source) > 65536) {
             $this->fail($field, 'JSON metadata exceeds 64 KiB.');
         }
         try {
-            return json_decode($source, false, 24, JSON_THROW_ON_ERROR);
+            return json_decode($source, false, $depth, JSON_THROW_ON_ERROR);
         } catch (\JsonException) {
             $this->fail($field, 'Invalid or excessively nested JSON.');
         }

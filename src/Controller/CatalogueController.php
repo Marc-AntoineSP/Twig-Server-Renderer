@@ -69,6 +69,9 @@ final class CatalogueController extends AbstractController
     public function edit(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, FormInput $input, RendererPresets $presets, EntityManagerInterface $entityManager): Response
     {
         $draft = $writer->draft($item);
+        if (isset($draft->getSourceMap()->{'meta/composition.json'})) {
+            return $this->redirectToRoute('composition_edit', ['id' => $item->getId()]);
+        }
         $jsonOptions = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR;
         $form = $this->createForm(DraftType::class, [
             'title' => $item->getTitle(), 'description' => $item->getDescription(), 'tagsText' => implode(', ', $item->getTags()),
