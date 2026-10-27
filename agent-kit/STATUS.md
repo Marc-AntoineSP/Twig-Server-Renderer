@@ -680,3 +680,16 @@ same safe import pipeline before generating the notice-grid draft. It never publ
 edited user draft. New composition source is materialized canonically; existing drafts and
 releases remain untouched. The existing persistence test now checks the dependency archive
 and hash plus complete source preservation. The corrected clean-checkout gate follows.
+
+## Composition save/preview race correction
+
+The clean-checkout browser run exposed a timing-dependent stale revision response after
+Save succeeded. Branch `feature/m08-composition-save-race` invalidates/cancels obsolete
+preview work while a save is in flight and schedules a current preview with the resulting
+revision afterward. Newer unsaved edits remain in the client. The real browser test now
+holds a preview POST until after PUT commits, observes the actual old-request 412 and
+requires a fresh current preview. Five focused composition/showcase Chromium tests pass.
+The showcase helper now waits for actual render completion before interaction instead of
+assuming a preview completes within Playwright's default five seconds. Final clean tests
+are rerun with an explicitly recreated task-owned test database, followed by browser and
+consumer gates. Main development/production/user data are not reset.

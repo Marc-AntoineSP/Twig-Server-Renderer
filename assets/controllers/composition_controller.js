@@ -84,17 +84,22 @@ export default class extends Controller {
     }
     input() { if (this.invalid) throw Error('Correct the current JSON before saving or previewing.'); return { document: this.model, expectedRevision: this.revisionValue, title: this.titleTarget.value }; }
     async save() {
+        if(this.saving)return;
+        let saved=false;
         try {
             const snapshot = JSON.stringify(this.input());
+            this.saving=true;clearTimeout(this.timer);this.epoch++;this.cancel(this.job);this.job=null;this.statusTarget.textContent='Stale preview — saving composition';
             const result = await this.json(this.urlValue, { method: 'PUT', body: snapshot });
             this.dirty = JSON.stringify(this.input()) !== snapshot;
-            this.revisionValue = result.revision;
+            this.revisionValue = result.revision;saved=true;
             this.saveStatusTarget.textContent = `Saved revision ${result.revision}${this.dirty ? '; newer changes remain unsaved' : ''}`;
         } catch (error) { this.saveStatusTarget.textContent = error.message; }
+        finally{this.saving=false;if(saved)this.schedule();}
     }
     schedule() { clearTimeout(this.timer); this.epoch++; this.statusTarget.textContent = 'Stale preview — changes pending'; this.timer = setTimeout(() => this.preview(), 300); }
     async cancel(id) { if (!id) return; try { await this.json(this.statusUrlValue.replace('__JOB__',id), { method: 'DELETE', keepalive: true }); } catch {} }
     async preview() {
+        if(this.saving)return;
         clearTimeout(this.timer); const epoch = ++this.epoch;
         await this.cancel(this.job); if (epoch !== this.epoch) return;
         this.statusTarget.textContent = 'Validating composition…';

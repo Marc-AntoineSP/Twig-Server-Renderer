@@ -52,7 +52,14 @@ test('compose distinct instances, keyboard reorder/nest, save, publish block and
     await newComposition(page, 'layout');
     await page.getByRole('button', { name: 'Add reference', exact: true }).click();
     await page.getByLabel('Immutable reference', { exact: true }).selectOption({ label: `${block.name}@1.0.0` });
+    await expect(current).toHaveText('Composition preview current',{timeout:20000});
+    let releasePreparation;let preparationStarted;const held=new Promise(resolve=>{releasePreparation=resolve;});const started=new Promise(resolve=>{preparationStarted=resolve;});let intercepted=false;
+    await page.route('**/api/v1/items/*/composition',async route=>{if(route.request().method()==='POST'&&!intercepted){intercepted=true;preparationStarted();await held;}await route.continue();});
+    await page.getByRole('button',{name:'Build preview',exact:true}).click();await started;
     await page.getByRole('button', { name: 'Save composition', exact: true }).click();
+    await expect(page.locator('[data-composition-target="saveStatus"]')).toHaveText('Saved revision 2');
+    const obsolete=page.waitForResponse(response=>response.url().endsWith('/composition')&&response.request().method()==='POST'&&response.status()===412);releasePreparation();await obsolete;
+
     await expect(page.locator('[data-composition-target="saveStatus"]')).toHaveText('Saved revision 2');
     await expect(current).toHaveText('Composition preview current', { timeout: 20000 });
     await expect(frame.getByRole('status')).toHaveText([/Second instance/, /First instance/]);
