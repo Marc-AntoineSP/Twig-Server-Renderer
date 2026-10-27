@@ -26,3 +26,4 @@
 /workers/*/vendor/
 /workers/*/node_modules/
 /tools/library/node_modules/
+.idea
