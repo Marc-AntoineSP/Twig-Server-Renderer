@@ -162,3 +162,15 @@ package per component. This makes installation copy editable files and enables c
 detection and offline ZIP import. Composer handles the installer itself; styleguide:require
 handles components. A future Flex recipe may automate bootstrap integration, but v1 must
 work through documented configuration and commands without a public Flex repository.
+
+## Theme detail component reference
+
+Theme detail renders repository-owned Twig partials/macros into a complete srcdoc
+showcase, reusing ThemeCssGenerator::applicationCss, DocumentAssembler and its registered
+font embedding. Static component utilities and the small Stimulus bundle are built in
+the existing Docker asset pipeline and copied into production; the request only supplies
+validated root tokens and embedded font bytes. It creates no catalogue item, revision,
+preference or preview job and needs no worker compilation. The same opaque iframe/CSP
+boundary contains all dialogs, drawers, toasts and example actions. Variant links use
+existing family relationships and never change the studio's saved appearance. See
+THEME_SHOWCASE.md for inventory and acceptance evidence.

@@ -1,0 +1,28 @@
+{% import 'theme/showcase/_macros.html.twig' as sample %}
+{{ sample.card('alerts', 'Alerts', 'information success warning error soft outline dash') }}
+    <div class="grid gap-3"><div class="alert alert-info" role="note">{{ sample.icon('info') }}<span>A team review is scheduled for tomorrow.</span></div><div class="alert alert-success" role="note">{{ sample.icon('check') }}<span>The sample meets its review checklist.</span></div><div class="alert alert-warning" role="note">{{ sample.icon('info') }}<span>Two sample fields still need attention.</span></div><div class="alert alert-error" role="note">{{ sample.icon('info') }}<span>This is an example error, not an application failure.</span></div><div class="alert alert-info alert-soft">A softer informational surface.</div><div class="alert alert-success alert-outline">Outlined success.</div><div class="alert alert-warning alert-dash">Dashed warning.</div></div>
+</article>
+
+{{ sample.card('progress', 'Progress bars', 'semantic colours determinate indeterminate') }}
+    <div class="grid gap-3">{% for tone in tones %}<label class="fieldset"><span class="label">{{ tone.label }} review: {{ loop.index * 10 }}%</span><progress class="progress w-full {{ tone.progress }}" value="{{ loop.index * 10 }}" max="100">{{ loop.index * 10 }}%</progress></label>{% endfor %}<label class="fieldset"><span class="label">Indeterminate sample</span><progress class="progress progress-primary w-full" max="100"></progress></label></div>
+</article>
+
+{{ sample.card('radial-progress', 'Radial progress', 'circular progress semantic') }}
+    <div class="flex flex-wrap items-center gap-5"><div class="radial-progress text-primary" style="--value:72" role="progressbar" aria-label="Review completion" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">72%</div><div class="radial-progress text-success" style="--value:100;--size:5rem;--thickness:5px" role="progressbar" aria-label="Sample readiness" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div><div class="radial-progress text-warning" style="--value:35;--size:4rem" role="progressbar" aria-label="Documentation completion" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">35%</div></div>
+</article>
+
+{{ sample.card('loading', 'Loading indicators', 'spinner dots ring ball bars infinity sizes') }}
+    <div class="flex flex-wrap items-center gap-5">{% for item in [{class:'loading-spinner',label:'Spinner'},{class:'loading-dots',label:'Dots'},{class:'loading-ring',label:'Ring'},{class:'loading-ball',label:'Ball'},{class:'loading-bars',label:'Bars'},{class:'loading-infinity',label:'Infinity'}] %}<span class="flex flex-col items-center gap-2"><span class="loading loading-lg text-primary {{ item.class }}" aria-hidden="true"></span><span class="text-xs">{{ item.label }}</span></span>{% endfor %}</div><div class="mt-5 flex items-center gap-4"><span class="loading loading-spinner loading-xs text-secondary" aria-label="Extra small loading example"></span><span class="loading loading-spinner loading-sm text-accent" aria-label="Small loading example"></span><span class="loading loading-spinner loading-md text-info" aria-label="Medium loading example"></span><span class="loading loading-spinner loading-xl text-success" aria-label="Extra large loading example"></span></div>
+</article>
+
+{{ sample.card('skeletons', 'Skeletons', 'placeholder loading') }}
+    <div class="flex items-center gap-4" aria-label="Loading profile placeholder"><div class="skeleton size-14 shrink-0 rounded-full"></div><div class="grid w-full gap-3"><div class="skeleton h-4 w-3/4"></div><div class="skeleton h-4 w-1/2"></div></div></div><div class="skeleton mt-5 h-28 w-full"></div><p>A loading placeholder, kept separate from real content and application status.</p>
+</article>
+
+{{ sample.card('toasts', 'Toasts', 'notification dismiss timed overlay') }}
+    <button class="btn btn-success" type="button" data-action="showcase#toast">Show sample toast</button><p>Appears inside this preview, can be dismissed, and closes automatically after 4.5 seconds.</p>
+</article>
+
+{{ sample.card('tooltips', 'Tooltips', 'hover focus primary secondary accent info success warning error') }}
+    <div class="grid justify-items-center gap-3 pt-8 sm:grid-cols-2">{% for item in [{class:'tooltip-primary',label:'Primary'},{class:'tooltip-secondary',label:'Secondary'},{class:'tooltip-accent',label:'Accent'},{class:'tooltip-info',label:'Information'},{class:'tooltip-success',label:'Success'},{class:'tooltip-warning',label:'Warning'},{class:'tooltip-error',label:'Error'}] %}<div class="tooltip {{ item.class }}" data-tip="{{ item.label }} tooltip sample"><button class="btn btn-sm btn-outline" type="button" aria-describedby="{{ prefix }}-tooltip-{{ loop.index }}" data-action="showcase#announce">{{ item.label }}</button><span class="sr-only" id="{{ prefix }}-tooltip-{{ loop.index }}">{{ item.label }} tooltip sample</span></div>{% endfor %}</div><p>Pointer hover or keyboard focus reveals the same explanation.</p>
+</article>

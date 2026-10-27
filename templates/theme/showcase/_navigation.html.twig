@@ -1,0 +1,34 @@
+{% import 'theme/showcase/_macros.html.twig' as sample %}
+{{ sample.card('navbar', 'Navbar', 'header brand actions') }}
+    <nav class="navbar flex-wrap gap-2 rounded-box bg-base-200" aria-label="Sample project navigation"><div class="flex-1"><a class="btn btn-ghost text-lg" href="#{{ prefix }}-category-navigation">Atelier</a></div><div class="flex-none"><button type="button" class="btn btn-primary btn-sm" data-action="showcase#announce">New project</button><div class="avatar avatar-placeholder ml-3"><div class="w-9 rounded-full bg-neutral text-neutral-content"><span>AL</span></div></div></div></nav><p>A responsive brand bar using semantic base colours.</p>
+</article>
+
+{{ sample.card('menus', 'Menus', 'sidebar selected disabled submenu') }}
+    <nav aria-label="Sample workspace menu"><ul class="menu w-full rounded-box bg-base-200"><li class="menu-title">Workspace</li><li><a class="menu-active" href="#{{ prefix }}-category-navigation">{{ sample.icon('home') }}Overview <span class="badge badge-sm badge-primary">4</span></a></li><li><details open><summary>Projects</summary><ul><li><a href="#{{ prefix }}-category-data">Design system</a></li><li><a href="#{{ prefix }}-category-layout">Marketing site</a></li></ul></details></li><li><button disabled type="button">Archived workspace</button></li></ul></nav>
+</article>
+
+{{ sample.card('breadcrumbs', 'Breadcrumbs', 'navigation location') }}
+    <nav class="breadcrumbs text-sm" aria-label="Sample breadcrumb"><ul><li><a href="#{{ prefix }}-category-navigation">{{ sample.icon('home') }}Workspace</a></li><li><a href="#{{ prefix }}-category-data">Projects</a></li><li aria-current="page">Design library</li></ul></nav>
+</article>
+
+{{ sample.card('tabs', 'Tabs', 'keyboard panels selected border box lift') }}
+    {% for style in [{class:'tabs-border',label:'Underline'},{class:'tabs-box',label:'Box'},{class:'tabs-lift',label:'Lift'}] %}
+        <div class="mt-4" data-controller="showcase-tabs">
+            <div class="tabs {{ style.class }}" role="tablist" aria-label="{{ style.label }} sample tabs">{% for label in ['Overview','Activity','Team'] %}<button type="button" role="tab" class="tab {{ loop.first ? 'tab-active' : '' }}" id="{{ prefix }}-tabs-{{ style.label|lower }}-{{ loop.index }}" aria-controls="{{ prefix }}-panels-{{ style.label|lower }}-{{ loop.index }}" aria-selected="{{ loop.first ? 'true' : 'false' }}" tabindex="{{ loop.first ? '0' : '-1' }}" data-showcase-tabs-target="tab" data-action="click->showcase-tabs#select keydown->showcase-tabs#key">{{ label }}</button>{% endfor %}</div>
+            {% for content in ['A shared library with 24 reviewed components.','Today: button documentation was updated.','Amélie, Morgan and Jules maintain this sample.'] %}<div class="rounded-box border border-base-300 p-4" role="tabpanel" id="{{ prefix }}-panels-{{ style.label|lower }}-{{ loop.index }}" aria-labelledby="{{ prefix }}-tabs-{{ style.label|lower }}-{{ loop.index }}" data-showcase-tabs-target="panel">{{ content }}</div>{% endfor %}
+        </div>
+    {% endfor %}
+    <p>Arrow keys, Home and End switch focus and the associated panel.</p>
+</article>
+
+{{ sample.card('pagination', 'Pagination', 'page selected disabled join') }}
+    <div data-demo-selection><nav class="join" aria-label="Sample pages"><button class="btn join-item" type="button" aria-label="Previous page" disabled>«</button>{% for n in 1..4 %}<button class="btn join-item {{ loop.first ? 'btn-active' : '' }}" type="button" aria-pressed="{{ loop.first ? 'true' : 'false' }}" data-action="showcase#select">{{ n }}</button>{% endfor %}</nav><output class="mt-3 block text-sm">Page 1 selected in this example.</output></div>
+</article>
+
+{{ sample.card('steps', 'Steps', 'timeline process selected') }}
+    <ul class="steps steps-vertical sm:steps-horizontal" aria-label="Sample publication steps"><li class="step step-primary">Draft</li><li class="step step-primary">Review</li><li class="step step-accent" aria-current="step">Preview</li><li class="step">Release</li></ul><p>Preview is the current step; this is a display of a process, not an actual publication.</p>
+</article>
+
+{{ sample.card('dock', 'Dock navigation', 'bottom bar selected') }}
+    <nav class="dock dock-sm rounded-box bg-base-200 text-base-content" data-demo-dock data-demo-selection aria-label="Sample bottom navigation"><button class="dock-active" type="button" aria-pressed="true" data-action="showcase#dock">{{ sample.icon('home') }}<span class="dock-label">Home</span></button><button type="button" aria-pressed="false" data-action="showcase#dock">{{ sample.icon('mail') }}<span class="dock-label">Messages</span></button><button type="button" aria-pressed="false" data-action="showcase#dock">{{ sample.icon('check') }}<span class="dock-label">Tasks</span></button></nav><p>Positioned inside the card so the studio stays accessible.</p>
+</article>

@@ -11,6 +11,7 @@ use App\Theme\Contrast;
 use App\Theme\ThemeFactory;
 use App\Theme\ThemeFormData;
 use App\Theme\ThemeSample;
+use App\Theme\ThemeComponentShowcase;
 use App\Theme\ThemeWriter;
 use App\Appearance\ThemeFamilies;
 use App\Appearance\ThemeFamilyWriter;
@@ -61,9 +62,12 @@ final class ThemeController extends AbstractController
     }
 
     #[Route('/themes/{id}', name: 'theme_show', methods: ['GET'])]
-    public function show(#[MapEntity(id: 'id')] Theme $theme, EntityManagerInterface $entityManager, Contrast $contrast): Response
+    public function show(#[MapEntity(id: 'id')] Theme $theme, EntityManagerInterface $entityManager, Contrast $contrast, ThemeComponentShowcase $showcase): Response
     {
-        return $this->render('theme/show.html.twig', ['theme' => $theme, 'ratios' => $contrast->ratios($theme->getDocument()), 'releases' => $entityManager->getRepository(ThemeRelease::class)->findBy(['theme' => $theme], ['createdAt' => 'DESC'])]);
+        $document = null; $error = null;
+        try { $document = $showcase->document($theme); }
+        catch (CatalogueException) { $error = 'A selected font asset is unavailable. Restore its local files or choose another theme variant, then reload the showcase.'; }
+        return $this->render('theme/show.html.twig', ['theme' => $theme, 'showcaseDocument' => $document, 'showcaseError' => $error, 'ratios' => $contrast->ratios($theme->getDocument()), 'releases' => $entityManager->getRepository(ThemeRelease::class)->findBy(['theme' => $theme], ['createdAt' => 'DESC'])]);
     }
 
     #[Route('/themes/{id}/duplicate', name: 'theme_duplicate', methods: ['POST'])]

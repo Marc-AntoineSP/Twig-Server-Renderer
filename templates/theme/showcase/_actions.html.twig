@@ -1,0 +1,37 @@
+{% import 'theme/showcase/_macros.html.twig' as sample %}
+{{ sample.card('buttons', 'Buttons', 'primary secondary accent neutral information success warning error sizes outline dash soft ghost link loading disabled') }}
+    <div class="flex flex-wrap gap-2">{% for tone in tones %}<button class="btn {{ tone.button }}" type="button" data-action="showcase#announce">{{ tone.label }}</button>{% endfor %}</div>
+    <div class="divider">Styles</div>
+    <div class="flex flex-wrap gap-2">{% for style in [{class:'btn-outline',label:'Outline'},{class:'btn-dash',label:'Dash'},{class:'btn-soft',label:'Soft'},{class:'btn-ghost',label:'Ghost'},{class:'btn-link',label:'Link'}] %}<button class="btn btn-primary {{ style.class }}" type="button" data-action="showcase#announce">{{ style.label }}</button>{% endfor %}</div>
+    <div class="divider">Sizes and states</div>
+    <div class="flex flex-wrap items-center gap-2">{% for size in [{class:'btn-xs',label:'XS'},{class:'btn-sm',label:'Small'},{class:'btn-md',label:'Medium'},{class:'btn-lg',label:'Large'},{class:'btn-xl',label:'XL'}] %}<button class="btn {{ size.class }}" type="button" data-action="showcase#announce">{{ size.label }}</button>{% endfor %}<button class="btn" type="button" disabled>Disabled</button><button class="btn btn-primary" type="button" disabled><span class="loading loading-spinner loading-sm" aria-hidden="true"></span>Loading</button><button class="btn btn-circle btn-outline" type="button" aria-label="Preview inbox" data-action="showcase#announce">{{ sample.icon('mail') }}</button></div>
+</article>
+
+{{ sample.card('button-groups', 'Button groups', 'join selected segmented') }}
+    <div data-demo-selection><div class="join" role="group" aria-label="Sample billing interval"><button class="btn join-item btn-active" type="button" aria-pressed="true" data-action="showcase#select">Monthly</button><button class="btn join-item" type="button" aria-pressed="false" data-action="showcase#select">Yearly</button><button class="btn join-item" type="button" disabled>Enterprise</button></div><output class="mt-3 block text-sm">Monthly selected in this example.</output></div>
+</article>
+
+{{ sample.card('dropdowns', 'Dropdowns', 'menu details open close') }}
+    <details class="dropdown"><summary class="btn btn-primary">Project actions</summary><ul class="menu dropdown-content z-50 mt-2 w-52 rounded-box border border-base-300 bg-base-200 p-2 shadow"><li><button type="button" data-action="showcase#announce">View activity</button></li><li><button type="button" data-action="showcase#announce">Duplicate sample</button></li><li><button type="button" disabled>Delete unavailable</button></li></ul></details>
+    <p>Native details: click again or press Escape to close. Actions report only inside this preview.</p>
+</article>
+
+{{ sample.card('modals', 'Modals', 'dialog overlay focus escape') }}
+    <div data-controller="showcase-dialog"><button class="btn btn-primary" type="button" data-action="showcase-dialog#open">Open sample dialog</button><dialog class="modal" data-showcase-dialog-target="dialog"><div class="modal-box border border-base-300 bg-base-100 text-base-content"><h3 class="text-xl font-semibold" data-showcase-dialog-target="title">Review your sample</h3><p class="py-4">This dialog uses the showcased theme, including its body and heading fonts. Nothing will be saved.</p><div class="modal-action"><button class="btn btn-outline" type="button" data-action="showcase-dialog#close">Cancel dialog</button><button class="btn btn-primary" type="button" data-action="showcase-dialog#close">Close sample dialog</button></div></div></dialog></div>
+    <p>Native modal focus and Escape support; it cannot cover the studio outside this preview.</p>
+</article>
+
+{{ sample.card('swaps', 'Swaps', 'checkbox checked rotate') }}
+    <label class="swap swap-rotate btn btn-circle btn-outline"><input class="absolute inset-0 z-10 size-full cursor-pointer opacity-0" type="checkbox" aria-label="Swap between play and pause"><span class="swap-off" aria-hidden="true">▶</span><span class="swap-on" aria-hidden="true">Ⅱ</span></label>
+    <label class="swap ml-4"><input class="absolute inset-0 z-10 size-full cursor-pointer opacity-0" type="checkbox" aria-label="Swap sample availability"><span class="swap-off badge badge-neutral">Offline</span><span class="swap-on badge badge-success">Online</span></label>
+    <p>These checkboxes change only their own content, independently of the app's light/dark control.</p>
+</article>
+
+{{ sample.card('fab', 'Floating actions / speed dial', 'fab flower') }}
+    <div class="rounded-box border border-base-300 bg-base-200 p-4" data-demo-fab><p>A local canvas for quick actions.</p><div class="fab"><button tabindex="0" type="button" class="btn btn-circle btn-primary" aria-label="Show quick actions">+</button><button type="button" class="btn btn-circle" aria-label="Preview note" data-action="showcase#announce">N</button><button type="button" class="btn btn-circle" aria-label="Preview task" data-action="showcase#announce">T</button><button type="button" class="btn btn-circle" aria-label="Preview message" data-action="showcase#announce">M</button></div></div>
+    <p>Focus or activate + to reveal the speed dial. Positioned inside this card.</p>
+</article>
+
+{{ sample.card('links', 'Links', 'primary secondary accent neutral info success warning error hover') }}
+    <div class="flex flex-wrap gap-4">{% for link in [{class:'link-primary',label:'Project'},{class:'link-secondary',label:'Team'},{class:'link-accent',label:'Activity'},{class:'link-neutral',label:'Archive'},{class:'link-info',label:'Help'},{class:'link-success',label:'Ready'},{class:'link-warning',label:'Review'},{class:'link-error',label:'Issue'}] %}<a class="link {{ link.class }}" href="#{{ prefix }}-category-actions">{{ link.label }}</a>{% endfor %}</div><p>Local anchors; no external navigation.</p>
+</article>

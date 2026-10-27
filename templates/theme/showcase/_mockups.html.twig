@@ -1,0 +1,16 @@
+{% import 'theme/showcase/_macros.html.twig' as sample %}
+{{ sample.card('browser', 'Browser mockup', 'window toolbar address') }}
+    <div class="mockup-browser border border-base-300 bg-base-200"><div class="mockup-browser-toolbar"><div class="input">atelier.example.test</div></div><div class="grid min-h-36 place-items-center bg-base-100 p-6"><div class="text-center"><h4 class="text-xl font-semibold">Project dashboard</h4><span class="badge badge-success mt-3">All systems ready</span></div></div></div>
+</article>
+
+{{ sample.card('window', 'Window mockup', 'desktop frame') }}
+    <div class="mockup-window border border-base-300 bg-base-200"><div class="grid min-h-36 place-items-center bg-base-100 px-4 py-10"><div class="text-center"><h4 class="font-semibold">Your shared workspace</h4><p class="mt-3">A familiar surface, styled by this theme.</p></div></div></div>
+</article>
+
+{{ sample.card('phone', 'Phone mockup', 'mobile device screen') }}
+    <div class="mx-auto max-w-64"><div class="mockup-phone"><div class="mockup-phone-camera"></div><div class="mockup-phone-display bg-base-200 text-base-content"><div class="flex h-full flex-col justify-center gap-4 p-5"><p class="text-xs">9:41 · Atelier</p><h4 class="text-2xl font-bold">Bonjour!</h4><p class="text-sm">Your library is ready for a new day.</p><div class="card bg-base-100"><div class="card-body p-4"><span class="badge badge-primary">Today</span><p class="text-sm">Review four components.</p></div></div><button class="btn btn-primary btn-sm" type="button" data-action="showcase#announce">Open sample</button></div></div></div></div>
+</article>
+
+{{ sample.card('code', 'Code mockup', 'terminal monospace syntax') }}
+    <div class="mockup-code"><pre data-prefix="$"><code>npm run build</code></pre><pre data-prefix="&gt;" class="text-warning"><code>Building the sample assets…</code></pre><pre data-prefix="✓" class="text-success"><code>Ready: 24 reviewed patterns.</code></pre></div><p>Uses the selected code font. The command is display text and is never executed.</p>
+</article>

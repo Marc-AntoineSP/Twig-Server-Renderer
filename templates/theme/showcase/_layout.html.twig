@@ -1,0 +1,60 @@
+{% import 'theme/showcase/_macros.html.twig' as sample %}
+{{ sample.card('accordions', 'Accordions', 'collapse details exclusive expand keyboard') }}
+    {% for item in [{title:'What is included?',content:'Reusable patterns for actions, forms, navigation and feedback.'},{title:'Can I change the fonts?',content:'Yes. The existing theme editor keeps body, heading and code choices separate.'},{title:'Does this save anything?',content:'No. This is a local demonstration with native disclosure controls.'}] %}<details name="{{ prefix }}-accordion" class="collapse collapse-arrow mb-2 border border-base-300 bg-base-200" {{ loop.first ? 'open' : '' }}><summary class="collapse-title font-semibold">{{ item.title }}</summary><div class="collapse-content">{{ item.content }}</div></details>{% endfor %}
+</article>
+
+{{ sample.card('collapses', 'Collapsible sections', 'details plus expand independent') }}
+    <details class="collapse collapse-plus border border-base-300 bg-base-200"><summary class="collapse-title font-semibold">Show sample implementation notes</summary><div class="collapse-content"><p>This disclosure stays independent from the accordion group. Enter or Space on its summary toggles the content.</p></div></details>
+</article>
+
+{{ sample.card('dividers', 'Dividers', 'horizontal vertical semantic colours') }}
+    <p>Content above</p><div class="divider divider-primary">Continue</div><div class="flex h-20 items-center"><span>Design</span><div class="divider divider-horizontal divider-secondary">and</div><span>Engineering</span></div><div class="divider divider-accent">Next section</div>
+</article>
+
+{{ sample.card('joins', 'Joined elements', 'input select button vertical horizontal group') }}
+    <div class="join flex w-full"><input class="input join-item min-w-0 w-full" aria-label="Sample joined search" placeholder="Find a component"><button class="btn btn-primary join-item" type="button" data-action="showcase#announce">Search</button></div><div class="join join-vertical mt-4 w-full"><button class="btn join-item" type="button" data-action="showcase#announce">Preview project</button><button class="btn join-item" type="button" data-action="showcase#announce">Preview team</button><button class="btn join-item" type="button" disabled>Unavailable action</button></div>
+</article>
+
+{{ sample.card('indicators', 'Indicators', 'badge corner notification') }}
+    <div class="flex flex-wrap items-center gap-8 p-5"><div class="indicator"><span class="indicator-item badge badge-primary">3</span><button class="btn" type="button" data-action="showcase#announce">Inbox</button></div><div class="indicator"><span class="indicator-item indicator-bottom badge badge-success">Online</span><div class="avatar avatar-placeholder"><div class="w-20 rounded-box bg-neutral text-neutral-content"><span>AL</span></div></div></div></div>
+</article>
+
+{{ sample.card('heroes', 'Heroes', 'landing call to action') }}
+    <div class="hero rounded-box bg-base-200"><div class="hero-content py-10 text-center"><div><h4 class="text-3xl font-bold">Create together</h4><p class="py-5">A shared design language makes every release feel familiar.</p><button class="btn btn-primary" type="button" data-action="showcase#announce">Explore sample</button></div></div></div>
+</article>
+
+{{ sample.card('footers', 'Footers', 'navigation links title') }}
+    <footer class="footer rounded-box bg-base-200 p-6 sm:footer-horizontal"><nav><h4 class="footer-title">Product</h4><a class="link link-hover" href="#{{ prefix }}-category-layout">Components</a><a class="link link-hover" href="#{{ prefix }}-category-layout">Release notes</a></nav><nav><h4 class="footer-title">Team</h4><a class="link link-hover" href="#{{ prefix }}-category-layout">About the sample</a><a class="link link-hover" href="#{{ prefix }}-category-layout">Contact example</a></nav><aside><p>Atelier Studio<br>A local theme demonstration.</p></aside></footer>
+</article>
+
+{{ sample.card('drawers', 'Drawers', 'sidebar overlay focus escape close') }}
+    <div class="drawer"><input id="{{ prefix }}-drawer" type="checkbox" class="drawer-toggle" data-showcase-target="drawer"><div class="drawer-content rounded-box bg-base-200 p-5"><p class="mb-4">Open a themed sidebar inside this preview.</p><button class="btn btn-primary" type="button" data-action="showcase#openDrawer">Open sample drawer</button></div><div class="drawer-side z-50" data-showcase-target="drawerPanel" role="dialog" aria-modal="true" aria-labelledby="{{ prefix }}-drawer-title" aria-hidden="true"><label for="{{ prefix }}-drawer" class="drawer-overlay" aria-label="Close drawer overlay" data-action="click->showcase#closeDrawer"></label><aside class="min-h-full w-64 max-w-[85vw] bg-base-100 p-5 text-base-content"><h4 id="{{ prefix }}-drawer-title" class="mb-4 text-xl font-semibold">Sample workspace</h4><button class="btn btn-outline w-full" type="button" data-action="showcase#closeDrawer">Close sample drawer</button><ul class="menu mt-5 rounded-box bg-base-200"><li><button type="button" data-action="showcase#announce">Overview</button></li><li><button type="button" data-action="showcase#announce">Projects</button></li></ul><p class="mt-4">Escape closes this panel and restores focus.</p></aside></div></div>
+</article>
+
+{{ sample.card('carousels', 'Carousels', 'slider swipe snap cards') }}
+    <div class="carousel w-full rounded-box" aria-label="Sample project slides">{% for slide in [{title:'Design together',class:'bg-primary text-primary-content'},{title:'Build with clarity',class:'bg-secondary text-secondary-content'},{title:'Ship with confidence',class:'bg-accent text-accent-content'}] %}<div class="carousel-item w-full" data-slide="{{ loop.index }}"><div class="grid h-40 w-full place-items-center p-6 text-center {{ slide.class }}"><p class="text-2xl font-semibold">{{ slide.title }}</p></div></div>{% endfor %}</div><div class="mt-3 flex justify-center gap-2">{% for n in 1..3 %}<button class="btn btn-sm" type="button" aria-label="Show slide {{ n }}" data-slide-to="{{ n }}" data-action="showcase#carousel">{{ n }}</button>{% endfor %}</div>
+</article>
+
+{{ sample.card('stacks', 'Stacks', 'cards layered') }}
+    <div class="stack w-full pb-8"><div class="card w-full border border-base-300 bg-primary text-primary-content"><div class="card-body"><h4 class="card-title">Design review</h4><p>One clear pattern, a stack of useful examples.</p></div></div><div class="card w-full border border-base-300 bg-base-200"><div class="card-body">Sample two</div></div><div class="card w-full border border-base-300 bg-base-300"><div class="card-body">Sample three</div></div></div>
+</article>
+
+{{ sample.card('masks', 'Masks', 'circle squircle heart star hexagon diamond triangle shapes') }}
+    <div class="flex flex-wrap gap-4">{% for mask in [{class:'mask-squircle',label:'Squircle'},{class:'mask-circle',label:'Circle'},{class:'mask-heart',label:'Heart'},{class:'mask-star',label:'Star'},{class:'mask-hexagon',label:'Hexagon'},{class:'mask-diamond',label:'Diamond'},{class:'mask-triangle',label:'Triangle'}] %}<div class="flex flex-col items-center gap-2"><div class="mask size-16 bg-primary {{ mask.class }}" aria-hidden="true"></div><span class="text-xs">{{ mask.label }}</span></div>{% endfor %}</div>
+</article>
+
+{{ sample.card('diff', 'Diff comparison', 'before after resize keyboard') }}
+    <div class="diff aspect-video rounded-box" tabindex="0" aria-label="Compare two sample project covers"><div class="diff-item-1" tabindex="0"><div class="grid h-full w-full place-content-center bg-primary text-3xl font-bold text-primary-content">Atelier</div></div><div class="diff-item-2"><div class="grid h-full w-full place-content-center bg-secondary text-3xl font-bold text-secondary-content">Atelier</div></div><div class="diff-resizer"></div></div><p>Drag the divider or use Tab to inspect the two sides.</p>
+</article>
+
+{{ sample.card('aura', 'Aura', 'border highlight primary') }}
+    <div class="aura aura-glow rounded-box text-primary"><div class="card border border-base-300 bg-base-200 text-base-content"><div class="card-body"><h4 class="card-title">A highlighted pattern</h4><p>A subtle border light around an important surface.</p><button class="btn btn-primary" type="button" data-action="showcase#announce">Inspect sample</button></div></div></div>
+</article>
+
+{{ sample.card('hover-3d', 'Hover 3D card', 'hover tilt perspective') }}
+    <div class="hover-3d w-full"><div class="card w-full bg-primary text-primary-content"><div class="card-body"><h4 class="card-title">A little perspective</h4><p>Hover across this decorative card to explore the tilt.</p></div></div>{% for n in 1..8 %}<div aria-hidden="true"></div>{% endfor %}</div><p>The content stays available on touch and keyboard; the tilt is decorative.</p>
+</article>
+
+{{ sample.card('hover-gallery', 'Hover gallery', 'images pointer decorative') }}
+    <figure class="hover-gallery w-full rounded-box" aria-label="Two local abstract illustrations"><img alt="A sample mountain illustration" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23dbeafe'/%3E%3Cpath d='m0 240 160-200 90 120 60-80 90 160Z' fill='%23475569'/%3E%3C/svg%3E"><img alt="A sample sunrise illustration" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23ffedd5'/%3E%3Ccircle cx='200' cy='120' r='65' fill='%23c2410c'/%3E%3Cpath d='M0 180h400v60H0Z' fill='%23475569'/%3E%3C/svg%3E"></figure><p>Pointer-only decorative image swap. The two bundled illustrations have useful alt text and no remote requests.</p>
+</article>

@@ -21,6 +21,8 @@
 
 /node_modules/
 /assets/styles/app.css
+/assets/styles/showcase.css
+/assets/showcase/showcase.js
 /test-results/
 /playwright-report/
 /workers/*/vendor/

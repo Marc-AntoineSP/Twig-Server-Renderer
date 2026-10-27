@@ -24,6 +24,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY assets ./assets
 COPY templates ./templates
+COPY fixtures ./fixtures
 RUN npm run build:css
 
 FROM dev AS production-build
@@ -50,6 +51,8 @@ RUN --mount=type=cache,target=/tmp/composer-cache \
  && composer install --no-dev --no-scripts --no-interaction --optimize-autoloader \
  && php bin/console importmap:install --env=prod --no-debug
 COPY --from=studio-assets /app/assets/styles/app.css ./assets/styles/app.css
+COPY --from=studio-assets /app/assets/styles/showcase.css ./assets/styles/showcase.css
+COPY --from=studio-assets /app/assets/showcase/showcase.js ./assets/showcase/showcase.js
 RUN php bin/console asset-map:compile --env=prod --no-debug \
  && rm -rf var/cache var/log \
  && mkdir -p var/cache var/log var/sessions var/catalogue \

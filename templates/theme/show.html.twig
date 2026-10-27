@@ -6,6 +6,17 @@
 <div class="flex flex-wrap items-center justify-between gap-3"><h1 class="text-3xl font-bold">{{ theme.document.provenance.title|default(theme.name) }}</h1>{% if is_granted('ROLE_EDITOR') %}{% if not family.builtIn and not theme.document.provenance.managed|default(false) %}<a class="btn btn-primary" href="{{ path('theme_edit', {id: theme.id}) }}">Edit theme</a>{% endif %}<form method="post" action="{{ path('theme_duplicate',{id:theme.id}) }}" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('theme-duplicate') }}"><button class="btn btn-outline">Duplicate/Edit</button></form>{% if releases|length %}<form method="post" action="{{ path('theme_apply',{id:theme.id}) }}" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('theme-apply') }}"><button class="btn btn-primary">Apply to showcase</button></form>{% endif %}{% endif %}</div>
 <p class="my-4">Draft revision {{ theme.revision }} · proposed version {{ theme.document.version }}</p>
 {% include 'theme/_provenance.html.twig' %}
+<section id="component-showcase" class="my-8" aria-labelledby="component-showcase-heading">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <h2 id="component-showcase-heading" class="text-2xl font-semibold">Component showcase</h2>
+        <nav class="join" aria-label="Showcase theme variant">
+            {% for mode, variant in family.variants %}<a class="btn join-item {{ mode == theme.document.colorScheme ? 'btn-primary' : 'btn-outline' }}" href="{{ path('theme_show', {id: variant.id}) }}#component-showcase" {% if variant.id == theme.id %}aria-current="page"{% endif %}>Showcase {{ mode }}</a>{% endfor %}
+        </nav>
+    </div>
+    <p class="my-3 text-sm">Browse working daisyUI examples in this theme's {{ theme.document.colorScheme }} variant. Controls are local demonstrations. Your application's appearance and saved preferences stay independent.</p>
+    {% if showcaseDocument %}<iframe title="Theme component showcase" class="h-[75vh] min-h-[32rem] max-h-[64rem] w-full rounded-box border border-base-300 bg-base-100" sandbox="allow-scripts" referrerpolicy="no-referrer" srcdoc="{{ showcaseDocument|e('html_attr') }}"></iframe>
+    {% else %}<p class="alert alert-warning" role="alert">{{ showcaseError }}</p>{% endif %}
+</section>
 <details class="my-4"><summary>Semantic text contrast</summary><p>Solid sRGB token pairs; rendered focus, hover, selected, disabled and error states are separate checks.</p><table class="table"><thead><tr><th>Background / its content</th><th>Ratio</th></tr></thead><tbody>{% for pair,ratio in ratios %}<tr><td>{{ pair }}</td><td>{{ ratio }}:1</td></tr>{% endfor %}</tbody></table></details>
 <h2 class="mt-6 text-xl font-semibold">Draft outputs</h2>{% include 'theme/_exports.html.twig' with {route: 'theme_export', id: theme.id} %}
 <a class="link mt-3 inline-block" href="{{ path('theme_export', {id: theme.id, file: 'theme.yaml'}) }}">theme.yaml</a>

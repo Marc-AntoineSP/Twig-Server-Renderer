@@ -410,6 +410,13 @@ temporary editor trials share the existing theme/font data. Run the additive mig
 before using this extension, and `make appearance-production` for its isolated production
 asset check. Component previews and their export/preset choices remain independent.
 
+Each theme detail now includes a server-rendered **Component showcase** with 65 panels,
+category/search controls and independent family variant links. Its sandboxed document uses
+that detail theme's palette/fonts even when the application has another theme applied.
+`make assets` builds both studio and showcase assets; `make theme-showcase-production`
+checks real production CSS plus the existing appearance flows in an isolated fixture.
+See [THEME_SHOWCASE.md](THEME_SHOWCASE.md) for coverage, interactions and browser limits.
+
 The updated development application is at http://localhost:8095: `/fonts` contains
 the local library and `/themes` contains the managed website presets. Start it with
 `docker compose up -d --wait app database render-worker build-worker preview-consumer`.

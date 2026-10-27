@@ -1,0 +1,65 @@
+{% import 'theme/showcase/_macros.html.twig' as sample %}
+{{ sample.card('inputs', 'Text inputs', 'email search sizes semantic primary secondary accent neutral info success warning error disabled') }}
+    <div class="grid gap-3 sm:grid-cols-2">{% for tone in tones %}<label class="fieldset min-w-0"><span class="label">{{ tone.label }} input</span><input class="input w-full {{ tone.input }}" placeholder="{{ tone.label }} project"></label>{% endfor %}</div>
+    <div class="mt-4 grid gap-2">{% for size in [{class:'input-xs',label:'Extra small'},{class:'input-sm',label:'Small'},{class:'input-md',label:'Medium'},{class:'input-lg',label:'Large'},{class:'input-xl',label:'Extra large'}] %}<input class="input w-full {{ size.class }}" aria-label="{{ size.label }} input" placeholder="{{ size.label }} input">{% endfor %}<input class="input input-ghost w-full" aria-label="Ghost input" value="Ghost style"><input class="input w-full" aria-label="Disabled input" value="Read-only workflow" disabled></div>
+</article>
+
+{{ sample.card('textareas', 'Textareas', 'multiline ghost success error disabled') }}
+    <label class="fieldset"><span class="label">Project notes</span><textarea class="textarea textarea-primary w-full" rows="3">A reusable library for our next release.
+Typography, colours and geometry stay together.</textarea></label>
+    <div class="mt-3 grid gap-3"><textarea class="textarea textarea-sm textarea-ghost w-full" aria-label="Small ghost notes" rows="2" placeholder="Small ghost notes"></textarea><textarea class="textarea textarea-lg textarea-success w-full" aria-label="Large approved notes" rows="2">Approved sample content.</textarea><textarea class="textarea w-full" aria-label="Disabled notes" disabled rows="2">Editing unavailable.</textarea></div>
+</article>
+
+{{ sample.card('selects', 'Selects', 'options selected disabled sizes') }}
+    <div class="fieldset"><label class="label" for="{{ prefix }}-region">Sample region</label><select id="{{ prefix }}-region" class="select select-primary w-full"><option>Europe</option><option>North America</option><option>Asia Pacific</option></select></div>
+    <div class="fieldset mt-3"><label class="label" for="{{ prefix }}-team">Small secondary select</label><select id="{{ prefix }}-team" class="select select-sm select-secondary w-full"><option selected>Design team</option><option>Engineering</option><option disabled>Archived team</option></select></div>
+    <div class="fieldset mt-3"><label class="label" for="{{ prefix }}-disabled-select">Disabled select</label><select id="{{ prefix }}-disabled-select" class="select w-full" disabled><option>Organisation managed</option></select></div>
+</article>
+
+{{ sample.card('checkboxes', 'Checkboxes', 'checked unchecked disabled indeterminate semantic colours') }}
+    <div class="grid gap-3 sm:grid-cols-2">{% for tone in tones %}<label class="label justify-start gap-3"><input class="checkbox {{ tone.check }}" type="checkbox" {{ loop.index is odd ? 'checked' : '' }}>{{ tone.label }}</label>{% endfor %}</div>
+    <div class="mt-4 flex flex-wrap items-center gap-4"><label class="label"><input class="checkbox checkbox-xs" type="checkbox" checked>XS</label><label class="label"><input class="checkbox checkbox-xl" type="checkbox">XL</label><label class="label"><input class="checkbox" type="checkbox" disabled checked>Disabled</label></div>
+</article>
+
+{{ sample.card('radios', 'Radios', 'selected unselected disabled semantic colours') }}
+    <fieldset class="fieldset"><legend class="fieldset-legend">Choose one sample priority</legend><div class="grid gap-3 sm:grid-cols-2">{% for tone in tones %}<label class="label justify-start gap-3"><input class="radio {{ tone.radio }}" type="radio" name="{{ prefix }}-priority" value="{{ loop.index }}" {{ loop.first ? 'checked' : '' }}>{{ tone.label }}</label>{% endfor %}</div></fieldset>
+    <label class="label mt-3"><input class="radio radio-sm" type="radio" name="{{ prefix }}-locked" disabled checked>Disabled selection</label>
+</article>
+
+{{ sample.card('toggles', 'Toggles', 'checked unchecked disabled semantic colours') }}
+    <div class="grid gap-3 sm:grid-cols-2">{% for tone in tones %}<label class="label justify-start gap-3"><input class="toggle {{ tone.toggle }}" type="checkbox" {{ loop.index is odd ? 'checked' : '' }}>{{ tone.label }}</label>{% endfor %}</div>
+    <div class="mt-4 flex flex-wrap items-center gap-3"><label class="label"><input class="toggle toggle-xs" type="checkbox" checked>XS</label><label class="label"><input class="toggle toggle-xl" type="checkbox">XL</label><label class="label"><input class="toggle" type="checkbox" disabled>Disabled</label></div>
+</article>
+
+{{ sample.card('ranges', 'Ranges', 'slider semantic colours sizes disabled') }}
+    <div class="grid gap-4">{% for tone in tones %}<label class="fieldset"><span class="label">{{ tone.label }} capacity <output id="{{ prefix }}-range-{{ loop.index }}">{{ 20 + loop.index * 7 }}%</output></span><input class="range {{ tone.range }}" type="range" min="0" max="100" value="{{ 20 + loop.index * 7 }}" aria-describedby="{{ prefix }}-range-{{ loop.index }}" data-action="input->showcase#range"></label>{% endfor %}<input class="range range-xs" aria-label="Disabled capacity" type="range" value="40" disabled></div>
+</article>
+
+{{ sample.card('file-inputs', 'File inputs', 'file local disabled upload') }}
+    <label class="fieldset"><span class="label">Select a local sample file</span><input class="file-input file-input-primary w-full" type="file" data-action="change->showcase#file"><span class="label">Selection stays in your browser. No upload endpoint exists.</span></label>
+    <label class="fieldset mt-4"><span class="label">Disabled attachment</span><input class="file-input file-input-sm w-full" type="file" disabled></label>
+</article>
+
+{{ sample.card('ratings', 'Ratings', 'star heart checked half sizes') }}
+    <fieldset class="fieldset"><legend class="fieldset-legend">Rate the sample</legend><div class="rating rating-lg">{% for n in 1..5 %}<input type="radio" name="{{ prefix }}-rating-stars" class="mask mask-star-2 bg-warning" aria-label="{{ n }} stars" {{ n == 4 ? 'checked' : '' }}>{% endfor %}</div></fieldset>
+    <fieldset class="fieldset mt-4"><legend class="fieldset-legend">Independent heart rating</legend><div class="rating rating-sm">{% for n in 1..5 %}<input type="radio" name="{{ prefix }}-rating-hearts" class="mask mask-heart bg-error" aria-label="{{ n }} hearts" {{ n == 3 ? 'checked' : '' }}>{% endfor %}</div></fieldset>
+</article>
+
+{{ sample.card('fieldsets-labels', 'Fieldsets and labels', 'legend floating label input group') }}
+    <fieldset class="fieldset rounded-box border border-base-300 bg-base-200 p-4"><legend class="fieldset-legend">Sample workspace</legend><label class="label" for="{{ prefix }}-workspace">Workspace name</label><input id="{{ prefix }}-workspace" class="input w-full" value="Atelier Studio"><p class="label">A public display name in this demonstration.</p><label class="label mt-3" for="{{ prefix }}-domain">Project domain</label><label class="input w-full"><span class="label">https://</span><input id="{{ prefix }}-domain" class="min-w-0" value="atelier.example.test"><span class="label">.test</span></label></fieldset>
+    <label class="floating-label mt-5"><span>Floating sample label</span><input class="input w-full" placeholder="Floating sample label" value="Bonjour"></label>
+</article>
+
+{{ sample.card('validation', 'Validation states', 'validator valid invalid error success hint required') }}
+    <fieldset class="fieldset"><legend class="fieldset-legend">Native email validation</legend><label class="label" for="{{ prefix }}-email">Sample email</label><input id="{{ prefix }}-email" class="input validator w-full" type="email" value="not-an-email" required aria-describedby="{{ prefix }}-email-hint"><p id="{{ prefix }}-email-hint" class="validator-hint">Enter a valid email address, such as bonjour@example.test.</p></fieldset>
+    <label class="fieldset mt-3"><span class="label">Approved project name</span><input class="input input-success w-full" value="Atelier library" aria-describedby="{{ prefix }}-valid"><span id="{{ prefix }}-valid" class="text-success">This sample is ready.</span></label>
+    <label class="fieldset mt-3"><span class="label">Required project name</span><input class="input input-error w-full" value="" aria-invalid="true" aria-describedby="{{ prefix }}-invalid"><span id="{{ prefix }}-invalid" class="text-error">A project name is required.</span></label>
+</article>
+
+{{ sample.card('filter', 'Filter radios', 'filter reset selected chips') }}
+    <div class="filter" role="group" aria-label="Sample task status"><input class="btn filter-reset" type="radio" name="{{ prefix }}-task-filter" aria-label="All task statuses" checked><input class="btn btn-primary" type="radio" name="{{ prefix }}-task-filter" aria-label="Open tasks"><input class="btn btn-success" type="radio" name="{{ prefix }}-task-filter" aria-label="Completed tasks"><input class="btn btn-warning" type="radio" name="{{ prefix }}-task-filter" aria-label="Tasks in review"></div><p>Choose a chip; reset restores the available choices. This demonstrates the filter control itself.</p>
+</article>
+
+{{ sample.card('otp', 'One-time code input', 'otp digits native') }}
+    <label class="fieldset"><span class="label">Sample six-digit code</span><span class="otp">{% for n in 1..6 %}<span aria-hidden="true"></span>{% endfor %}<input type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" value="482615" autocomplete="off" data-action="input->showcase#otp"></span><span class="label">Local numeric input; no verification request is made.</span></label>
+</article>

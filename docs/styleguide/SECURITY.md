@@ -128,3 +128,11 @@ storage cache can override another account. Trials use owner-only, expiring/no-s
 and cannot update Theme or AppearancePreference records. Personalized HTML is private/
 no-store; only the built-in system-font default CSS is available without a login.
 See APPEARANCE.md for request, stylesheet, tab-slot and trial-history limits.
+
+The theme-detail component reference renders only repository-owned Twig partials and
+bundled Stimulus, using validated theme tokens and registered embedded fonts. It retains
+the existing srcdoc sandbox and restrictive preview CSP, including connect-src 'none'
+and form-action 'none'; no extra iframe permissions, upload handler or preference API is
+provided to examples. Viewing requires the existing reader role and personalized HTML
+cache policy. Repeated input groups have unique IDs/names; overlays and their focus stay
+inside the preview. No user component source is rendered by the studio Twig service.

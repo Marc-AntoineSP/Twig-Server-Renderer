@@ -1,0 +1,37 @@
+{% set tones = [
+    {label:'Primary', button:'btn-primary', badge:'badge-primary', input:'input-primary', check:'checkbox-primary', radio:'radio-primary', toggle:'toggle-primary', range:'range-primary', progress:'progress-primary'},
+    {label:'Secondary', button:'btn-secondary', badge:'badge-secondary', input:'input-secondary', check:'checkbox-secondary', radio:'radio-secondary', toggle:'toggle-secondary', range:'range-secondary', progress:'progress-secondary'},
+    {label:'Accent', button:'btn-accent', badge:'badge-accent', input:'input-accent', check:'checkbox-accent', radio:'radio-accent', toggle:'toggle-accent', range:'range-accent', progress:'progress-accent'},
+    {label:'Neutral', button:'btn-neutral', badge:'badge-neutral', input:'input-neutral', check:'checkbox-neutral', radio:'radio-neutral', toggle:'toggle-neutral', range:'range-neutral', progress:'progress-neutral'},
+    {label:'Information', button:'btn-info', badge:'badge-info', input:'input-info', check:'checkbox-info', radio:'radio-info', toggle:'toggle-info', range:'range-info', progress:'progress-info'},
+    {label:'Success', button:'btn-success', badge:'badge-success', input:'input-success', check:'checkbox-success', radio:'radio-success', toggle:'toggle-success', range:'range-success', progress:'progress-success'},
+    {label:'Warning', button:'btn-warning', badge:'badge-warning', input:'input-warning', check:'checkbox-warning', radio:'radio-warning', toggle:'toggle-warning', range:'range-warning', progress:'progress-warning'},
+    {label:'Error', button:'btn-error', badge:'badge-error', input:'input-error', check:'checkbox-error', radio:'radio-error', toggle:'toggle-error', range:'range-error', progress:'progress-error'}
+] %}
+<main data-controller="showcase" data-action="keydown.esc@window->showcase#escape submit->showcase#preventSubmit click->showcase#navigate" aria-label="Theme components">
+    <header class="mb-6">
+        <p class="badge badge-outline">daisyUI 5.7.50 · {{ mode }}</p>
+        <h1 class="mt-3 text-2xl font-bold">{{ themeName }}</h1>
+        <p class="mt-2">A working component library. English &amp; Français: Élève, cœur, Œuvre, ça coûte 12 €.</p>
+    </header>
+    <div data-showcase-toolbar class="mb-6 grid gap-3 rounded-box border border-base-300 p-3 sm:grid-cols-2">
+        <div class="fieldset min-w-0"><label class="fieldset-legend" for="{{ prefix }}-category">Component category</label><select id="{{ prefix }}-category" class="select w-full" data-showcase-target="category" data-action="change->showcase#filter"><option value="all">All categories</option>{% for key,label in categories %}<option value="{{ key }}">{{ label }}</option>{% endfor %}</select></div>
+        <div class="fieldset min-w-0"><label class="fieldset-legend" for="{{ prefix }}-search">Find a component</label><input id="{{ prefix }}-search" class="input w-full" type="search" placeholder="Try tabs, input or card" data-showcase-target="search" data-action="input->showcase#filter"></div>
+        <p class="text-sm sm:col-span-2" aria-live="polite" data-showcase-target="count">All component examples. Nothing here saves, sends or uploads data.</p>
+    </div>
+    <p class="alert mb-4" hidden role="status" data-showcase-target="status"></p>
+    {% for key,label in categories %}
+        <section class="mb-10" data-showcase-target="section" data-category="{{ key }}" aria-labelledby="{{ prefix }}-category-{{ key }}">
+            <h2 id="{{ prefix }}-category-{{ key }}" class="mb-4 border-b border-base-300 pb-3 text-xl font-semibold">{{ label }}</h2>
+            <div class="grid min-w-0 gap-5 lg:grid-cols-2">
+                {% include 'theme/showcase/_'~key~'.html.twig' %}
+            </div>
+        </section>
+    {% endfor %}
+    <p hidden class="alert my-5" data-showcase-target="empty">No matching components. Clear the search or choose All categories.</p>
+    <footer class="mt-8 border-t border-base-300 pt-4 text-sm">
+        <p>Native controls and semantic colours; all examples use this document's palette and body, heading and code fonts.</p>
+        <p class="mt-2">Calendar integrations and full-page megamenus are omitted. Use the studio header to change application appearance; these examples keep their own theme.</p>
+    </footer>
+    <div hidden class="toast toast-end toast-bottom" data-demo-toast data-showcase-target="toast" aria-live="polite"><div class="alert alert-success"><span>Preview notification: your sample is ready.</span><button class="btn btn-sm btn-ghost" type="button" data-action="showcase#closeToast">Dismiss notification</button></div></div>
+</main>

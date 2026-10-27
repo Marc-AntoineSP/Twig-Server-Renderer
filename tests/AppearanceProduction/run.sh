@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 umask 077
+specs=("$@")
+if ((${#specs[@]} == 0)); then specs=(tests/Browser/appearance.spec.js); fi
+for spec in "${specs[@]}"; do
+    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/theme_components.spec.js) ;; *) echo 'Choose an appearance or theme-component acceptance spec.' >&2; exit 1;; esac
+done
 fixture_name="appearance-$(date -u +%Y%m%d%H%M%S)-${RANDOM}"
 fixture_dir="var/${fixture_name}"
 docker compose exec -T app php tools/production/init.php "$fixture_name"
@@ -45,7 +50,7 @@ services:
 YAML
 "${dc[@]}" exec -T app sha256sum public/assets/manifest.json > "$fixture_dir/compiled-before.sha256"
 "${dc[@]}" exec -T app php bin/console doctrine:schema:validate
-"${dc[@]}" -f compose.appearance-test.yaml -f "$fixture_dir/browser.yaml" run --rm --no-deps browser npx playwright test tests/Browser/appearance.spec.js --output="$fixture_dir/browser-results" --reporter=list
+"${dc[@]}" -f compose.appearance-test.yaml -f "$fixture_dir/browser.yaml" run --rm --no-deps browser npx playwright test "${specs[@]}" --output="$fixture_dir/browser-results" --reporter=list
 "${dc[@]}" exec -T app sha256sum public/assets/manifest.json > "$fixture_dir/compiled-after.sha256"
 cmp "$fixture_dir/compiled-before.sha256" "$fixture_dir/compiled-after.sha256"
 "${dc[@]}" exec -T app php bin/console styleguide:fonts:verify

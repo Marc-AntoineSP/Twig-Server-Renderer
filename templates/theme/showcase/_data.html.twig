@@ -1,0 +1,49 @@
+{% import 'theme/showcase/_macros.html.twig' as sample %}
+{{ sample.card('cards', 'Cards', 'border dash side compact actions') }}
+    <div class="card card-border bg-base-200"><div class="card-body"><div class="flex flex-wrap gap-2"><span class="badge badge-success badge-soft">Ready for review</span><span class="badge badge-outline">Design</span></div><h4 class="card-title">A useful component library</h4><p>24 components, shared tokens and a release plan for the team.</p><div class="card-actions justify-end"><button class="btn btn-primary" type="button" data-action="showcase#announce">Review sample</button></div></div></div>
+    <div class="card card-dash card-sm mt-4 bg-base-100"><div class="card-body"><h4 class="card-title">Compact dashed card</h4><p>Smaller content, the same theme geometry.</p></div></div>
+</article>
+
+{{ sample.card('badges', 'Badges', 'semantic colours sizes outline dash soft ghost') }}
+    <div class="flex flex-wrap gap-2">{% for tone in tones %}<span class="badge {{ tone.badge }}">{{ tone.label }}</span>{% endfor %}</div><div class="divider">Styles and sizes</div><div class="flex flex-wrap items-center gap-2"><span class="badge badge-primary badge-outline">Outline</span><span class="badge badge-secondary badge-dash">Dash</span><span class="badge badge-accent badge-soft">Soft</span><span class="badge badge-ghost">Ghost</span>{% for size in [{class:'badge-xs',label:'XS'},{class:'badge-sm',label:'SM'},{class:'badge-md',label:'MD'},{class:'badge-lg',label:'LG'},{class:'badge-xl',label:'XL'}] %}<span class="badge {{ size.class }}">{{ size.label }}</span>{% endfor %}</div>
+</article>
+
+{{ sample.card('avatars', 'Avatars', 'placeholder group online offline') }}
+    <div class="flex flex-wrap items-center gap-4"><div class="avatar avatar-online avatar-placeholder"><div class="w-14 rounded-full bg-primary text-primary-content"><span>AL</span></div></div><div class="avatar avatar-offline avatar-placeholder"><div class="w-12 rounded-box bg-secondary text-secondary-content"><span>MJ</span></div></div><div class="avatar-group -space-x-4">{% for initials in ['AL','MJ','JT'] %}<div class="avatar avatar-placeholder"><div class="w-12 bg-neutral text-neutral-content"><span>{{ initials }}</span></div></div>{% endfor %}<div class="avatar avatar-placeholder"><div class="w-12 bg-base-300"><span>+6</span></div></div></div></div><p>Initials keep the example local, with no external profile images.</p>
+</article>
+
+{{ sample.card('stats', 'Stats', 'statistics number description') }}
+    <div class="stats stats-vertical w-full bg-base-200"><div class="stat"><div class="stat-title">Components reviewed</div><div class="stat-value text-primary">24</div><div class="stat-desc">Six more than last week</div></div><div class="stat"><div class="stat-title">Team satisfaction</div><div class="stat-value text-secondary">98%</div><div class="stat-desc">From 42 sample responses</div></div></div>
+</article>
+
+{{ sample.card('tables', 'Tables', 'zebra selected pinned header data') }}
+    <div class="overflow-x-auto"><table class="table table-zebra table-sm"><caption class="mb-3 text-left">Sample project releases</caption><thead><tr><th scope="col">Project</th><th scope="col">Owner</th><th scope="col">Status</th></tr></thead><tbody><tr><th scope="row">Atelier</th><td>Amélie</td><td><span class="badge badge-success badge-sm">Ready</span></td></tr><tr class="bg-primary/10"><th scope="row">Orbit</th><td>Morgan</td><td><span class="badge badge-warning badge-sm">Review</span></td></tr><tr><th scope="row">Lumen</th><td>Jules</td><td><span class="badge badge-info badge-sm">Draft</span></td></tr></tbody></table></div>
+</article>
+
+{{ sample.card('lists', 'Lists', 'rows title grow actions') }}
+    <ul class="list rounded-box bg-base-200"><li class="p-4 text-sm">Recently updated</li>{% for row in [{title:'Button patterns',subtitle:'Amélie · 12 minutes ago'},{title:'Form validation',subtitle:'Morgan · 38 minutes ago'}] %}<li class="list-row"><div class="avatar avatar-placeholder"><div class="w-10 rounded-box bg-primary text-primary-content"><span>{{ loop.index }}</span></div></div><div class="list-col-grow"><div class="font-semibold">{{ row.title }}</div><div class="text-sm">{{ row.subtitle }}</div></div><button class="btn btn-square btn-ghost" type="button" aria-label="Preview {{ row.title }}" data-action="showcase#announce">→</button></li>{% endfor %}</ul>
+</article>
+
+{{ sample.card('timelines', 'Timelines', 'chronology vertical compact') }}
+    <ul class="timeline timeline-vertical timeline-compact"><li><div class="timeline-start">09:00</div><div class="timeline-middle text-primary">{{ sample.icon('check') }}</div><div class="timeline-end timeline-box">Draft tokens reviewed</div><hr class="bg-primary"></li><li><hr class="bg-primary"><div class="timeline-start">11:30</div><div class="timeline-middle text-success">{{ sample.icon('check') }}</div><div class="timeline-end timeline-box">Component library approved</div><hr></li><li><hr><div class="timeline-start">Tomorrow</div><div class="timeline-middle">{{ sample.icon('info') }}</div><div class="timeline-end timeline-box">Team walkthrough</div></li></ul>
+</article>
+
+{{ sample.card('chat', 'Chat bubbles', 'start end primary secondary footer') }}
+    <div class="chat chat-start"><div class="chat-header">Amélie <time class="text-xs">10:42</time></div><div class="chat-bubble chat-bubble-primary">Can you review the new palette?</div><div class="chat-footer">Delivered</div></div><div class="chat chat-end"><div class="chat-header">Morgan <time class="text-xs">10:44</time></div><div class="chat-bubble chat-bubble-secondary">Looks good. The headings are much clearer.</div><div class="chat-footer">Read</div></div>
+</article>
+
+{{ sample.card('keyboard', 'Keyboard shortcuts', 'kbd code sizes') }}
+    <p>Open search: <kbd class="kbd kbd-sm">Ctrl</kbd> + <kbd class="kbd kbd-sm">K</kbd></p><p>Move between tabs: <kbd class="kbd">←</kbd> <kbd class="kbd">→</kbd></p><div class="mt-4 flex flex-wrap items-center gap-2"><kbd class="kbd kbd-xs">XS</kbd><kbd class="kbd kbd-sm">SM</kbd><kbd class="kbd kbd-md">MD</kbd><kbd class="kbd kbd-lg">LG</kbd><kbd class="kbd kbd-xl">XL</kbd></div><p>These describe shortcuts; no global studio shortcuts are intercepted.</p>
+</article>
+
+{{ sample.card('status', 'Status indicators', 'online offline information success warning error sizes') }}
+    <ul class="grid gap-3 sm:grid-cols-2">{% for item in [{class:'status-primary',label:'Primary channel'},{class:'status-secondary',label:'Secondary channel'},{class:'status-accent',label:'Accent channel'},{class:'status-neutral',label:'Offline'},{class:'status-info',label:'Information'},{class:'status-success',label:'Available'},{class:'status-warning',label:'Away'},{class:'status-error',label:'Needs attention'}] %}<li class="flex items-center gap-2"><span class="status {{ item.class }}" aria-hidden="true"></span>{{ item.label }}</li>{% endfor %}</ul>
+</article>
+
+{{ sample.card('countdown', 'Countdown', 'timer seconds restart') }}
+    <div class="flex flex-wrap items-center gap-4"><span class="countdown font-mono text-4xl"><span style="--value:10" data-showcase-target="countdown" aria-label="10 seconds">10</span></span><span>seconds</span><button class="btn btn-outline" type="button" data-action="showcase#countdown">Start 10-second countdown</button></div><p>Runs only after activation and stops at zero. Repeated activation restarts it.</p>
+</article>
+
+{{ sample.card('text-rotate', 'Rotating text', 'text rotate animation reduced motion') }}
+    <p class="text-xl font-semibold">Build <span class="text-rotate text-primary"><span><span>clear interfaces</span><span>shared components</span><span>accessible patterns</span></span></span></p><p>Hover to pause. Reduced-motion preferences disable the repeating animation.</p>
+</article>

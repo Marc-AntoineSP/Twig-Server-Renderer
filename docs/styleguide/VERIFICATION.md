@@ -383,3 +383,89 @@ No new dependencies or portable package-format changes were needed. Actual versi
 remain those recorded for the font/theme extension above. Chromium is the browser tested;
 this does not claim a full accessibility certification. No external deployment, branch
 push or package publication occurred.
+
+## M11 — Theme detail component showcase — 2026-10-27
+
+The existing theme detail now has **65 server-rendered Twig example panels in seven
+categories**, with category/search controls and real local interactions. Inventory,
+architecture, commands and the three intentional catalogue omissions are documented in
+[THEME_SHOWCASE.md](THEME_SHOWCASE.md). It reuses current family variants, typed token CSS,
+font embedding, the opaque preview document and the existing portable tabs/dialog
+controllers. No migration, theme-model change, second generator or catalogue fixture is
+needed. Apply/Edit/Duplicate/export and application appearance remain independent.
+
+### Actual commands and results
+
+- `make assets`: actual studio/showcase Tailwind CSS and bundled Stimulus built in Docker
+  with the installed Tailwind4.3.3/daisyUI5.7.50/esbuild0.28.2. No dependencies changed.
+- `make check`: Compose config, Composer strict validation, service injection, **26 YAML
+  files / 30 Twig files** all pass. Doctrine mapping and schema validate in sync.
+- `docker compose exec -T -e APP_ENV=test app php bin/phpunit`: **122 tests / 724 assertions**,
+  exit0. Includes server-rendered inventory, private reader access, unique IDs/radio
+  groups, unchanged database/preferences and all existing contracts/import/export,
+  renderer/font/installer checks.
+- `docker compose run --rm --no-deps browser npx playwright test
+  tests/Browser/theme_components.spec.js
+  --output=var/component-showcase-verification/final-focused-results --reporter=list`:
+  **5 passed / 1.3m**, exit0. Tests actual computed palette/typography, two contrasting
+  custom families and real light/dark variants, local Inter472 italic/Lora631/JetBrains
+  Mono400 decoding, category/search, three keyboard tab styles, dropdowns, native dialogs,
+  swaps/FAB, accordions/collapses, form states/validation, independent radios/ratings,
+  file selection without upload, drawer focus/Escape/backdrop, timed/dismissible toast,
+  carousel, pagination/dock, countdown, and every category at **375px / 768px** without
+  horizontal overflow. Tooltip focus and the always-reachable recovery control pass.
+  A browser CSSOM walk confirms **every rendered class has a compiled/generated rule**;
+  all65 component scopes share the selected primary token. The frame makes **zero HTTP
+  requests** and cannot read its parent DOM. Personal preference stays unchanged.
+- `make theme-showcase-production`: **17 browser flows passed / 4.4m**, exit0, including
+  all12 existing appearance flows and all5 showcase flows in actual APP_ENV=prod,
+  APP_DEBUG=0 immutable images. Fixture `var/appearance-20261027172638-15809`, release tag
+  `local-20261027172638-c0124396`. New families/variants were created after compilation.
+  AssetMapper manifest remained read-only, SHA-256 before=after:
+  `41ff52657f613a2a832c0cf68d20edf9b56db2535286ac754016086acd0b762b`.
+  Offline registration verifies **3 families / 12 faces / 511,916 bytes**, errors=[].
+  Its three temporary accounts were disabled and only its isolated services were stopped;
+  volumes and compiled manifest evidence are retained. Existing production8096 is intact.
+- A read-only reader survey checks **eight existing website variants**: Airbnb Light,
+  Atlassian Dark/Light, Discord Light, Dropbox Light, Figma Light and GitHub Dark/Light.
+  Each has65 matching component token scopes, computed base/primary colours and decoded
+  local fonts. Preference before/after is identical. Evidence and screenshots:
+  `var/component-showcase-verification/website-survey.json` and `website-*.png`.
+- Complete development browser command with
+  `--output=var/component-showcase-verification/full-development-results --reporter=list`:
+  **45 passed / 1 failed / 14.5m**. The failure was the existing property-form preview
+  check's five-second assertion while its real worker job was still building. It now
+  waits for the public current state within20 seconds and gives its several sequential
+  builds a90-second test deadline, retaining all class/mode/persistence assertions.
+  `... playwright test tests/Browser/showcase.spec.js --grep 'property form'
+  --output=var/component-showcase-verification/renderer-wait-results --reporter=list`:
+  **1 passed / 33.1s** (flow30.7s), exit0. Thus all46 distinct flows have passing evidence
+  across these runs; a second complete46-flow passing run is not claimed. Logs retain
+  both the original failure and corrected real-renderer result.
+
+Production and development screenshots were reviewed, including light/dark typography,
+responsive mockups and keyboard-focused mobile tooltips. Browser logs, FontFace metadata,
+CSS coverage and preservation evidence are retained in `var/component-showcase-verification`.
+After temporary development account cleanup, original row hashes still match **284
+themes / 430 catalogue items / 430 drafts / 1 renderer preset / 1 personal appearance
+preference**. No original row changed or disappeared. All **42 font families / 208 faces /
+6,713,012 font bytes** verify with errors=[]. The baseline and final comparison are
+`baseline.json` and `preservation.json` in the evidence directory. Temporary credentials
+were removed; existing production and consumer services/data were retained.
+
+Corrections during verification: macro imports are explicit in each reusable partial;
+select labels use unique for/id relationships; swaps have a full interactive checkbox
+area and visible keyboard focus; drawer focus waits for native CSS transitions and its
+backdrop suppresses the checkbox's second default toggle. Responsive fieldsets/file
+inputs no longer force intrinsic widths, and tooltip placement cannot widen a mobile
+document. Focused tests reset the requested application mode explicitly; a read-only
+survey uses its own reader account instead of comparing an editor preference while
+concurrent acceptance tests deliberately change it. Earlier failed checks are retained
+as diagnostic evidence and are not counted as passes.
+
+Limits: external-library calendars, full-page megamenus and an additional daisyUI theme
+controller are deliberately omitted; all explicitly requested groups are covered. Native
+OTP/diff/hover cosmetics vary by browser; Chromium is verified. The phone device frame
+and two bundled illustrative SVGs keep their content colours. Not every modifier
+permutation or accessibility conformance is claimed. No external release/push/deployment
+or new package-format change occurred.

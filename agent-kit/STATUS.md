@@ -1015,3 +1015,95 @@ use Try on application, Revert and Save & Apply in the existing editor. Restore 
 is fixed at the bottom-right. Production8096 remains the older image until a separately
 authorized release. Commands, migration/configuration and twelve-check mapping are in
 docs/styleguide/APPEARANCE.md and VERIFICATION.md.
+
+## M11 — Theme detail component showcase — 2026-10-27
+
+Implemented on `feature/m11-theme-component-showcase` from the clean existing application.
+Theme detail contains65 server-rendered Twig panels across actions/forms/navigation/data/
+feedback/layout/mockups, with category/search controls and existing family light/dark
+links. All requested component groups have working examples, semantic colours and relevant
+styles/sizes/states. Existing Apply/Edit/Duplicate/export and header appearance controls
+keep their previous meanings. Viewing/interacting does not save preferences or theme data.
+
+Reuse: ThemeCssGenerator::applicationCss, DocumentAssembler font embedding and unchanged
+opaque srcdoc/CSP; existing portable tabs/dialog Stimulus controllers. No model/migration,
+second generator/editor, persistent catalogue sample or new dependency was introduced.
+Repository-owned Twig partials/macros render all markup; only local behaviours need JS.
+The shared assembler has an optional validated hash scope; old callers emit unchanged
+root markup. CSS and bundled Stimulus build through make assets and are copied into the
+actual production image before AssetMapper compile. New saved themes work without runtime
+Tailwind jobs or manifest writes.
+
+Interactions include native controls/disclosures, keyboard tab switching, real native
+dialogs, swap states, local selections/slider/file output, focus-trapped drawer with
+Escape/backdrop/Close, timed/dismissible toast, carousel, dock, countdown, tooltips and
+modern decorative components. Inputs/groups/ARIA IDs are unique. No example submits,
+uploads or calls application APIs. All frame HTTP requests are absent; it cannot read
+parent DOM. Font, heading/code roles and effective native colour scheme remain independent
+from the application's saved family/mode.
+
+Changed files: ThemeController and detail template; new ThemeComponentShowcase service
+and nine Twig partial/macro files; DocumentAssembler optional scope; isolated showcase
+CSS and fixture Stimulus bootstrap/controller; package scripts, Docker copies, AssetMapper
+source exclusions and ignored generated files; Makefile and existing isolated production
+test driver; new functional/browser coverage and existing preview readiness test; docs
+THEME_SHOWCASE/DEVELOPMENT/ARCHITECTURE/SECURITY/MILESTONES/VERIFICATION and this status.
+Versions unchanged: FrankenPHP1.13.4/PHP8.5.12/Symfony8.1.9/Twig3.30.0/Stimulus3.2.2/
+Node24.22.1/Tailwind4.3.3/daisyUI5.7.50/esbuild0.28.2/Playwright1.64.1.
+
+Completed gates:
+
+- `make assets`: actual static studio/showcase CSS and isolated Stimulus bundle compiled.
+  Browser CSSOM checks every rendered class has a compiled/generated rule; all65 panels
+  inherit the selected root tokens, not the studio's current appearance.
+- Full PHPUnit **122 tests / 724 assertions**, exit0. Private reader access, full SSR
+  inventory, no persistence changes, unique groups/IDs and existing security/package/
+  font/renderer/installer/export checks all pass.
+- `make check`: Compose, Composer strict, container, **26 YAML / 30 Twig** pass; Doctrine
+  schema/mapping synced; git diff whitespace checks pass.
+- New development browser spec **5 passed / 1.3m**, with actual contrast families and
+  light/dark variants, loaded Inter472italic/Lora631/JetBrainsMono400, computed colours,
+  interactions, no HTTP/upload/pref writes, every category at375/768px and tooltip focus.
+- Real immutable production **17 browser flows passed / 4.4m**: all12 existing appearance
+  and5 new showcase flows. Fixture `var/appearance-20261027172638-15809`, immutable tag
+  `local-20261027172638-c0124396`. New themes after compilation render65 examples; manifest
+  read-only with identical before/after SHA256:
+  `41ff52657f613a2a832c0cf68d20edf9b56db2535286ac754016086acd0b762b`.
+  Offline font registration verifies3 families/12faces/511,916bytes. Accounts disabled,
+  own fixture services stopped; existing production8096 and consumer8110 preserved.
+- Read-only reader survey:8 existing website variants (Airbnb; Atlassian dark/light;
+  Discord; Dropbox; Figma; GitHub dark/light), each65 matching component scopes and real
+  font decoding, unchanged reader preference. Screenshots/metadata retained.
+- All original **284 themes / 430 items / 430 drafts / 1 renderer preset / 1 personal
+  appearance preference** retain their complete pre-change row hashes. Font verification
+  still **42 families / 208 faces / 6,713,012bytes**, errors=[]. Evidence under
+  `var/component-showcase-verification`, including the immutable production manifest.
+
+Corrected during checks: reusable Twig macro scope; explicit select label associations;
+native swap hit areas/focus; drawer focus after CSS transitions and backdrop default
+checkbox cancellation; mobile intrinsic form widths and tooltip overflow. Focused tests
+explicitly reset mode and the read-only survey uses a separate reader to avoid comparing
+an editor preference concurrently changed by acceptance tests. First full browser run:
+45 passed, one old five-second preview expectation timed out while the worker was still
+building. The check now waits for the real bounded current state and retains its actual
+class, scheme and persistence assertions; its sequential builds have a matching deadline.
+
+Final development browser evidence: initial full run **45 passed / 1 failed / 14.5m**;
+the corrected renderer property/persistence flow rerun **1 passed / 33.1s**, exit0, retaining
+the actual worker and class/mode/reload assertions. All46 distinct flows have passing
+evidence across these runs; no second complete46-flow passing run is claimed. The first
+failure and corrected result are retained separately. All17 production flows and5 new
+showcase flows pass. Temporary development accounts were removed after verification.
+Original row hashes were rechecked after cleanup and still all match; the42/208 font
+registry verifies again without errors. No task-owned browser/production fixture remains
+running, and temporary development credential files are absent.
+
+Deliberate omissions: external-library calendar adapters, full-page megamenu and a second
+theme-controller. Chromium/native CSS cosmetics are the verified scope; no full WCAG or
+all-browser certification. There is no remaining implementation gap for the requested
+component groups. No external deployment, branch push or package publication occurred.
+
+Exact next step: open http://localhost:8095/themes, open a theme and browse Component
+showcase. Use category/search and Showcase light/dark to inspect a variant without
+changing your applied application preference. Coverage, limits, commands and evidence:
+docs/styleguide/THEME_SHOWCASE.md and VERIFICATION.md.

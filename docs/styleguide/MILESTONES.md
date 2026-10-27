@@ -110,3 +110,22 @@ variants work after production AssetMapper compilation with an unchanged read-on
 manifest and no redeployment. Preserve original row hashes and record actual commands,
 results, corrected failures and limitations in VERIFICATION.md and agent-kit/STATUS.md.
 See [APPEARANCE.md](APPEARANCE.md) for the implemented workflow and storage contract.
+
+## M11 — Theme detail component showcase
+
+Extend the existing detail page with repository-owned Twig partials/macros for the useful
+daisyUI 5.7.50 components. Reuse existing family variants, validated token CSS, fonts and
+the isolated document assembler. Keep Apply/Edit/export and application appearance
+independent. Provide responsive category/search navigation, real local interactions and
+unique input/ARIA relationships without uploads, submissions or persistence writes.
+
+### Completion gate
+
+Verify all requested action, form, navigation, display, feedback, layout and mockup groups
+with meaningful semantic variations. Check actual production CSS for every rendered
+class, real local font loading, distinct palettes/both family modes, keyboard focus,
+dialogs/drawers/toasts, responsive 375/768px layouts, preview isolation and unchanged user
+preferences/data. Run the relevant existing PHPUnit/browser regressions and immutable
+production build. Record omissions, corrected failures and actual results in
+THEME_SHOWCASE.md, VERIFICATION.md and agent-kit/STATUS.md. No theme-model migration or
+new generator is part of this milestone.
