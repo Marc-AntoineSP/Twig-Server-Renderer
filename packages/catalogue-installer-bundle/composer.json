@@ -1,0 +1,24 @@
+{
+  "name": "styleguide/catalogue-installer-bundle",
+  "description": "Verified, journalled installation of portable Twig packages into compatible Symfony applications.",
+  "type": "symfony-bundle",
+  "license": "proprietary",
+  "require": {
+    "php": "^8.5",
+    "ext-zip": "*",
+    "styleguide/catalogue-contracts": "0.1.0",
+    "composer/semver": "^3.5",
+    "symfony/framework-bundle": "^8.1",
+    "symfony/asset-mapper": "^8.1",
+    "symfony/stimulus-bundle": "^3.6",
+    "symfony/http-client": "^8.1",
+    "symfony/process": "^8.1",
+    "twig/twig": "^3.30",
+    "symfony/twig-bundle": "^8.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Styleguide\\Installer\\": "src/"
+    }
+  }
+}

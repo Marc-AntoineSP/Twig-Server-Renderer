@@ -1,0 +1,6 @@
+framework:
+    asset_mapper:
+        paths: [assets/]
+        excluded_patterns: ['*/styles/app.input.css']
+        missing_import_mode: strict
+        importmap_polyfill: false

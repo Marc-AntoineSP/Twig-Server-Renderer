@@ -91,6 +91,14 @@ final class WorkerBoundaryTest extends KernelTestCase
         self::assertStringContainsString('.owned-custom-style { color: #123456; }',$result['css']);
     }
 
+    public function testInvalidLiteralCssFailsBeforeSuccessAndNextBuildWorks():void
+    {
+        self::bootKernel();$worker=self::getContainer()->get(WorkerClient::class);
+        $result=$worker->build(['sources'=>(object)['assets/catalogue/tests/worker/style.css'=>'.broken { color: rgb(; }'],'controllers'=>[],'safelist'=>[]]);
+        self::assertFalse($result['ok']);self::assertStringContainsString('CSS syntax error',$result['error']['message']);
+        self::assertTrue($worker->build(['sources'=>(object)['assets/catalogue/tests/worker/style.css'=>'.healthy { color: red; }'],'controllers'=>[],'safelist'=>[]])['ok']);
+    }
+
     public static function forbiddenImports(): iterable
     {
         yield ['import fs from "node:fs"; export default class {}'];

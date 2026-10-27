@@ -11,7 +11,8 @@ Last updated: 2026-10-27. Scope: M00–M08, including a local production build; 
 | M04 Theme laboratory | Complete | 71 PHPUnit tests/285 assertions and 17 Chromium flows pass |
 | M05 Composition | Complete | 75 PHPUnit tests/325 assertions and 19 Chromium flows pass |
 | M06 Imports/exports/registry | Complete | 93 tests/469 assertions, 21 browser flows, clean-store pixel-identical round-trip |
-| M07–M08 | Not started | Existing design/contracts only |
+| M07 Consumer installer | Complete | 98 PHPUnit tests/494 assertions, 21 browser flows, fresh consumer production and SIGKILL recovery gates |
+| M08 Production/recovery | Not started | Next milestone; local production only |
 
 ## Repository audit and preservation
 
@@ -465,3 +466,61 @@ then immutable local production images, cleanup and backup/restore acceptance in
 Final M06 guard: concurrent theme-package uniqueness violations map to HTTP 409, matching
 normal immutable publication. Targeted real theme package test passes **1 test/6 assertions**
 and container lint passes after that guard. No remote publication, deployment or branch push.
+
+
+## M07 consumer installer completion
+
+Branch `feature/m07-consumer-installer` supplies a real local Composer bundle, version
+0.1.0, with registry:add, require, install, theme:install, update, remove and doctor.
+The separate fresh Symfony 8.1 consumer uses committed Composer/npm locks and mirrored
+local path packages; nothing is published to Packagist. Consumer semver uses actual
+Composer semver **3.5.2**, now explicit in root development requirements. Runtime versions
+match the recorded M00 toolchain. Source parsing adds fixed **Lightning CSS 1.32.0**
+(already Tailwind's transitive dependency) alongside Acorn **8.19.0**. Official strict
+transform API checked at https://lightningcss.dev/docs.html; npm registry returned the
+exact 1.32.0 version/integrity now recorded in worker/consumer locks. The pure shared
+parser validates every JS module's syntax/finite imports and literal CSS, never executes
+source and never loads plugins. Generated typed theme entries follow the theme validator.
+
+Installation verifies private credentials, same-origin redirects, bounded downloads,
+immutable hashes, portable paths, compatibility and the exact shared dependency graph.
+It stages complete candidates and a controller-source review, compiles CSS with an env
+without studio/registry secrets, then serializes journalled atomic writes with the lockfile
+last. Metadata is relocated below .styleguide/packages; declared renderable paths remain
+unchanged. Owned hashes and managed CSS/Stimulus edits protect local changes; unowned
+identical files still conflict. No force/adoption, automatic npm installs or imported hooks.
+An interrupted transaction restores original hashes; externally changed files retain the
+journal for manual review. Production AssetMapper/cache compilation is an explicit release
+step after source/CSS installation. Consumer theme data is a scalar Twig global only.
+
+Actual completion gates, before M08:
+
+- `make check test`: exit 0, **98 tests / 494 assertions**; configuration, Twig/YAML,
+  schema mapping/database and strict root Composer validation pass.
+- `make browser`: exit 0, **21 Chromium flows**. Temporary accounts/tokens removed.
+- `make consumer`: final fresh run exit 0. Locked PHP/npm installs, concrete dry-run,
+  actual private-registry alert + composed block/layout + theme installation, unchanged
+  reinstall with **zero changed files**, unowned-identical and edited-file conflict with
+  every destination hash preserved, forbidden local-file JS rejection, dependency-pinned
+  update/removal rejection, real **SIGKILL after the first journalled mutation**, fresh
+  CLI recovery restoring exact original hashes, and doctor pass.
+- That same gate compiles production AssetMapper resources and renders nested Twig,
+  responsive md:grid-cols-3, typed Georgia theme and functional Stimulus in Chromium.
+  Every request uses the independent consumer origin; no studio/CDN runtime requests.
+  It then removes a dependent, updates the leaf to 1.1.0, deletes only owned files,
+  installs the offline resolved collection, verifies idempotence and repeats the
+  production browser check after consumer restart. Both browser checks pass.
+- Bundle/consumer/root strict Composer validation pass. Root Composer audit and worker
+  npm audit report **zero advisories**. Production container lint and git diff checks
+  pass. AGENTS.md/README.md original hashes still match and the staged user README remains.
+
+Failures corrected: initial fresh fixture lacked required title/default URI and used an
+obsolete importmap config location. Real production compilation found theme app.css source
+being scanned as a browser stylesheet; the bundle now excludes package CSS compiler sources.
+Shared parsing initially treated generated theme entries as user CSS; those entries already
+undergo exact token-derived validation and now follow the same separate typed-theme path
+as studio rendering. All corrected gates were repeated on the fresh consumer above.
+
+M07 is complete. Next: M08 immutable production app/workers, limits/cleanup, acceptance
+fixtures, local production end-to-end and fresh database/blob restore with consumer install.
+No remote deployment, package publication or branch push is authorized or performed.

@@ -5,6 +5,8 @@ import { posix, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { build } from 'esbuild';
 import { parse } from 'acorn';
+import { transform } from 'lightningcss';
+import { validateSources } from './sources.mjs';
 import { themeCss } from './theme.mjs';
 
 const execute = promisify(execFile);
@@ -22,8 +24,9 @@ try {
     let bytes = 0;
     for (const [path, source] of Object.entries(job.sources)) {
         if (!safePath(path) || typeof source !== 'string' || Buffer.byteLength(source) > 1048576 || (bytes += Buffer.byteLength(source)) > 2097152) invalid('Invalid bounded source map.');
-        if (path.endsWith('.css') && /@(import|plugin|config)\b/i.test(source)) invalid('Imported CSS configuration and plugins are forbidden.');
+
     }
+    validateSources(job.sources,parse,transform);
     for (const name of job.safelist) if (typeof name !== 'string' || name.length > 120 || /[\s{};<>\x00-\x1f]/.test(name)) invalid('Safelist must contain literal class names.');
     directory = await mkdtemp(join(tmpdir(), 'studio-build-'));
     await writeFile(join(directory, 'scan.txt'), Object.values(job.sources).join('\n') + '\n' + job.safelist.join('\n'));

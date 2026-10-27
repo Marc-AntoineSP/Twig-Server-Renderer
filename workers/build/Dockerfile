@@ -3,6 +3,7 @@ WORKDIR /toolchain
 COPY workers/build/package.json workers/build/package-lock.json ./
 RUN npm ci --omit=dev
 COPY workers/build/server.mjs workers/build/build.mjs workers/build/theme.mjs ./
+COPY packages/catalogue-contracts/tooling/sources.mjs ./sources.mjs
 COPY agent-kit/schemas/theme.schema.json ./theme.schema.json
 USER node
 CMD ["node", "--max-old-space-size=64", "server.mjs"]

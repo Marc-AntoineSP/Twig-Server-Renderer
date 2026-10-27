@@ -1,0 +1,90 @@
+{
+    "name": "styleguide/consumer-fixture",
+    "type": "project",
+    "license": "MIT",
+    "description": "Fresh Symfony consumer integration fixture for the local installer bundle.",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.5",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "symfony/flex": "^2.11",
+        "symfony/console": "8.1.*",
+        "symfony/dotenv": "8.1.*",
+        "symfony/framework-bundle": "8.1.*",
+        "symfony/runtime": "8.1.*",
+        "symfony/yaml": "8.1.*",
+        "symfony/twig-bundle": "8.1.*",
+        "symfony/asset-mapper": "8.1.*",
+        "symfony/stimulus-bundle": "^3.6",
+        "styleguide/catalogue-installer-bundle": "0.1.0"
+    },
+    "require-dev": {},
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        },
+        "bump-after-update": true,
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php81": "*",
+        "symfony/polyfill-php82": "*",
+        "symfony/polyfill-php83": "*",
+        "symfony/polyfill-php84": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "8.1.*"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/workspace/packages/*",
+            "options": {
+                "symlink": false,
+                "versions": {
+                    "styleguide/catalogue-contracts": "0.1.0",
+                    "styleguide/catalogue-installer-bundle": "0.1.0"
+                }
+            }
+        }
+    ]
+}

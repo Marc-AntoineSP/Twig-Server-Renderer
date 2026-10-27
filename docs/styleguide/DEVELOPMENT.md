@@ -303,3 +303,71 @@ preview screenshots and nested Stimulus dismissal. Disable the development toolb
 in the screenshot harness so account/timing overlays do not contaminate preview comparison.
 The verified M06 project was `styleguide-m06-clean` on loopback port 8101; it is now stopped
 with its test volumes retained. This is a clean development-store test, not a production claim.
+
+## Local consumer installer (M07)
+
+The installer is a local Composer package, not a Packagist release. `make consumer`
+creates a fresh marked Symfony 8.1 fixture under ignored `var/consumer`, installs the
+committed Composer/npm locks, publishes test releases to the actual private registry,
+and runs install, production AssetMapper, Chromium, conflict, update/remove and real
+SIGKILL/recovery checks. It replaces only its marked test directory. The consumer is
+available at http://localhost:8110; test registry accounts/tokens are removed afterward.
+
+For an existing compatible consumer, add Composer path repositories for both local
+`packages/catalogue-contracts` and `packages/catalogue-installer-bundle` (version 0.1.0),
+require `styleguide/catalogue-installer-bundle:0.1.0`, and register
+`Styleguide\Installer\CatalogueInstallerBundle` in config/bundles.php. The fixture's
+composer.json shows the exact path-repository configuration; adjust its absolute path.
+Do not copy the fixture over an existing application.
+
+Provide PHP 8.5, Symfony 8.1, Twig 3.30, AssetMapper, StimulusBundle/browser Stimulus 3,
+Node 24, Tailwind/CLI 4.3.3 and daisyUI 5.7.50. Source validation uses fixed Acorn 8.19.0
+and Lightning CSS 1.32.0; add these to the consumer's trusted toolchain and commit its
+npm lock. No package install runs npm, imported scripts, Composer hooks or source JS.
+The parser only reads source. Tailwind invokes the consumer's already trusted config.
+The default CSS input is assets/styles/app.input.css, separate from compiled app.css:
+
+```css
+@import "tailwindcss" source(none);
+@source "../../templates";
+@source "../controllers";
+@plugin "daisyui";
+```
+
+Exclude the input from AssetMapper. The bundle excludes package CSS compiler sources.
+Use `const app = startStimulusApp()` in assets/stimulus_bootstrap.js. Compile the initial
+CSS, then `php bin/console styleguide:doctor` reports concrete missing setup. Custom
+integration paths can be set using registry:add --css-input/--css-output/--bootstrap
+before installing packages. Configure `<html data-theme="{{ styleguide_theme|default('light') }}">`
+in the consumer base template for installed theme selection.
+
+```sh
+php bin/console styleguide:registry:add local https://catalogue.example/api/v1/registry
+php bin/console styleguide:require awui/alert@1.0.0 --registry=local --dry-run
+php bin/console styleguide:require awui/alert@1.0.0 --registry=local
+php bin/console styleguide:theme:install awui/ember@1.0.0 --registry=local
+php bin/console styleguide:install /path/to/resolved-collection.zip
+php bin/console styleguide:update awui/alert@1.1.0
+php bin/console styleguide:remove awui/alert
+php bin/console styleguide:doctor --recover
+php bin/console asset-map:compile --env=prod --no-debug
+php bin/console cache:clear --env=prod --no-debug
+```
+
+Use HTTPS; --allow-http explicitly permits local development origins only. Registry
+credentials are read from STYLEGUIDE_TOKEN_LOCAL or mode-0600
+$XDG_CONFIG_HOME/styleguide/auth.json (default ~/.config/styleguide/auth.json), shaped
+as `{ "local": "<read token>" }`. They never enter project config, locks or archives.
+Redirects cannot forward them to a different origin. Dry-run stages a plan, candidates,
+licenses, hashes and the actual browser controller code for review. Installed browser
+code is trusted by the consumer; review its origin and source before deploying.
+
+The installer locks the project, verifies exact dependency versions and archive/file
+hashes, parses every Twig/JS/CSS source, compiles proposed CSS before changing destinations,
+and journals atomic writes with lockfile last. Modified owned/managed files and even
+byte-identical unowned collisions abort with staged candidates. There is no force mode.
+Recovery restores the interrupted operation's original hashes and refuses later external
+edits. Retain such journals for manual review. Dry-run/conflict candidates under
+.styleguide/staging have no active journal and may be removed after review. Do not remove
+active journals or .styleguide/packages. Run install as an offline release preparation;
+then compile AssetMapper/clear cache and switch the consumer deployment atomically.

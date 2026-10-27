@@ -1,0 +1,9 @@
+{
+    auto_https off
+    admin off
+    frankenphp
+}
+:8080 {
+    root * /consumer/public
+    php_server
+}

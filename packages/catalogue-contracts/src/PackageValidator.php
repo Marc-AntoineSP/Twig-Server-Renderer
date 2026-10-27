@@ -40,6 +40,7 @@ final readonly class PackageValidator
         foreach ($sources as $path => $source) {
             $this->path($path);
             $this->owned($path, $manifest->name);
+            if(str_starts_with($path,'meta/'))PortablePath::check('.styleguide/packages/'.$manifest->name.'/'.$manifest->version.'/'.$path);
             if ('theme' !== $manifest->kind && str_ends_with($path, '.css') && preg_match('/@(?:plugin|config|import|tailwind|source|reference)\b/i', $source)) $this->fail('sourceMap', 'Executable CSS directives are not accepted in package assets.');
             $key = strtolower($path);
             if (isset($seen[$key])) {

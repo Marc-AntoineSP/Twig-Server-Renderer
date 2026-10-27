@@ -38,3 +38,7 @@ browser:
 	@status=0; $(COMPOSE) run --rm browser npm run test:browser || status=$$?; $(COMPOSE) exec -T app php bin/console styleguide:test:accounts --cleanup; exit $$status
 logs:
 	$(COMPOSE) logs --tail=100 -f app
+
+.PHONY: consumer
+consumer:
+	COMPOSE='$(COMPOSE)' bash tests/Consumer/run.sh
