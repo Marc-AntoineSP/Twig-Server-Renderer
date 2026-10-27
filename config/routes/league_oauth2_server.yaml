@@ -1,0 +1,5 @@
+oauth2:
+    resource: '@LeagueOAuth2ServerBundle/config/routes.php'
+    prefix: /oauth2/compose
+mcp_oauth:
+    resource: '@McpOauthBundle/config/routes.yaml'

@@ -50,6 +50,10 @@
                 "$ref": "#/$defs/node"
               },
               "maxItems": 500
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^n_[a-f0-9]{32}$"
             }
           },
           "required": [
@@ -77,6 +81,10 @@
             },
             "props": {
               "type": "object"
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^n_[a-f0-9]{32}$"
             }
           },
           "required": [
@@ -96,6 +104,10 @@
             "value": {
               "type": "string",
               "maxLength": 10000
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^n_[a-f0-9]{32}$"
             }
           },
           "required": [

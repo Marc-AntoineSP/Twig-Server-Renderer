@@ -196,3 +196,24 @@ and daisyUI. doctor detects missing setup and prints concrete commands/configura
 Do not install random npm dependencies or run arbitrary scripts automatically.
 For an already configured compatible consumer, require must be one command after registry
 setup and must produce a usable include/controller without extra manual copy operations.
+
+## Composer MCP and stable node identity
+
+Composition schemaVersion1 nodes accept optional unique `n_` +32lowercasehex IDs.
+Older documents remain valid. Legacy studio reads assign deterministic composition/path
+IDs; only an explicit save persists them. New nodes and entire duplicated subtrees receive
+fresh IDs; moves/property updates retain IDs. The 64KiB/500node/20level bounds still apply.
+Portable validators in this repository share the same optional-ID schema; older external
+validators must support that extension to import newly saved composition metadata.
+
+The sole MCP surface is the explicit compose_ allowlist documented in COMPOSE_MCP.md.
+Existing-draft writes require expectedRevision and operationId. Canonical identical retries
+replay a durable actor/operation/target receipt after current authorization; mismatched
+payloads conflict. Transactions cover validation, row-locked save, history and receipt.
+Batch aliases are local `$name` references to earlier adds/duplicates, max50 commands;
+one failed command aborts the whole batch. Restore creates a new revision, never rewinds
+version numbers. Manual working trees remain unsaved until their normal explicit Save.
+
+Previews capture an exact requested current saved revision and are actor-owned. Later
+saves cannot change their captured source payload. Status/HTML/URL identify previewRevision
+separately from the current draft revision, with visualInspectionAvailable=false.

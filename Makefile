@@ -4,7 +4,7 @@ export LOCAL_GID := $(shell id -g)
 .NOTPARALLEL: bootstrap
 
 .PHONY: bootstrap build install assets-install assets up down migrate console test check logs browser
-bootstrap: build install assets-install assets migrate up
+bootstrap: build install assets-install assets mcp-init migrate up
 build:
 	mkdir -p var/catalogue
 	$(COMPOSE) build --pull
@@ -21,6 +21,10 @@ down:
 	$(COMPOSE) down
 migrate:
 	$(COMPOSE) run --rm app php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+mcp-init:
+	$(COMPOSE) run --rm --no-deps app php tools/mcp/init.php
+mcp-smoke:
+	$(COMPOSE) exec -T app php bin/console styleguide:mcp:smoke
 console:
 	$(COMPOSE) exec app php bin/console $(ARGS)
 test:
@@ -89,6 +93,7 @@ prod-build:
 	$(PRODUCTION) build --pull
 prod-migrate:
 	$(PRODUCTION) up -d --wait database render-worker build-worker
+	$(PRODUCTION) run --rm --no-deps app php tools/mcp/init.php
 	$(PRODUCTION) run --rm --no-deps app php bin/console doctrine:migrations:migrate --no-interaction
 prod-up:
 	$(PRODUCTION) up -d --wait
@@ -103,3 +108,7 @@ prod-down:
 .PHONY: prod-test
 prod-test:
 	PRODUCTION='$(PRODUCTION)' bash tests/Production/run.sh
+
+.PHONY: mcp-init mcp-smoke compose-mcp-production
+compose-mcp-production:
+	bash tests/AppearanceProduction/run.sh tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js tests/Browser/authentication.spec.js

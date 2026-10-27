@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-10-27. Scope: M00–M08, font/theme library and M10–M12 complete, including local immutable production verification; no remote deployment or push.
+Last updated: 2026-10-27. Scope: M00–M08, font/theme library and M10–M13 complete, including local immutable production verification; no remote deployment or push.
 
 Earlier sections retain historical checkpoints. The final handoff below supersedes their in-progress notes.
 
@@ -19,6 +19,7 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | M10 Application appearance | Complete | Saved preferences, light/dark, trials and new themes with immutable production assets |
 | M11 Component reference | Complete |65panels/7categories; catalogue native fragments preserve opaque sandbox isolation |
 | M12 Inline detail layout | Complete |123PHPUnit/752assertions;20production flows; all50 development flows verified across full/focused runs;24existing-theme responsive renders |
+| M13 Composer MCP | Complete |135PHPUnit/1138assertions; officialSDK + actualCodex round trips; concurrent writes;3production browser flows; ChatGPT account setup documented |
 
 ## Repository audit and preservation
 
@@ -1229,3 +1230,81 @@ Existing external calendar adapters/full-page megamenu/second theme-controller o
 remain. No required M12 work remains. No agent edit to original content or personal preferences, external deployment,
 external publication or branch push. Exact next step: reload
 http://localhost:8095/themes/01M5Y4RDN0XQMGW1HAJ6WZ4ZGE (all theme detail routes use this layout).
+
+## M13 — Authenticated catalogue composition MCP — completed 2026-10-27
+
+The actual composer audit/operation map and full setup/contracts/file inventory are in
+COMPOSE_MCP.md. Shared CompositionTree/CompositionWorkspace services now serve manual
+commands/Save and an explicit26tool Symfony MCP Streamable HTTP endpoint at/mcp/compose.
+The browser retains its unsaved working tree until Save; MCP saves each command/batch
+immediately through that same validation/persistence path. Stable optional node IDs,
+row-locked optimistic revisions, transactional actor/operation/target retry receipts,
+atomic aliases/batches and recoverable before/after snapshots preserve edits. External
+revision notices never overwrite unsaved work. Immutable reference/props validation,
+manual publishing/source conversion, CSRF, fonts/themes and isolated workers remain.
+
+Installed/locked Symfony MCP0.13.0, official PHP SDK0.8.1, Omouren MCP OAuth1.2 and League
+bundle1.2.3/server9.4.1: compatible released graph,19new packages, no existing version
+updates/removals. Additive migration Version20261027203258 is installed in dev/test;
+original tables/data are unchanged. Private persistent3072bit RSA/encryption keys are
+initialized without exposing/overwriting key bytes; files600/directory700. Local PATs
+have256bit entropy/hash-only storage/scopes/catalogue patterns/expiry/revocation. Maintained
+OAuth supports predefined public/confidential clients, real studio login, bound CSRF
+consent, S256, exact redirects/resources/issuer, signed tokens/refresh/revocation and current
+user/client checks. JWT subjects are stable User IDs. Every MCP request is authenticated;
+session IDs are actor/credential-scoped, not authorization. Production Compose defaults off.
+
+Completed gates and evidence under var/mcp-verification and the isolated production fixture:
+
+- make assets/check;32YAML/34Twig; **135PHPUnit/1,138assertions**, exit0 (final-verified.log).
+  Tests include reference/property/tree restrictions, failed batches/retry key mismatch,
+  stale browser/AI writes, history/restore, scopes, expired/revoked/disabled credentials,
+  cross-actor sessions/previews, captured revisions, cancellation and actual OAuth flows.
+- Official SDK HTTP client negotiated2025-11-25 and discovered26tools. It searched real
+  releases, created/edited a dedicated layout, replayed a batch, moved/nested/duplicated/
+  removed nodes, selected existing ThemeRelease01M5ZE9SBNGCKK9JEA7MJMM7ZV, rendered exact
+  revision8 and restored1as9. Actual HTML/CSP verified; visualInspectionAvailable=false.
+- Actual installed **Codex0.164.0** MCP client discovered26tools and created/added/read
+  saved revision2. No LLM/model turn or global config change. Dedicated credential revoked,
+  actor disabled, private credential file removed. ChatGPT account connection is unverified.
+- Two real concurrent HTTP sessions prove exactly one winner/one412 for competing writes,
+  and one exactly-once receipt replay for identical simultaneous operations.
+- Development manual+MCP browser2/2pass, plus focused responsive CSS1/1. Final immutable
+  production **3/3flows/33.5s**, exit0, plus official SDK smoke. Fixture
+  var/appearance-20261027213428-25078, image local-20261027213428-1a0494f3. Shared drafts open
+  and remain editable, original manual actions/source conversion/renderer interactions
+  work. Captured preview3 remains3afterdraft4 and is owner-only; disabled JS yields an
+  empty sandbox. Actual generated responsive classes work without redeployment.
+- Read-only production AssetMapper before=afterSHA256
+  9d58c205240700b95cfbc043828078c90c25e029ac31521a204a4b7bdf890d58. Font fixture3families/
+  12faces/511,916bytes validates. Feature-off MCP/OAuth/discovery404; ordinary login200.
+  Schema/mapping valid; storage114releases/errors=[]. Runtime Composer audit clean.
+- All original534themes/284families/496items/496drafts/110catalogue releases/100theme
+  releases/1renderer preset/375snapshots/1personal preference retain complete row hashes.
+  Fonts still42families/208faces/6,713,012bytes/errors=[]. Test drafts are separately named;
+  no real catalogue content was deleted. Browser accounts/files removed, test PATs revoked,
+  actors disabled and task-owned production containers stopped.8095/8096/8110 preserved.
+
+Corrected checks: DQL search, SDK JSON object/list preservation, JSONB receipt types,
+Symfony8.1 voter signature, bound consent and scope replay checks, canonical resource
+pollution rejection, expired/disabled credentials and original login target handling.
+A queued-only assertion was corrected because test rendering can finish immediately.
+A responsive assertion used the exact breakpoint without accounting for the frame border;
+the1280pxviewport verifies3actual columns. A misplaced new assertion was removed. The
+read-only font fixture now mounts a separate writable report file; final production has
+no PHP error-level log, with informational library/Doctrine deprecations retained. Details
+and failed-run evidence are recorded in VERIFICATION.md; final checks pass.
+
+Remaining limits: user-supplied ChatGPT account/workspace/HTTPS or tunnel setup, no OIDC
+UserInfo/domain restrictions, no screenshot worker, no source authoring/publishing/admin
+tools, no pre-integration unpublished history. New node IDs count toward64KiB; old external
+validators need the optional-ID extension. Complete Composer audit still reports the
+pre-existing dev-only PHPUnit13.4.3 local PHPT/shared-temp advisory; runtime dependencies
+are clean and were not silently suppressed. No external deployment/publication/push.
+
+Exact next step: open http://127.0.0.1:8095, issue a scoped token for your existing editor
+with styleguide:mcp:token:issue, merge docs/styleguide/examples/codex-compose-mcp.toml into
+your Codex config, set STYLEGUIDE_COMPOSE_MCP_TOKEN in its process environment and reconnect.
+See COMPOSE_MCP.md for exact commands/revocation, the sample pricing-layout prompt and
+clearly separated credential-dependent ChatGPT connection instructions. All local M13
+implementation and acceptance gates are complete.

@@ -571,3 +571,94 @@ No new component omission or functional limitation was introduced. Chromium is t
 verified browser; this is not cross-browser or full WCAG certification. Existing calendar
 adapter/megamenu/theme-controller omissions remain documented. No migration, user data
 rewrite, external deployment, external publication or branch push occurred.
+
+## M13 — Composer MCP, 2026-10-27
+
+Implemented and exercised in the existing application; full operation map/contracts and
+connection instructions are in COMPOSE_MCP.md, including its changed-file map. No external
+publication/deployment/tunnel or global Codex configuration change occurred.
+
+- `make assets`: pass with the locked Tailwind4.3.3/daisyUI5.7.50/Stimulus3.2.2 toolchain.
+  Production also compiles the actual current Twig/controller sources into immutable assets.
+- `make check test`: **135 tests / 1,138 assertions**, exit0,1m18.7s. Composer strict,
+  container,32YAML/34Twig pass. Additive migration Version20261027203258 applied to dev/test;
+  schema/mapping in sync. Final evidence:var/mcp-verification/final-verified.log.
+- Endpoint tests use the real Symfony MCP SDK handler/transport with26explicit tools and
+  JSON schemas; test PAT read/edit/create/preview scopes, missing/expired/revoked/disabled/
+  reader credentials, actor/session isolation, transitive reference restrictions, replay
+  reauthorization, props/defaults, node cycles/bounds, exact movement/root rules, atomic
+  rollback, metadata, history restoration, stale browser/AI writes and owned preview cancel.
+- OAuth functional HTTP checks exercise real form login/CSRF and return-target preservation,
+  request-bound consent, exact redirects/state/issuer, S256 public+confidential clients,
+  secret verification, code exchange/reuse rejection, signed JWT access, refresh rotation,
+  access revocation, disabled users/clients, resource mismatch/query pollution and consent
+  scope tampering. These are local application tests, not a ChatGPT account connection.
+- `styleguide:mcp:smoke`: real official SDK network client negotiated **2025-11-25**,
+  discovered26tools, searched real released samples/props, created and edited dedicated
+  layout drafts, replayed an atomic alias batch, moved/nested/duplicated/removed nodes,
+  validated, selected an existing published theme, retrieved real isolated HTML for
+  revision8 and restored revision1 as9. Final development draft:
+  01M5ZMCY8B5CQRF5B6JFW496WA; selected ThemeRelease01M5ZE9SBNGCKK9JEA7MJMM7ZV.
+  Evidence:sdk-smoke-final.json; no screenshot/visual-inspection claim.
+- **Installed Codex CLI0.164.0** app-server MCP round trip: discovery26tools, capabilities,
+  create_draft/add_text/get; saved revision2 at draft01M5ZJV4B0DPV83PARFY8EZ2QM.
+  Used command-line config overrides and an ephemeral thread; no model turn, global config
+  write or user's token issuance. Evidence:codex-client.log; test credential revoked and
+  actor disabled/private credential file removed.
+- Real simultaneous HTTP sessions: different write keys produce exactly one saved winner
+  and one REVISION_CONFLICT; simultaneous identical retry keys produce one mutation and
+  one receipt replay. Revision3 contains exactly2nodes. Evidence:concurrency.log, dedicated
+  draft01M5ZK1XAFDC77SS1V8KWCFPMA. Credentials revoked/actor disabled.
+- Development manual+MCP browser flows:2/2pass (53.3s), plus focused responsive-CSS check
+  1/1pass (19.3s). Tests preserve unsaved local text, show external revision notices,
+  exercise discard/cancel, reject stale writes both ways, open the same draft in the normal
+  editor, and verify actual three-column generated CSS above the breakpoint.
+- `make compose-mcp-production`: **3/3 browser flows**, exit0,33.5s, with the official SDK
+  network smoke against the same immutable APP_ENV=prod/APP_DEBUG=0 image. Actual manual
+  creation, keyboard reorder/nest, duplicate/remove, Save, reference publication/nesting,
+  rendered interactions, source conversion and login/logout pass. Captured preview3 stays
+  at3 after saved draft4; another editor receives404. scripts=false gives an empty iframe
+  sandbox and static HTML remains usable. No application theme preference is changed.
+  Fresh production fixture has no ThemeRelease, so its SDK smoke uses the existing package
+  default; development explicitly verifies a published theme. Fixture:
+  var/appearance-20261027213428-25078; image:local-20261027213428-1a0494f3.
+- The production manifest is read-only, before=after SHA256
+  `9d58c205240700b95cfbc043828078c90c25e029ac31521a204a4b7bdf890d58`.
+  Font fixtures verify3families/12faces/511,916bytes/errors=[]. New MCP drafts/class edits
+  and renderer jobs work without rebuilding/redeploying that running image.
+  production-verified.log and the fixture retain the actual smoke, manifests and traces.
+- Feature-disabled check: MCP/OAuth/discovery return404 while normal login remains200.
+  Existing storage verifies114releases/errors=[]. Runtime Composer audit (`--no-dev`) is
+  clean. The complete audit retains the **pre-existing development PHPUnit13.4.3 advisory**
+  PKSA-qhjm-rpqc-qkn6 (local PHPT code-coverage shared-temp handling); no existing package
+  versions changed. NewSDK0.8.1 is outside the known<0.7.1 affected range.
+- All original534themes/284families/496items/496drafts/110catalogue releases/100theme
+  releases/1renderer preset/375appearance snapshots/1personal preference match their
+  complete baseline row hashes. Original content was not normalized/re-saved by migration
+  or reads.42font families/208faces/6,713,012font bytes verify without errors.
+  Temporary browser accounts/files removed; SDK/Codex actors disabled and PATs revoked.
+  All task-owned production containers stopped; original8095/8096/8110 remain running.
+
+Corrected failures/observations: real SDK smoke exposed unsupported DQL concatenation and
+empty-object loss in the SDK's associative decoder; both were fixed and retested using
+actual network clients. Composer strict rejected exact1.x requirements; compatible caret
+constraints retain the pinned resolution. A preview can complete before its response;
+queued-only test assumptions were corrected while retaining cancellation/replay checks.
+An extra responsive-CSS assertion initially failed2/3production flows because a768px
+border-box iframe has766pxinner width, below the768pxbreakpoint; using the existing1280px
+viewport proves the actual emitted three-column rule (failure evidence in
+production-acceptance.log and var/appearance-20261027212838-29958). A temporary misplaced
+new test assertion was removed; final135/1138 run passes. Production font fixture input
+was mounted read-only while its CLI also writes a report; the test driver now uses a
+separate task-owned report mount. The final production run has no PHP error-level log;
+vendor/Doctrine deprecation notices remain informational. Public/private OAuth key file
+permissions also match League's requirements without replacing key bytes.
+
+Remaining limits: ChatGPT OAuth **account linking and tool invocation are not verified**;
+the user must supply account/workspace access and reachable HTTPS/OAuth endpoints (or a
+supported private tunnel arrangement). No tunnel service/profile was installed or claimed
+tested. Source component authoring/publishing/admin and screenshot inspection are outside
+the composer surface. Existing pre-integration unpublished history cannot be recovered;
+node IDs count toward the64KiBdocument cap, and old external validators need the optional-ID
+schema extension for new metadata. Chromium is the browser checked here. No required M13
+implementation or local acceptance gate remains unfinished.

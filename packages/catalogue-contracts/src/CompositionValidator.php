@@ -10,10 +10,11 @@ final readonly class CompositionValidator
         try { $json = json_encode($document, JSON_THROW_ON_ERROR, 64); }
         catch (\JsonException) { throw new CatalogueException(422, 'Composition exceeds nesting limits.'); }
         if (strlen($json) > 65536) throw new CatalogueException(422, 'Composition exceeds 64 KiB.');
-        $nodes = 0;
-        $walk = function ($node, int $depth) use (&$walk, &$nodes): void {
+        $nodes = 0;$ids = [];
+        $walk = function ($node, int $depth) use (&$walk, &$nodes, &$ids): void {
             if ($depth > 20 || ++$nodes > 500) throw new CatalogueException(422, 'Composition exceeds 20 levels or 500 nodes.');
             if (!$node instanceof \stdClass) throw new CatalogueException(422, 'Composition nodes must be objects.');
+            if (isset($node->id)) {if (!is_string($node->id)||isset($ids[$node->id])) throw new CatalogueException(422, 'Composition node IDs must be unique strings.');$ids[$node->id]=true;}
             if (isset($node->classes) && !is_array($node->classes)) throw new CatalogueException(422, 'Classes must be a list.');
             foreach ($node->classes ?? [] as $class) {
                 if (!is_string($class) || !preg_match('~^[A-Za-z0-9_:/\.!\[\]()%#,+*=\-]+$~D', $class) || str_contains(strtolower($class), 'url(')) throw new CatalogueException(422, 'Container classes must be complete literal utility names.');

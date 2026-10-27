@@ -1,0 +1,21 @@
+league_oauth2_server:
+    authorization_server:
+        private_key: '%kernel.project_dir%/var/catalogue/mcp/oauth-private.pem'
+        encryption_key: '%env(trim:file:resolve:MCP_OAUTH_ENCRYPTION_KEY_FILE)%'
+        enable_client_credentials_grant: false
+        enable_password_grant: false
+        enable_implicit_grant: false
+        enable_auth_code_grant: true
+        enable_refresh_token_grant: true
+        require_code_challenge_for_public_clients: true
+        access_token_ttl: PT1H
+        refresh_token_ttl: P7D
+    resource_server:
+        public_key: '%kernel.project_dir%/var/catalogue/mcp/oauth-public.pem'
+    scopes:
+        available: ['compose:read', 'compose:create', 'compose:edit', 'compose:preview']
+        default: ['compose:read']
+    persistence:
+        doctrine: {entity_manager: default}
+    client:
+        allow_plaintext_secrets: false

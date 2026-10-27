@@ -1,0 +1,10 @@
+mcp_oauth:
+    authorization_prefix: /oauth2/compose
+    login_route: studio_login
+    public_base_url: '%env(MCP_PUBLIC_BASE_URL)%'
+    scopes: ['compose:read', 'compose:create', 'compose:edit', 'compose:preview']
+    consent: page
+    cimd: {enabled: false}
+    dcr: {enabled: false}
+    resource_indicators: true
+    issuer_identification: true

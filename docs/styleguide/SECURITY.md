@@ -148,3 +148,37 @@ the current opaque document instead of resolving against an authenticated studio
 blocked. Sandbox flags, nonce scripts, data-only font/image sources, denied connections,
 frames and forms are unchanged. Native fragment navigation also works with scripts
 disabled; user templates and href attributes are not rewritten.
+
+## Composer MCP boundary
+
+/mcp/compose authenticates every request using an active enabled editor's scoped PAT or
+League-verified OAuth bearer; cookies/session IDs never substitute for a credential.
+CompositionVoter checks the affected catalogue and every transitive immutable reference.
+The pre-existing shared editor catalogue remains shared; actor isolation applies to
+credentials, MCP sessions, receipts and preview results. File sessions are keyed by the
+current actor/credential, and handlers retain no caller/selection in shared mutable state.
+
+PATs are256bit random secrets, stored as SHA256 hashes with1–90day expiry/revocation,
+explicit read/create/edit/preview scopes and catalogue patterns. OAuth is provided by
+maintained League plus MCP OAuth bundles, with predefined clients only; no automatic
+URL-based client discovery/SSRF surface is enabled. Exact callbacks, required S256 for all
+clients, canonical resource checks on authorization/token, signed resource binding,
+expiration/revocation and current user/client status checks apply. Subjects use User IDs.
+The canonical issuer and RSA key pair pin the local authorization server; private keys
+remain mode0600 in the persistent private volume, absent from renderer/image layers.
+Consent is CSRF-protected, actor/query-bound, short-lived and single-use.
+
+Bodies are bounded to256KiB. Exact Host/Origin checks and HTTPS outside local development
+remain mandatory. Production Compose defaults MCP off; a flag also disables OAuth and
+discovery. Configure exact public hosts and trusted proxies before enabling remote access.
+MCP/OAuth debug profiles are disabled. Bearers, authorization codes and client secrets
+must never be pasted into tool data/config/logs. Replayed results require current access,
+including references in older result snapshots. Row locks plus optimistic revisions
+prevent lost writes; advisory locks serialize duplicate operation keys before first save.
+
+Only typed bounded composition commands are allowed. Imported text remains escaped data,
+never PHP/Twig instructions or a tool-policy override. Source conversion, publishing,
+registry/package writes and theme/font administration remain outside MCP. Existing finite
+Twig loading, isolated worker networks/resource limits and opaque iframe privileges are
+unchanged. Preview snapshots are owner-only, and MCP retrieval rechecks captured reference
+permissions. No screenshot or visual-inspection capability is implied by returned HTML.

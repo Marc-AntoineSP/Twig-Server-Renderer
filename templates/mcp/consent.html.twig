@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Connect catalogue composer{% endblock %}
+{% block body %}
+<h1 class="text-3xl font-bold">Connect {{ entry.clientName }}</h1>
+<p class="my-4">Allow this client to act with your current catalogue permissions. It can only use the composition tools and scopes below. Publishing, source-code editing and administration are excluded.</p>
+<ul class="my-4 list-disc pl-6">{% for scope in entry.scopes %}<li>{{ scope }}</li>{% endfor %}</ul>
+<p class="my-3">Registered callback: <span class="break-all font-mono">{{ entry.query.redirect_uri|default('Client default') }}</span></p>
+<form method="post" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('compose-oauth-'~consentId) }}"><div class="flex flex-wrap gap-3"><button class="btn btn-primary" type="submit" name="decision" value="approve">Allow composer access</button><button class="btn btn-outline" type="submit" name="decision" value="deny">Deny connection</button></div></form>
+{% endblock %}

@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
-    static targets = ['rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'reference', 'props', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs', 'bodyFont', 'headingFont', 'codeFont', 'theme', 'presetStatus'];
-    static values = { tree: Object, choices: Array, revision: Number, item: String, url: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, settings: Object, themes: Object, presetUrl: String };
+    static targets = ['rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'reference', 'props', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs', 'bodyFont', 'headingFont', 'codeFont', 'theme', 'presetStatus', 'externalNotice', 'externalMessage'];
+    static values = { tree: Object, choices: Array, revision: Number, item: String, url: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, settings: Object, themes: Object, presetUrl: String, commandsUrl: String, readUrl: String };
     connect() {
         this.model = structuredClone(this.treeValue); this.path = []; this.epoch = 0;
         for (const key of ['bodyFont', 'headingFont', 'codeFont']) this[`${key}Target`].value = this.settingsValue[key];
@@ -16,9 +16,12 @@ export default class extends Controller {
             this.frameTarget.style.height = `${v.height}px`;
         };
         window.addEventListener('beforeunload', this.unload); window.addEventListener('message', this.message);
+        this.beforeVisit = event => {if(this.dirty&&!window.confirm('Leave this composition and discard unsaved changes?'))event.preventDefault();};
+        document.addEventListener('turbo:before-visit',this.beforeVisit);
+        this.pollTimer=setInterval(()=>this.pollRevision(),5000);
         this.timer = setTimeout(() => this.preview(), 0);
     }
-    disconnect() { clearTimeout(this.timer); this.epoch++; this.cancel(this.job); window.removeEventListener('beforeunload', this.unload); window.removeEventListener('message', this.message); }
+    disconnect() { clearInterval(this.pollTimer);document.removeEventListener('turbo:before-visit',this.beforeVisit);clearTimeout(this.timer); this.epoch++; this.cancel(this.job); window.removeEventListener('beforeunload', this.unload); window.removeEventListener('message', this.message); }
     node(path = this.path) { return path.reduce((node, index) => node.children[index], this.model.root); }
     siblings() { return this.node(this.path.slice(0, -1)).children; }
     render(focus = false) {
@@ -66,29 +69,45 @@ export default class extends Controller {
             this.visible.forEach(row => { if (JSON.stringify(row.path) === JSON.stringify(this.path)) row.button.textContent = node.type === 'text' ? `Text: ${node.value.slice(0,80)}` : node.type === 'container' ? `<${node.tag}> ${node.classes.join(' ')}` : `${node.name}@${node.version}`; });
         } catch (error) { this.invalid = true; this.metadata(); clearTimeout(this.timer); this.epoch++; this.statusTarget.textContent = `Stale preview — ${error.message}`; }
     }
-    referenceChanged() { const c = this.choicesValue[Number(this.referenceTarget.value)]; if (!c) return; Object.assign(this.node(), { name: c.name, version: c.version, props: structuredClone(c.props) }); this.changed(); }
-    add(node) {
-        if (this.node().type === 'container') { const parent = this.node(); parent.children.push(node); this.path = [...this.path, parent.children.length - 1]; }
-        else if (this.path.length) { const siblings = this.siblings(); const i = this.path.at(-1) + 1; siblings.splice(i, 0, node); this.path[this.path.length - 1] = i; }
-        else return;
-        this.changed();
+    referenceChanged() {const c=this.choicesValue[Number(this.referenceTarget.value)];if(c)this.command({type:'update_node',nodeId:this.node().id,changes:{name:c.name,version:c.version,props:structuredClone(c.props)}});}
+    addContainer() {return this.command({type:'add_container',selectedId:this.node().id});}
+    addText() {return this.command({type:'add_text',selectedId:this.node().id});}
+    addReference() {const c=this.choicesValue[0];if(!c){this.statusTarget.textContent='Publish a component or block before adding a reference.';return;}return this.command({type:'add_reference',selectedId:this.node().id,name:c.name,version:c.version,props:structuredClone(c.props)});}
+    up() {if(this.path.length&&this.path.at(-1)>0)return this.command({type:'move_up',nodeId:this.node().id});}
+    down() {if(this.path.length&&this.path.at(-1)<this.siblings().length-1)return this.command({type:'move_down',nodeId:this.node().id});}
+    indent() {if(this.path.length&&this.path.at(-1)>0&&this.siblings()[this.path.at(-1)-1].type==='container')return this.command({type:'indent_node',nodeId:this.node().id});}
+    outdent() {if(this.path.length>=2)return this.command({type:'outdent_node',nodeId:this.node().id});}
+    duplicate() {if(this.path.length)return this.command({type:'duplicate_node',nodeId:this.node().id});}
+    remove() {if(this.path.length)return this.command({type:'remove_node',nodeId:this.node().id});}
+    pathForId(id) {let found=[];const walk=(node,path)=>{if(node.id===id)found=path;for(const[i,child]of(node.children||[]).entries())walk(child,[...path,i]);};walk(this.model.root,[]);return found;}
+    async command(command) {
+        if(this.commandPending||this.saving)return;
+        if(this.invalid){this.statusTarget.textContent='Correct the props JSON before changing the tree.';return;}
+        this.commandPending=true;
+        const controls=[...this.element.querySelectorAll('button,input,select,textarea')].map(el=>[el,el.disabled]);controls.forEach(([el])=>el.disabled=true);
+        try {const result=await this.json(this.commandsUrlValue,{method:'POST',body:JSON.stringify({document:this.model,expectedRevision:this.revisionValue,commands:[command]})});
+            this.model=result.document;this.path=this.pathForId(result.selectedNodeId);this.changed();this.render(true);
+        }catch(error){this.saveStatusTarget.textContent=error.message;}
+        finally{this.commandPending=false;controls.forEach(([el,disabled])=>{if(el.isConnected)el.disabled=disabled;});}
     }
-    addContainer() { this.add({ type: 'container', tag: 'div', classes: ['grid', 'gap-4'], children: [] }); }
-    addText() { this.add({ type: 'text', value: 'New text' }); }
-    addReference() { const c = this.choicesValue[0]; if (!c) { this.statusTarget.textContent = 'Publish a component or block before adding a reference.'; return; } this.add({ type: 'reference', name: c.name, version: c.version, props: structuredClone(c.props) }); }
-    up() { this.move(-1); } down() { this.move(1); }
-    move(delta) { if (!this.path.length) return; const list = this.siblings(); const i = this.path.at(-1); const j = i + delta; if (j < 0 || j >= list.length) return; [list[i], list[j]] = [list[j], list[i]]; this.path[this.path.length - 1] = j; this.changed(); }
-    indent() { if (!this.path.length) return; const list = this.siblings(); const i = this.path.at(-1); if (i < 1 || list[i - 1].type !== 'container') return; const [node] = list.splice(i,1); list[i - 1].children.push(node); this.path = [...this.path.slice(0, -1), i - 1, list[i - 1].children.length - 1]; this.changed(); }
-    outdent() { if (this.path.length < 2) return; const node = this.node(); this.siblings().splice(this.path.at(-1),1); const parentIndex = this.path.at(-2); const grand = this.node(this.path.slice(0,-2)); grand.children.splice(parentIndex + 1,0,node); this.path = [...this.path.slice(0,-2),parentIndex + 1]; this.changed(); }
-    duplicate() { if (!this.path.length) return; const copy = structuredClone(this.node()); const i = this.path.at(-1) + 1; this.siblings().splice(i,0,copy); this.path[this.path.length - 1] = i; this.changed(); }
-    remove() { if (!this.path.length) return; this.siblings().splice(this.path.at(-1),1); this.path = this.path.slice(0,-1); this.changed(); }
+    async pollRevision() {
+        if(document.hidden||this.saving||this.commandPending||this.polling)return;this.polling=true;
+        try{const latest=await this.json(this.readUrlValue);if(latest.revision!==this.revisionValue){
+            this.externalNoticeTarget.hidden=false;this.externalMessageTarget.textContent=`Saved revision ${latest.revision} is available. ${this.dirty?'Your unsaved tree is preserved; load the saved revision only when ready to discard or merge it.':'Load it to view the latest saved edits.'}`;
+        }}catch{}finally{this.polling=false;}
+    }
+    async loadSaved() {
+        if(this.commandPending||this.saving)return;
+        if(this.dirty&&!window.confirm('Discard your unsaved tree and load the latest saved revision?'))return;
+        try{const latest=await this.json(this.readUrlValue);this.model=latest.document;this.revisionValue=latest.revision;this.titleTarget.value=latest.title;this.path=[];this.dirty=false;this.invalid=false;this.externalNoticeTarget.hidden=true;this.saveStatusTarget.textContent=`Saved revision ${latest.revision}`;this.render(true);this.schedule();}catch(error){this.saveStatusTarget.textContent=error.message;}
+    }
     async json(url, options = {}) {
         const response = await fetch(url, { ...options, credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': this.csrfValue } });
         const data = await response.json(); if (!response.ok) throw Error(data.message || 'Composition request failed.'); return data;
     }
     input() { if (this.invalid) throw Error('Correct the current JSON before saving or previewing.'); return { document: this.model, expectedRevision: this.revisionValue, title: this.titleTarget.value }; }
     async save() {
-        if(this.saving)return;
+        if(this.saving||this.commandPending)return;
         let saved=false;
         try {
             const snapshot = JSON.stringify(this.input());

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Composition preview · revision {{ binding.revision }}{% endblock %}
+{% block body %}
+<h1 class="text-2xl font-bold">Composition preview · revision {{ binding.revision }}</h1>
+<p class="my-3">This is the exact captured revision. The composer may have newer edits. <a class="link" href="{{ path('composition_edit', {id: binding.item.id}) }}">Open composition builder</a></p>
+<div data-controller="composition-result" data-composition-result-status-url-value="{{ path('preview_status', {id: binding.job.id}) }}" data-composition-result-document-url-value="{{ path('preview_document', {id: binding.job.id}) }}">
+<p role="status" class="my-3" data-composition-result-target="status">{{ binding.job.status }}</p>
+<div class="overflow-x-auto"><iframe title="Captured composition preview" sandbox="{{ scripts ? 'allow-scripts' : '' }}" referrerpolicy="no-referrer" class="min-h-[32rem] border border-base-300" style="width:{{ width }}px" data-composition-result-target="frame" {% if html %}srcdoc="{{ html|e('html_attr') }}"{% endif %}></iframe></div>
+</div>
+{% endblock %}

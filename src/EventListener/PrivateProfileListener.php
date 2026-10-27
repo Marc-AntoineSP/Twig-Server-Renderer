@@ -11,6 +11,6 @@ final readonly class PrivateProfileListener
     public function __invoke(ResponseEvent $event):void
     {
         $path=$event->getRequest()->getPathInfo();
-        if(str_starts_with($path,'/api/v1/registry/') || str_starts_with($path,'/registry-tokens')) $this->profiler?->disable();
+        if(str_starts_with($path,'/api/v1/registry/') || str_starts_with($path,'/registry-tokens') || str_starts_with($path,'/mcp/compose') || str_starts_with($path,'/oauth2/compose')) $this->profiler?->disable();
     }
 }

@@ -54,7 +54,9 @@ final class CompositionTest extends DatabaseTestCase
         $client->jsonRequest('PUT',$url,$input,$headers);self::assertResponseIsSuccessful($client->getResponse()->getContent());
         $client->jsonRequest('PUT',$url,$input,$headers);self::assertResponseStatusCodeSame(412);
         $client->request('GET','/api/v1/items/'.$id.'/draft'); $saved=json_decode($client->getResponse()->getContent());
-        self::assertEquals($tree,json_decode($saved->sourceMap->{'meta/composition.json'}));
+        $savedTree=json_decode($saved->sourceMap->{'meta/composition.json'});
+        $withoutIds=function(object $node)use(&$withoutIds):object{self::assertMatchesRegularExpression('/^n_[a-f0-9]{32}$/D',$node->id);unset($node->id);foreach($node->children??[] as $child)$withoutIds($child);return $node;};
+        $withoutIds($savedTree->root);self::assertEquals($tree,$savedTree);
         $writer=self::getContainer()->get(CatalogueWriter::class);$block=$writer->draft(self::getContainer()->get(\Doctrine\ORM\EntityManagerInterface::class)->find(\App\Entity\CatalogueItem::class,$id));
         $release=self::getContainer()->get(ReleasePublisher::class)->publish($block->getItem(),new PublishInput('1.0.0',2));
         $layout=$writer->create(new CreateItemInput($this->packageName('layout'),'layout','Layout'),$this->account());

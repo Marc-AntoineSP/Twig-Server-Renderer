@@ -17,6 +17,9 @@ services:
       BUILD_WORKER_URL: http://build-worker:8080
       TRUSTED_PROXIES: ${TRUSTED_PROXIES:-}
       TRUSTED_HOSTS: ${TRUSTED_HOSTS:-^(localhost|127\.0\.0\.1|studio|app)$}
+      MCP_COMPOSE_ENABLED: ${MCP_COMPOSE_ENABLED:-0}
+      MCP_PUBLIC_BASE_URL: ${MCP_PUBLIC_BASE_URL:-${STUDIO_BASE_URI:-http://localhost:8096}}
+      MCP_PUBLIC_HOST: ${MCP_PUBLIC_HOST:-localhost}
       DEFAULT_URI: ${STUDIO_BASE_URI:-http://localhost:8096}
     ports: ["127.0.0.1:${STUDIO_PRODUCTION_PORT:-8096}:8080"]
     networks:

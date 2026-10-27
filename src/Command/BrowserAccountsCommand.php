@@ -17,6 +17,7 @@ final class BrowserAccountsCommand extends Command
 {
     public function __construct(
         private readonly UserCreator $users,
+        private readonly \App\Mcp\Security\ComposeTokens $composeTokens,
         private readonly EntityManagerInterface $entityManager,
         #[Autowire('%kernel.project_dir%/var/browser/accounts.json')]
         private readonly string $path,
@@ -54,6 +55,7 @@ final class BrowserAccountsCommand extends Command
                 $password = bin2hex(random_bytes(24));
                 $user = $this->users->create('browser-'.bin2hex(random_bytes(8)).'@example.test', $password, 'ROLE_'.strtoupper($role));
                 $accounts[$role] = ['id' => $user->getId(), 'email' => $user->getEmail(), 'password' => $password];
+                if($role==='editor'){$accounts[$role]['composeToken']=$this->composeTokens->issue($user,'Browser composition acceptance',\App\Mcp\Security\ComposeTokens::SCOPES,['browser/*'])[1];}
             }
             if (!is_dir(dirname($this->path))) {
                 mkdir(dirname($this->path), 0700, true);

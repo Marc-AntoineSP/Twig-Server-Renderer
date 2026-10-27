@@ -1,0 +1,4 @@
+# Merge this block into your Codex config; no credential belongs in this file.
+[mcp_servers.styleguide_compose]
+url = "http://127.0.0.1:8095/mcp/compose"
+bearer_token_env_var = "STYLEGUIDE_COMPOSE_MCP_TOKEN"

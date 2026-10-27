@@ -147,3 +147,26 @@ output and private package action; preserve edit/create layouts and sandbox isol
 Check compiled class coverage and new post-build themes in immutable production assets.
 Run existing contracts, PHPUnit and relevant browser regressions; preserve original row
 hashes and record actual checks/limitations in STATUS.md and VERIFICATION.md.
+
+## M13 — Authenticated catalogue-composer MCP
+
+Audit manual builder semantics and reuse shared tree commands, validation, immutable
+references, draft persistence and sandboxed previews. Add the Symfony MCP bundle HTTP
+endpoint with an explicit composer tool registry, scoped expiring/revocable credentials,
+maintained OAuth/PKCE/discovery, optimistic concurrency, atomic batches/idempotency,
+stable IDs and recoverable history. Keep manual unsaved working trees and live revision
+notices; exclude source editing, publishing and unrelated administration.
+
+### Completion gate
+
+Actual SDK HTTP discovery/edit/preview/history smoke; auth/revocation/scope/isolation,
+invalid tree/reference/cycle and atomic rollback/retry tests; browser vs MCP conflicts
+and manual builder regression; Docker/migrations/production renderer. Document the
+operation map, exact pinned libraries/config/startup commands and local Codex/ChatGPT
+setup. Distinguish verified Codex/client connections from credential-dependent external
+setup. Preserve original data and sandbox. See COMPOSE_MCP.md.
+
+M13 completed2026-10-27:135PHPUnit/1138assertions, real official SDK + Codex0.164.0 HTTP
+round trips, concurrent revision/retry checks, manual/MCP browser flows and3/3immutable
+production acceptance flows. ChatGPT account linking remains credential-dependent setup,
+not a claimed client verification. See VERIFICATION.md and STATUS.md for measured evidence.

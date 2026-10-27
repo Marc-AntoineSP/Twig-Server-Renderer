@@ -3,15 +3,14 @@ namespace App\Controller;
 use Styleguide\Contracts\CatalogueException;
 use App\Catalogue\CatalogueWriter;
 use App\Catalogue\CreateItemInput;
-use App\Catalogue\DraftInput;
-use App\Composition\CompositionCompiler;
 use App\Composition\CompositionInput;
+use App\Composition\CompositionWorkspace;
+use App\Composition\CompositionCommandInput;
 use App\Entity\CatalogueItem;
 use App\Entity\Release;
 use App\Entity\ThemeRelease;
 use App\Font\FontLibrary;
 use App\Rendering\RendererPresets;
-use Styleguide\Contracts\CanonicalJson;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,9 +27,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 final class CompositionController extends AbstractController
 {
     #[Route('/catalogue/{id}/compose', name: 'composition_edit', methods: ['GET'])]
-    public function edit(#[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $em, RendererPresets $presets, FontLibrary $fonts): Response
+    public function edit(#[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $em, RendererPresets $presets, FontLibrary $fonts, CompositionWorkspace $workspace): Response
     {
-        $draft = $writer->draft($item); $source = $draft->getSourceMap()->{'meta/composition.json'} ?? null;
+        $draft = $workspace->require($item); $source = $draft->getSourceMap()->{'meta/composition.json'} ?? null;
         if (null === $source) throw new CatalogueException(409, 'This item uses source ownership; the composition builder is disabled.');
         $choices = [];
         foreach ($em->getRepository(Release::class)->findBy([], ['createdAt' => 'DESC'], 200) as $release) {
@@ -48,21 +47,32 @@ final class CompositionController extends AbstractController
                 $themeChoices[$selected->getId()] = ['label' => $selected->getTheme()->getName().'@'.$selected->getVersion(), 'document' => $selected->getDocument()];
             }
         }
-        return $this->render('composition/edit.html.twig', ['item' => $item, 'draft' => $draft, 'document' => json_decode($source, false, 64, JSON_THROW_ON_ERROR), 'choices' => $choices, 'generatedTwig' => $draft->getSourceMap()->{$draft->getManifestData()->entry}, 'rendererSettings' => $rendererSettings, 'fontFamilies' => $fonts->catalogue(), 'themeChoices' => $themeChoices]);
+        return $this->render('composition/edit.html.twig', ['item' => $item, 'draft' => $draft, 'document' => $workspace->document($draft), 'choices' => $choices, 'generatedTwig' => $draft->getSourceMap()->{$draft->getManifestData()->entry}, 'rendererSettings' => $rendererSettings, 'fontFamilies' => $fonts->catalogue(), 'themeChoices' => $themeChoices]);
     }
     #[Route('/api/v1/items/{id}/composition', name: 'composition_save', methods: ['PUT', 'POST'], format: 'json')]
     #[IsCsrfTokenValid('api', tokenKey: 'X-CSRF-Token', tokenSource: IsCsrfTokenValid::SOURCE_HEADER)]
-    public function save(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, #[MapRequestPayload(acceptFormat: 'json', serializationContext: [JsonDecode::ASSOCIATIVE => false, JsonDecode::RECURSION_DEPTH => 64, AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false])] CompositionInput $input, CatalogueWriter $writer, CompositionCompiler $compiler): JsonResponse
+    public function save(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, #[MapRequestPayload(acceptFormat: 'json', serializationContext: [JsonDecode::ASSOCIATIVE => false, JsonDecode::RECURSION_DEPTH => 64, AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false])] CompositionInput $input, CatalogueWriter $writer, CompositionWorkspace $workspace): JsonResponse
     {
-        $draft = $writer->draft($item);
-        if (!isset($draft->getSourceMap()->{'meta/composition.json'})) throw new CatalogueException(409, 'This item uses source ownership.');
-        if ($draft->getRevision() !== $input->expectedRevision) throw new CatalogueException(412, 'Composition changed. Reload and merge your tree.');
-        [$manifest, $sources] = $compiler->materialize($draft->getManifestData(), $draft->getSourceMap(), $input->document);
+        $prepared=$workspace->prepare($item,$input->expectedRevision,$input->document);
         if ('PUT' === $request->getMethod()) {
-            $writer->save($item, $input->expectedRevision, new DraftInput($manifest, $sources, $input->title ?? $item->getTitle(), $input->description ?? $item->getDescription(), $item->getTags()), $this->getUser());
+            $saved=$workspace->save($item,$input->expectedRevision,$prepared['document'],$this->getUser(),$input->title,$input->description);
+            $prepared['revision']=$saved->getRevision();
         }
-        return new JsonResponse(['revision' => $draft->getRevision(), 'manifestData' => $manifest, 'sourceMap' => $sources]);
+        return new JsonResponse($prepared,headers:['Cache-Control'=>'private, no-store']);
     }
+    #[Route('/api/v1/items/{id}/composition',name:'composition_read',methods:['GET'],format:'json')]
+    public function read(#[MapEntity(id:'id')]CatalogueItem $item,CompositionWorkspace $workspace):JsonResponse
+    {
+        $draft=$workspace->require($item);
+        return new JsonResponse(['revision'=>$draft->getRevision(),'document'=>$workspace->document($draft),'title'=>$item->getTitle(),'description'=>$item->getDescription()],headers:['Cache-Control'=>'private, no-store']);
+    }
+    #[Route('/api/v1/items/{id}/composition/commands',name:'composition_commands',methods:['POST'],format:'json')]
+    #[IsCsrfTokenValid('api',tokenKey:'X-CSRF-Token',tokenSource:IsCsrfTokenValid::SOURCE_HEADER)]
+    public function commands(#[MapEntity(id:'id')]CatalogueItem $item,#[MapRequestPayload(acceptFormat:'json',serializationContext:[JsonDecode::ASSOCIATIVE=>false,JsonDecode::RECURSION_DEPTH=>64,AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES=>false])]CompositionCommandInput $input,CompositionWorkspace $workspace):JsonResponse
+    {
+        return new JsonResponse($workspace->commands($item,$input->expectedRevision,$input->document,$input->commands),headers:['Cache-Control'=>'private, no-store']);
+    }
+
     #[Route('/catalogue/{id}/convert-source', name: 'composition_convert', methods: ['POST'])]
     #[IsCsrfTokenValid('convert-source', tokenKey: '_token')]
     public function convert(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer): Response

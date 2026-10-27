@@ -28,3 +28,7 @@
 /workers/*/node_modules/
 /tools/library/node_modules/
 .idea
+
+###> league/oauth2-server-bundle ###
+/config/jwt/*.pem
+###< league/oauth2-server-bundle ###

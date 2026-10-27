@@ -193,3 +193,26 @@ and theme previews, including script-disabled mode, without rewriting user marku
 granting same-origin access. The preview document policy digest is versioned when this
 behaviour changes. A long-running development preview consumer must restart to load the
 new PHP assembler; existing drafts/releases remain untouched.
+
+## Catalogue composition MCP
+
+CompositionTree now owns typed tree mutations formerly implemented only in Stimulus.
+CompositionWorkspace shares reference/props validation, compilation, permissions, draft
+saving and before/after recovery history between the browser and MCP. Browser command
+requests transform an unsaved tree; its existing Save commits explicitly. Each MCP
+mutation commits immediately, and a bounded batch commits once. Stable optional node IDs
+extend the current composition contract; legacy reads assign IDs without writing data.
+
+The existing app hosts one explicit 26-tool Symfony MCP server at /mcp/compose using the
+official SDK's Streamable HTTP, negotiation, schemas and tool results. A small SDK-handler
+adapter preserves JSON object/list distinction (especially empty props) before delegating
+to SDK validation. Durable actor/operation/target receipts and draft row locks protect
+retries and concurrent browser/AI edits. All adapters resolve identity per request.
+
+Scoped expiring PATs serve local clients. Maintained League/Omouren OAuth libraries serve
+predefined authorization-code/S256 clients with discovery/resource binding and normal
+studio login plus request-bound consent. OAuth subjects are stable User IDs. Preview
+bindings capture saved revisions and reuse the existing queued renderer/compiler/font
+pipeline and opaque iframe. No AI provider or new runtime/screenshot service is added.
+Full operation map, configuration, measured checks and account-dependent ChatGPT steps:
+COMPOSE_MCP.md. No publishing, source authoring or administration tools are exposed.

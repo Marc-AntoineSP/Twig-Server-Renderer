@@ -1,0 +1,51 @@
+import {test,expect} from '@playwright/test';
+import {randomBytes} from 'node:crypto';
+import {login} from './helpers.js';
+
+test('MCP drafts share the manual tree, preserve unsaved work and reject stale writes',async({page})=>{
+    test.setTimeout(100000);
+    const account=await login(page);
+    const headers={'Authorization':`Bearer ${account.composeToken}`,'Accept':'application/json, text/event-stream','Content-Type':'application/json'};
+    let sequence=0;
+    const rpc=async(method,params,notification=false)=>{
+        const response=await page.request.post('/mcp/compose',{headers,data:{jsonrpc:'2.0',...(notification?{}:{id:++sequence}),method,params}});
+        expect(response.ok(),`${method}: ${response.status()}`).toBeTruthy();
+        if(response.headers()['mcp-session-id'])headers['Mcp-Session-Id']=response.headers()['mcp-session-id'];
+        if(notification)return;
+        const body=await response.text();const data=body.startsWith('event:')||body.startsWith('data:')?JSON.parse(body.split('\n').filter(l=>l.startsWith('data: ')).at(-1).slice(6)):JSON.parse(body);
+        expect(data.error).toBeUndefined();return data.result;
+    };
+    const call=async(name,args)=>{const result=await rpc('tools/call',{name:`compose_${name}`,arguments:args});return result;};
+    const success=async(name,args)=>{const result=await call(name,args);expect(result.isError,JSON.stringify(result)).toBeFalsy();return result.structuredContent;};
+    await rpc('initialize',{protocolVersion:'2025-11-25',capabilities:{},clientInfo:{name:'studio-browser-acceptance',version:'1'}});headers['Mcp-Protocol-Version']='2025-11-25';await rpc('notifications/initialized',{},true);
+    const created=await success('create_draft',{name:`browser/mcp-${randomBytes(5).toString('hex')}`,kind:'layout',title:'Shared MCP composition',operationId:`create-${randomBytes(8).toString('hex')}`});
+    await page.goto(`/catalogue/${created.compositionId}/compose`);
+    const revision=page.locator('[data-controller~="composition"]');await expect(revision).toHaveAttribute('data-composition-revision-value','1');
+    await page.getByRole('button',{name:'Add text',exact:true}).click();
+    await page.getByLabel('Literal text',{exact:true}).fill('My unsaved browser text');
+    const ai=await success('add_container',{compositionId:created.compositionId,expectedRevision:1,operationId:`add-${randomBytes(8).toString('hex')}`,parentId:created.document.root.id,position:0,tag:'article',classes:['grid','md:grid-cols-3','gap-4']});expect(ai.revision).toBe(2);
+    await expect(page.locator('[data-composition-target="externalMessage"]')).toContainText('Saved revision 2',{timeout:12000});
+    await expect(page.getByLabel('Literal text',{exact:true})).toHaveValue('My unsaved browser text');
+    await page.getByRole('button',{name:'Save composition',exact:true}).click();await expect(page.locator('[data-composition-target="saveStatus"]')).toContainText('Composition changed');
+    page.once('dialog',dialog=>dialog.dismiss());await page.getByRole('button',{name:'Load saved revision',exact:true}).click();await expect(page.getByLabel('Literal text',{exact:true})).toHaveValue('My unsaved browser text');
+    page.once('dialog',dialog=>dialog.accept());await page.getByRole('button',{name:'Load saved revision',exact:true}).click();await expect(revision).toHaveAttribute('data-composition-revision-value','2');
+    await expect(page.getByRole('treeitem',{name:'<article> grid md:grid-cols-3 gap-4',exact:true})).toBeVisible();await expect(page.getByRole('treeitem',{name:'Text: My unsaved browser text',exact:true})).toHaveCount(0);
+    await page.getByRole('button',{name:'Add text',exact:true}).click();await page.getByLabel('Literal text',{exact:true}).fill('Browser after AI');await page.getByRole('button',{name:'Save composition',exact:true}).click();await expect(page.locator('[data-composition-target="saveStatus"]')).toHaveText('Saved revision 3');
+    const stale=await call('add_text',{compositionId:created.compositionId,expectedRevision:2,operationId:`stale-${randomBytes(8).toString('hex')}`,parentId:created.document.root.id,position:0,value:'Stale AI'});expect(stale.isError).toBe(true);expect(stale.structuredContent.code).toBe('REVISION_CONFLICT');
+    const read=await success('get',{compositionId:created.compositionId});expect(read.revision).toBe(3);expect(read.document.root.children[1].value).toBe('Browser after AI');
+    await expect(page.locator('[data-composition-target="status"]')).toHaveText('Composition preview current',{timeout:30000});await expect(page.frameLocator('iframe[title="Composition preview"]').getByText('Browser after AI',{exact:true})).toBeVisible();
+    await expect(page.locator('iframe[title="Composition preview"]')).toHaveAttribute('sandbox','allow-scripts');
+    // Exercise the responsive rule above its breakpoint; the frame border is inside its CSS width.
+    await page.getByRole('button',{name:'1280 px',exact:true}).click();
+    const composedArticle=page.frameLocator('iframe[title="Composition preview"]').locator('article');await expect(composedArticle).toHaveCSS('display','grid');await expect.poll(()=>composedArticle.evaluate(el=>getComputedStyle(el).gridTemplateColumns.trim().split(/\s+/).length)).toBe(3);
+    await page.reload();await expect(revision).toHaveAttribute('data-composition-revision-value','3');await expect(page.getByRole('treeitem',{name:'Text: Browser after AI',exact:true})).toBeVisible();
+    await expect(page.locator('[data-composition-target="status"]')).toHaveText('Composition preview current',{timeout:30000});
+    const preview=await success('render_preview',{compositionId:created.compositionId,revision:3,operationId:`preview-${randomBytes(8).toString('hex')}`,width:375,scripts:false});
+    await success('add_text',{compositionId:created.compositionId,expectedRevision:3,operationId:`after-preview-${randomBytes(8).toString('hex')}`,parentId:created.document.root.id,position:2,value:'Saved after captured preview'});
+    let captured;
+    await expect(async()=>{captured=await success('get_preview',{jobId:preview.jobId,includeHtml:true});expect(captured.status).toBe('succeeded');}).toPass({timeout:45000,intervals:[200,500,1000]});
+    expect(captured.previewRevision).toBe(3);expect(captured.revision).toBe(4);expect(captured.html).toContain('Browser after AI');expect(captured.html).not.toContain('Saved after captured preview');expect(captured.visualInspectionAvailable).toBe(false);
+    const viewer=await page.context().newPage();await viewer.goto(new URL(preview.previewUrl).pathname);await expect(viewer.getByRole('heading',{name:'Composition preview · revision 3',exact:true})).toBeVisible();
+    await expect(viewer.locator('iframe[title="Captured composition preview"]')).toHaveAttribute('sandbox','');const frame=viewer.frameLocator('iframe[title="Captured composition preview"]');await expect(frame.getByText('Browser after AI',{exact:true})).toBeVisible();await expect(frame.getByText('Saved after captured preview',{exact:true})).toHaveCount(0);
+    const other=await page.context().browser().newContext();const otherPage=await other.newPage();await login(otherPage,'admin');const denied=await otherPage.goto(new URL(preview.previewUrl).pathname);expect(denied.status()).toBe(404);await other.close();await viewer.close();
+});

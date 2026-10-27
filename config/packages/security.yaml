@@ -13,6 +13,13 @@ security:
         dev:
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
+        compose_mcp:
+            pattern: ^/mcp/compose/?$
+            stateless: true
+            custom_authenticators: [App\Mcp\Security\ComposeAuthenticator]
+        oauth_public:
+            pattern: ^/(?:oauth2/compose/(?:token|register)$|\.well-known/oauth-(?:authorization-server|protected-resource)(?:/|$))
+            security: false
         registry:
             pattern: ^/api/v1/registry/
             stateless: true
@@ -34,6 +41,9 @@ security:
                 target: studio_login
                 enable_csrf: true
     access_control:
+        - { path: '^/mcp/compose/?$', roles: IS_AUTHENTICATED_FULLY }
+        - { path: '^/oauth2/compose/authorize$', roles: PUBLIC_ACCESS }
+        - { path: '^/oauth2/compose/consent$', roles: ROLE_EDITOR }
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/health(?:/ready)?$, roles: PUBLIC_ACCESS }
         - { path: ^/(?:api/v1/appearance(?:/|$)|appearance/assets/), roles: PUBLIC_ACCESS }
