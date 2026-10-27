@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Import theme · Styleguide Studio{% endblock %}
+{% block body %}
+<h1 class="mb-4 text-3xl font-bold">Import theme</h1>
+<p class="my-3">Import canonical JSON, safe YAML or this studio's generated CSS format. Edited CSS declarations must agree with their embedded token data. Existing themes require an explicit revision.</p>
+<section data-controller="theme-import" data-theme-import-url-value="{{ path('theme_import_api') }}" data-theme-import-csrf-value="{{ csrf_token('api') }}" data-theme-import-edit-url-value="{{ path('theme_edit', {id: '__THEME__'}) }}">
+<label for="theme-file">Local theme file (256 KiB maximum)</label><input id="theme-file" type="file" accept=".json,.yaml,.yml,.css" data-action="change->theme-import#file">
+<label for="theme-format">Format</label><select id="theme-format" data-theme-import-target="format"><option value="json">JSON</option><option value="yaml">YAML</option><option value="css">Generated CSS</option></select>
+<label for="theme-content">Theme content</label><textarea id="theme-content" rows="18" class="font-mono" data-theme-import-target="content"></textarea>
+<label for="theme-revision">Expected revision (existing theme only)</label><input id="theme-revision" type="number" min="1" data-theme-import-target="revision">
+<div class="my-4 flex gap-3"><button class="btn btn-outline" type="button" data-mode="validate" data-action="theme-import#submit">Validate theme</button><button class="btn btn-primary" type="button" data-mode="apply" data-action="theme-import#submit">Apply theme import</button></div>
+<p role="status" data-theme-import-target="status"></p><a hidden class="link" data-theme-import-target="link">Open imported theme</a>
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{{ form_errors(form) }}
+{{ form_row(form.revision) }}
+<div class="grid gap-4 md:grid-cols-2">
+    {{ form_row(form.name) }}{{ form_row(form.cssName) }}
+    {{ form_row(form.version) }}{{ form_row(form.colorScheme) }}
+    {{ form_row(form.default) }}{{ form_row(form.prefersDark) }}
+</div>
+<fieldset class="mt-6"><legend class="text-xl font-semibold">Semantic colours</legend>
+    <p class="my-2 text-sm">Every colour has an explicit content colour. Hex values use six digits.</p>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    {% for field in form.colors %}
+        <div>{{ form_row(field) }}
+            {% if preview|default(false) %}<label class="text-sm" for="picker-{{ field.vars.id }}">Pick {{ field.vars.label }}</label><input id="picker-{{ field.vars.id }}" type="color" value="{{ field.vars.value }}" data-color-input="{{ field.vars.id }}" data-action="input->theme-editor#pick">{% endif %}
+        </div>
+    {% endfor %}
+    </div>
+</fieldset>
+<fieldset class="mt-6"><legend class="text-xl font-semibold">Geometry</legend><div class="grid gap-3 sm:grid-cols-3">{% for field in form.geometry %}{{ form_row(field) }}{% endfor %}</div></fieldset>
+<fieldset class="mt-6"><legend class="text-xl font-semibold">Typography</legend>
+    <p class="my-2 text-sm">The font registry contains system sans, serif and monospace fonts. This profile uses no uploaded fonts, remote font service or CDN.</p>
+    <div class="grid gap-3 sm:grid-cols-3">{% for field in form.typography %}{{ form_row(field) }}{% endfor %}</div>
+</fieldset>

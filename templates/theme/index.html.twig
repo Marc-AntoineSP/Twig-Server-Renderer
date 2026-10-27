@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+{% block title %}Themes · Styleguide Studio{% endblock %}
+{% block body %}
+<div class="flex flex-wrap items-center justify-between gap-4"><h1 class="text-3xl font-bold">Theme laboratory</h1>
+{% if is_granted('ROLE_EDITOR') %}<div class="flex gap-3"><a class="btn btn-outline" href="{{ path('theme_import') }}">Import theme</a><a class="btn btn-primary" href="{{ path('theme_new') }}">Create theme</a></div>{% endif %}</div>
+<p class="my-4">Typed colours, geometry and typography, with isolated comparison previews and immutable releases.</p>
+<div class="grid gap-4 md:grid-cols-2">{% for theme in themes %}<article class="card border border-base-300 bg-base-100 p-5"><h2 class="text-xl font-semibold"><a href="{{ path('theme_show', {id: theme.id}) }}">{{ theme.name }}</a></h2><p>Draft revision {{ theme.revision }} · {{ theme.document.version }}</p>{% if is_granted('ROLE_EDITOR') %}<a class="link mt-3" href="{{ path('theme_edit', {id: theme.id}) }}">Edit theme</a>{% endif %}</article>{% else %}<p>No themes yet. Create one or import a validated token document.</p>{% endfor %}</div>
+{% endblock %}

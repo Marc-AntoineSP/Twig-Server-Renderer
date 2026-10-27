@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "name": "awui/ember",
+  "version": "1.0.0",
+  "kind": "theme",
+  "title": "Ember",
+  "description": "Source fixture for the Styleguide Studio implementation kit.",
+  "entry": "meta/theme.json",
+  "dependencies": [],
+  "controllers": [],
+  "safelist": [],
+  "compatibility": {
+    "php": ">=8.4",
+    "twig": "^3.0",
+    "tailwind": "^4.0",
+    "daisyui": "^5.0",
+    "stimulus": "^3.0"
+  },
+  "files": [
+    {
+      "path": "assets/styles/catalogue/awui/ember/app.css",
+      "sha256": "59d6f37c6d8909f175246b71234d41463bf7e4be5e4ba1691d959c890c2d1f19",
+      "bytes": 521
+    },
+    {
+      "path": "assets/styles/catalogue/awui/ember/theme.fragment.css",
+      "sha256": "6fda1bfd3b436ef2423ccc25dffb8b1a83e36b894a176aba8739896edac09192",
+      "bytes": 2384
+    },
+    {
+      "path": "assets/styles/catalogue/awui/ember/typography.css",
+      "sha256": "b4a622ae603ff727fc0ec5a9431dac81767e87478f1a4fdc4b497ff0fb4bc1b8",
+      "bytes": 705
+    },
+    {
+      "path": "meta/LICENSE",
+      "sha256": "ebc1e873ca057de650f4c9508c6a9441fffec8e5ded18ccae565531ee88d4c90",
+      "bytes": 1087
+    },
+    {
+      "path": "meta/README.md",
+      "sha256": "6b69b1cce45429abfd0d22643ad1923582b83970eca6516885656803cba82991",
+      "bytes": 497
+    },
+    {
+      "path": "meta/theme.json",
+      "sha256": "7dfd992cfd347bdcff9ba56bb18159883f324a4496a078e4f255d09c58d600c6",
+      "bytes": 1444
+    }
+  ],
+  "license": "MIT"
+}

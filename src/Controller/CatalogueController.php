@@ -8,6 +8,7 @@ use App\Catalogue\FormInput;
 use App\Catalogue\SearchQuery;
 use App\Entity\CatalogueItem;
 use App\Entity\Release;
+use App\Entity\ThemeRelease;
 use App\Form\DraftType;
 use App\Form\NewItemType;
 use App\Repository\CatalogueRepository;
@@ -65,7 +66,7 @@ final class CatalogueController extends AbstractController
 
     #[Route('/catalogue/{id}/edit', name: 'catalogue_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_EDITOR')]
-    public function edit(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, FormInput $input, RendererPresets $presets): Response
+    public function edit(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, FormInput $input, RendererPresets $presets, EntityManagerInterface $entityManager): Response
     {
         $draft = $writer->draft($item);
         $jsonOptions = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR;
@@ -88,7 +89,12 @@ final class CatalogueController extends AbstractController
             }
         }
 
-        return $this->render('catalogue/edit.html.twig', ['item' => $item, 'draft' => $draft, 'form' => $form, 'rendererSettings' => $presets->read($item, $this->getUser())], new Response(status: $status));
+        $themeChoices = [];
+        foreach ($entityManager->getRepository(ThemeRelease::class)->findBy([], ['createdAt' => 'DESC']) as $release) {
+            $themeChoices[$release->getId()] = ['label' => $release->getTheme()->getName().'@'.$release->getVersion(), 'document' => $release->getDocument()];
+        }
+
+        return $this->render('catalogue/edit.html.twig', ['item' => $item, 'draft' => $draft, 'form' => $form, 'rendererSettings' => $presets->read($item, $this->getUser()), 'themeChoices' => $themeChoices], new Response(status: $status));
     }
 
     private function errors(FormInterface $form, CatalogueException $error): void

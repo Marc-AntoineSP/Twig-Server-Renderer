@@ -5,6 +5,7 @@ import { posix, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { build } from 'esbuild';
 import { parse } from 'acorn';
+import { themeCss } from './theme.mjs';
 
 const execute = promisify(execFile);
 let directory;
@@ -26,7 +27,8 @@ try {
     for (const name of job.safelist) if (typeof name !== 'string' || name.length > 120 || /[\s{};<>\x00-\x1f]/.test(name)) invalid('Safelist must contain literal class names.');
     directory = await mkdtemp(join(tmpdir(), 'studio-build-'));
     await writeFile(join(directory, 'scan.txt'), Object.values(job.sources).join('\n') + '\n' + job.safelist.join('\n'));
-    await writeFile(join(directory, 'input.css'), `@import "/toolchain/node_modules/tailwindcss/index.css" source(none);\n@source "${directory}/scan.txt";\n@plugin "/toolchain/node_modules/daisyui/index.js" { themes: light --default, dark --prefersdark; }\n`);
+    const theme = job.theme ? themeCss(job.theme) : '';
+    await writeFile(join(directory, 'input.css'), `@import "/toolchain/node_modules/tailwindcss/index.css" source(none);\n@source "${directory}/scan.txt";\n@plugin "/toolchain/node_modules/daisyui/index.js" { themes: ${theme ? 'false' : 'light --default, dark --prefersdark'}; }\n${theme}`);
     await execute(process.execPath, ['--max-old-space-size=128', '/toolchain/node_modules/@tailwindcss/cli/dist/index.mjs', '-i', join(directory, 'input.css'), '-o', join(directory, 'output.css'), '--minify'], { cwd: '/toolchain', timeout: 7000, maxBuffer: 1048576 });
     const css = await readFile(join(directory, 'output.css'), 'utf8');
     const identifiers = new Set();

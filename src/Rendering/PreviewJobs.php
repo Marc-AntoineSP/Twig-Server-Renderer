@@ -9,6 +9,8 @@ use App\Catalogue\Validation\PropsValidator;
 use App\Entity\CatalogueItem;
 use App\Entity\PreviewJob;
 use App\Entity\User;
+use App\Entity\ThemeRelease;
+use App\Theme\ThemeValidator;
 use App\Message\RenderPreview;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,6 +32,7 @@ final readonly class PreviewJobs
         private DependencyResolver $dependencies,
         private MessageBusInterface $bus,
         private ValidatorInterface $validator,
+        private ThemeValidator $themes,
         Connection $connection,
         #[Autowire('%kernel.project_dir%')] private string $projectDirectory,
     ) {
@@ -72,8 +75,16 @@ final readonly class PreviewJobs
             $this->props->validateValue($props, $schema);
             $closure = $this->dependencies->resolve($manifest, $sources);
             $preset = $input->preset ?? new RendererSettings();
+            $theme = $input->themeData;
+            if (null === $theme && null !== $preset->themeReleaseId) {
+                $theme = ($this->entityManager->find(ThemeRelease::class, $preset->themeReleaseId) ?? throw new CatalogueException(404, 'Theme release not found.'))->getDocument();
+            }
+            if (null !== $theme) {
+                if (!$theme instanceof \stdClass) { throw new CatalogueException(422, 'Theme data must be an object.'); }
+                $this->themes->validate($theme);
+            }
             $closure['safelist'] = array_values(array_unique([...$closure['safelist'], $preset->textClass]));
-            $payload = (object) [...$closure, 'props' => $props, 'channel' => $input->channel, 'preset' => $preset->toArray()];
+            $payload = (object) [...$closure, 'props' => $props, 'channel' => $input->channel, 'preset' => $preset->toArray(), 'theme' => $theme];
             $policyDigest = hash_file('sha256', $this->projectDirectory.'/workers/render/composer.lock').hash_file('sha256', $this->projectDirectory.'/workers/build/package-lock.json').'sandbox-v1';
             $hash = hash('sha256', json_encode($payload, JSON_THROW_ON_ERROR).$policyDigest);
             $job = new PreviewJob($user, $input->sequence, $hash, $payload);

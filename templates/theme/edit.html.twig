@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Edit {{ theme.name }} · Themes{% endblock %}
+{% block body %}
+<section data-controller="theme-editor" data-theme-editor-document-value="{{ theme.document|json_encode|e('html_attr') }}"
+ data-theme-editor-csrf-value="{{ csrf_token('api') }}" data-theme-editor-revision-value="{{ form.revision.vars.value }}"
+ data-theme-editor-create-url-value="{{ path('preview_create') }}" data-theme-editor-status-url-value="{{ path('preview_status', {id: '__JOB__'}) }}"
+ data-theme-editor-document-url-value="{{ path('preview_document', {id: '__JOB__'}) }}" data-theme-editor-theme-url-value="{{ path('theme_read_api', {id: '__THEME__'}) }}"
+ data-theme-editor-publish-url-value="{{ path('theme_publish_api', {id: theme.id}) }}">
+<div class="flex flex-wrap items-center justify-between gap-3"><h1 class="text-3xl font-bold">Edit {{ theme.name }}</h1><a class="link" href="{{ path('theme_show', {id: theme.id}) }}">Releases and exports</a></div>
+<p class="my-3">Revision {{ theme.revision }}. Token edits preview automatically; save persists the draft.</p>
+{{ form_start(form, {attr: {'data-turbo': 'false', 'data-action': 'input->theme-editor#changed change->theme-editor#changed'}}) }}
+{% include 'theme/_fields.html.twig' with {preview: true} %}
+<button class="btn btn-primary my-6" type="submit">Save theme</button>
+{{ form_end(form) }}
+<div class="flex flex-wrap items-end gap-4">
+<div><label for="theme-component">Preview component</label><select id="theme-component" data-theme-editor-target="component" data-action="change->theme-editor#schedule">{% for component in components %}<option value="{{ component.id }}" {% if component.id == sampleId %}selected{% endif %}>{{ component.title }} ({{ component.name }})</option>{% endfor %}</select></div>
+<div><label for="compare-theme">Compare with saved theme</label><select id="compare-theme" data-theme-editor-target="compare" data-action="change->theme-editor#schedule"><option value="">This theme at page load</option>{% for other in themes %}<option value="{{ other.id }}">{{ other.name }}</option>{% endfor %}</select></div>
+<button type="button" class="btn btn-outline" data-action="theme-editor#run">Refresh comparison</button>
+</div>
+<p role="status" class="my-3" data-theme-editor-target="status">Preparing theme previews…</p>
+<div class="grid gap-4 lg:grid-cols-2"><div class="overflow-x-auto"><h2 class="mb-2 font-semibold">Current token edits</h2><iframe title="Edited theme preview" sandbox="allow-scripts" class="border border-base-300" style="width:768px;height:500px" data-theme-editor-target="frame"></iframe></div><div class="overflow-x-auto"><h2 class="mb-2 font-semibold">Saved comparison</h2><iframe title="Comparison theme preview" sandbox="allow-scripts" class="border border-base-300" style="width:768px;height:500px" data-theme-editor-target="frame"></iframe></div></div>
+<h2 class="mt-6 text-xl font-semibold">Publish a theme release</h2><p class="my-2">Save first. Publishing validates and compiles this revision, then preserves its token and CSS snapshot.</p><button class="btn btn-outline" type="button" data-action="theme-editor#publish">Publish theme release</button><p role="status" class="my-2" data-theme-editor-target="publishStatus"></p>
+<h2 class="mt-6 text-xl font-semibold">Saved token contrast</h2><p class="my-2 text-sm">sRGB contrast guidance for solid token pairs. This does not evaluate rendered layouts or certify accessibility.</p>
+<table class="table"><thead><tr><th>Pair</th><th>Ratio</th></tr></thead><tbody>{% for pair, ratio in ratios %}<tr><td>{{ pair }}</td><td>{{ ratio }}:1</td></tr>{% endfor %}</tbody></table>
+</section>
+{% endblock %}

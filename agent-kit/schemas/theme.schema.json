@@ -1,0 +1,298 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*/[a-z][a-z0-9-]*$",
+      "maxLength": 100
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "cssName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "maxLength": 100
+    },
+    "colorScheme": {
+      "enum": [
+        "light",
+        "dark"
+      ]
+    },
+    "default": {
+      "type": "boolean"
+    },
+    "prefersDark": {
+      "type": "boolean"
+    },
+    "colors": {
+      "type": "object",
+      "properties": {
+        "base-100": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "base-200": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "base-300": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "base-content": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "primary": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "primary-content": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "secondary": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "secondary-content": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "accent": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "accent-content": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "neutral": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "neutral-content": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "info": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "info-content": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "success": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "success-content": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "warning": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "warning-content": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "error": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "error-content": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        }
+      },
+      "required": [
+        "base-100",
+        "base-200",
+        "base-300",
+        "base-content",
+        "primary",
+        "primary-content",
+        "secondary",
+        "secondary-content",
+        "accent",
+        "accent-content",
+        "neutral",
+        "neutral-content",
+        "info",
+        "info-content",
+        "success",
+        "success-content",
+        "warning",
+        "warning-content",
+        "error",
+        "error-content"
+      ],
+      "additionalProperties": false
+    },
+    "geometry": {
+      "type": "object",
+      "properties": {
+        "radiusSelectorRem": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "radiusFieldRem": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "radiusBoxRem": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "sizeSelectorRem": {
+          "type": "number",
+          "minimum": 0.125,
+          "maximum": 1
+        },
+        "sizeFieldRem": {
+          "type": "number",
+          "minimum": 0.125,
+          "maximum": 1
+        },
+        "borderPx": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "depth": {
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "noise": {
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "required": [
+        "radiusSelectorRem",
+        "radiusFieldRem",
+        "radiusBoxRem",
+        "sizeSelectorRem",
+        "sizeFieldRem",
+        "borderPx",
+        "depth",
+        "noise"
+      ],
+      "additionalProperties": false
+    },
+    "typography": {
+      "type": "object",
+      "properties": {
+        "bodyFontId": {
+          "type": "string"
+        },
+        "headingFontId": {
+          "type": "string"
+        },
+        "textClass": {
+          "enum": [
+            "text-xs",
+            "text-sm",
+            "text-base",
+            "text-lg",
+            "text-xl"
+          ]
+        },
+        "rootFontSizePx": {
+          "type": "integer",
+          "minimum": 12,
+          "maximum": 24
+        },
+        "lineHeight": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 2
+        }
+      },
+      "required": [
+        "bodyFontId",
+        "headingFontId",
+        "textClass",
+        "rootFontSizePx",
+        "lineHeight"
+      ],
+      "additionalProperties": false
+    },
+    "fonts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "kind": {
+            "enum": [
+              "system",
+              "local"
+            ]
+          },
+          "family": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9 -]+$",
+            "maxLength": 80
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)[A-Za-z0-9_.\\-/]+$",
+            "maxLength": 240
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "license": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "family"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 20
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "name",
+    "version",
+    "cssName",
+    "colorScheme",
+    "default",
+    "prefersDark",
+    "colors",
+    "geometry",
+    "typography",
+    "fonts"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Validate referenced font IDs. local fonts require path/hash/license and valid WOFF2 bytes; system families resolve through the server allowlist."
+}

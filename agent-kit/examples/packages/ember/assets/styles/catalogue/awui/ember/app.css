@@ -1,0 +1,10 @@
+/* Fresh-project entry at assets/styles/catalogue/awui/ember/app.css.
+   Compile this source; browsers cannot interpret the Tailwind/plugin directives.
+   Existing apps should merge the fragment and typography, not a second root. */
+@import "tailwindcss" source(none);
+@import "./theme.fragment.css";
+@import "./typography.css";
+@source "../../../../../templates";
+@source "../../../../controllers";
+@source inline("text-xs text-sm text-base text-lg text-xl font-sans font-heading");
+@plugin "daisyui" { themes: false; }

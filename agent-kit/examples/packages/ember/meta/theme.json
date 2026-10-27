@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "name": "awui/ember",
+  "version": "1.0.0",
+  "cssName": "awui-ember",
+  "colorScheme": "light",
+  "default": true,
+  "prefersDark": false,
+  "colors": {
+    "base-100": "#FFF9F4",
+    "base-200": "#F5EBE1",
+    "base-300": "#E5D6C8",
+    "base-content": "#151415",
+    "primary": "#FFA100",
+    "primary-content": "#151415",
+    "secondary": "#CF7083",
+    "secondary-content": "#151415",
+    "accent": "#256C61",
+    "accent-content": "#FFFFFF",
+    "neutral": "#4F5154",
+    "neutral-content": "#FFFFFF",
+    "info": "#126E98",
+    "info-content": "#FFFFFF",
+    "success": "#176B43",
+    "success-content": "#FFFFFF",
+    "warning": "#F2BC42",
+    "warning-content": "#151415",
+    "error": "#B91C1C",
+    "error-content": "#FFFFFF"
+  },
+  "geometry": {
+    "radiusSelectorRem": 1,
+    "radiusFieldRem": 0.5,
+    "radiusBoxRem": 1,
+    "sizeSelectorRem": 0.25,
+    "sizeFieldRem": 0.25,
+    "borderPx": 1,
+    "depth": 1,
+    "noise": 0
+  },
+  "typography": {
+    "bodyFontId": "system-sans",
+    "headingFontId": "system-sans",
+    "textClass": "text-base",
+    "rootFontSizePx": 16,
+    "lineHeight": 1.5
+  },
+  "fonts": [
+    {
+      "id": "system-sans",
+      "kind": "system",
+      "family": "system-sans"
+    },
+    {
+      "id": "system-serif",
+      "kind": "system",
+      "family": "system-serif"
+    },
+    {
+      "id": "system-mono",
+      "kind": "system",
+      "family": "system-mono"
+    }
+  ]
+}

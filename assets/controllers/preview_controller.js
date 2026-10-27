@@ -1,8 +1,8 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['frame', 'stage', 'status', 'props', 'disableJs', 'width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'textClass', 'presetStatus', 'example'];
-    static values = { itemId: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, presetUrl: String, settings: Object, defaultProps: Object };
+    static targets = ['frame', 'stage', 'status', 'props', 'disableJs', 'width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'textClass', 'presetStatus', 'example', 'theme'];
+    static values = { itemId: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, presetUrl: String, settings: Object, defaultProps: Object, themes: Object };
 
     connect() {
         this.sequence = 0;
@@ -107,12 +107,13 @@ export default class extends Controller {
     }
 
     settings() {
-        return { width: Number(this.widthTarget.value), zoom: Number(this.zoomTarget.value), rootSize: Number(this.rootSizeTarget.value), bodyFont: this.bodyFontTarget.value, headingFont: this.headingFontTarget.value, textClass: this.textClassTarget.value, scripts: !this.disableJsTarget.checked, props: JSON.parse(this.propsTarget.value) };
+        return { width: Number(this.widthTarget.value), zoom: Number(this.zoomTarget.value), rootSize: Number(this.rootSizeTarget.value), bodyFont: this.bodyFontTarget.value, headingFont: this.headingFontTarget.value, textClass: this.textClassTarget.value, scripts: !this.disableJsTarget.checked, props: JSON.parse(this.propsTarget.value), themeReleaseId: this.hasThemeTarget ? this.themeTarget.value || null : null };
     }
 
     applySettings(settings) {
         for (const key of ['width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'textClass']) this[`${key}Target`].value = settings[key];
         this.disableJsTarget.checked = settings.scripts === false;
+        if (this.hasThemeTarget) this.themeTarget.value = settings.themeReleaseId || '';
         this.propsTarget.value = JSON.stringify(settings.props || this.defaultPropsValue, null, 2);
         this.applyViewport();
     }
@@ -134,6 +135,17 @@ export default class extends Controller {
 
     viewportChanged() { this.applyViewport(); }
     typographyChanged() { this.applyViewport(); this.schedule(); }
+
+    themeChanged() {
+        const theme = this.themesValue[this.themeTarget.value]?.document;
+        if (theme) {
+            this.bodyFontTarget.value = 'theme';
+            this.headingFontTarget.value = 'theme';
+            this.rootSizeTarget.value = theme.typography.rootFontSizePx;
+            this.textClassTarget.value = theme.typography.textClass;
+        }
+        this.schedule();
+    }
 
     async savePreset() {
         this.presetStatusTarget.textContent = 'Saving renderer settings…';

@@ -13,6 +13,7 @@
             <nav class="navbar mx-auto max-w-6xl px-6" aria-label="Main">
                 <a href="{{ path('studio_home') }}" class="text-xl font-semibold tracking-tight">Styleguide Studio</a>
                 {% if app.user %}<a class="btn btn-ghost ml-4" href="{{ path('catalogue_index') }}">Catalogue</a>{% endif %}
+                {% if app.user %}<a class="btn btn-ghost" href="{{ path('theme_index') }}">Themes</a>{% endif %}
                 {% block navigation %}{% endblock %}
                 {% if app.user %}
                     <div class="ml-auto flex items-center gap-4 text-sm">

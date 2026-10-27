@@ -8,7 +8,8 @@ Last updated: 2026-10-27. Scope: M00–M08, including a local production build; 
 | M01 Catalogue/authentication | Complete | 43 PHPUnit tests/160 assertions, 5 Chromium tests, app/database restart verified |
 | M02 Isolated preview | Complete | 66 PHPUnit tests/230 assertions, 9 Chromium tests; worker limits and isolation verified |
 | M03 Live editor | Complete | 68 PHPUnit tests/248 assertions and 15 Chromium tests pass |
-| M04–M08 | Not started | Existing design/contracts only |
+| M04 Theme laboratory | Complete | 71 PHPUnit tests/285 assertions and 17 Chromium flows pass |
+| M05–M08 | Not started | Existing design/contracts only |
 
 ## Repository audit and preservation
 
@@ -291,3 +292,32 @@ syntax location and retains the same good frame. Responsive widths, zoom, privat
 settings persistence, source persistence, keyboard tabs, examples and immediate reset
 all ran in Chromium against real workers. Schema validation and git diff checks pass.
 M03 is complete before starting M04. Source and renderer settings remain separate.
+
+
+## M04 theme laboratory completion
+
+Branch `feature/m04-theme-laboratory` stacks on M03. Added typed Doctrine Theme drafts
+with optimistic revisions and immutable ThemeRelease snapshots, all 20 semantic/content
+colours, bounded geometry, per-theme typography, registered system fonts, contrast guidance,
+paired isolated previews, source-editor theme presets, canonical JSON/YAML import/export,
+CSS metadata/declaration round-trip validation, source and compiled downloads and output ZIPs.
+The compiler validates typed theme input using locked Ajv **8.20.0**; imported CSS is never
+executed as configuration. System-font-only profile is explicit; no remote/font uploads.
+Migration `Version20261026235652` was generated, reviewed and applied to dev/test PostgreSQL.
+
+Actual gates: `make check test` exit 0, **71 PHPUnit tests/285 assertions**; `make browser`
+exit 0, **17 Chromium flows**. After stricter CSS string normalization, targeted theme-import
+checks pass **2 tests/14 assertions**. Tests cover real persistence/reload, stale saves,
+CSRF/permissions, immutable release snapshots/duplicate versions, compiled token/font CSS,
+ZIP contents, JSON/YAML/generated CSS round-trips and injection/alias/font rejection.
+Chromium changes colour/font/text/radius, compares frames and studio styles, saves/reloads,
+exports/reimports exact tokens, publishes and persists a source-editor theme selection.
+Generated exported app.css independently compiled with the locked Tailwind CLI (exit 0).
+Schema validation, root Composer audit, build-tool npm audit and git diff checks pass.
+
+Corrected failures: IntegerType has no html5 option; apply it only to NumberType. Existing
+preset assertions now include nullable themeReleaseId. Concurrent browser/backend checks
+exposed genuine worker busy responses; WorkerClient now retries 429/busy within its original
+bounded request deadline. Final suites ran successfully in sequence. Unrelated AGENTS/README
+hashes and staged README are preserved. Next: M05 real release publication foundation,
+then bounded composition authoring; no remote push/publication/deployment.

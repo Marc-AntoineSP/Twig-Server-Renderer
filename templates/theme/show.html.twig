@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ theme.name }} · Themes{% endblock %}
+{% block body %}
+<div class="flex items-center justify-between"><h1 class="text-3xl font-bold">{{ theme.name }}</h1>{% if is_granted('ROLE_EDITOR') %}<a class="btn btn-primary" href="{{ path('theme_edit', {id: theme.id}) }}">Edit theme</a>{% endif %}</div>
+<p class="my-4">Draft revision {{ theme.revision }} · proposed version {{ theme.document.version }}</p>
+<h2 class="mt-6 text-xl font-semibold">Draft outputs</h2>{% include 'theme/_exports.html.twig' with {route: 'theme_export', id: theme.id} %}
+<a class="link mt-3 inline-block" href="{{ path('theme_export', {id: theme.id, file: 'theme.yaml'}) }}">theme.yaml</a>
+<h2 class="my-4 text-xl font-semibold">Immutable theme releases</h2>
+{% for release in releases %}<article class="mb-4 rounded border border-base-300 bg-base-100 p-4"><h3 class="font-semibold">{{ release.version }}</h3>{% include 'theme/_exports.html.twig' with {route: 'theme_release_export', id: release.id} %}</article>{% else %}<p>No published theme release.</p>{% endfor %}
+{% endblock %}

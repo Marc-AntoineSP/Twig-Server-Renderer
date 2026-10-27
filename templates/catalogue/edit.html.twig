@@ -13,6 +13,7 @@
          data-preview-preset-url-value="{{ path('renderer_preset_save', {id: item.id}) }}"
          data-preview-settings-value="{{ rendererSettings|json_encode|e('html_attr') }}"
          data-preview-default-props-value="{{ draft.manifestData.defaults|json_encode|e('html_attr') }}"
+         data-preview-themes-value="{{ themeChoices|json_encode|e('html_attr') }}"
          data-action="editor:changed->preview#schedule editor:invalid->preview#invalid">
         <div class="grid gap-6 xl:grid-cols-2">
             <section class="min-w-0 rounded-box border border-base-300 bg-base-100 p-5">
@@ -62,11 +63,12 @@
                     {% for width in [375, 768, 1280] %}<button type="button" class="btn btn-sm" data-width="{{ width }}" data-action="preview#widthPreset">{{ width }} px</button>{% endfor %}
                 </div>
                 <div class="grid gap-3 sm:grid-cols-2">
+                    <div class="sm:col-span-2"><label for="renderer-theme">Published theme</label><select id="renderer-theme" class="select select-bordered w-full" data-preview-target="theme" data-action="preview#themeChanged"><option value="">Studio light</option>{% for id, choice in themeChoices %}<option value="{{ id }}">{{ choice.label }}</option>{% endfor %}</select></div>
                     <label>Viewport width<input class="input input-bordered w-full" type="number" min="320" max="1920" data-preview-target="width" data-action="input->preview#viewportChanged"></label>
                     <div><label for="renderer-zoom">Zoom</label><select id="renderer-zoom" class="select select-bordered w-full" data-preview-target="zoom" data-action="preview#viewportChanged">{% for zoom in [50, 75, 100] %}<option value="{{ zoom }}">{{ zoom }}%</option>{% endfor %}</select></div>
                     <label>Root font size<input class="input input-bordered w-full" type="number" min="12" max="24" data-preview-target="rootSize" data-action="input->preview#typographyChanged"></label>
                     <div><label for="renderer-text">Default text size</label><select id="renderer-text" class="select select-bordered w-full" data-preview-target="textClass" data-action="preview#typographyChanged">{% for size in ['text-xs', 'text-sm', 'text-base', 'text-lg', 'text-xl'] %}<option value="{{ size }}">{{ size }}</option>{% endfor %}</select></div>
-                    {% for key, label in {bodyFont: 'Body font', headingFont: 'Heading font'} %}<div><label for="renderer-{{ key }}">{{ label }}</label><select id="renderer-{{ key }}" class="select select-bordered w-full" data-preview-target="{{ key }}" data-action="preview#typographyChanged"><option value="system-sans">System sans</option><option value="system-serif">System serif</option><option value="system-mono">System monospace</option></select></div>{% endfor %}
+                    {% for key, label in {bodyFont: 'Body font', headingFont: 'Heading font'} %}<div><label for="renderer-{{ key }}">{{ label }}</label><select id="renderer-{{ key }}" class="select select-bordered w-full" data-preview-target="{{ key }}" data-action="preview#typographyChanged"><option value="system-sans">System sans</option><option value="system-serif">System serif</option><option value="system-mono">System monospace</option><option value="theme">Theme default</option></select></div>{% endfor %}
                 </div>
                 <p class="mt-3 text-xs">Root font size also scales rem-based spacing. Zoom changes visual scale; it preserves the CSS viewport width.</p>
                 <div class="my-4 flex flex-wrap items-center gap-3">

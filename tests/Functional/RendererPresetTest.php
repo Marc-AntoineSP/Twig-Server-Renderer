@@ -19,7 +19,7 @@ final class RendererPresetTest extends DatabaseTestCase
         $url = '/api/v1/items/'.$id.'/renderer-preset';
         $client->request('GET', '/api/v1/csrf');
         $token = json_decode($client->getResponse()->getContent(), true)['token'];
-        $settings = ['width' => 375, 'zoom' => 75, 'rootSize' => 20, 'bodyFont' => 'system-serif', 'headingFont' => 'system-mono', 'textClass' => 'text-lg', 'scripts' => false, 'props' => (object) ['message' => 'Saved sample']];
+        $settings = ['width' => 375, 'zoom' => 75, 'rootSize' => 20, 'bodyFont' => 'system-serif', 'headingFont' => 'system-mono', 'textClass' => 'text-lg', 'scripts' => false, 'props' => (object) ['message' => 'Saved sample'], 'themeReleaseId' => null];
         $client->jsonRequest('PUT', $url, $settings);
         self::assertResponseStatusCodeSame(403);
         $client->jsonRequest('PUT', $url, $settings, ['HTTP_X_CSRF_TOKEN' => $token]);

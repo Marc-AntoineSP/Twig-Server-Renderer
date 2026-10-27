@@ -8,6 +8,7 @@ use App\Catalogue\Validation\PropsValidator;
 use App\Entity\CatalogueItem;
 use App\Entity\RendererPreset;
 use App\Entity\User;
+use App\Entity\ThemeRelease;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,6 +30,9 @@ final readonly class RendererPresets
     {
         if (count($this->validator->validate($settings))) {
             throw new CatalogueException(422, 'Renderer settings exceed their supported bounds.');
+        }
+        if ($settings->themeReleaseId && !$this->entityManager->find(ThemeRelease::class, $settings->themeReleaseId)) {
+            throw new CatalogueException(422, 'Choose an existing immutable theme release.');
         }
         $draft = $this->catalogue->draft($item);
         $props = $settings->props ?? $draft->getManifestData()->defaults;

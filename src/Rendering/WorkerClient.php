@@ -45,8 +45,15 @@ final readonly class WorkerClient
     private function call(string $url, string $token, array $input, int $timeout): array
     {
         try {
-            $response = $this->http->request('POST', $url, ['auth_bearer' => $token, 'json' => $input, 'timeout' => $timeout, 'max_duration' => $timeout, 'max_redirects' => 0]);
-            $result = $response->toArray(false);
+            $deadline = microtime(true) + $timeout;
+            do {
+                $remaining = max(0.1, $deadline - microtime(true));
+                $response = $this->http->request('POST', $url, ['auth_bearer' => $token, 'json' => $input, 'timeout' => $remaining, 'max_duration' => $remaining, 'max_redirects' => 0]);
+                $result = $response->toArray(false);
+                if (429 !== $response->getStatusCode() || ($result['error']['code'] ?? '') !== 'busy') break;
+                if (microtime(true) + 0.15 >= $deadline) break;
+                usleep(100000);
+            } while (true);
         } catch (\Throwable) {
             throw new CatalogueException(503, 'The isolated worker is unavailable. Retry later.', [], 'worker_unavailable');
         }

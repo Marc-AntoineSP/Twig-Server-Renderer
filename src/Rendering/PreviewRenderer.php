@@ -16,13 +16,13 @@ final readonly class PreviewRenderer
         if (!$render['ok']) {
             return $render;
         }
-        $sources = $payload['sources'];
+        $sources = (array) $payload['sources'];
         $sources['rendered/preview.html'] = $render['html'];
-        $build = $this->workers->build(['sources' => $sources, 'controllers' => $payload['controllers'], 'safelist' => $payload['safelist']]);
+        $build = $this->workers->build(['sources' => $sources, 'controllers' => $payload['controllers'], 'safelist' => $payload['safelist'], 'theme' => $payload['theme'] ?? null]);
         if (!$build['ok']) {
             return $build;
         }
 
-        return ['ok' => true, 'html' => $this->documents->assemble($render['html'], $build['css'], $build['js'], $payload['channel'], $payload['preset'] ?? []), 'css' => $build['css'], 'js' => $build['js']];
+        return ['ok' => true, 'html' => $this->documents->assemble($render['html'], $build['css'], $build['js'], $payload['channel'], $payload['preset'] ?? [], $payload['theme'] ?? null), 'css' => $build['css'], 'js' => $build['js']];
     }
 }

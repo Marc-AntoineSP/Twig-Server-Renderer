@@ -1,0 +1,66 @@
+import { test, expect } from '@playwright/test';
+import { randomBytes } from 'node:crypto';
+import { login, createAlert } from './helpers.js';
+
+test('theme tokens persist, compare in isolated frames and round-trip exports', async ({ page }) => {
+    test.setTimeout(90000);
+    await login(page);
+    await page.goto('/themes/new');
+    await page.getByLabel('Theme name (namespace/slug)', { exact: true }).fill(`browser/theme-${randomBytes(5).toString('hex')}`);
+    await page.getByLabel('CSS theme name', { exact: true }).fill(`theme-${randomBytes(5).toString('hex')}`);
+    await page.getByRole('button', { name: 'Create theme', exact: true }).click();
+    await expect(page.locator('[data-flash]')).toHaveText('Theme created.');
+    const url = page.url();
+    const status = page.locator('[data-theme-editor-target="status"]');
+    await expect(status).toHaveText('Theme previews current', { timeout: 20000 });
+    const studioBackground = await page.locator('body').evaluate(el => getComputedStyle(el).backgroundColor);
+    await page.getByLabel('primary', { exact: true }).fill('#123456');
+    await page.getByLabel('Theme body font', { exact: true }).selectOption('system-serif');
+    await page.getByLabel('Theme text size', { exact: true }).selectOption('text-lg');
+    await page.getByLabel('Theme root size (px)', { exact: true }).fill('20');
+    await page.getByLabel('radius-box (rem)', { exact: true }).fill('2');
+    await expect(status).toHaveText('Theme previews current', { timeout: 20000 });
+    const edited = page.frameLocator('iframe[title="Edited theme preview"]');
+    const comparison = page.frameLocator('iframe[title="Comparison theme preview"]');
+    await expect(edited.getByRole('button', { name: 'Primary', exact: true })).toHaveCSS('background-color', 'rgb(18, 52, 86)');
+    await expect(edited.locator('body')).toHaveCSS('font-family', /Georgia/);
+    await expect(edited.locator('body')).toHaveCSS('font-size', '22.5px');
+    await expect(edited.locator('section')).toHaveCSS('border-radius', '40px');
+    await expect(comparison.getByRole('button', { name: 'Primary', exact: true })).not.toHaveCSS('background-color', 'rgb(18, 52, 86)');
+    expect(await page.locator('body').evaluate(el => getComputedStyle(el).backgroundColor)).toBe(studioBackground);
+    await page.getByRole('button', { name: 'Save theme', exact: true }).click();
+    await expect(page.locator('[data-flash]')).toHaveText('Theme saved.');
+    await page.reload();
+    await expect(page.getByLabel('primary', { exact: true })).toHaveValue('#123456');
+    await expect(page.getByLabel('Theme body font', { exact: true })).toHaveValue('system-serif');
+    await expect(page.getByLabel('radius-box (rem)', { exact: true })).toHaveValue('2');
+    const id = url.split('/').at(-2);
+    const tokens = await (await page.request.get(`/themes/${id}/export/theme.json`)).text();
+    const fragment = await (await page.request.get(`/themes/${id}/export/theme.fragment.css`)).text();
+    const csrf = (await (await page.request.get('/api/v1/csrf')).json()).token;
+    for (const [format, content] of [['json', tokens], ['css', fragment]]) {
+        const result = await page.request.post('/api/v1/themes/import', { headers: { 'X-CSRF-Token': csrf }, data: { format, content, mode: 'validate' } });
+        expect(result.status()).toBe(200);
+        expect((await result.json()).document).toEqual(JSON.parse(tokens));
+    }
+    const compiled = await (await page.request.get(`/themes/${id}/export/preview.css`)).text();
+    expect(compiled).toContain('--color-primary:#123456');
+    await page.getByRole('button', { name: 'Publish theme release', exact: true }).click();
+    await expect(page.locator('[data-theme-editor-target="publishStatus"]')).toHaveText('Theme 1.0.0 published immutably.', { timeout: 20000 });
+    await createAlert(page);
+    await page.getByLabel('Published theme', { exact: true }).selectOption({ label: `${JSON.parse(tokens).name}@1.0.0` });
+    await expect(page.frameLocator('iframe[title="Component preview"]').locator('html')).toHaveAttribute('data-theme', JSON.parse(tokens).cssName, { timeout: 15000 });
+    await page.getByRole('button', { name: 'Save renderer settings', exact: true }).click();
+    await page.reload();
+    await expect(page.getByLabel('Published theme', { exact: true })).not.toHaveValue('');
+});
+
+test('theme import validates before apply and reports conflicting CSS', async ({ page }) => {
+    await login(page);
+    await page.goto('/themes/import');
+    await page.getByLabel('Format', { exact: true }).selectOption('css');
+    await page.getByLabel('Theme content', { exact: true }).fill('@import "https://bad.example/font.css";');
+    await page.getByRole('button', { name: 'Validate theme', exact: true }).click();
+    await expect(page.locator('[data-theme-import-target="status"]')).toContainText('no supported format marker');
+    await expect(page.getByRole('link', { name: 'Open imported theme', exact: true })).toBeHidden();
+});

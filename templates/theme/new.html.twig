@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Create theme · Styleguide Studio{% endblock %}
+{% block body %}
+<h1 class="mb-4 text-3xl font-bold">Create theme</h1>
+{{ form_start(form, {attr: {'data-turbo': 'false'}}) }}
+{% include 'theme/_fields.html.twig' %}
+<button class="btn btn-primary mt-6" type="submit">Create theme</button>
+{{ form_end(form) }}
+{% endblock %}

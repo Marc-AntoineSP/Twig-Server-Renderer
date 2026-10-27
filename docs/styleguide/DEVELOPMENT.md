@@ -199,3 +199,16 @@ Reload restores it. `GET/PUT /api/v1/items/{id}/renderer-preset` enforce editor 
 owner-specific selection, header CSRF on PUT, bounds and props validation. Saving a
 preset validates against the saved props schema; save a changed schema as a draft first.
 Binary assets and named shared design-system presets are later capabilities.
+
+Themes live at `/themes`. Create a named token draft, edit all semantic/content colours,
+geometry and typography, then Save theme. The two opaque preview frames compare current
+edits against a saved theme without applying their CSS to the studio. System sans, serif
+and monospace are the supported font registry; this profile accepts no font uploads or
+remote fonts. Publish theme release validates/compiles and stores an immutable snapshot.
+Published themes appear in source-editor renderer settings, independently of source saves.
+
+Theme JSON is authoritative. JSON, safe YAML and this studio's generated CSS can validate
+before import; applying over an existing theme requires its revision. Generated CSS carries
+canonical token data and must match regenerated declarations. Manual CSS/token conflicts
+are rejected. Downloads label editable Tailwind source separately from sample-only compiled
+`preview.css`; an output bundle includes integration instructions and grants no licence.
