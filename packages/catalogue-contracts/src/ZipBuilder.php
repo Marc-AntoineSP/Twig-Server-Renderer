@@ -10,7 +10,7 @@ final class ZipBuilder
             $zip=new \ZipArchive();if(true!==$zip->open($path,\ZipArchive::OVERWRITE)) throw new \RuntimeException('Cannot stage archive.');
             ksort($files,SORT_STRING);
             foreach($files as $name=>$content) {
-                PortablePath::check($name);$total+=strlen($content);if($total>52428800) throw new CatalogueException(413,'Export exceeds 50 MiB.');
+                PortablePath::check($name);$content=SourceBytes::raw($name,$content);$total+=strlen($content);if($total>52428800) throw new CatalogueException(413,'Export exceeds 50 MiB.');
                 $zip->addFromString($name,$content);$zip->setCompressionName($name,\ZipArchive::CM_STORE);$zip->setMtimeName($name,315532800);$zip->setExternalAttributesName($name,\ZipArchive::OPSYS_UNIX,0100644<<16);
             }
             if(!$zip->close() || filesize($path)>10485760) throw new CatalogueException(413,'Export exceeds 10 MiB.');

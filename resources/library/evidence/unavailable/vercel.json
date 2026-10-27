@@ -1,0 +1,18 @@
+{
+  "url": "https://vercel.com/geist/colors",
+  "reason": "Reference document unavailable.",
+  "retrievedAt": "2026-10-27T06:50:26.583Z",
+  "diagnostics": [
+    {
+      "mode": "light",
+      "requests": [
+        {
+          "url": "https://vercel.com/geist/colors",
+          "sha256": "5904b74fbb867a3152f979df7c3dbba79e8598db2220d78d3bf44bca7cb33f4c",
+          "retrievedAt": "2026-10-27T06:44:12.644Z",
+          "contentType": "text/markdown; charset=utf-8"
+        }
+      ]
+    }
+  ]
+}

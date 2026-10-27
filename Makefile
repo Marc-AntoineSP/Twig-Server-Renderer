@@ -39,6 +39,35 @@ browser:
 logs:
 	$(COMPOSE) logs --tail=100 -f app
 
+.PHONY: library-deps fonts-download fonts-sync fonts-dry-run themes-research themes-candidates themes-collect themes-dry-run
+FONT_ARGS ?=
+RESEARCH_ARGS ?=
+library-deps:
+	$(COMPOSE) run --rm --no-deps node npm ci --prefix tools/library --ignore-scripts --no-audit --no-fund
+fonts-download: library-deps
+	$(COMPOSE) run --rm --no-deps node node tools/library/fonts-download.mjs $(FONT_ARGS)
+fonts-sync: library-deps
+	COMPOSE='$(COMPOSE)' bash tools/library/sync.sh fonts $(FONT_ARGS)
+fonts-dry-run:
+	$(COMPOSE) run --rm --no-deps node node tools/library/fonts-download.mjs --dry-run $(FONT_ARGS)
+	$(COMPOSE) exec -T app php bin/console styleguide:fonts:sync --dry-run $(FONT_ARGS)
+themes-research: library-deps
+	$(COMPOSE) run --rm --no-deps research-browser node tools/library/themes-collect.mjs $(RESEARCH_ARGS)
+themes-candidates:
+	$(COMPOSE) run --rm --no-deps node node tools/library/themes-candidates.mjs
+themes-collect: library-deps
+	COMPOSE='$(COMPOSE)' bash tools/library/sync.sh themes
+themes-dry-run:
+	$(COMPOSE) exec -T app php bin/console styleguide:themes:collect --dry-run
+
+.PHONY: font-consumer
+font-consumer:
+	COMPOSE='$(COMPOSE)' bash tests/FontConsumer/run.sh
+
+.PHONY: appearance-production
+appearance-production:
+	bash tests/AppearanceProduction/run.sh
+
 .PHONY: consumer
 consumer:
 	COMPOSE='$(COMPOSE)' bash tests/Consumer/run.sh

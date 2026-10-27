@@ -767,3 +767,251 @@ requested or claimed. The browser checks are not a full accessibility certificat
 Exact next step: create your own administrator with the documented hidden-password command
 and use/review the local production build. Review real hostnames/proxy/secrets/capacity and
 run your own authorized release procedure before any future remote deployment.
+
+
+## Font library and website-inspired presets — completed 2026-10-27
+
+Implemented `codex-font-library-and-website-themes.md` on the existing application,
+branch `feature/m09-theming-and-fonts`, after inspecting the active font registry,
+typed themes, isolated renderer/build workers, package contracts, transfer/import/export
+and installer. No second theme system, frontend framework or database reset was added.
+This extension supersedes the earlier system-font/text-only limitation; the earlier
+M00–M08 handoff and production evidence remain preserved above.
+
+Completed gates and actual imports:
+
+- All **42 requested font families** are actually downloaded and registered in the
+  existing persistent blob volume: **35 variable / 7 static**, **208 WOFF2 subset faces**,
+  **104 style/weight groups**, **6,713,012 font bytes**, **42 licence references / 40 unique
+  licence files (192,499 bytes)**. Font registry/history contains **374 files / 7,824,256
+  bytes**. Every group passes actual cmap plus Unicode-range coverage of 137 required
+  English/French characters, real axis/weight/style metadata, source integrity and hash
+  checks. All 208 faces also decode in the real opaque-origin browser specimen.
+- Fontsource **5.3.0** is pinned for 39 families; **5.3.1** for Source Sans 3, Source Serif 4
+  and Source Code Pro. Google Fonts family/licence authority revision is
+  `e7db6ca603fd4862010383ff17ffd6cc4ffac1c0`. There are 40 OFL families, Ubuntu UFL and
+  Roboto Slab Apache-2.0. Exact per-family results are in resources/library/font-imports.csv.
+  Pin/dependency manifests and lockfiles were committed independently as **78a21b5**;
+  the user's staged README remains staged and unrelated edits remain untouched.
+- **18 website reference families / 25 observed modes** imported into existing managed
+  Theme drafts and immutable releases, latest **1.2.0**. All canonical values have explicit
+  observed/adapted/derived provenance, evidence URL/time/hash, source surface/fonts and
+  alternative-font attribution. No inverted/fictional mode was introduced. Detailed
+  successful preset rows and provenance counts are in resources/library/theme-imports.csv
+  and docs/styleguide/VERIFICATION.md. Earlier managed revisions and user copies survive.
+- **Linear pending:** static.linear.app robots.txt disallows the required stylesheets;
+  unstyled observations were rejected. **Twitch pending:** TLS certificate-chain validation
+  fails for the main and alternative official developer source; verification was not
+  disabled. Reddit uses its clearly labelled official corporate marketing surface because
+  product access is robots-blocked. Shopify uses current App Home documentation UI after
+  historic Polaris URLs moved. Spotify uses observed light Encore documentation rather
+  than claiming music-player colours. Failed later refreshes retain last-good snapshots
+  with their original dates and separate lastAttempt records.
+- Search/filter, English/French editable specimens, supported weights/styles, source and
+  licence details, body/heading/code theme choices and live previews are integrated.
+  Menus load no font bytes; explicit specimens transfer only the requested real style/
+  weight's subsets. Cleared-cache first catalogue load measures **25 resource requests /
+  89,702 resource bytes + 18,186 document bytes**, **zero font requests**; Inter italic472
+  embeds 143,732 selected raw bytes and really decodes. Studio typography stays independent.
+  Source and composition editors save the same existing account-owned renderer presets.
+  The final composition regression proves all three font/theme choices and viewport survive
+  reload without changing a draft. Picking a theme restores all three font roles to theme
+  inheritance. Opaque-origin iframe/CSP restrictions remain intact.
+- Gallery swatches, labelled source/mode/fonts, Apply and independent Duplicate/Edit work.
+  The existing shared showcase is complete and all **25 presets / 50 mobile+desktop
+  screenshots** were rendered, interacted with and visually reviewed. Lowest actual normal
+  text 5.51:1; hover/focus 4.67:1; selected 9.35:1; focus outline 4.94:1 (>=2px); field border
+  9.35:1; error border 4.62:1. Disabled contrast is recorded separately. This is not a full
+  WCAG certification. Culori parses/composites/clips source colours into canonical hex;
+  per-value provenance retains source colours and explains readability adaptations.
+- Fresh real consumer fixture **var/font-consumer-20261027T131001Z-12365** verifies a
+  composed layout with Inter472italic, Lora631normal and JetBrains Mono400normal through
+  collection ZIP, importable theme bundle and static export. Raw bytes, licences, canonical
+  metadata, inventories and relative URLs survive real install/reimport; reinstall is
+  **changed=0**. Production AssetMapper compilation, real loaded FontFaces, Stimulus
+  counter/native modal, mobile/desktop and zero external/studio runtime requests pass,
+  then pass again after restart. Internal-only consumer service was stopped, fixture
+  retained; original consumer at 8110 was preserved. App/preview-consumer images were
+  rebuilt/recreated without removing volumes; all fonts reverify afterward.
+
+Main changed areas: src/Font, font/collection commands and controller; existing theme/
+catalogue/composition controllers, forms and templates; Stimulus font/specimen/gallery/
+preview/theme/composition controllers; RendererSettings/Presets/DocumentAssembler;
+ThemeWriter/Sample and ThemePackager/TransferImporter/TransferExporter; shared contracts,
+schemas, binary source-byte representation and installer/AssetMapper integration; Node
+worker CSS generation; declarative resources/library manifests/locks/evidence/results;
+Dockerized tools/library acquisition; compose.yaml/Makefile maintenance and isolated
+consumer fixtures; real-font integration/browser tests; DEVELOPMENT/ARCHITECTURE/CONTRACTS/
+SECURITY/VERIFICATION documentation. Existing text-only package hashes remain compatible.
+No new migration was required; optional typed JSON contract fields extend the same model.
+
+Actual versions: FrankenPHP **1.13.4**, PHP **8.5.12**, Caddy **2.11.7**, Symfony framework
+and AssetMapper **8.1.9**, Twig **3.30.0**, StimulusBundle **3.6.0**, browser Stimulus
+**3.2.2**, Node **24.22.1**, Tailwind **4.3.3**, daisyUI **5.7.50**, Playwright **1.64.1**.
+New pinned maintenance dependencies: fontkit **2.0.4**, tar-stream **3.2.2**, Culori
+**4.0.2**, ipaddr.js **2.5.0**; scripts disabled during installation.
+
+Actual verification (commands and per-source evidence also in VERIFICATION.md):
+
+- `docker compose exec -T -e APP_ENV=test app php bin/phpunit`: **112 tests / 589 assertions**,
+  exit 0, including real package/font round-trips, rejected corrupted replacement preserving
+  the valid registry, static-font queued payloads and clean-store read-only prepare/apply.
+- `docker compose run --rm --no-deps browser npx playwright test --reporter=list`: complete
+  **28-flow** suite passed after image recreation. After the final composition controls,
+  `... test tests/Browser/fonts.spec.js tests/Browser/composition.spec.js --reporter=list`:
+  **5 passed**, including original composition save-race/keyboard workflow and the new
+  font/theme preservation case. Final cache-cleared catalogue measurement: **1 passed**.
+  The current suite has 29 flows; no unexecuted full 29-flow result is claimed.
+- `browser node tests/FontConsumer/fontfaces.mjs`: **42 families / 104 groups / 208 decoded
+  faces**, pass. `browser node tests/FontConsumer/showcases.mjs`: all **25** pass.
+  `bash tests/FontConsumer/run.sh`: fresh compile/install/offline browser/restart, **exit 0**.
+- `styleguide:fonts:sync --collection=popular` repeat: **42 unchanged**; dry-run all42 valid.
+  `styleguide:fonts:verify`: 42/208 exact bytes, errors=[]. Theme collect/dry-run all25
+  unchanged plus two explicit pending-source reasons. Import preparation makes no font
+  storage writes. Managed changed inputs cannot overwrite an existing immutable version.
+- Compose config, Composer validate --strict, container/Twig/YAML lint, identical schema
+  copies and git diff checks pass. Maintenance npm audit: **0 vulnerabilities**. Read-only
+  final baseline hashes: all original 13 themes / 268 items / 268 drafts unchanged.
+  Temporary browser credentials were removed. The final standalone consumer repeat began
+  with no account file and successfully provisioned/cleaned its own temporary credentials;
+  its exit trap stops its own service on failure while retaining artifacts. Restricted
+  worker networks are unchanged.
+
+Failed checks corrected: Latin-ext prefix matching initially selected the shorter Latin
+prefix; metadata ingestionRevision2 fixes range identification while retaining valid bytes
+and immutable history. Empty static axes became arrays in JSONB worker payloads; normalized
+objects now pass real render/build. AssetMapper initially excluded WOFF2; its exclusions
+now retain fonts and production consumer paths resolve. Bare theme ZIPs now have an
+importable manifest; read-only import preparation no longer writes font assets. Fresh
+Stimulus CDN acquisition failed TLS, so the fixture verifies/reuses exact cached3.2.2
+bytes. Concurrent showcase/resource-limit tests caused temporary worker_unavailable;
+sequential final captures pass. Temporary invalid test environment/template paths were
+corrected and passing commands above rerun. The final extra baseline query initially used
+id for draft; corrected to item_id, with no data mutations, and all hashes match.
+
+Remaining limits: verified English/French Latin coverage only; other scripts/axes need the
+same manifest/validation path. Public source evidence can change or become inaccessible;
+Linear/Twitch remain pending with actionable reasons. Alternative fonts, derived semantic
+values and unsupported gradients/shadows are explicit. Selected-family exports preserve
+all real editable faces but exclude unrelated families. Chromium/state/palette checks do
+not certify all accessibility or browsers. ZIP is required for envelopes exceeding the
+shared bounded JSON/YAML byte profile. A new production disaster-recovery run and remote
+CI were not executed for this extension; older M08 evidence is not relabelled as new.
+No branch push, external deployment or publication occurred.
+
+Exact next step: review /fonts and /themes at http://localhost:8095 with an existing editor/
+admin account; use Duplicate/Edit for personal website palettes. Reuse `make fonts-sync`,
+`make themes-collect` and `make font-consumer` for future reviewed updates; retry pending
+references only when their access/TLS conditions change. No required implementation gate
+for the available font/theme collection remains unfinished.
+
+
+## Local UI location follow-up — 2026-10-27
+
+The running local production at 8096 was restarted from the earlier immutable M08 image;
+read-only inspection confirms it has neither FontController nor the website source manifest.
+The updated development app at 8095 had been removed/stopped while its four data volumes
+remained. Started `docker compose up -d --wait app database render-worker build-worker
+preview-consumer` with those existing volumes. All five services become healthy;
+`styleguide:fonts:verify` confirms 42 families / 208 faces / 6,713,012 bytes/errors=[] and the
+repository confirms 25 managed website presets plus an independent editable copy. `/fonts`
+and `/themes` resolve at 8095 and correctly redirect anonymous visitors to `/login`.
+The user's account exists only in production, so development login creation must use
+plain `docker compose exec app php bin/console styleguide:user:create --admin`. No user
+credentials were copied or changed; no production image/data was updated. DEVELOPMENT.md
+now explicitly distinguishes the two instances, source/image contents and account scopes.
+
+## M10 — Personal application appearance — 2026-10-27
+
+Implemented `codex-apply-themes-to-application.md` on
+`feature/m10-application-appearance`, adapting the existing application. Application-wide
+Apply theme now saves the current user's explicit family and immutable revision
+snapshots. Header moon/sun, system mode, requested/effective mode explanations and a
+fixed legible Restore default are integrated. Runtime token CSS works for newly created
+themes without adding names to compiled Tailwind/daisyUI or modifying AssetMapper.
+
+The existing theme editor provides paired/single creation, family rename, variant
+selection preserving unsaved inputs, duplicate complete families, real opposite-mode
+starting palettes, Save, Save & Apply, Try, Revert and retry after partial save/apply
+failure. Ordinary Save leaves applied snapshots stable; another account's captured
+revision never advances automatically. Managed/built-in originals remain read-only.
+Trials are tab-local, debounced and owner-bound, preserve the original rollback target,
+never write preferences and end on navigation/reload. Invalid tokens retain the last
+valid trial and entered draft text.
+
+Additive migration `Version20261027143000` ran successfully in development/test and the
+fresh production fixture. It adds ThemeFamily, AppearanceSnapshot and AppearancePreference;
+only explicitly managed source provenance is paired. Existing theme documents, component
+releases and renderer/export settings remain untouched. Built-in light/dark defaults are
+real complete palettes and initialize without overwriting user name collisions. Portable
+theme schemaVersion 1 remains unchanged; family/preference metadata stays in the database.
+
+Personalized Twig SSR includes both mode styles and a local pre-paint system bootstrap.
+Authenticated preferences take precedence over the validated signed guest mode cookie;
+no localStorage override exists. Generated CSS has private content-addressed endpoints,
+hash validation and SRI. Trial access is owner-only, expires after one hour and is bounded
+to 32 recent entries; session candidates expire after five minutes with eight client slots.
+The single appearance controller preloads non-empty CSS, fences stale sequences, handles
+optimistic conflicts, bounds requests and reconciles/rolls back lost success responses.
+Missing assets and font decode failures show honest recovery/fallback status. Turbo/native
+history lifecycle and cleanup are covered; iframe sandbox/CSP permissions are unchanged.
+
+Changed areas: migration/entities; focused src/Appearance services; appearance controller,
+Twig extension/lazy runtime and private HTML response listener; existing ThemeWriter,
+ThemeApiController/ThemeController, input/form and shared ThemeCssGenerator; layout,
+gallery/detail/editor templates and existing editor Stimulus; new appearance controller/
+bootstrap, semantic studio styles; production Docker resources copy; isolated production
+Compose/fixture and tests; APPEARANCE/ARCHITECTURE/CONTRACTS/SECURITY/DEVELOPMENT/MILESTONES/
+VERIFICATION documentation. No dependencies or lockfiles changed for M10. Installed
+versions remain FrankenPHP1.13.4/PHP8.5.12/Symfony8.1.9/Twig3.30.0/Stimulus3.2.2/
+Node24.22.1/Tailwind4.3.3/daisyUI5.7.50/Playwright1.64.1.
+
+Completed verification:
+
+- Full PHPUnit: **120 tests / 694 assertions**, exit0.
+- Complete development browser suite: **41 passed / 5.0m**, exit0, with separate artifacts
+  at `var/appearance-verification/development-results`. All12 appearance and29 original
+  application flows pass together.
+- `make check`: Compose, strict Composer, container, 26 YAML and 21 Twig files pass;
+  Doctrine mapping/schema synchronized; `git diff --check` passes.
+- Real immutable production: **12 appearance browser tests passed / 44.4s**, exit0.
+  Fixture `var/appearance-20261027155720-7821`, tag `local-20261027155721-805d8e0c`.
+  Runtime-created pair/opposite variant, real computed tokens and local FontFaces work
+  after build. Manifest is read-only and unchanged before/after:
+  `2697be0747faf6901e441dd5f4d6bf4e9cb354a0604a0172622f61e0282e8416`.
+  Offline Inter/Lora/JetBrains Mono imports verify3 families/12faces/511,916bytes.
+  Fixture accounts disabled, own services stopped, volumes/evidence retained.
+- Fresh consumer repeat: `bash tests/FontConsumer/run.sh`, exit0, fixture
+  `var/font-consumer-20261027T160404Z-13295`. Real composed layout, collection/theme/static
+  export, local variable/italic/font licences and exact bytes/metadata/checksums survive
+  install/reimport; reinstall changed=0; production AssetMapper compiled. Offline consumer
+  and file snapshot decode fonts, run Stimulus/modal controls and issue zero studio or
+  external runtime requests at mobile/desktop widths, then pass again after restart.
+  Own consumer stopped, fixture retained; original consumer8110 stays running.
+- All original **47 themes / 308 components / 308 drafts / 1 renderer preset** retain
+  their complete pre-change row hashes. All **42 fonts / 208 faces / 6,713,012 bytes**
+  verify without errors. Original production8096 and consumer8110 are unchanged.
+- Production light/dark/mobile screenshots reviewed; Restore default stays reachable
+  and real keyboard focus is visible. Source fonts and renderer settings evidence is
+  retained alongside screenshots and logs under `var/appearance-verification`.
+
+Corrections made during verification: lazy Twig runtime preserves unrelated font tests;
+Symfony8 Choice uses named choices; JSON variants stay iterable; theme creation flash
+survives API redirect; actual debounce uses deterministic browser clock; isolated
+production browser networking and separate trace paths prevent fixture collisions;
+empty stylesheet responses cannot claim success and all initial/dynamic sheets use SRI;
+SVG visibility uses the attribute; the mobile focus check accepts the real solid >=2px
+daisyUI outline. Earlier failed runs are retained as failed evidence, not relabelled.
+
+All twelve documented acceptance checks have actual passing development/production,
+PHPUnit and consumer evidence. Temporary development browser accounts were removed.
+Original row hashes still match after consumer verification/account cleanup. No required
+M10 gate remains unfinished. Chromium is verified; no full accessibility certification
+or other-browser claim is made. No external deployment, publication or push occurred.
+
+Exact next step: open http://localhost:8095/themes and choose Apply theme, then use the
+header moon/sun or Appearance menu. Duplicate a managed/default family to customize it;
+use Try on application, Revert and Save & Apply in the existing editor. Restore default
+is fixed at the bottom-right. Production8096 remains the older image until a separately
+authorized release. Commands, migration/configuration and twelve-check mapping are in
+docs/styleguide/APPEARANCE.md and VERIFICATION.md.

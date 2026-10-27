@@ -1,0 +1,234 @@
+{
+  "url": "https://www.dropbox.com/",
+  "reason": "No permitted reference stylesheet loaded; unstyled fallback is not evidence.",
+  "retrievedAt": "2026-10-27T07:30:40.599Z",
+  "diagnostics": [
+    {
+      "mode": "light",
+      "requests": [
+        {
+          "url": "https://www.dropbox.com/",
+          "sha256": "ef7d7b850f953ae860ff80325ef46795130fc56cc9effb9ae45ac1eb0b03cdb3",
+          "retrievedAt": "2026-10-27T06:44:29.270Z",
+          "contentType": "text/html; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/accessibility-vflIgmyfQ.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/dig-components/tokens-vflT6EF45.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/dig-fonts/index.metaserver-vfl5iESyn.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/dig-fonts/sharp_grotesk_23.metaserver-vflfbDsxO.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/font_sharp_grotesk-vflwgPRUu.scss",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/notify-vflC8Ebls.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/warp/skip_to_main_content-vflTjBUa3.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/index.web-vfl5-i84a.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/font_paper_atlas_grotesk-vflz8hAHu.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/font_sharp_grotesk-vfl5HqCa_.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/js/styles/flip-icon-in-rtl.module.out-vfl23IWBx.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/js/ungated-file-app/src/components/file-input/index.module.out-vflY4y1Ks.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/components/common/warp_navattic_tour_plank/navattic.module.out-vfl-egEH1.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/components/dwg/dwg_marketo_form_plank/index.module.out-vflKALJqd.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/components/dwg/dwg_pdf_conversion_plank/index.module.out-vfl3Y86sQ.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/components/dwg/dwg_release_notes_plank/styles.module.out-vfl72agt9.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/context/warp_context.module.out-vflyIPkeL.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-anchor-target/anchor-target.module.out-vfl9OQ69U.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-animated-ai-sparkle-icon/index.module.out-vflCWPD58.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-animated-paragraph/index.module.out-vflB-IPow.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-card/index.module.out-vflHlbPuI.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-cta-block/index.module.out-vflfJjs_m.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-cta-select/index.module.out-vflPqx20J.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-label/index.module.out-vfluuxnqu.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-pill/index.module.out-vfl1O9oP6.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-recommendation-pill/index.module.out-vflYL3vJI.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-rive/index.module.out-vflnQt09g.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-strikethrough-text/index.module.out-vflY4afkx.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/clickable-card/index.module.out-vflAFeP4A.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/horizontal-scroll/horizontal-scroll.module.out-vflQDdZxp.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/lightbox/lightbox.module.out-vfl7K-Oef.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/quote-card/index.module.out-vflWfFHzI.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/ticker/list-ticker/list-ticker.module.out-vfl9biCE3.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/ticker/logos-ticker/logos-ticker.module.out-vflZPIBKa.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/ticker/loop-ticker/loop-ticker.module.out-vflb24FhK.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/planks/section-wrapper-plank/index.module.out-vfls9B-nK.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/planks/security-plank/index.module.out-vfl6C5Qwu.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-article-hero-plank/index.module.out-vflRKto6X.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-banner-plank/index.module.out-vflB9kpmz.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-feature-highlight-plank/index.module.out-vfloS2_4H.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-headline-plank/index.module.out-vflpBb47N.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-hero-l3-plank/index.module.out-vflwuZPrQ.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-media-text-plank/index.module.out-vflNjRiXf.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-multi-column-plank/index.module.out-vflJkTVdn.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-plan-cards-v2-plank/index.module.out-vfladK_98.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-promo-banner-plank/index.module.out-vflGX_xMH.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-rich-text-plank/index.module.out-vflcKvJvv.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-rive-plank/index.module.out-vflHiVa6d.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-segmentation-plank/index.module.out-vflpVJncC.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-susi-headline-plank/index.module.out-vflh_MFfK.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-table-of-contents-plank/index.module.out-vflqBbZag.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-table-plank/index.module.out-vflWqahQH.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/utilities/flip-icon-in-rtl.module.out-vflHLikh0.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/utilities/scrollbar.module.out-vflaMhf3G.css",
+          "error": "Reference request budget reached."
+        }
+      ]
+    }
+  ]
+}

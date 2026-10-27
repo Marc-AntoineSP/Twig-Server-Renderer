@@ -39,7 +39,7 @@ final class TransferController extends AbstractController
         $file=$request->files->get('file');$temp=null;
         try{
             if($file instanceof UploadedFile){if(!$file->isValid() || $file->getSize()>10485760)throw new CatalogueException(413,'Upload must be within 10 MiB.');$path=$file->getPathname();$format=strtolower($file->getClientOriginalExtension());}
-            else{$content=$request->request->getString('content');if(''===$content || strlen($content)>3145728)throw new CatalogueException(413,'Choose a complete ZIP or JSON/YAML envelope within limits.');$format=$request->request->getString('format','json');$temp=tempnam(sys_get_temp_dir(),'studio-import-');file_put_contents($temp,$content);$path=$temp;}
+            else{$content=$request->request->getString('content');if(''===$content || strlen($content)>10485760)throw new CatalogueException(413,'Choose a complete ZIP or JSON/YAML envelope within 10 MiB.');$format=$request->request->getString('format','json');$temp=tempnam(sys_get_temp_dir(),'studio-import-');file_put_contents($temp,$content);$path=$temp;}
             $prepared=$importer->prepare($path,$format);
             if('apply'===$mode){$expected=$request->request->getString('expectedPlan');if(''===$expected)throw new CatalogueException(428,'Validate or dry-run first and supply its plan hash.');return new JsonResponse(['plan'=>$prepared['plan'],'result'=>$importer->apply($prepared,$this->getUser(),$expected)]);}
             return new JsonResponse(['valid'=>true,'plan'=>$prepared['plan'],'planHash'=>$prepared['planHash'],'applied'=>false],headers:['Cache-Control'=>'private, no-store']);

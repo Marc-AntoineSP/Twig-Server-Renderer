@@ -1,13 +1,29 @@
 @import "tailwindcss" source(none);
 @source "../../templates";
 @source "../controllers";
-@plugin "daisyui" { themes: light --default, dark --prefersdark; }
+@plugin "daisyui" { themes: light --default, dark; }
+@custom-variant dark (&:where([data-color-mode="dark"], [data-color-mode="dark"] *));
+html[data-color-mode="light"] { color-scheme: light; }
+html[data-color-mode="dark"] { color-scheme: dark; }
+@theme inline {
+    --font-sans: var(--sg-font-body, ui-sans-serif, system-ui, sans-serif);
+    --font-heading: var(--sg-font-heading, ui-sans-serif, system-ui, sans-serif);
+    --font-mono: var(--sg-font-code, ui-monospace, monospace);
+}
+
+/* Fixed, narrowly scoped recovery remains legible even under an unusable trial palette. */
+[data-appearance-recovery] { background: #fff !important; color: #17212b !important; border: 2px solid #17212b !important; border-radius: 6px !important; padding: .5rem .75rem !important; font: 600 14px/1.5 ui-sans-serif, system-ui, sans-serif !important; }
+[data-appearance-recovery] button { background: #fff !important; color: #17212b !important; text-decoration: underline; padding: .25rem; }
+button[data-appearance-recovery] { position: fixed; right: 1rem; bottom: 1rem; z-index: 2147483000; max-width: calc(100vw - 2rem); }
+[data-appearance-recovery]:focus-visible, [data-appearance-recovery] button:focus-visible { outline: 3px solid #155dfb !important; outline-offset: 3px; }
+[hidden] { display: none !important; }
 
 @layer base {
     :focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
     textarea { tab-size: 2; }
+    body { padding-bottom: 4rem; }
     form > div { margin-block: 1rem; }
     form label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
-    form input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="color"]), form select, form textarea { width: 100%; border: 1px solid var(--color-base-300); border-radius: 0.5rem; padding: 0.75rem; background: var(--color-base-100); }
+    form input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="color"]), form select, form textarea { width: 100%; border: var(--border, 1px) solid var(--color-base-300); border-radius: var(--radius-field, 0.5rem); padding: 0.75rem; background: var(--color-base-100); color: var(--color-base-content); }
     form ul { color: var(--color-error); }
 }

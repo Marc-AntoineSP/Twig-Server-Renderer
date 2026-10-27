@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{ theme.name }} · Themes{% endblock %}
 {% block body %}
-<div class="flex items-center justify-between"><h1 class="text-3xl font-bold">{{ theme.name }}</h1>{% if is_granted('ROLE_EDITOR') %}<a class="btn btn-primary" href="{{ path('theme_edit', {id: theme.id}) }}">Edit theme</a>{% endif %}</div>
+{% set family = theme_family(theme) %}
+<div class="my-3 flex flex-wrap items-center gap-3"><button type="button" class="btn btn-primary" data-action="appearance#applyTheme" data-theme-id="{{ theme.id }}" data-theme-revision="{{ theme.revision }}">Apply theme</button><span hidden class="badge badge-success" data-appearance-target="applied" data-family-id="{{ family.id }}" data-variant-mode="{{ theme.document.colorScheme }}">Applied</span><span>Family: {{ family.label }} · {{ family.variants|keys|join(' / ') }}</span></div>
+<div class="flex flex-wrap items-center justify-between gap-3"><h1 class="text-3xl font-bold">{{ theme.document.provenance.title|default(theme.name) }}</h1>{% if is_granted('ROLE_EDITOR') %}{% if not family.builtIn and not theme.document.provenance.managed|default(false) %}<a class="btn btn-primary" href="{{ path('theme_edit', {id: theme.id}) }}">Edit theme</a>{% endif %}<form method="post" action="{{ path('theme_duplicate',{id:theme.id}) }}" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('theme-duplicate') }}"><button class="btn btn-outline">Duplicate/Edit</button></form>{% if releases|length %}<form method="post" action="{{ path('theme_apply',{id:theme.id}) }}" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('theme-apply') }}"><button class="btn btn-primary">Apply to showcase</button></form>{% endif %}{% endif %}</div>
 <p class="my-4">Draft revision {{ theme.revision }} · proposed version {{ theme.document.version }}</p>
+{% include 'theme/_provenance.html.twig' %}
+<details class="my-4"><summary>Semantic text contrast</summary><p>Solid sRGB token pairs; rendered focus, hover, selected, disabled and error states are separate checks.</p><table class="table"><thead><tr><th>Background / its content</th><th>Ratio</th></tr></thead><tbody>{% for pair,ratio in ratios %}<tr><td>{{ pair }}</td><td>{{ ratio }}:1</td></tr>{% endfor %}</tbody></table></details>
 <h2 class="mt-6 text-xl font-semibold">Draft outputs</h2>{% include 'theme/_exports.html.twig' with {route: 'theme_export', id: theme.id} %}
 <a class="link mt-3 inline-block" href="{{ path('theme_export', {id: theme.id, file: 'theme.yaml'}) }}">theme.yaml</a>
 <h2 class="my-4 text-xl font-semibold">Immutable theme releases</h2>

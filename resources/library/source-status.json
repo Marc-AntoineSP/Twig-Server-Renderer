@@ -1,0 +1,195 @@
+{
+  "github": {
+    "reference": "github",
+    "status": "collected",
+    "modes": [
+      "light",
+      "dark"
+    ],
+    "checkedAt": "2026-10-27T06:44:01.300Z"
+  },
+  "govuk": {
+    "reference": "govuk",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:35.776Z",
+    "lastAttempt": {
+      "reference": "govuk",
+      "status": "pending",
+      "reason": "robots.txt unavailable: self-signed certificate in certificate chain",
+      "checkedAt": "2026-10-27T07:30:43.816Z"
+    }
+  },
+  "discord": {
+    "reference": "discord",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:17.685Z"
+  },
+  "reddit": {
+    "reference": "reddit",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T07:12:04.616Z"
+  },
+  "slack": {
+    "reference": "slack",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:17.466Z",
+    "lastAttempt": {
+      "reference": "slack",
+      "status": "pending",
+      "reason": "No permitted reference stylesheet loaded; unstyled fallback is not evidence.",
+      "checkedAt": "2026-10-27T07:30:43.816Z"
+    }
+  },
+  "atlassian": {
+    "reference": "atlassian",
+    "status": "collected",
+    "modes": [
+      "light",
+      "dark"
+    ],
+    "checkedAt": "2026-10-27T06:50:39.920Z",
+    "lastAttempt": {
+      "reference": "atlassian",
+      "status": "pending",
+      "reason": "robots.txt unavailable: self-signed certificate in certificate chain",
+      "checkedAt": "2026-10-27T07:30:43.816Z"
+    }
+  },
+  "airbnb": {
+    "reference": "airbnb",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:26.790Z"
+  },
+  "gitlab": {
+    "reference": "gitlab",
+    "status": "collected",
+    "modes": [
+      "light",
+      "dark"
+    ],
+    "checkedAt": "2026-10-27T06:50:22.181Z",
+    "lastAttempt": {
+      "reference": "gitlab",
+      "status": "pending",
+      "reason": "robots.txt unavailable: self-signed certificate in certificate chain",
+      "checkedAt": "2026-10-27T07:30:43.816Z"
+    }
+  },
+  "youtube": {
+    "reference": "youtube",
+    "status": "collected",
+    "modes": [
+      "light",
+      "dark"
+    ],
+    "checkedAt": "2026-10-27T07:34:35.957Z"
+  },
+  "shopify": {
+    "reference": "shopify",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:38.068Z"
+  },
+  "figma": {
+    "reference": "figma",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:33.176Z"
+  },
+  "stripe": {
+    "reference": "stripe",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:07.608Z"
+  },
+  "dropbox": {
+    "reference": "dropbox",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:29.270Z",
+    "lastAttempt": {
+      "reference": "dropbox",
+      "status": "pending",
+      "reason": "No permitted reference stylesheet loaded; unstyled fallback is not evidence.",
+      "checkedAt": "2026-10-27T07:30:43.816Z"
+    }
+  },
+  "notion": {
+    "reference": "notion",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:13.579Z"
+  },
+  "stackoverflow": {
+    "reference": "stackoverflow",
+    "status": "collected",
+    "modes": [
+      "light",
+      "dark"
+    ],
+    "checkedAt": "2026-10-27T06:44:24.245Z"
+  },
+  "spotify": {
+    "reference": "spotify",
+    "status": "collected",
+    "modes": [
+      "light"
+    ],
+    "checkedAt": "2026-10-27T06:44:18.801Z"
+  },
+  "wikipedia": {
+    "reference": "wikipedia",
+    "status": "collected",
+    "modes": [
+      "light",
+      "dark"
+    ],
+    "checkedAt": "2026-10-27T06:44:34.051Z"
+  },
+  "linear": {
+    "reference": "linear",
+    "status": "pending",
+    "reason": "The reference stylesheet host https://static.linear.app/robots.txt disallows /; no styled palette was ingested.",
+    "checkedAt": "2026-10-27T07:30:43.816Z"
+  },
+  "twitch": {
+    "reference": "twitch",
+    "status": "pending",
+    "reason": "robots.txt unavailable: self-signed certificate in certificate chain",
+    "checkedAt": "2026-10-27T07:33:36.513Z"
+  },
+  "vercel": {
+    "reference": "vercel",
+    "status": "collected",
+    "modes": [
+      "light",
+      "dark"
+    ],
+    "checkedAt": "2026-10-27T06:51:28.994Z"
+  }
+}

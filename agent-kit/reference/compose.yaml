@@ -1,0 +1,50 @@
+# Local-development bootstrap only. Adapt paths/versions to the actual repository.
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/frankenphp/Dockerfile
+      target: dev
+      args:
+        FRANKENPHP_IMAGE: ${FRANKENPHP_IMAGE:-dunglas/frankenphp:1.13-php8.5-trixie}
+    ports:
+      - "127.0.0.1:8080:80"
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      APP_SECRET: local-development-only-change-before-deployment
+      DATABASE_URL: postgresql://styleguide:local-dev-only@db:5432/styleguide?serverVersion=17&charset=utf8
+    volumes:
+      - ./:/app
+      - caddy_data:/data
+      - caddy_config:/config
+      - catalogue_blobs:/app/var/catalogue
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: styleguide
+      POSTGRES_USER: styleguide
+      POSTGRES_PASSWORD: local-dev-only
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U styleguide -d styleguide"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  node:
+    image: node:24-trixie-slim
+    profiles: [tools]
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+volumes:
+  database_data:
+  catalogue_blobs:
+  caddy_data:
+  caddy_config:
+  node_modules:

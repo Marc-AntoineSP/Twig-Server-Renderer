@@ -1,0 +1,20 @@
+<div class="ml-auto flex flex-wrap items-center gap-2" data-appearance-controls>
+    <div class="text-sm"><span class="block max-w-52 truncate" data-appearance-target="name" title="{{ appearance.familyName }}">{{ appearance.familyName }}</span><span class="block rounded bg-base-200 px-1 text-xs dark:bg-base-300" data-appearance-target="mode"></span></div>
+    <button type="button" class="btn btn-ghost btn-square" data-appearance-target="toggle" data-action="appearance#toggle" aria-label="Switch to dark mode" title="Switch to dark mode" aria-describedby="appearance-unavailable">
+        <svg data-appearance-target="moon" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.7 13.2A9 9 0 0 1 10.8 3.3a9 9 0 1 0 9.9 9.9Z"/></svg>
+        <svg hidden data-appearance-target="sun" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+    </button>
+    <details class="dropdown dropdown-end" data-appearance-target="menu" data-action="toggle->appearance#refreshFamilies">
+        <summary class="btn btn-ghost">Appearance</summary>
+        <aside class="dropdown-content z-50 max-h-[70vh] w-72 max-w-[90vw] overflow-y-auto rounded-box border border-base-300 bg-base-100 p-4 shadow-lg" aria-label="Appearance options">
+            <label for="application-theme-family" class="text-sm">Application theme family</label>
+            <select id="application-theme-family" class="select my-2 w-full" data-appearance-target="family">{% for family in application_theme_families() %}<option value="{{ family.id }}" {% if family.id == appearance.familyId %}selected{% endif %}>{{ family.label }}{% if family.modes|length == 1 %} · {{ family.modes[0] }} only{% endif %}</option>{% endfor %}</select>
+            <button class="btn btn-primary w-full" type="button" data-action="appearance#applyFamily">Apply selected theme</button>
+            <button class="btn btn-ghost mt-2 w-full" type="button" data-action="appearance#systemAppearance">Use system appearance</button>
+            <button class="btn btn-ghost mt-2 w-full" type="button" data-action="appearance#showDetails">Appearance details</button>
+            <p id="appearance-unavailable" class="my-2 text-sm" data-appearance-target="unavailable" hidden></p>
+            {% if is_granted('ROLE_EDITOR') %}<a hidden class="link text-sm" data-appearance-target="variantLink">Edit family / create another variant</a>{% else %}<a hidden data-appearance-target="variantLink"></a>{% endif %}
+        </aside>
+    </details>
+    <button type="button" data-appearance-recovery data-action="appearance#restoreDefault">Restore default appearance</button>
+</div>

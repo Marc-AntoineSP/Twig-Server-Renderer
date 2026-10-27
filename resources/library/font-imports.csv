@@ -1,0 +1,43 @@
+family,category,package,version,woff2_faces,bytes,license,weights_styles,glyphs_checked,authority_license,upstream_revision
+Inter,sans,@fontsource-variable/inter,5.3.0,4,277056,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Geist,sans,@fontsource-variable/geist,5.3.0,4,94812,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Roboto,sans,@fontsource-variable/roboto,5.3.0,4,151556,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Open Sans,sans,@fontsource-variable/open-sans,5.3.0,4,171444,OFL-1.1,300..800 italic; 300..800 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Lato,sans,@fontsource/lato,5.3.0,8,118208,OFL-1.1,400 italic; 400 normal; 700 italic; 700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Montserrat,sans,@fontsource-variable/montserrat,5.3.0,4,223168,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Poppins,sans,@fontsource/poppins,5.3.0,16,111716,OFL-1.1,400 italic; 400 normal; 500 italic; 500 normal; 600 italic; 600 normal; 700 italic; 700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Nunito Sans,sans,@fontsource-variable/nunito-sans,5.3.0,4,122408,OFL-1.1,200..1000 italic; 200..1000 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Source Sans 3,sans,@fontsource-variable/source-sans-3,5.3.1,4,176916,OFL-1.1,200..900 italic; 200..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Noto Sans,sans,@fontsource-variable/noto-sans,5.3.0,4,432672,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Work Sans,sans,@fontsource-variable/work-sans,5.3.0,4,166492,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+DM Sans,sans,@fontsource-variable/dm-sans,5.3.0,4,115680,OFL-1.1,100..1000 italic; 100..1000 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Manrope,sans,@fontsource-variable/manrope,5.3.0,2,39956,OFL-1.1,200..800 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+IBM Plex Sans,sans,@fontsource-variable/ibm-plex-sans,5.3.0,4,160760,OFL-1.1,100..700 italic; 100..700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Public Sans,sans,@fontsource-variable/public-sans,5.3.0,4,92908,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Figtree,sans,@fontsource-variable/figtree,5.3.0,4,61740,OFL-1.1,300..900 italic; 300..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Outfit,sans,@fontsource-variable/outfit,5.3.0,2,47100,OFL-1.1,100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Plus Jakarta Sans,sans,@fontsource-variable/plus-jakarta-sans,5.3.0,4,101900,OFL-1.1,200..800 italic; 200..800 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Urbanist,sans,@fontsource-variable/urbanist,5.3.0,4,91236,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Rubik,sans,@fontsource-variable/rubik,5.3.0,4,112516,OFL-1.1,300..900 italic; 300..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Mulish,sans,@fontsource-variable/mulish,5.3.0,4,118664,OFL-1.1,200..1000 italic; 200..1000 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Ubuntu,sans,@fontsource/ubuntu,5.3.0,12,461308,UFL-1.0,400 italic; 400 normal; 500 italic; 500 normal; 700 italic; 700 normal,137,UFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Barlow,sans,@fontsource/barlow,5.3.0,16,307336,OFL-1.1,400 italic; 400 normal; 500 italic; 500 normal; 600 italic; 600 normal; 700 italic; 700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Atkinson Hyperlegible,sans,@fontsource/atkinson-hyperlegible,5.3.0,8,109980,OFL-1.1,400 italic; 400 normal; 700 italic; 700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Lexend,sans,@fontsource-variable/lexend,5.3.0,2,74156,OFL-1.1,100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Merriweather,serif,@fontsource-variable/merriweather,5.3.0,4,351340,OFL-1.1,300..900 italic; 300..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Lora,serif,@fontsource-variable/lora,5.3.0,4,119776,OFL-1.1,400..700 italic; 400..700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Source Serif 4,serif,@fontsource-variable/source-serif-4,5.3.1,4,189144,OFL-1.1,200..900 italic; 200..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Noto Serif,serif,@fontsource-variable/noto-serif,5.3.0,4,509064,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Libre Baskerville,serif,@fontsource-variable/libre-baskerville,5.3.0,4,135812,OFL-1.1,400..700 italic; 400..700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Playfair Display,display,@fontsource-variable/playfair-display,5.3.0,4,121728,OFL-1.1,400..900 italic; 400..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+DM Serif Display,display,@fontsource/dm-serif-display,5.3.0,4,71244,OFL-1.1,400 italic; 400 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Cormorant Garamond,display,@fontsource-variable/cormorant-garamond,5.3.0,4,145028,OFL-1.1,300..700 italic; 300..700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+EB Garamond,serif,@fontsource-variable/eb-garamond,5.3.0,4,294780,OFL-1.1,400..800 italic; 400..800 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Roboto Slab,serif,@fontsource-variable/roboto-slab,5.3.0,2,55424,Apache-2.0,100..900 normal,137,APACHE2,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+JetBrains Mono,mono,@fontsource-variable/jetbrains-mono,5.3.0,4,115084,OFL-1.1,100..800 italic; 100..800 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Geist Mono,mono,@fontsource-variable/geist-mono,5.3.0,4,79780,OFL-1.1,100..900 italic; 100..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Fira Code,mono,@fontsource-variable/fira-code,5.3.0,2,49548,OFL-1.1,300..700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Source Code Pro,mono,@fontsource-variable/source-code-pro,5.3.1,4,112072,OFL-1.1,200..900 italic; 200..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+IBM Plex Mono,mono,@fontsource/ibm-plex-mono,5.3.0,16,240784,OFL-1.1,400 italic; 400 normal; 500 italic; 500 normal; 600 italic; 600 normal; 700 italic; 700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Roboto Mono,mono,@fontsource-variable/roboto-mono,5.3.0,4,115448,OFL-1.1,100..700 italic; 100..700 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Inconsolata,mono,@fontsource-variable/inconsolata,5.3.0,2,65268,OFL-1.1,200..900 normal,137,OFL,e7db6ca603fd4862010383ff17ffd6cc4ffac1c0

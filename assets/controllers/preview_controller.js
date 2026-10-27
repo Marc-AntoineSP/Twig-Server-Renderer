@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['frame', 'stage', 'status', 'props', 'disableJs', 'width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'textClass', 'presetStatus', 'example', 'theme', 'colorScheme', 'surface', 'deviceFrame', 'propForm'];
+    static targets = ['frame', 'stage', 'status', 'props', 'disableJs', 'width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'codeFont', 'textClass', 'presetStatus', 'example', 'theme', 'colorScheme', 'surface', 'deviceFrame', 'propForm'];
     static values = { itemId: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, presetUrl: String, settings: Object, defaultProps: Object, themes: Object };
 
     connect() {
@@ -107,13 +107,14 @@ export default class extends Controller {
     }
 
     settings() {
-        return { width: Number(this.widthTarget.value), zoom: Number(this.zoomTarget.value), rootSize: Number(this.rootSizeTarget.value), bodyFont: this.bodyFontTarget.value, headingFont: this.headingFontTarget.value, textClass: this.textClassTarget.value, scripts: !this.disableJsTarget.checked, props: JSON.parse(this.propsTarget.value), colorScheme:this.colorSchemeTarget.value,surface:this.surfaceTarget.value,deviceFrame:this.deviceFrameTarget.checked,themeReleaseId: this.hasThemeTarget ? this.themeTarget.value || null : null };
+        return { width: Number(this.widthTarget.value), zoom: Number(this.zoomTarget.value), rootSize: Number(this.rootSizeTarget.value), bodyFont: this.bodyFontTarget.value, headingFont: this.headingFontTarget.value, codeFont: this.hasCodeFontTarget ? this.codeFontTarget.value : 'theme', textClass: this.textClassTarget.value, scripts: !this.disableJsTarget.checked, props: JSON.parse(this.propsTarget.value), colorScheme:this.colorSchemeTarget.value,surface:this.surfaceTarget.value,deviceFrame:this.deviceFrameTarget.checked,themeReleaseId: this.hasThemeTarget ? this.themeTarget.value || null : null };
     }
 
     applySettings(settings) {
         for (const key of ['width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'textClass']) this[`${key}Target`].value = settings[key];
         this.colorSchemeTarget.value=settings.colorScheme||'theme';this.surfaceTarget.value=settings.surface||'base-100';this.deviceFrameTarget.checked=settings.deviceFrame===true;
         this.disableJsTarget.checked = settings.scripts === false;
+        if (this.hasCodeFontTarget) this.codeFontTarget.value = settings.codeFont || 'theme';
         if (this.hasThemeTarget) this.themeTarget.value = settings.themeReleaseId || '';
         this.propsTarget.value = JSON.stringify(settings.props || this.defaultPropsValue, null, 2);
         this.applyViewport();
@@ -143,6 +144,7 @@ export default class extends Controller {
         if (theme) {
             this.bodyFontTarget.value = 'theme';
             this.headingFontTarget.value = 'theme';
+            if (this.hasCodeFontTarget) this.codeFontTarget.value = 'theme';
             this.rootSizeTarget.value = theme.typography.rootFontSizePx;
             this.textClassTarget.value = theme.typography.textClass;
         }

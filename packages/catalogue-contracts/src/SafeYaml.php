@@ -16,5 +16,5 @@ final class SafeYaml
         try{return StrictJson::decode(json_encode($value,JSON_THROW_ON_ERROR,64),$maxBytes);}
         catch(\JsonException){throw new CatalogueException(422,'YAML must contain finite bounded JSON values.');}
     }
-    public static function encode(mixed $value):string{$yaml=Yaml::dump($value,32,2,Yaml::DUMP_OBJECT_AS_MAP|Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);self::decode($yaml);return $yaml;}
+    public static function encode(mixed $value,int $maxBytes=3145728):string{$yaml=Yaml::dump($value,32,2,Yaml::DUMP_OBJECT_AS_MAP|Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);self::decode($yaml,$maxBytes);return $yaml;}
 }

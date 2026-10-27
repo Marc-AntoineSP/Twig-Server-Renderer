@@ -1,0 +1,495 @@
+{
+  "schemaVersion": 1,
+  "reference": "govuk",
+  "name": "GOV.UK",
+  "url": "https://design-system.service.gov.uk/styles/colour/",
+  "surface": "GOV.UK Design System service UI guidance",
+  "attribution": "Independent design observations from GOV.UK official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+  "modes": [
+    {
+      "mode": "light",
+      "observed": {
+        "documentedColors": [
+          {
+            "text": "text #0b0c0c",
+            "colors": [
+              "#0b0c0c"
+            ]
+          },
+          {
+            "text": "secondary-text #484949",
+            "colors": [
+              "#484949"
+            ]
+          },
+          {
+            "text": "inverse-text #ffffff Use this colour for text on dark backgrounds",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "link #1a65a6",
+            "colors": [
+              "#1a65a6"
+            ]
+          },
+          {
+            "text": "link-hover #0f385c",
+            "colors": [
+              "#0f385c"
+            ]
+          },
+          {
+            "text": "link-visited #54319f",
+            "colors": [
+              "#54319f"
+            ]
+          },
+          {
+            "text": "link-active #0b0c0c",
+            "colors": [
+              "#0b0c0c"
+            ]
+          },
+          {
+            "text": "border #cecece",
+            "colors": [
+              "#cecece"
+            ]
+          },
+          {
+            "text": "input-border #0b0c0c",
+            "colors": [
+              "#0b0c0c"
+            ]
+          },
+          {
+            "text": "template-background #f4f8fb Use this colour if you need to match the colour of the <html> element",
+            "colors": [
+              "#f4f8fb"
+            ]
+          },
+          {
+            "text": "body-background #ffffff Use this colour if you need to match the colour of the <body> element",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "focus #ffdd00 Only use this colour to indicate which element is focused on. For example, when a user tabs to an element with their keyboard.",
+            "colors": [
+              "#ffdd00"
+            ]
+          },
+          {
+            "text": "focus-text #0b0c0c",
+            "colors": [
+              "#0b0c0c"
+            ]
+          },
+          {
+            "text": "error #ca3535 Use this colour for error messages",
+            "colors": [
+              "#ca3535"
+            ]
+          },
+          {
+            "text": "success #0f7a52 Use this colour for success messages",
+            "colors": [
+              "#0f7a52"
+            ]
+          },
+          {
+            "text": "hover #cecece Use this colour for input hover states",
+            "colors": [
+              "#cecece"
+            ]
+          },
+          {
+            "text": "brand #1d70b8",
+            "colors": [
+              "#1d70b8"
+            ]
+          },
+          {
+            "text": "surface-background #f4f8fb",
+            "colors": [
+              "#f4f8fb"
+            ]
+          },
+          {
+            "text": "surface-text #0b0c0c",
+            "colors": [
+              "#0b0c0c"
+            ]
+          },
+          {
+            "text": "surface-border #8eb8dc",
+            "colors": [
+              "#8eb8dc"
+            ]
+          },
+          {
+            "text": "primary #1d70b8",
+            "colors": [
+              "#1d70b8"
+            ]
+          },
+          {
+            "text": "tint-25 #5694ca",
+            "colors": [
+              "#5694ca"
+            ]
+          },
+          {
+            "text": "tint-50 #8eb8dc",
+            "colors": [
+              "#8eb8dc"
+            ]
+          },
+          {
+            "text": "tint-80 #d2e2f1",
+            "colors": [
+              "#d2e2f1"
+            ]
+          },
+          {
+            "text": "tint-95 #f4f8fb",
+            "colors": [
+              "#f4f8fb"
+            ]
+          },
+          {
+            "text": "shade-10 #1a65a6",
+            "colors": [
+              "#1a65a6"
+            ]
+          },
+          {
+            "text": "shade-25 #16548a",
+            "colors": [
+              "#16548a"
+            ]
+          },
+          {
+            "text": "shade-50 #0f385c",
+            "colors": [
+              "#0f385c"
+            ]
+          },
+          {
+            "text": "primary #0f7a52",
+            "colors": [
+              "#0f7a52"
+            ]
+          },
+          {
+            "text": "tint-25 #4b9b7d",
+            "colors": [
+              "#4b9b7d"
+            ]
+          },
+          {
+            "text": "tint-50 #87bca8",
+            "colors": [
+              "#87bca8"
+            ]
+          },
+          {
+            "text": "tint-80 #cfe4dc",
+            "colors": [
+              "#cfe4dc"
+            ]
+          },
+          {
+            "text": "tint-95 #f3f8f6",
+            "colors": [
+              "#f3f8f6"
+            ]
+          },
+          {
+            "text": "shade-25 #0b5c3e",
+            "colors": [
+              "#0b5c3e"
+            ]
+          },
+          {
+            "text": "shade-50 #083d29",
+            "colors": [
+              "#083d29"
+            ]
+          },
+          {
+            "text": "primary #158187",
+            "colors": [
+              "#158187"
+            ]
+          },
+          {
+            "text": "tint-25 #50a1a5",
+            "colors": [
+              "#50a1a5"
+            ]
+          },
+          {
+            "text": "tint-50 #8ac0c3",
+            "colors": [
+              "#8ac0c3"
+            ]
+          },
+          {
+            "text": "tint-80 #d0e6e7",
+            "colors": [
+              "#d0e6e7"
+            ]
+          },
+          {
+            "text": "tint-95 #f3f9f9",
+            "colors": [
+              "#f3f9f9"
+            ]
+          },
+          {
+            "text": "shade-25 #106165",
+            "colors": [
+              "#106165"
+            ]
+          },
+          {
+            "text": "shade-50 #0b4144",
+            "colors": [
+              "#0b4144"
+            ]
+          },
+          {
+            "text": "accent #00ffe0",
+            "colors": [
+              "#00ffe0"
+            ]
+          },
+          {
+            "text": "primary #54319f",
+            "colors": [
+              "#54319f"
+            ]
+          },
+          {
+            "text": "tint-25 #7f65b7",
+            "colors": [
+              "#7f65b7"
+            ]
+          },
+          {
+            "text": "tint-50 #aa98cf",
+            "colors": [
+              "#aa98cf"
+            ]
+          },
+          {
+            "text": "tint-80 #ddd6ec",
+            "colors": [
+              "#ddd6ec"
+            ]
+          },
+          {
+            "text": "tint-95 #f6f5fa",
+            "colors": [
+              "#f6f5fa"
+            ]
+          },
+          {
+            "text": "shade-25 #3f2577",
+            "colors": [
+              "#3f2577"
+            ]
+          },
+          {
+            "text": "shade-50 #2a1950",
+            "colors": [
+              "#2a1950"
+            ]
+          },
+          {
+            "text": "primary #ca357c",
+            "colors": [
+              "#ca357c"
+            ]
+          },
+          {
+            "text": "tint-25 #d7689d",
+            "colors": [
+              "#d7689d"
+            ]
+          },
+          {
+            "text": "tint-50 #e59abe",
+            "colors": [
+              "#e59abe"
+            ]
+          },
+          {
+            "text": "tint-80 #f4d7e5",
+            "colors": [
+              "#f4d7e5"
+            ]
+          },
+          {
+            "text": "tint-95 #fcf5f8",
+            "colors": [
+              "#fcf5f8"
+            ]
+          },
+          {
+            "text": "shade-25 #98285d",
+            "colors": [
+              "#98285d"
+            ]
+          },
+          {
+            "text": "shade-50 #651b3e",
+            "colors": [
+              "#651b3e"
+            ]
+          },
+          {
+            "text": "primary #ca3535",
+            "colors": [
+              "#ca3535"
+            ]
+          },
+          {
+            "text": "tint-25 #d76868",
+            "colors": [
+              "#d76868"
+            ]
+          },
+          {
+            "text": "tint-50 #e59a9a",
+            "colors": [
+              "#e59a9a"
+            ]
+          }
+        ],
+        "controls": [],
+        "inlineStyleBytes": 0,
+        "title": "Colour – GOV.UK Design System",
+        "lang": "en",
+        "tokens": {},
+        "availableTokens": {
+          "--govuk-secondary-text-colour": "#484949",
+          "--govuk-brand-colour": "#1d70b8",
+          "--govuk-surface-text-colour": "#0b0c0c",
+          "--govuk-print-text-colour": "#000000",
+          "--govuk-surface-border-colour": "#8eb8dc",
+          "--govuk-inverse-text-colour": "#ffffff",
+          "--govuk-surface-background-colour": "#f4f8fb",
+          "--govuk-focus-text-colour": "#0b0c0c",
+          "--govuk-template-background-colour": "#f4f8fb",
+          "--govuk-text-colour": "#0b0c0c",
+          "--govuk-body-background-colour": "#ffffff"
+        },
+        "elements": {
+          "body": {
+            "selector": ".govuk-body",
+            "tag": "P",
+            "href": null,
+            "text": "We’d like to use analytics cookies so we can understand how you use the Design System and make impro",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(11, 12, 12)",
+            "fontFamily": "\"GDS Transport\", arial, sans-serif",
+            "fontSize": "19px",
+            "lineHeight": "25px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(11, 12, 12)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "heading": {
+            "selector": "h1",
+            "tag": "H1",
+            "href": null,
+            "text": "Colour",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(11, 12, 12)",
+            "fontFamily": "\"GDS Transport\", arial, sans-serif",
+            "fontSize": "48px",
+            "lineHeight": "50px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(11, 12, 12)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "surface": {
+            "selector": "html",
+            "tag": "HTML",
+            "href": null,
+            "text": "Colour – GOV.UK Design System\n    \n    \n\n  \n  \n  \n  \n  \n\n      \n      \n      \n      \n      \n\n    \n  ",
+            "background": "rgb(244, 248, 251)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "action": {
+            "selector": ".govuk-button",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Accept analytics cookies",
+            "background": "rgb(15, 122, 82)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "\"GDS Transport\", arial, sans-serif",
+            "fontSize": "19px",
+            "lineHeight": "19px",
+            "borderRadius": "0px",
+            "borderColor": "rgba(0, 0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "rgb(8, 61, 41) 0px 2px 0px 0px",
+            "backgroundImage": "none"
+          },
+          "field": null,
+          "card": null,
+          "code": {
+            "selector": "code, pre",
+            "tag": "CODE",
+            "href": null,
+            "text": "govuk-functional-colour",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(11, 12, 12)",
+            "fontFamily": "ui-monospace, menlo, \"Cascadia Mono\", \"Segoe UI Mono\", consolas, \"Liberation Mono\", monospace",
+            "fontSize": "24px",
+            "lineHeight": "30px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(11, 12, 12)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          }
+        }
+      },
+      "requests": [
+        {
+          "url": "https://design-system.service.gov.uk/styles/colour/",
+          "sha256": "9869f62962dc22b8dfb14ddc4f8a37a29be3fc6845b9908d31ddc9e9fed51a8e",
+          "retrievedAt": "2026-10-27T06:44:35.776Z",
+          "contentType": "text/html; charset=UTF-8"
+        },
+        {
+          "url": "https://design-system.service.gov.uk/stylesheets/main-abfb294a0a06f2f4f375099d9e5f7632.css",
+          "sha256": "0f59d157e4d86f9dbc7c10ad0d9df8c94c1ef6254a23d0830ad27c34cc262591",
+          "retrievedAt": "2026-10-27T06:44:36.008Z",
+          "contentType": "text/css; charset=UTF-8"
+        }
+      ],
+      "retrievedAt": "2026-10-27T06:44:35.776Z",
+      "method": "Passive Chromium computed styles and CSS custom properties; website scripts/fonts/images blocked; allowed HTTPS sources only."
+    }
+  ]
+}

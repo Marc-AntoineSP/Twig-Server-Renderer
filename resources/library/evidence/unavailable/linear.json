@@ -1,0 +1,210 @@
+{
+  "url": "https://linear.app/",
+  "reason": "Required styles are inaccessible; refusing browser default styling as design evidence.",
+  "retrievedAt": "2026-10-27T07:30:15.351Z",
+  "diagnostics": [
+    {
+      "mode": "dark",
+      "requests": [
+        {
+          "url": "https://linear.app/",
+          "sha256": "1de2fcb97827369f3a619bfe07668d0019724102bf42f429f765d72883726117",
+          "retrievedAt": "2026-10-27T06:44:10.485Z",
+          "contentType": "text/html; charset=utf-8"
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Tpxbzi3N.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BNNY1qpD.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/pcGZUK31.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BYDaMjMd.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/dcAi4KbO.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Bl8l9ltc.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/C-dCEHFh.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BEZjGLsi.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/DCkYdNzn.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/3p32EmO1.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/mgHd0F-S.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/ByHmXOx_.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/CNiZpoOa.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/mYgpGelO.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Blq4ZW3W.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Cidbg-cz.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/B3f9yiOq.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BluMS353.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/B6ktxgTN.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BUY_OmUN.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/krMPHN5w.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BNdf6sgA.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/DXpOFAO4.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/CWOpLCCY.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/DFdsr33l.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/bL-CLJt9.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Bb-JNkHr.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/CbcodEv9.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/jAwP2tSl.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/B1AV-EHC.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/B78R7IPt.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Cds8fjKR.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/vfNSRYu7.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/DgPIODoE.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BnZAjcL1.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/layout.CGKNFvmu.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Spacer.mYgpGelO.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/utils.BNNY1qpD.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Layout.tvkMFESE.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Header.BNHV4lAU.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Icon.B18TDZc7.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/LayoutContent.CWXL7otR.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/CTA.CDNJI-Em.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Grid.Cds8fjKR.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/HomepageSeparator.DAb6YYB9.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Bleed.CbcodEv9.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/GlobalSidePanel.cAFbFP1F.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Changelog.C40xlRzV.css",
+          "error": "Reference request budget reached."
+        }
+      ]
+    }
+  ]
+}

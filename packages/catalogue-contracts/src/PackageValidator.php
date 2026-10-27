@@ -37,6 +37,7 @@ final readonly class PackageValidator
         }
         $seen = [];
         $total = 0;
+        $fontBytes = 0;
         foreach ($sources as $path => $source) {
             $this->path($path);
             $this->owned($path, $manifest->name);
@@ -51,7 +52,10 @@ final readonly class PackageValidator
                 $this->fail('sourceMap.'.$path, 'Source must be UTF-8 text.');
             }
             if ('theme' !== $manifest->kind && str_ends_with($path, '.css') && CssPolicy::hasExecutableDirective($source)) $this->fail('sourceMap', 'Executable CSS directives are not accepted in package assets.');
-            if (strlen($source) > 1048576 || ($total += strlen($source)) > 2097152) {
+            $raw = SourceBytes::raw($path, $source);
+            if (str_ends_with($path, '.woff2')) {
+                if ('theme' !== $manifest->kind || ($fontBytes += strlen($raw)) > 8388608) $this->fail('fonts', 'Fonts require a theme and fit the 8 MiB binary profile.');
+            } elseif (strlen($source) > 1048576 || ($total += strlen($source)) > 2097152) {
                 $this->fail('sourceMap', 'Sources exceed 1 MiB per file or 2 MiB in total.');
             }
         }
@@ -63,7 +67,7 @@ final readonly class PackageValidator
                 $this->fail('manifestData.files', 'Duplicate inventory path: '.$file->path);
             }
             $inventory[strtolower($file->path)] = true;
-            if (!$refreshInventory && (!property_exists($sources, $file->path) || strlen($sources->{$file->path}) !== $file->bytes || !hash_equals($file->sha256, hash('sha256', $sources->{$file->path})))) {
+            if (!$refreshInventory && (!property_exists($sources, $file->path) || strlen(SourceBytes::raw($file->path, $sources->{$file->path})) !== $file->bytes || !hash_equals($file->sha256, hash('sha256', SourceBytes::raw($file->path, $sources->{$file->path}))))) {
                 $this->fail('manifestData.files', 'File bytes/checksum mismatch: '.$file->path);
             }
         }
@@ -149,7 +153,7 @@ final readonly class PackageValidator
             $sorted = (array) $sources;
             ksort($sorted, SORT_STRING);
             foreach ($sorted as $path => $source) {
-                $manifest->files[] = (object) ['path' => $path, 'sha256' => hash('sha256', $source), 'bytes' => strlen($source)];
+                $manifest->files[] = (object) ['path' => $path, 'sha256' => hash('sha256', SourceBytes::raw($path, $source)), 'bytes' => strlen(SourceBytes::raw($path, $source))];
             }
         }
 
@@ -165,6 +169,16 @@ final readonly class PackageValidator
         $this->themes->validate($document);
         if ($document->name !== $manifest->name || $document->version !== $manifest->version) $this->fail('theme', 'Theme identity/version must match its package.');
         $prefix = 'assets/styles/catalogue/'.$manifest->name.'/';
+        $assets = [];
+        foreach ($document->fonts as $font) {
+            if ('local' !== $font->kind) continue;
+            foreach ($font->faces as $face) {
+                $path = $prefix.$face->path; $assets[$path] = true;
+                if (!isset($sources->$path) || strlen(SourceBytes::raw($path, $sources->$path)) !== $face->bytes || !hash_equals($face->sha256, hash('sha256', SourceBytes::raw($path, $sources->$path)))) $this->fail('fonts', 'Missing or corrupt declared font asset.');
+            }
+            $path = $prefix.$font->licensePath; $assets[$path] = true;
+            if (!isset($sources->$path) || !hash_equals($font->licenseSha256, hash('sha256', $sources->$path))) $this->fail('fonts', 'Missing or corrupt font licence.');
+        }
         foreach ($this->themeCss->files($document) as $name => $expected) {
             if (!str_ends_with($name, '.css')) continue;
             $path = $prefix.$name;
@@ -176,7 +190,7 @@ final readonly class PackageValidator
             }
         }
         foreach ($sources as $path => $source) {
-            if (!str_starts_with($path, 'meta/') && !in_array($path, [$prefix.'app.css', $prefix.'theme.fragment.css', $prefix.'typography.css', $prefix.'preview.css'], true)) $this->fail('theme', 'Unexpected theme payload.');
+            if (!isset($assets[$path]) && !str_starts_with($path, 'meta/') && !in_array($path, [$prefix.'app.css', $prefix.'theme.fragment.css', $prefix.'typography.css', $prefix.'preview.css'], true)) $this->fail('theme', 'Unexpected theme payload.');
             if ($path === $prefix.'preview.css' && CssPolicy::hasExecutableDirective($source)) $this->fail('theme', 'preview.css must be compiled CSS.');
         }
     }
@@ -196,7 +210,7 @@ final readonly class PackageValidator
         $allowed = (str_starts_with($path, 'templates/catalogue/'.$name.'/') && str_ends_with($path, '.html.twig'))
             || ($path === 'assets/controllers/catalogue/'.$name.'_controller.js')
             || (str_starts_with($path, 'assets/controllers/catalogue/'.$name.'/') && str_ends_with($path, '.js'))
-            || (str_starts_with($path, 'assets/styles/catalogue/'.$name.'/') && preg_match('/\.css$/D', $path))
+            || (str_starts_with($path, 'assets/styles/catalogue/'.$name.'/') && preg_match('/\.(?:css|woff2|txt)$/D', $path))
             || (str_starts_with($path, 'assets/catalogue/'.$name.'/') && preg_match('/\.(?:css|txt)$/D', $path))
             || (str_starts_with($path, 'meta/') && (preg_match('/\.(?:json|md|txt)$/D', $path) || $path === 'meta/LICENSE'));
         if (!$allowed || $path === 'manifest.json') {

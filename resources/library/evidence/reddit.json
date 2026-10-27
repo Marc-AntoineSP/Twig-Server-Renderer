@@ -1,0 +1,322 @@
+{
+  "schemaVersion": 1,
+  "reference": "reddit",
+  "name": "Reddit",
+  "url": "https://redditinc.com/",
+  "surface": "Reddit Inc public corporate marketing homepage; product homepage excluded by robots.txt",
+  "attribution": "Independent design observations from Reddit official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+  "modes": [
+    {
+      "mode": "light",
+      "observed": {
+        "documentedColors": [],
+        "controls": [
+          {
+            "selector": "[data-styleguide-sample=\"sample-64\"]",
+            "tag": "A",
+            "href": "https://www.reddit.com/",
+            "text": "Visit Reddit",
+            "background": "rgb(255, 69, 0)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "16px",
+            "lineHeight": "23.04px",
+            "borderRadius": "19.5px",
+            "borderColor": "rgb(255, 69, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "rgba(51, 48, 47, 0) 0px 0px 0px 0px",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-68\"]",
+            "tag": "A",
+            "href": "https://www.reddit.com/",
+            "text": "Visit Reddit",
+            "background": "rgb(255, 69, 0)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "50px",
+            "borderColor": "rgb(255, 69, 0)",
+            "borderWidth": "3px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-71\"]",
+            "tag": "A",
+            "href": "https://redditinc.com/press?hsLang=en",
+            "text": "Reddit press",
+            "background": "rgb(255, 69, 0)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "RedditSans",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "40px",
+            "borderColor": "rgb(255, 69, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "rgba(51, 48, 47, 0) 0px 0px 0px 0px",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-72\"]",
+            "tag": "A",
+            "href": "https://redditinc.com/news/supporting-civic-knowledge-and-participation-for-the-2026-us-elections?hsLang=en",
+            "text": "Supporting Civic Knowledge and Participation for the 2026 US Elections\n                    \n\n       ",
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(255, 69, 0)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "25px",
+            "borderColor": "rgb(255, 69, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-73\"]",
+            "tag": "A",
+            "href": "https://redditinc.com/news/maria-angelidou-smith-to-depart-reddit-1?hsLang=en",
+            "text": "Maria Angelidou-Smith to Depart Reddit\n                    \n\n                      \n      \n      \n  ",
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(255, 69, 0)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "25px",
+            "borderColor": "rgb(255, 69, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-74\"]",
+            "tag": "A",
+            "href": "https://redditinc.com/news/reddit-launches-enhanced-capabilities-for-lead-generation?hsLang=en",
+            "text": "Reddit Launches Enhanced Capabilities for Lead Generation\n                    \n\n                    ",
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(255, 69, 0)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "25px",
+            "borderColor": "rgb(255, 69, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-75\"]",
+            "tag": "A",
+            "href": "https://redditinc.com/news/performance-unlocked-reddit-max-campaigns-are-now-available-to-all-advertisers?hsLang=en",
+            "text": "Performance unlocked: Reddit Max campaigns are now available to all advertisers\n                    ",
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(255, 69, 0)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "25px",
+            "borderColor": "rgb(255, 69, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-76\"]",
+            "tag": "A",
+            "href": "https://redditinc.com/news?hsLang=en",
+            "text": "View more blog posts",
+            "background": "rgb(255, 69, 0)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "RedditSans",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "40px",
+            "borderColor": "rgb(255, 69, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "rgba(51, 48, 47, 0) 0px 0px 0px 0px",
+            "backgroundImage": "none"
+          }
+        ],
+        "inlineStyleBytes": 19728,
+        "title": "Reddit Inc Homepage",
+        "lang": "en",
+        "tokens": {},
+        "availableTokens": {},
+        "elements": {
+          "body": {
+            "selector": "body",
+            "tag": "BODY",
+            "href": null,
+            "text": "#hs_cos_wrapper_header-module-1 .header__top {}\n\n#hs_cos_wrapper_header-module-1 .header__language-s",
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "heading": {
+            "selector": "h1",
+            "tag": "H1",
+            "href": null,
+            "text": "The heart of the internet",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "RedditDisplay-ExtraBold",
+            "fontSize": "70px",
+            "lineHeight": "70px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "surface": {
+            "selector": "main",
+            "tag": "MAIN",
+            "href": null,
+            "text": "The heart of the internet\nReddit is home to thousands of communities, endless conversation, and auth",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "action": {
+            "selector": "a[href=\"https://www.reddit.com/\"]",
+            "tag": "A",
+            "href": "https://www.reddit.com/",
+            "text": "Visit Reddit",
+            "background": "rgb(255, 69, 0)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "19.5px",
+            "borderColor": "rgb(255, 69, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "rgba(51, 48, 47, 0) 0px 0px 0px 0px",
+            "backgroundImage": "none"
+          },
+          "field": {
+            "selector": "input, select",
+            "tag": "INPUT",
+            "href": null,
+            "text": "",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(120, 124, 126)",
+            "fontFamily": "RedditSans",
+            "fontSize": "16px",
+            "lineHeight": "16px",
+            "borderRadius": "100px",
+            "borderColor": "rgb(120, 124, 126)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "card": {
+            "selector": "article, section",
+            "tag": "SECTION",
+            "href": null,
+            "text": "Supporting Civic Knowledge and Participation for the 2026 US Elections\n                    \n\n       ",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Reddit Sans\", sans-serif",
+            "fontSize": "20px",
+            "lineHeight": "28.8px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "code": null
+        }
+      },
+      "requests": [
+        {
+          "url": "https://redditinc.com/",
+          "sha256": "7d1f1b2c7f621237d824eeabfdd6c3a227a592568474f4e9903529565097b2a8",
+          "retrievedAt": "2026-10-27T07:12:04.616Z",
+          "contentType": "text/html; charset=UTF-8"
+        },
+        {
+          "url": "https://redditinc.com/hubfs/hub_generated/template_assets/1/175075265391/1787165344370/template_fonts.min.css",
+          "sha256": "1376eca28bffc1d4af34e7a742d28551cc4c24a409db22557fa74a70a71df17e",
+          "retrievedAt": "2026-10-27T07:12:04.879Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://redditinc.com/hubfs/hub_generated/template_assets/1/175075265395/1787165333107/template_theme-overrides.css",
+          "sha256": "59539754cdf5ae395c885899be1a9c0f16498326fc50df54e02621da597e2409",
+          "retrievedAt": "2026-10-27T07:12:04.883Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://redditinc.com/hubfs/hub_generated/template_assets/1/175075265396/1787165336812/template_main.min.css",
+          "sha256": "675f9089bb4e3e33af7ece6db0edaba7a76ba03964ad13558059aa54c94c7d5a",
+          "retrievedAt": "2026-10-27T07:12:04.774Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://7052064.fs1.hubspotusercontent-na1.net/hubfs/7052064/hub_generated/module_assets/1/-2712622/1791921028717/module_search_input.min.css",
+          "error": "robots.txt unavailable: Source is not allowed: https://7052064.fs1.hubspotusercontent-na1.net"
+        },
+        {
+          "url": "https://redditinc.com/hubfs/hub_generated/module_assets/1/199713715561/1773887716651/module_website-header-s2.min.css",
+          "sha256": "fbfa8efb7c396196342720e8acab484cea7f82e807f9e68a6ce18c05477bf4a7",
+          "retrievedAt": "2026-10-27T07:12:05.069Z",
+          "contentType": "text/css"
+        },
+        {
+          "url": "https://redditinc.com/hubfs/hub_generated/template_assets/1/175080379059/1787165332962/template_child.min.css",
+          "sha256": "4fee612c18ea794f29b44cf3b204a15a878aad29f26752f60a7da2184cb46844",
+          "retrievedAt": "2026-10-27T07:12:04.880Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://redditinc.com/hubfs/hub_generated/module_assets/1/175067789237/1745538747300/module_content-2-col.min.css",
+          "sha256": "a0d521f6fb2e6d7a19d5a09886d8854eef7671c3df0b84f5ea389fa1ea370f9d",
+          "retrievedAt": "2026-10-27T07:12:05.003Z",
+          "contentType": "text/css"
+        },
+        {
+          "url": "https://redditinc.com/hubfs/hub_generated/module_assets/1/175072288041/1743731098772/module_button.min.css",
+          "sha256": "a8de88a6a002123dd43c89166f9a3e0eb69c5a6cc33603a895823f4f8a0c77f9",
+          "retrievedAt": "2026-10-27T07:12:05.133Z",
+          "contentType": "text/css"
+        },
+        {
+          "url": "https://redditinc.com/hubfs/hub_generated/module_assets/1/175291913821/1743731113179/module_counter.min.css",
+          "sha256": "e91ba3051d7e231b6f4b7fe11cf2cfc36c0142e5befcc8746148d473224d9d7e",
+          "retrievedAt": "2026-10-27T07:12:05.027Z",
+          "contentType": "text/css"
+        },
+        {
+          "url": "https://redditinc.com/hubfs/hub_generated/module_assets/1/175080431218/1743731108982/module_social-share.min.css",
+          "sha256": "fb2a02092fee2f1a5f6b78976b08ab3c3aaa5a9f82bad305916b11d6e8aad19d",
+          "retrievedAt": "2026-10-27T07:12:05.118Z",
+          "contentType": "text/css"
+        },
+        {
+          "url": "https://www.googletagmanager.com/ns.html?id=GTM-PRWFNB5",
+          "error": "robots.txt unavailable: Source is not allowed: https://www.googletagmanager.com"
+        }
+      ],
+      "retrievedAt": "2026-10-27T07:12:04.616Z",
+      "method": "Passive Chromium computed styles and CSS custom properties; website scripts/fonts/images blocked; allowed HTTPS sources only."
+    }
+  ]
+}

@@ -163,12 +163,36 @@ services:
       - ./var/consumer:/consumer
     command: ["php", "bin/console", "styleguide:doctor"]
 
+  font-consumer:
+    build: *consumer_build
+    profiles: [tools]
+    working_dir: /consumer
+    environment: {APP_ENV: prod, APP_DEBUG: "0"}
+    networks: [font-consumer]
+    volumes:
+      - ${FONT_CONSUMER_DIR:-./var/font-consumer}:/consumer
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://localhost:8080/') === false ? 1 : 0);"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+
+  font-consumer-tools:
+    build: *consumer_build
+    profiles: [tools]
+    working_dir: /consumer
+    environment: {APP_ENV: prod, APP_DEBUG: "0", COMPOSER_HOME: /tmp/font-consumer-composer}
+    volumes:
+      - ./:/workspace
+      - ${FONT_CONSUMER_DIR:-./var/font-consumer}:/consumer
+
   browser:
     image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:47b510dd9230bf0b9bfc9b20102241e577ea7a99334ab4c3ca19f19770e9b8ea
     working_dir: /app
     profiles: [tools]
     init: true
     ipc: host
+    networks: [default, font-consumer]
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
     environment:
       STUDIO_BASE_URL: http://studio
@@ -178,6 +202,23 @@ services:
       app:
         condition: service_healthy
 
+  research-browser:
+    image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:47b510dd9230bf0b9bfc9b20102241e577ea7a99334ab4c3ca19f19770e9b8ea
+    profiles: [tools]
+    working_dir: /app
+    init: true
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 1g
+    pids_limit: 256
+    volumes:
+      - ./tools/library:/app/tools/library:ro
+      - ./resources/library:/app/resources/library
+      - ./node_modules:/app/node_modules:ro
+      - ./var/library-cache:/app/var/library-cache
+      - ./var/library-staging:/app/var/library-staging
+
 volumes:
   database_data:
   catalogue_blobs:
@@ -186,4 +227,6 @@ volumes:
 
 networks:
   workers:
+    internal: true
+  font-consumer:
     internal: true

@@ -16,7 +16,7 @@ use Styleguide\Contracts\StrictJson;
 use Styleguide\Contracts\ZipBuilder;
 final readonly class TransferExporter
 {
-    public function __construct(private ReleaseSourceReader $reader,private CatalogueRepository $catalogue,private EntityManagerInterface $em,private PackageGraph $graphs,private PreviewRenderer $renderer,private PropsValidator $props,private CanonicalJson $json,private CollectionBuilder $collections,private ThemePackager $themes){}
+    public function __construct(private ReleaseSourceReader $reader,private CatalogueRepository $catalogue,private EntityManagerInterface $em,private PackageGraph $graphs,private PreviewRenderer $renderer,private PropsValidator $props,private CanonicalJson $json,private CollectionBuilder $collections,private ThemePackager $themes,private \App\Font\ThemeFontAssets $fontAssets){}
     public function find(string $name,string $version):Release
     {
         $item=$this->catalogue->named($name);return $item?$this->em->getRepository(Release::class)->findOneBy(['item'=>$item,'version'=>$version])??throw new CatalogueException(404,'Release not found.'):throw new CatalogueException(404,'Package not found.');
@@ -27,7 +27,9 @@ final readonly class TransferExporter
         if('source'===$format || 'theme'===$format)return ['bytes'=>file_get_contents($this->reader->path($release)),'name'=>$prefix.'.zip','type'=>'application/zip'];
         if(in_array($format,['json','yaml'],true)){
             $envelope=(object)['schemaVersion'=>1,'manifest'=>$m,'sources'=>$s];
-            return ['bytes'=>'json'===$format?$this->json->encode($envelope,true)."\n":SafeYaml::encode($envelope),'name'=>$prefix.'.'.$format,'type'=>'json'===$format?'application/json':'application/yaml'];
+            $bytes='json'===$format?$this->json->encode($envelope,true)."\n":SafeYaml::encode($envelope,10485760);
+            if(strlen($bytes)>10485760)throw new CatalogueException(413,'Font data exceeds the 10 MiB envelope profile; use source ZIP.');
+            return ['bytes'=>$bytes,'name'=>$prefix.'.'.$format,'type'=>'json'===$format?'application/json':'application/yaml'];
         }
         $closure=$this->graphs->resolve($m,$s,function($name,$version){$r=$this->find($name,$version);return [$r->getManifestData(),$this->reader->read($r)];});
         if('collection'===$format){
@@ -45,6 +47,9 @@ final readonly class TransferExporter
         $files=['index.html'=>$result['html'],'preview.css'=>$result['css'],'preview.js'=>$result['js'],'README.md'=>"Offline HTML snapshot of ".$m->name.'@'.$m->version.". index.html embeds the compiled CSS/JS and restrictive CSP.\npreview.css/preview.js are labelled standalone compiled outputs for inspection.\nNo studio requests, cookies or backend are required. This is a rendered snapshot, not a Twig runtime.\n"];
         foreach($closure['versions'] as $name=>$version){$r=$this->find($name,$version);$sources=$this->reader->read($r);$files['licenses/'.$name.'/LICENSE']=$sources->{'meta/LICENSE'}??('Declared licence: '.$r->getManifestData()->license);}
         if($theme)$files['licenses/'.$theme->getTheme()->getName().'/LICENSE']='UNLICENSED; no additional rights granted by the studio.';
+        if($tokens)$files=[...$files,...$this->fontAssets->files($tokens)];
+        $inventory=[];foreach($files as $path=>$bytes){$raw=\Styleguide\Contracts\SourceBytes::raw($path,$bytes);$inventory[$path]=['sha256'=>hash('sha256',$raw),'bytes'=>strlen($raw)];}
+        $files['checksums.json']=$this->json->encode($inventory,true)."\n";
         return ['bytes'=>ZipBuilder::bytes($files),'name'=>$prefix.'-static.zip','type'=>'application/zip'];
     }
 }

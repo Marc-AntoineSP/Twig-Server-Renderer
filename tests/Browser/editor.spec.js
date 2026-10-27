@@ -122,17 +122,22 @@ test('source tabs support keyboard navigation and reset stays usable', async ({ 
 });
 
 test('rapid edits are debounced and invalid Stimulus source keeps the good frame', async ({ page }) => {
+    await page.clock.install();
     await login(page);
     await createAlert(page);
     await preview(page);
     let requests = 0;
     page.on('request', request => { if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/v1/preview-jobs') requests++; });
+    // Bound the input interval independently of Docker build/host scheduling latency.
+    await page.clock.pauseAt(new Date(Date.now()+1000));
     const source = page.getByLabel('Twig source', { exact: true });
     await source.fill('<div id="debounced">First</div>');
     await source.fill('<div id="debounced">Second</div>');
     await source.fill('<div id="debounced">Final</div>');
-    await page.waitForTimeout(100);
+    await page.clock.runFor(299);
     expect(requests).toBe(0);
+    await page.clock.runFor(1);
+    await page.clock.resume();
     await expect(frame(page).locator('#debounced')).toHaveText('Final', { timeout: 15000 });
     expect(requests).toBe(1);
     const good = await page.locator('iframe').getAttribute('srcdoc');

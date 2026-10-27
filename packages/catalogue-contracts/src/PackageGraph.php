@@ -28,6 +28,7 @@ final readonly class PackageGraph
                 $theme??=$tokens;
             }
             foreach($files as $path=>$source) {
+                if(str_ends_with($path,'.woff2')) continue;
                 $key=str_starts_with($path,'meta/')?'metadata/'.$m->name.'/'.substr($path,5):$path;
                 if(property_exists($allSources,$key) || ($bytes+=strlen($source))>2097152 || count((array)$allSources)>=200) throw new CatalogueException(422,'Dependency closure has colliding paths or exceeds source limits.');
                 // Generated theme directives are typed data, never compiler input configuration.

@@ -1,0 +1,108 @@
+import {test,expect} from '@playwright/test';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import {createHash,randomBytes} from 'node:crypto';
+import {login} from './helpers.js';
+
+test('font catalogue stays lazy and a real variable italic face loads in an opaque specimen',async({page})=>{
+    await login(page);const requests=[];page.on('request',request=>requests.push(request.url()));
+    const session=await page.context().newCDPSession(page);await session.send('Network.enable');await session.send('Network.clearBrowserCache');await session.send('Network.setCacheDisabled',{cacheDisabled:true});
+    await page.goto('/fonts');
+    await expect(page.getByRole('heading',{name:'Local font library',exact:true})).toBeVisible();
+    await page.waitForLoadState('networkidle');
+    expect(requests.filter(url=>url.includes('.woff2')||url.includes('/specimen'))).toEqual([]);
+    const initial=await page.evaluate(()=>({requests:performance.getEntriesByType('resource').length,bytes:performance.getEntriesByType('resource').reduce((sum,r)=>sum+r.transferSize,0),decodedResourceBytes:performance.getEntriesByType('resource').reduce((sum,r)=>sum+r.decodedBodySize,0),documentBytes:performance.getEntriesByType('navigation')[0].transferSize}));
+    await page.getByLabel('Search families',{exact:true}).fill('atkinson');
+    await expect(page.locator('[data-font-library-target="card"]:visible')).toHaveCount(1);
+    await page.getByLabel('Specimen family',{exact:true}).selectOption('inter');
+    await page.getByLabel('Specimen weight',{exact:true}).fill('472');
+    await page.getByLabel('Specimen style',{exact:true}).selectOption('italic');
+    await page.getByRole('button',{name:'Preview font',exact:true}).click();
+    const frame=page.frameLocator('iframe[title="Font specimen"]');
+    await expect(frame.locator('html')).toHaveAttribute('data-font-status','loaded');
+    const loaded=await frame.locator('body').evaluate(async body=>{await document.fonts.ready;return {faces:[...document.fonts].filter(f=>f.status==='loaded').map(f=>({family:f.family,weight:f.weight,style:f.style})),weight:getComputedStyle(body).fontWeight,style:getComputedStyle(body).fontStyle,origin:location.origin};});
+    expect(loaded.faces.some(f=>f.family.replaceAll('"','')==='Inter'&&f.style==='italic'&&f.weight==='100 900')).toBe(true);
+    expect(loaded.weight).toBe('472');expect(loaded.style).toBe('italic');
+    await expect(page.locator('iframe[title="Font specimen"]')).toHaveAttribute('sandbox','allow-scripts');
+    const srcdoc=await page.locator('iframe[title="Font specimen"]').getAttribute('srcdoc');
+    const hashes=[...srcdoc.matchAll(/data:font\/woff2;base64,([A-Za-z0-9+/=]+)/g)].map(match=>createHash('sha256').update(Buffer.from(match[1],'base64')).digest('hex'));
+    const pin=JSON.parse(readFileSync('resources/library/fonts.lock.json','utf8')).families.inter;
+    const selected=JSON.parse(readFileSync(`var/library-staging/fonts/inter/${pin.version}/family.json`,'utf8')).faces.filter(face=>face.style==='italic'&&face.weightMin<=472&&face.weightMax>=472);
+    const expected=selected.map(f=>f.sha256);
+    expect([...new Set(hashes)].sort()).toEqual(expected.sort());
+    mkdirSync('var/library-verification',{recursive:true});writeFileSync('var/library-verification/font-network.json',JSON.stringify({initial,cacheDisabled:true,initialFontRequests:0,embeddedSelectedBytes:selected.reduce((n,f)=>n+f.bytes,0),loaded,hashes},null,2));
+    await page.getByLabel('Specimen family',{exact:true}).selectOption('manrope');
+    await page.getByRole('button',{name:'Preview font',exact:true}).click();
+    await expect(page.locator('[data-font-specimen-target="status"]')).toContainText('no real face');
+});
+
+test('body heading and code fonts persist with full variable weights and preview isolation',async({page})=>{
+    test.setTimeout(120000);await login(page);await page.goto('/themes/new');
+    const slug='fonts-'+randomBytes(5).toString('hex');
+    await page.getByLabel('Theme name (namespace/slug)',{exact:true}).fill('browser/'+slug);
+    await page.getByLabel('CSS theme name',{exact:true}).fill(slug);
+    await page.getByLabel('Theme body font',{exact:true}).selectOption('inter');
+    await page.getByLabel('Theme heading font',{exact:true}).selectOption('lora');
+    await page.getByLabel('Theme code font',{exact:true}).selectOption('jetbrains-mono');
+    await page.getByRole('button',{name:'Create theme',exact:true}).click();
+    const status=page.locator('[data-theme-editor-target="status"]');
+    await expect(status).toHaveText('Theme previews current',{timeout:30000});
+    const studioFont=await page.locator('body').evaluate(body=>getComputedStyle(body).fontFamily);
+    await page.getByLabel('Body weight',{exact:true}).fill('472');await page.getByLabel('Body style',{exact:true}).selectOption('italic');
+    await expect(status).toHaveText('Theme previews current',{timeout:30000});
+    const frame=page.frameLocator('iframe[title="Edited theme preview"]');
+    await expect(frame.locator('html')).toHaveAttribute('data-font-status','loaded');
+    await expect(frame.locator('body')).toHaveCSS('font-weight','472');await expect(frame.locator('body')).toHaveCSS('font-style','italic');
+    const faces=await frame.locator('body').evaluate(async()=>{await document.fonts.ready;return [...document.fonts].filter(f=>f.status==='loaded').map(f=>({family:f.family,style:f.style}));});
+    expect(faces.some(f=>f.family.replaceAll('"','')==='Inter'&&f.style==='italic')).toBe(true);
+    expect(faces.some(f=>f.family.replaceAll('"','')==='Lora')).toBe(true);expect(faces.some(f=>f.family.replaceAll('"','')==='JetBrains Mono')).toBe(true);
+    expect(await page.locator('body').evaluate(body=>getComputedStyle(body).fontFamily)).toBe(studioFont);
+    await page.getByLabel('Theme body font',{exact:true}).selectOption('manrope');
+    await expect(page.getByLabel('Body style',{exact:true})).toHaveValue('normal');
+    await page.getByLabel('Theme body font',{exact:true}).selectOption('inter');await page.getByLabel('Body style',{exact:true}).selectOption('italic');
+    await page.getByRole('button',{name:'Save theme',exact:true}).click();await expect(page.locator('[data-flash]')).toHaveText('Theme saved.');
+    await page.reload();await expect(page.getByLabel('Body weight',{exact:true})).toHaveValue('472');await expect(page.getByLabel('Body style',{exact:true})).toHaveValue('italic');await expect(page.getByLabel('Theme code font',{exact:true})).toHaveValue('jetbrains-mono');
+});
+
+test('a font decoding failure displays the actual fallback status',async({page})=>{
+    await login(page);await page.goto('/fonts');
+    await page.route('**/api/v1/fonts/inter/specimen?*',async route=>{const response=await route.fetch();const data=await response.json();data.html=data.html.replace(/data:font\/woff2;base64,[A-Za-z0-9+/=]+/g,'data:font/woff2;base64,YnJva2VuLWZvbnQ=');await route.fulfill({response,json:data});});
+    await page.getByLabel('Specimen family',{exact:true}).selectOption('inter');await page.getByRole('button',{name:'Preview font',exact:true}).click();
+    const frame=page.frameLocator('iframe[title="Font specimen"]');await expect(frame.locator('html')).toHaveAttribute('data-font-status','fallback');await expect(frame.getByRole('status')).toContainText('System fallback is active');
+});
+
+test('composition renderer saves theme and body heading code choices without changing its draft',async({page})=>{
+    test.setTimeout(120000);await login(page);await page.goto('/catalogue/new');
+    await page.getByLabel('Name (namespace/slug)',{exact:true}).fill('browser/font-layout-'+randomBytes(5).toString('hex'));
+    await page.getByLabel('Kind',{exact:true}).selectOption('layout');
+    await page.getByLabel('Title',{exact:true}).fill('Composition font verification');
+    await page.getByRole('button',{name:'Create draft',exact:true}).click();
+    const itemId=page.url().split('/').at(-2);
+    const before=await(await page.request.get(`/api/v1/items/${itemId}/draft`)).json();
+    const current=page.locator('[data-composition-target="status"]');
+    await expect(current).toHaveText('Composition preview current',{timeout:30000});
+    const option=page.getByLabel('Published theme',{exact:true}).locator('option').filter({hasText:'websites/github-inspired-dark@1.2.0'});
+    const themeId=await option.getAttribute('value');expect(themeId).toBeTruthy();
+    await page.getByLabel('Published theme',{exact:true}).selectOption(themeId);
+    await expect(page.getByLabel('Code font',{exact:true})).toHaveValue('theme');
+    await page.getByLabel('Body font',{exact:true}).selectOption('inter');
+    await page.getByLabel('Heading font',{exact:true}).selectOption('lora');
+    await page.getByLabel('Code font',{exact:true}).selectOption('jetbrains-mono');
+    await page.getByRole('button',{name:'375 px',exact:true}).click();
+    await page.getByRole('button',{name:'Save renderer settings',exact:true}).click();
+    await expect(page.locator('[data-composition-target="presetStatus"]')).toHaveText('Renderer settings saved');
+    await page.reload();await expect(current).toHaveText('Composition preview current',{timeout:30000});
+    await expect(page.getByLabel('Published theme',{exact:true})).toHaveValue(themeId);
+    await expect(page.getByLabel('Body font',{exact:true})).toHaveValue('inter');
+    await expect(page.getByLabel('Heading font',{exact:true})).toHaveValue('lora');
+    await expect(page.getByLabel('Code font',{exact:true})).toHaveValue('jetbrains-mono');
+    const iframe=page.locator('iframe[title="Composition preview"]');await expect(iframe).toHaveAttribute('sandbox','allow-scripts');await expect(iframe).toHaveCSS('width','375px');
+    const frame=page.frameLocator('iframe[title="Composition preview"]');
+    await expect(frame.locator('html')).toHaveAttribute('data-theme','github-inspired-dark');
+    const faces=await frame.locator('body').evaluate(async()=>{
+        for(const family of ['Inter','Lora','JetBrains Mono']) await document.fonts.load(`400 16px "${family}"`,'Français œ € English');
+        return [...document.fonts].filter(face=>face.status==='loaded').map(face=>face.family.replaceAll('"',''));
+    });
+    for(const family of ['Inter','Lora','JetBrains Mono'])expect(faces).toContain(family);
+    const after=await(await page.request.get(`/api/v1/items/${itemId}/draft`)).json();
+    expect(after.revision).toBe(before.revision);expect(after.manifestData).toEqual(before.manifestData);expect(after.sourceMap).toEqual(before.sourceMap);
+});

@@ -16,11 +16,15 @@ final readonly class ThemePackager
     public function __construct(private PackageValidator $validator,private CanonicalJson $json,private CatalogueRepository $catalogue,private EntityManagerInterface $em,private ArchiveStore $store){}
     public function package(ThemeRelease $theme):array
     {
-        $t=$theme->getDocument();$sources=new \stdClass();
-        foreach($theme->getFiles() as $name=>$content)$sources->{'theme.json'===$name?'meta/theme.json':'assets/styles/catalogue/'.$t->name.'/'.$name}=$content;
+        return $this->document($theme->getDocument(), $theme->getFiles());
+    }
+    public function document(\stdClass $t, array $files): array
+    {
+        $sources=new \stdClass();
+        foreach($files as $name=>$content)$sources->{'theme.json'===$name?'meta/theme.json':'assets/styles/catalogue/'.$t->name.'/'.$name}=$content;
         $sources->{'meta/LICENSE'}="UNLICENSED\nNo distribution rights are granted by this generated package. Choose and document a licence before distribution.\n";
-        $sources->{'meta/README.md'}='# '.$t->name."\n\nSystem-font theme. app.css is a complete Tailwind SOURCE entry for a fresh project.\nMerge theme.fragment.css and typography.css into an existing entry once; do not import a second Tailwind root.\npreview.css is COMPILED for the studio sample, not every possible utility.\nmeta/theme.json is authoritative and reimportable. No remote fonts or studio credentials.\n";
-        $m=(object)['schemaVersion'=>1,'name'=>$t->name,'version'=>$t->version,'kind'=>'theme','title'=>$t->name,'description'=>'Typed system-font theme.','entry'=>'meta/theme.json','dependencies'=>[],'controllers'=>[],'safelist'=>[],'compatibility'=>(object)['php'=>'^8.5','twig'=>'^3.0','tailwind'=>'^4.0','daisyui'=>'^5.0','stimulus'=>'^3.0'],'files'=>[],'license'=>'UNLICENSED'];
+        $sources->{'meta/README.md'}='# '.$t->name."\n\nPortable theme. app.css is a complete Tailwind SOURCE entry for a fresh project.\nMerge theme.fragment.css and typography.css into an existing entry once; do not import a second Tailwind root.\npreview.css is COMPILED for the studio sample, not every possible utility.\nmeta/theme.json is authoritative and reimportable. Selected WOFF2 fonts and their licences are included with relative URLs. No remote fonts or studio credentials.\n";
+        $m=(object)['schemaVersion'=>1,'name'=>$t->name,'version'=>$t->version,'kind'=>'theme','title'=>$t->provenance->title??$t->name,'description'=>'Typed portable theme with local typography.','entry'=>'meta/theme.json','dependencies'=>[],'controllers'=>[],'safelist'=>[],'compatibility'=>(object)['php'=>'^8.5','twig'=>'^3.0','tailwind'=>'^4.0','daisyui'=>'^5.0','stimulus'=>'^3.0'],'files'=>[],'license'=>'UNLICENSED'];
         $m=$this->validator->validate($m,$sources,true);$bytes=ZipBuilder::bytes(['manifest.json'=>$this->json->encode($m,true)."\n",...(array)$sources]);
         return ['manifest'=>$m,'sources'=>$sources,'archiveBytes'=>$bytes,'sha256'=>hash('sha256',$bytes)];
     }

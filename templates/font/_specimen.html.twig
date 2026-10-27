@@ -1,0 +1,12 @@
+<section class="my-5 rounded-box border border-base-300 p-4" data-controller="font-specimen" data-font-specimen-url-value="{{ path('font_specimen', {family: 'font-family-placeholder'}) }}">
+    <h2 class="text-xl font-semibold">Font specimen</h2>
+    <p class="my-2 text-sm">English and French. Font bytes load only when you choose Preview. The sample stays in an isolated frame.</p>
+    <label for="specimen-family">Specimen family</label>
+    <select id="specimen-family" data-font-specimen-target="family">{% for id, family in families %}<option value="{{ id }}">{{ family.family }}</option>{% endfor %}</select>
+    <label for="specimen-weight">Specimen weight</label><input id="specimen-weight" type="number" min="100" max="1000" value="400" step="1" data-font-specimen-target="weight">
+    <label for="specimen-style">Specimen style</label><select id="specimen-style" data-font-specimen-target="style"><option>normal</option><option>italic</option></select>
+    <label class="mt-3 block" for="specimen-text">Editable specimen text</label><textarea id="specimen-text" class="textarea w-full" maxlength="500" data-font-specimen-target="text">English: The quick brown fox, 0123456789. Français : Élève, cœur, Œuvre, ça coûte 12 € — « Lisibilité ! »</textarea>
+    <button type="button" class="btn btn-outline my-2" data-action="font-specimen#preview">Preview font</button>
+    <p role="status" data-font-specimen-target="status">No specimen font downloaded yet.</p>
+    <iframe title="Font specimen" sandbox="allow-scripts" class="mt-2 h-48 w-full border border-base-300" data-font-specimen-target="frame"></iframe>
+</section>

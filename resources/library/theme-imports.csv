@@ -1,0 +1,26 @@
+preset,version,reference_surface,mode_origin,observed_values,adapted_values,derived_values,body_font,heading_font,code_font,minimum_token_contrast,source_url
+GitHub-inspired Light,1.2.0,Primer product UI design tokens,observed,6,7,28,system-sans,system-sans,jetbrains-mono,5.54,https://primer.style/product/primitives/color/
+GitHub-inspired Dark,1.2.0,Primer product UI design tokens,observed,6,7,28,system-sans,system-sans,jetbrains-mono,5.57,https://primer.style/product/primitives/color/
+GitLab-inspired Light,1.2.0,Pajamas product UI design-system documentation,observed,5,6,30,inter,inter,jetbrains-mono,5.55,https://design.gitlab.com/product-foundations/color/
+GitLab-inspired Dark,1.2.0,Pajamas product UI design-system documentation,observed,5,6,30,inter,inter,jetbrains-mono,5.53,https://design.gitlab.com/product-foundations/color/
+Stripe-inspired Light,1.2.0,Public marketing homepage,observed,5,1,35,inter,inter,source-code-pro,5.65,https://stripe.com/fr
+Vercel-inspired Light,1.2.0,Geist design-system colours,observed,7,6,28,geist,geist,geist-mono,5.52,https://vercel.com/geist/colors
+Vercel-inspired Dark,1.2.0,Geist design-system colours,observed,9,4,28,geist,geist,geist-mono,5.52,https://vercel.com/geist/colors
+Notion-inspired Light,1.2.0,Public marketing homepage,observed,8,3,30,inter,inter,ibm-plex-mono,5.52,https://www.notion.com/
+Slack-inspired Light,1.2.0,Public marketing homepage,observed,5,0,36,lato,lato,ibm-plex-mono,5.66,https://slack.com/?nojsmode=1
+Discord-inspired Light,1.2.0,Public marketing homepage,observed,3,0,38,figtree,figtree,roboto-mono,5.66,https://discord.com/
+Spotify-inspired Light,1.2.0,Spotify developer design guidelines; Encore light documentation surface,observed,11,0,30,inter,inter,source-code-pro,5.77,https://developer.spotify.com/documentation/design
+YouTube-inspired Light,1.2.0,Public video product homepage,observed,5,2,34,roboto,roboto,roboto-mono,5.59,https://www.youtube.com/
+YouTube-inspired Dark,1.2.0,Public video product homepage,observed,5,2,34,roboto,roboto,roboto-mono,5.53,https://www.youtube.com/
+Reddit-inspired Light,1.2.0,Reddit Inc public corporate marketing homepage; product homepage excluded by robots.txt,observed,5,3,33,ibm-plex-sans,ibm-plex-sans,ibm-plex-mono,5.61,https://redditinc.com/
+Stack Overflow-inspired Light,1.2.0,Stacks product UI colour documentation,observed,5,5,31,system-sans,system-sans,source-code-pro,5.51,https://stackoverflow.design/system/foundation/colors
+Stack Overflow-inspired Dark,1.2.0,Stacks product UI colour documentation,observed,9,1,31,system-sans,system-sans,source-code-pro,6.31,https://stackoverflow.design/system/foundation/colors
+Airbnb-inspired Light,1.2.0,Public booking product homepage,observed,6,2,33,nunito-sans,nunito-sans,inconsolata,5.51,https://www.airbnb.com/
+Dropbox-inspired Light,1.2.0,Public marketing homepage,observed,3,3,35,open-sans,work-sans,ibm-plex-mono,5.65,https://www.dropbox.com/
+Figma-inspired Light,1.2.0,Public marketing homepage,observed,7,0,34,inter,inter,roboto-mono,5.66,https://www.figma.com/
+Wikipedia-inspired Light,1.2.0,Public English encyclopedia product UI,observed,7,7,27,system-sans,libre-baskerville,system-mono,5.53,https://en.wikipedia.org/wiki/Main_Page
+Wikipedia-inspired Dark,1.2.0,Public English encyclopedia product UI,observed,14,0,27,system-sans,libre-baskerville,system-mono,8.04,https://en.wikipedia.org/wiki/Main_Page
+GOV.UK-inspired Light,1.2.0,GOV.UK Design System service UI guidance,observed,6,6,29,system-sans,system-sans,system-mono,5.51,https://design-system.service.gov.uk/styles/colour/
+Shopify-inspired Light,1.2.0,"Current Polaris App Home documentation website (documentation UI, not the embedded admin product)",observed,6,0,35,inter,inter,ibm-plex-mono,5.66,https://shopify.dev/docs/api/app-home/latest/web-components
+Atlassian-inspired Light,1.2.0,Atlassian Design System token documentation,observed,6,7,28,inter,inter,source-code-pro,5.54,https://atlassian.design/components/tokens/all-tokens
+Atlassian-inspired Dark,1.2.0,Atlassian Design System token documentation,observed,13,0,28,inter,inter,source-code-pro,7.17,https://atlassian.design/components/tokens/all-tokens

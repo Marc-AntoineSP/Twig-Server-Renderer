@@ -1,106 +1,51 @@
-# AGENTS.md
+# Styleguide Studio — repository instructions
 
-This is a Symfony project. Check `composer.json` for the exact Symfony/PHP version
-in use, and read `symfony.lock` to see which recipes ran. Don't assume Doctrine,
-Twig, API Platform, Messenger, or Lock are installed unless one of those says so.
+## Mission and constraints
 
-## Ask before generating
+Implement docs/styleguide/PRODUCT.md as a Docker-hosted Symfony application.
+FrankenPHP 1.13 on Debian Trixie is mandatory. Use PHP 8.5, Symfony 8,
+Twig SSR, Tailwind 4, daisyUI 5, and Stimulus. Use AssetMapper for studio JS;
+Node in Docker compiles CSS and preview JS. No React, Vue, SPA, PHP-code uploads,
+arbitrary npm plugin installation, or server-side execution of imported JavaScript.
 
-If the task doesn't specify, ask rather than guess:
+## Before changes
 
-- Persistence: Doctrine ORM, Doctrine ODM, or none?
-- Interface: server-rendered (Twig), API (Serializer, maybe API Platform), or both?
-- Auth: SecurityBundle, and which authenticator?
+Read agent-kit/STATUS.md and the current milestone in docs/styleguide/MILESTONES.md.
+Read ARCHITECTURE.md plus the relevant CONTRACTS.md/SECURITY.md sections.
+Inspect the existing repository and its instructions. Preserve unrelated edits.
+An existing app is not an empty folder: adapt services, routes and assets in place.
+When dependency versions are unresolved, check official docs and the registry,
+record real results, and commit lockfiles. Do not invent image digests.
 
-If you can't ask (no interactive channel), state the assumption you're making and
-pick the smallest option (e.g. no persistence layer) rather than scaffolding a
-full stack nobody asked for.
+## Implementation rules
 
-## Adding features: Flex, not hand-wiring
+- Implement one independently verifiable milestone at a time; finish its gates.
+- Keep the application a modular monolith. Use focused services, DTOs and Doctrine
+  repositories; avoid generic event-sourcing, a plugin framework or excessive layers.
+- Use PHP attributes and current supported Symfony APIs; run framework commands in Docker.
+- Twig content belongs to a dedicated sandboxed renderer, never the studio Twig service.
+- User templates receive only bounded arrays/scalars. No app, request, user, entity,
+  service container, filesystem loader, arbitrary include path, or Twig PHP extension.
+- Stimulus preview code runs only in the opaque-origin sandboxed iframe.
+- Rendering and compilation have process limits; workers receive no studio secrets.
+- All variant classes are complete literal class names; materialize dynamic sources
+  for Tailwind. Editor success must mean the emitted CSS contains the edited classes.
+- Package paths and dependencies follow CONTRACTS.md and schemas; releases are immutable.
+- Never execute shell commands, Composer scripts, npm scripts or plugins from imports.
+- Imports, exports and installs use the same validation rules and locked dependency graph.
+- Do not overwrite modified consumer files. Use staging, hashes, lockfile and rollback.
+- Persist design tokens as typed data; generate CSS from those tokens.
+- No fake controls, hardcoded success responses, simulated persistence or mocked
+  integration in a milestone declared complete.
 
-Install new capabilities with `composer require <package>` (e.g. `symfony/lock`,
-`symfony/messenger`, `orm-pack`) and let the Flex recipe register the bundle and
-generate its config. Don't hand-edit `config/bundles.php` or hand-write a bundle's
-base config; that's what the recipe is for. Don't skip a good-fit component just
-because it isn't installed yet; installing it is one command.
+## Verification and handoff
 
-## Conventions
-
-Follow https://symfony.com/doc/current/best_practices.html to write idiomatic
-Symfony:
-
-- Use PHP attributes for framework metadata, and not only on controllers:
-  `#[Route]`, `#[MapRequestPayload]`, `#[IsGranted]` on actions, `#[Assert\...]`
-  on properties, `#[AsCommand]`, `#[AsEventListener]`, `#[AsMessageHandler]`, and
-  `#[AsAlias]` / `#[AsTaggedItem]` / `#[Autoconfigure]` on services. No YAML or
-  XML routing.
-- Rely on autowiring and autoconfiguration. Type-hint constructor arguments and
-  let the container resolve them. Where a type-hint can't express it, stay in the
-  class with `#[Autowire]` (parameters, env vars, expressions) or `#[Target]` (one
-  of several implementations of an interface). A YAML service definition is the
-  last resort, not the first.
-- Controllers extend `AbstractController`, stay thin, and delegate to services.
-- Use the framework for what it already does: Form for server-rendered forms,
-  Validator for validation, Serializer for JSON, Messenger for async work,
-  Security (voters, authenticators) for access control, Twig `path()`/`url()`
-  instead of hardcoded URLs.
-- Before hand-writing infrastructure (locks, queues, caches, HTTP clients,
-  mailers, schedulers) or reaching for a third-party library, check whether a
-  Symfony component covers it. It usually does.
-
-Three specifics worth spelling out, because they are easy to get wrong:
-
-- Bind request data with `#[MapRequestPayload]` / `#[MapQueryString]` on action
-  arguments, which wires up Serializer and Validator for you, instead of calling
-  `json_decode()` or `SerializerInterface` by hand. If neither package is
-  installed yet, `composer require` them rather than falling back to manual
-  parsing.
-- Use constructor property promotion, and `readonly` for DTOs and value objects.
-- Use `symfony/lock` (`LockFactory`) for mutual exclusion. A hand-built flag or
-  lock file looks fine in review and is usually wrong under concurrency.
-
-## Everyday workflow
-
-- Run the app with `symfony serve -d`, and commands with `symfony console ...`
-  (or `bin/console` when the Symfony CLI isn't available).
-- When something fails, read `var/log/dev.log` and the web profiler
-  (`/_profiler`) before changing code.
-- If `maker-bundle` is installed, prefer `bin/console make:*` with every argument
-  passed up front and `--no-interaction` where supported: makers prompt on a
-  terminal by default, which hangs a non-interactive shell. If a maker still
-  needs interactive input, hand-write the code instead.
-- If Doctrine ORM is installed, schema changes go through migrations
-  (`bin/console make:migration`, then `doctrine:migrations:migrate`), never
-  `doctrine:schema:update` or hand-written SQL.
-- `.env` is committed and holds defaults only. Real secrets belong in `.env.local`
-  (git-ignored) or the secrets vault (`bin/console secrets:set`), read via
-  `%env(...)%`.
-
-## Testing
-
-Install `symfony/test-pack` if it isn't already. Functional/HTTP tests extend
-`WebTestCase`; service-level tests extend `KernelTestCase`. Run
-`php bin/phpunit` (falls back to `vendor/bin/phpunit`). A feature isn't done
-until it has a test that exercises it the way a caller would, an HTTP request for
-a controller or a service call for a service, not just "it didn't throw."
-
-## Code style
-
-Symfony's coding standard, the `@Symfony` php-cs-fixer ruleset (a PSR-12-derived
-superset). Run `vendor/bin/php-cs-fixer fix` if `friendsofphp/php-cs-fixer` is
-installed; it isn't part of the skeleton by default.
-
-## Discover, don't guess
-
-Framework APIs change between versions and your training data may be stale. Look
-things up in the project instead of relying on memory:
-
-- `bin/console about`: versions, environment, paths.
-- `bin/console debug:router`, `debug:container`, `debug:autowiring <name>`,
-  `debug:config <bundle>`, `config:dump-reference <bundle>`: what exists and how
-  it is configured.
-- `bin/console lint:container`, plus `lint:twig templates/` and
-  `lint:yaml config/` where those packages are installed: validate before running.
-- Read the installed source and docblocks under `vendor/`.
-- Docs: https://symfony.com/doc/current/ (switch to the version matching
-  `composer.json` if it differs).
+Add tests for contracts, source isolation, dependency resolution and actual user flows.
+Do not add tests that merely duplicate trivial getters or implementation structure.
+Run the milestone's checks; report commands, results and any unavailable environments.
+Never claim Docker or browser checks passed if they were not run.
+Update agent-kit/STATUS.md after work: completed gates, changed files, actual versions,
+decisions, remaining risks, failed checks and the exact next step.
+Do not deploy, publish packages, or push branches unless the user asked for that action.
+The numbered prompt files are manually selected task prompts, not automatically
+registered Codex slash commands. Do not invent Codex configuration keys.

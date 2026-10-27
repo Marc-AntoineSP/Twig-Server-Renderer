@@ -400,3 +400,111 @@ Only validated immutable source is authoritative. Copy-command controls use the 
 API or select the real command for manual copying; credentials stay outside it. Duplicate
 draft remaps owned template/controller paths, retains composition/source ownership and
 leaves original drafts/releases untouched.
+
+## Local fonts and website presets
+
+Application appearance is documented in [APPEARANCE.md](APPEARANCE.md). **Apply theme**
+now selects your personal application snapshot; **Preview showcase** retains the independent
+renderer action described below. Header light/dark/system controls, Save & Apply and
+temporary editor trials share the existing theme/font data. Run the additive migration
+before using this extension, and `make appearance-production` for its isolated production
+asset check. Component previews and their export/preset choices remain independent.
+
+The updated development application is at http://localhost:8095: `/fonts` contains
+the local library and `/themes` contains the managed website presets. Start it with
+`docker compose up -d --wait app database render-worker build-worker preview-consumer`.
+The immutable production application at port 8096 has its own image, database and accounts;
+restarting an earlier production image does not include development changes or imports.
+Create a development login with `docker compose exec app php bin/console
+styleguide:user:create --email=you@example.com --admin`, using the hidden password prompt.
+The longer production Compose command creates an account only in production.
+
+The development catalogue now contains the curated `popular` font collection and
+`website-inspired` theme collection. Browse `/fonts` or `/themes`. The studio continues
+to use its own typography. Theme body, heading and code choices, real weight/style
+selections and renderer overrides are saved independently. The font browser provides
+search, category filters, editable French/English specimens and local licence text.
+Specimens load only after Preview, and include only the requested weight/style and its
+Unicode subsets. Theme previews embed the effective selected families in the opaque
+iframe; they retain `sandbox="allow-scripts"`, data-only font CSP and system fallbacks.
+There are no font preloads or runtime font-CDN requests.
+
+Acquisition is an operator maintenance operation, separate from the offline render/build
+workers and public web requests. Exact maintenance dependencies are in
+`tools/library/package-lock.json`; npm scripts are disabled during installation.
+Font package versions, npm integrity, upstream authority revisions and individual asset
+hashes are in `resources/library/fonts.lock.json`. The Google Fonts metadata verifies
+the family and licence; the pinned Fontsource tarball identifies the downloaded bytes.
+Fontkit checks the actual character maps, Unicode ranges, weight axes and italic/OS/2
+metadata. Each supported style/weight group covers the 137 checked English/French
+characters. These checks are not an accessibility guarantee.
+
+```sh
+make fonts-dry-run
+make fonts-sync
+make fonts-sync FONT_ARGS='--family=inter'
+docker compose exec -T app php bin/console styleguide:fonts:verify
+make themes-dry-run
+make themes-collect
+make themes-research RESEARCH_ARGS='--reference=github'
+make themes-candidates
+docker compose exec -T app php bin/console styleguide:themes:collect --dry-run
+docker compose exec -T app php bin/console styleguide:themes:collect
+```
+
+`fonts:sync` validates and atomically registers already staged maintenance downloads;
+`make fonts-sync` performs acquisition and registration, continuing eligible families
+after individual failures. `themes:collect` validates staged candidates with the existing
+theme importer, then creates managed drafts and immutable local theme releases. The Make
+wrapper also runs the online research and candidate translation. Dry-run does not modify
+the catalogue or register assets. Keep `var/library-cache` and `var/library-staging` to
+avoid reacquisition. Font blobs and versioned family metadata live in the existing
+`catalogue_blobs` volume under `fonts/`; normal catalogue backups include them.
+
+Managed presets have stable slugs, source surfaces, retrieval dates, source hashes and
+per-token observed/adapted/derived provenance. Apply opens the shared showcase and saves
+the current account's renderer selection. Duplicate/Edit creates an independent copy.
+Managed seeds reject direct edits. Reruns preserve copies and existing data; a changed
+managed candidate requires a newer declared collection version and emits a diff before
+creating a revision. Earlier immutable releases remain available. Failed online research
+retains a previous valid evidence snapshot with its real retrieval date and records the
+failed attempt; it never invents a palette from an unstyled or blocked page.
+
+The source editor and composition builder both expose body, heading and code fonts plus
+immutable theme selection. Save renderer settings persists those choices for the current
+account and item, separately from source/tree edits. Picking another published theme
+restores theme inheritance for all three roles; explicit overrides remain available.
+
+Add families/subsets in `resources/library/fonts.json`, resolve and review the pinned
+source metadata, then run the same importer. Add website selectors/token mappings in
+`resources/library/websites.json`; collection reads these manifests without a feature
+rebuild. Retain and review the generated source evidence and candidates. Culori 4.0.2
+converts observed colours to sRGB hex, clips out-of-gamut channels and composites alpha
+on the recorded base surface. Unsupported properties, gradients and shadows are omitted.
+The optional `geometry.highContrastBorders` setting uses canonical content/error colours
+for visible field boundaries; it is generated consistently in preview and consumer CSS.
+
+Theme `bundle.zip` is now an inventoried portable package, accepted by the existing
+package importer and `styleguide:install`. It contains only the selected local families,
+their real faces and licences, with relative font URLs. JSON/YAML envelopes encode WOFF2
+as canonical `base64:` strings; ZIP payloads contain raw WOFF2. Individual CSS downloads
+retain relative URLs and should be used with the bundle's fonts. Static exports embed
+fonts in HTML and also include the font files/licences and checksums. No studio server
+or public font service is required after export. The installer preserves conflict,
+ownership, staging, rollback and lockfile checks, rebases emitted font URLs and maps font
+assets through AssetMapper while excluding the editable CSS sources.
+
+```sh
+docker compose run --rm --no-deps browser node tests/FontConsumer/fontfaces.mjs
+docker compose run --rm --no-deps browser node tests/FontConsumer/showcases.mjs
+make font-consumer
+```
+
+The font consumer test creates an absent, uniquely named fixture under `var/`, leaving
+existing consumers in place. It creates temporary test credentials when none exist and
+removes only the credentials it created on exit; existing test credentials are reused.
+An exit trap stops its own started consumer on failure and retains diagnostic artifacts. It uses the already bootstrapped studio's exact cached
+Stimulus 3.2.2 dependency, with verified copy hashes, when preparing the consumer. The
+consumer runs on an internal network with no host port; its browser rejects external
+requests. The test compiles production assets, checks real decoded fonts and controls,
+repeats after restart and retains artifacts in `var/library-verification`.

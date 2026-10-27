@@ -1,17 +1,28 @@
 {% extends 'base.html.twig' %}
-{% block title %}Edit {{ theme.name }} · Themes{% endblock %}
+{% block title %}{{ creating ? 'Create theme' : 'Edit ' ~ theme.name }} · Themes{% endblock %}
 {% block body %}
-<section data-controller="theme-editor" data-theme-editor-document-value="{{ theme.document|json_encode|e('html_attr') }}"
- data-theme-editor-csrf-value="{{ csrf_token('api') }}" data-theme-editor-revision-value="{{ form.revision.vars.value }}"
+<section data-controller="theme-editor" data-theme-editor-document-value="{{ document|json_encode|e('html_attr') }}"
+ data-theme-editor-creating-value="{{ creating ? 'true' : 'false' }}" data-theme-editor-theme-id-value="{{ creating ? '' : theme.id }}" data-theme-editor-family-value="{{ family|json_encode|e('html_attr') }}"
+ data-theme-editor-save-url-value="{{ path('theme_save_api', {id:'__THEME__'}) }}" data-theme-editor-new-url-value="{{ path('theme_create_api') }}" data-theme-editor-edit-url-value="{{ path('theme_edit', {id:'__THEME__'}) }}"
+ data-theme-editor-detail-url-value="{{ path('theme_show', {id:'__THEME__'}) }}"
+ data-theme-editor-fonts-value="{{ fontDefinitions|json_encode|e('html_attr') }}" data-theme-editor-csrf-value="{{ csrf_token('api') }}" data-theme-editor-revision-value="{{ form.revision.vars.value }}"
  data-theme-editor-create-url-value="{{ path('preview_create') }}" data-theme-editor-status-url-value="{{ path('preview_status', {id: '__JOB__'}) }}"
  data-theme-editor-document-url-value="{{ path('preview_document', {id: '__JOB__'}) }}" data-theme-editor-theme-url-value="{{ path('theme_read_api', {id: '__THEME__'}) }}"
- data-theme-editor-publish-url-value="{{ path('theme_publish_api', {id: theme.id}) }}">
-<div class="flex flex-wrap items-center justify-between gap-3"><h1 class="text-3xl font-bold">Edit {{ theme.name }}</h1><a class="link" href="{{ path('theme_show', {id: theme.id}) }}">Releases and exports</a></div>
-<p class="my-3">Revision {{ theme.revision }}. Token edits preview automatically; save persists the draft.</p>
-{{ form_start(form, {attr: {'data-turbo': 'false', 'data-action': 'input->theme-editor#changed change->theme-editor#changed'}}) }}
+ data-theme-editor-publish-url-value="{{ path('theme_publish_api', {id:'__THEME__'}) }}">
+<div class="flex flex-wrap items-center justify-between gap-3"><h1 class="text-3xl font-bold" data-theme-editor-target="title">{{ creating ? 'Create theme' : 'Edit ' ~ family.label }}</h1>{% if not creating %}<a class="link" data-theme-editor-target="exports" href="{{ path('theme_show', {id: theme.id}) }}">Releases and exports</a>{% endif %}<a class="link" href="{{ path('theme_new') }}">New theme</a></div>
+<p class="my-3">Save theme keeps your applied snapshot. Save &amp; Apply saves a new revision and updates your personal application appearance. Try on application keeps edits unsaved in this tab.</p>
+{% if not creating %}
+{% include 'theme/_provenance.html.twig' %}
+<label for="edit-theme-variant">Edit family variant</label><select id="edit-theme-variant" class="select my-2" data-theme-editor-target="variant" data-action="change->theme-editor#switchVariant">{% for mode,variant in family.variants %}<option value="{{ variant.id }}" {% if variant.id == theme.id %}selected{% endif %}>{{ mode|capitalize }}</option>{% endfor %}</select>
+{% if family.variants|length == 1 %}<form method="post" action="{{ path('theme_add_variant', {id:theme.id}) }}" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('theme-variant') }}"><button class="btn btn-outline" type="submit">Create {{ document.colorScheme == 'light' ? 'dark' : 'light' }} variant</button><p class="text-sm">Starts from the complete default opposite-mode palette, retaining this family's fonts and geometry.</p></form>{% endif %}
+{% endif %}
+<p role="alert" class="alert alert-error my-3" {% if not app.request.query.getBoolean('appearanceApplyFailed') %}hidden{% endif %} data-theme-editor-target="saveError">{% if app.request.query.getBoolean('appearanceApplyFailed') %}Theme saved, but application appearance was not updated. Your confirmed appearance is kept. Retry Apply saved theme.{% endif %}</p>
+<p role="status" class="my-2" data-theme-editor-target="saveStatus"></p>
+{{ form_start(form, {attr: {'data-turbo': 'false', 'data-action': 'input->theme-editor#changed change->theme-editor#changed submit->theme-editor#save', 'data-theme-editor-target': 'form'}}) }}
 {% include 'theme/_fields.html.twig' with {preview: true} %}
-<button class="btn btn-primary my-6" type="submit">Save theme</button>
+<div class="my-6 flex flex-wrap gap-3"><button class="btn btn-primary" type="submit">{{ creating ? 'Create theme' : 'Save theme' }}</button><button class="btn btn-secondary" type="button" data-action="theme-editor#saveAndApply">Save &amp; Apply</button><button class="btn btn-outline" type="button" aria-pressed="false" data-theme-editor-target="tryButton" data-action="theme-editor#tryApplication">Try on application</button><button class="btn btn-ghost" type="button" data-action="theme-editor#revertApplication">Revert trial</button><button {% if not app.request.query.getBoolean('appearanceApplyFailed') %}hidden{% endif %} class="btn btn-outline" type="button" data-theme-editor-target="retryApply" data-action="theme-editor#retryApplication">Retry Apply saved theme</button></div>
 {{ form_end(form) }}
+{% include 'font/_specimen.html.twig' %}
 <div class="flex flex-wrap items-end gap-4">
 <div><label for="theme-component">Preview component</label><select id="theme-component" data-theme-editor-target="component" data-action="change->theme-editor#schedule">{% for component in components %}<option value="{{ component.id }}" {% if component.id == sampleId %}selected{% endif %}>{{ component.title }} ({{ component.name }})</option>{% endfor %}</select></div>
 <div><label for="compare-theme">Compare with saved theme</label><select id="compare-theme" data-theme-editor-target="compare" data-action="change->theme-editor#schedule"><option value="">This theme at page load</option>{% for other in themes %}<option value="{{ other.id }}">{{ other.name }}</option>{% endfor %}</select></div>
@@ -21,7 +32,7 @@
 </div>
 <p role="status" class="my-3" data-theme-editor-target="status">Preparing theme previews…</p>
 <div class="grid gap-4 lg:grid-cols-2"><div class="overflow-x-auto"><h2 class="mb-2 font-semibold">Current token edits</h2><iframe title="Edited theme preview" sandbox="allow-scripts" class="border border-base-300" style="width:768px;height:500px" data-theme-editor-target="frame"></iframe></div><div class="overflow-x-auto"><h2 class="mb-2 font-semibold">Saved comparison</h2><iframe title="Comparison theme preview" sandbox="allow-scripts" class="border border-base-300" style="width:768px;height:500px" data-theme-editor-target="frame"></iframe></div></div>
-<h2 class="mt-6 text-xl font-semibold">Publish a theme release</h2><p class="my-2">Save first. Publishing validates and compiles this revision, then preserves its token and CSS snapshot.</p><button class="btn btn-outline" type="button" data-action="theme-editor#publish">Publish theme release</button><p role="status" class="my-2" data-theme-editor-target="publishStatus"></p>
+<h2 class="mt-6 text-xl font-semibold">Publish a theme release</h2><p class="my-2">Save first. Publishing validates and compiles this revision, then preserves its token and CSS snapshot. Application snapshots are separate from package releases.</p><button class="btn btn-outline" type="button" data-action="theme-editor#publish" {% if creating %}disabled{% endif %}>Publish theme release</button><p role="status" class="my-2" data-theme-editor-target="publishStatus"></p>
 <h2 class="mt-6 text-xl font-semibold">Saved token contrast</h2><p class="my-2 text-sm">sRGB contrast guidance for solid token pairs. This does not evaluate rendered layouts or certify accessibility.</p>
 <table class="table"><thead><tr><th>Pair</th><th>Ratio</th></tr></thead><tbody>{% for pair, ratio in ratios %}<tr><td>{{ pair }}</td><td>{{ ratio }}:1</td></tr>{% endfor %}</tbody></table>
 </section>

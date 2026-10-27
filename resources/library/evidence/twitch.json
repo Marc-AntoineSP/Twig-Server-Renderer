@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "reference": "twitch",
+  "name": "Twitch",
+  "url": "https://www.twitch.tv/",
+  "surface": "Public streaming product homepage",
+  "attribution": "Independent design observations from Twitch official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+  "modes": [
+    {
+      "mode": "light",
+      "observed": {
+        "controls": [],
+        "inlineStyleBytes": 4703,
+        "title": "Twitch",
+        "lang": "",
+        "tokens": {},
+        "availableTokens": {},
+        "elements": {
+          "body": {
+            "selector": "body",
+            "tag": "BODY",
+            "href": null,
+            "text": "performance.mark(\"html:body\")html{font-size:62.5%}body{font-size:1.2rem;background-color:#fafafa}.ro",
+            "background": "rgb(250, 250, 250)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "12px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "heading": null,
+          "surface": null,
+          "action": null,
+          "field": null,
+          "card": null,
+          "code": null
+        }
+      },
+      "requests": [
+        {
+          "url": "https://www.twitch.tv/",
+          "sha256": "86bf72bc9fbdca84c042a0d6a9b138c16368c2ecefe43c1fa34ce3f841b290f8",
+          "retrievedAt": "2026-10-27T06:44:23.076Z",
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://assets.twitch.tv/assets/core-ed50dd7cf0ed58d80a54.css",
+          "error": "robots.txt unavailable: Source is not allowed: https://assets.twitch.tv"
+        }
+      ],
+      "retrievedAt": "2026-10-27T06:44:23.076Z",
+      "method": "Passive Chromium computed styles and CSS custom properties; website scripts/fonts/images blocked; allowed HTTPS sources only."
+    },
+    {
+      "mode": "dark",
+      "observed": {
+        "controls": [],
+        "inlineStyleBytes": 4703,
+        "title": "Twitch",
+        "lang": "",
+        "tokens": {},
+        "availableTokens": {},
+        "elements": {
+          "body": {
+            "selector": "body",
+            "tag": "BODY",
+            "href": null,
+            "text": "performance.mark(\"html:body\")html{font-size:62.5%}body{font-size:1.2rem;background-color:#fafafa}.ro",
+            "background": "rgb(250, 250, 250)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "12px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "heading": null,
+          "surface": null,
+          "action": null,
+          "field": null,
+          "card": null,
+          "code": null
+        }
+      },
+      "requests": [
+        {
+          "url": "https://www.twitch.tv/",
+          "sha256": "86bf72bc9fbdca84c042a0d6a9b138c16368c2ecefe43c1fa34ce3f841b290f8",
+          "retrievedAt": "2026-10-27T06:44:23.076Z",
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://assets.twitch.tv/assets/core-ed50dd7cf0ed58d80a54.css",
+          "error": "robots.txt unavailable: Source is not allowed: https://assets.twitch.tv"
+        }
+      ],
+      "retrievedAt": "2026-10-27T06:44:23.076Z",
+      "method": "Passive Chromium computed styles and CSS custom properties; website scripts/fonts/images blocked; allowed HTTPS sources only."
+    }
+  ],
+  "usable": false,
+  "validationReason": "Styles were inaccessible; default browser styling is retained only as a rejected observation, not as palette evidence."
+}

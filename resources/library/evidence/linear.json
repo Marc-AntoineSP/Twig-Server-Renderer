@@ -1,0 +1,564 @@
+{
+  "schemaVersion": 1,
+  "reference": "linear",
+  "name": "Linear",
+  "url": "https://linear.app/",
+  "surface": "Public marketing homepage",
+  "attribution": "Independent design observations from Linear official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+  "modes": [
+    {
+      "mode": "dark",
+      "observed": {
+        "controls": [
+          {
+            "selector": "[data-styleguide-sample=\"sample-2\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Product",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-3\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Resources",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-15\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Linear",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-18\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Pulse",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-19\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Inbox",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-20\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "My issues",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-21\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Reviews",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-22\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Workspace",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-23\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Initiatives",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-24\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Projects",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-25\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "More",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-26\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Favorites",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-27\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Faster app launch",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-28\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Agent tasks",
+            "background": "rgb(239, 239, 239)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          }
+        ],
+        "inlineStyleBytes": 250881,
+        "title": "Linear \u2013 The system for product development",
+        "lang": "en",
+        "tokens": {},
+        "availableTokens": {},
+        "elements": {
+          "body": {
+            "selector": "body",
+            "tag": "BODY",
+            "href": null,
+            "text": "((e, i, s, u, m, a, l, h) => {\n\tlet d = document.documentElement, w = [\"light\", \"dark\"];\n\tfunction p",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "heading": {
+            "selector": "h1",
+            "tag": "H1",
+            "href": null,
+            "text": "The product development system for teams and agentsThe product developmentsystem for teams and agent",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "16px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "surface": {
+            "selector": "main",
+            "tag": "MAIN",
+            "href": null,
+            "text": "The product development system for teams and agentsThe product developmentsystem for teams and agent",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "action": {
+            "selector": "a[href=\"/signup\"], a[href*=\"signup\"]",
+            "tag": "A",
+            "href": "/signup",
+            "text": "Sign up",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 238)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 238)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "field": {
+            "selector": "input, select",
+            "tag": "INPUT",
+            "href": null,
+            "text": "",
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "Arial",
+            "fontSize": "13.3333px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "card": {
+            "selector": "article, section",
+            "tag": "SECTION",
+            "href": null,
+            "text": "",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "code": {
+            "selector": "code, pre",
+            "tag": "CODE",
+            "href": null,
+            "text": "vehicle_state",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "monospace",
+            "fontSize": "13px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          }
+        }
+      },
+      "requests": [
+        {
+          "url": "https://linear.app/",
+          "sha256": "1de2fcb97827369f3a619bfe07668d0019724102bf42f429f765d72883726117",
+          "retrievedAt": "2026-10-27T06:44:10.485Z",
+          "contentType": "text/html; charset=utf-8"
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/CWOpLCCY.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/DFdsr33l.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/bL-CLJt9.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Bb-JNkHr.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/CbcodEv9.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/jAwP2tSl.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/B1AV-EHC.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/B78R7IPt.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Cds8fjKR.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/vfNSRYu7.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/DgPIODoE.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BnZAjcL1.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/layout.CGKNFvmu.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Spacer.mYgpGelO.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/utils.BNNY1qpD.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Layout.tvkMFESE.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Header.BNHV4lAU.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Icon.B18TDZc7.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/LayoutContent.CWXL7otR.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/CTA.CDNJI-Em.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Grid.Cds8fjKR.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/HomepageSeparator.DAb6YYB9.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Bleed.CbcodEv9.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/GlobalSidePanel.cAFbFP1F.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Changelog.C40xlRzV.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Tpxbzi3N.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BNNY1qpD.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BYDaMjMd.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/pcGZUK31.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/dcAi4KbO.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/C-dCEHFh.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Bl8l9ltc.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BEZjGLsi.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/mgHd0F-S.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/DCkYdNzn.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/ByHmXOx_.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/mYgpGelO.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/CNiZpoOa.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/3p32EmO1.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Blq4ZW3W.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/Cidbg-cz.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BluMS353.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/B3f9yiOq.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/B6ktxgTN.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BUY_OmUN.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/krMPHN5w.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/DXpOFAO4.css",
+          "error": "robots.txt disallows subrequest."
+        },
+        {
+          "url": "https://static.linear.app/web/_next/static/css/BNdf6sgA.css",
+          "error": "robots.txt disallows subrequest."
+        }
+      ],
+      "retrievedAt": "2026-10-27T06:44:10.485Z",
+      "method": "Passive Chromium computed styles and CSS custom properties; website scripts/fonts/images blocked; allowed HTTPS sources only."
+    }
+  ],
+  "usable": false,
+  "validationReason": "Styles were inaccessible; default browser styling is retained only as a rejected observation, not as palette evidence."
+}

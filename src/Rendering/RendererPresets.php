@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final readonly class RendererPresets
 {
-    public function __construct(private EntityManagerInterface $entityManager, private CatalogueWriter $catalogue, private PropsValidator $props, private ValidatorInterface $validator)
+    public function __construct(private EntityManagerInterface $entityManager, private CatalogueWriter $catalogue, private PropsValidator $props, private ValidatorInterface $validator, private \App\Font\FontLibrary $fonts)
     {
     }
 
@@ -31,6 +31,7 @@ final readonly class RendererPresets
         if (count($this->validator->validate($settings))) {
             throw new CatalogueException(422, 'Renderer settings exceed their supported bounds.');
         }
+        foreach ([$settings->bodyFont, $settings->headingFont, $settings->codeFont] as $font) if ('theme' !== $font) $this->fonts->definition($font);
         if ($settings->themeReleaseId && !$this->entityManager->find(ThemeRelease::class, $settings->themeReleaseId)) {
             throw new CatalogueException(422, 'Choose an existing immutable theme release.');
         }

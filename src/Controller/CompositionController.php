@@ -8,6 +8,9 @@ use App\Composition\CompositionCompiler;
 use App\Composition\CompositionInput;
 use App\Entity\CatalogueItem;
 use App\Entity\Release;
+use App\Entity\ThemeRelease;
+use App\Font\FontLibrary;
+use App\Rendering\RendererPresets;
 use Styleguide\Contracts\CanonicalJson;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -25,7 +28,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 final class CompositionController extends AbstractController
 {
     #[Route('/catalogue/{id}/compose', name: 'composition_edit', methods: ['GET'])]
-    public function edit(#[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $em): Response
+    public function edit(#[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $em, RendererPresets $presets, FontLibrary $fonts): Response
     {
         $draft = $writer->draft($item); $source = $draft->getSourceMap()->{'meta/composition.json'} ?? null;
         if (null === $source) throw new CatalogueException(409, 'This item uses source ownership; the composition builder is disabled.');
@@ -35,7 +38,17 @@ final class CompositionController extends AbstractController
             $m = $release->getManifestData();
             $choices[] = ['name' => $m->name, 'version' => $m->version, 'label' => $m->name.'@'.$m->version, 'props' => $m->defaults];
         }
-        return $this->render('composition/edit.html.twig', ['item' => $item, 'draft' => $draft, 'document' => json_decode($source, false, 64, JSON_THROW_ON_ERROR), 'choices' => $choices, 'generatedTwig' => $draft->getSourceMap()->{$draft->getManifestData()->entry}]);
+        $rendererSettings = $presets->read($item, $this->getUser());
+        $themeChoices = [];
+        foreach ($em->getRepository(ThemeRelease::class)->findBy([], ['createdAt' => 'DESC'], 200) as $release) {
+            $themeChoices[$release->getId()] = ['label' => $release->getTheme()->getName().'@'.$release->getVersion(), 'document' => $release->getDocument()];
+        }
+        if (($rendererSettings->themeReleaseId ?? null) && !isset($themeChoices[$rendererSettings->themeReleaseId])) {
+            if ($selected = $em->find(ThemeRelease::class, $rendererSettings->themeReleaseId)) {
+                $themeChoices[$selected->getId()] = ['label' => $selected->getTheme()->getName().'@'.$selected->getVersion(), 'document' => $selected->getDocument()];
+            }
+        }
+        return $this->render('composition/edit.html.twig', ['item' => $item, 'draft' => $draft, 'document' => json_decode($source, false, 64, JSON_THROW_ON_ERROR), 'choices' => $choices, 'generatedTwig' => $draft->getSourceMap()->{$draft->getManifestData()->entry}, 'rendererSettings' => $rendererSettings, 'fontFamilies' => $fonts->catalogue(), 'themeChoices' => $themeChoices]);
     }
     #[Route('/api/v1/items/{id}/composition', name: 'composition_save', methods: ['PUT', 'POST'], format: 'json')]
     #[IsCsrfTokenValid('api', tokenKey: 'X-CSRF-Token', tokenSource: IsCsrfTokenValid::SOURCE_HEADER)]

@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "reference": "figma",
+  "name": "Figma",
+  "url": "https://www.figma.com/",
+  "surface": "Public marketing homepage",
+  "attribution": "Independent design observations from Figma official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+  "modes": [
+    {
+      "mode": "light",
+      "observed": {
+        "documentedColors": [],
+        "controls": [
+          {
+            "selector": "[data-styleguide-sample=\"sample-63\"]",
+            "tag": "A",
+            "href": "https://www.figma.com/contact/",
+            "text": "Contact sales",
+            "background": "oklch(0 0 none / 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "figmaSans, \"figmaSans Fallback\", \"SF Pro Display\", system-ui, helvetica, sans-serif",
+            "fontSize": "16px",
+            "lineHeight": "23.2px",
+            "borderRadius": "8px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "oklch(0 0 none / 0.16) 0px 0px 0px 1px inset",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-65\"]",
+            "tag": "A",
+            "href": "https://www.figma.com/signup",
+            "text": "Get started for free",
+            "background": "rgb(0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "figmaSans, \"figmaSans Fallback\", \"SF Pro Display\", system-ui, helvetica, sans-serif",
+            "fontSize": "18px",
+            "lineHeight": "25.2px",
+            "borderRadius": "8px",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-72\"]",
+            "tag": "A",
+            "href": "https://www.figma.com/signup",
+            "text": "Get started",
+            "background": "rgb(0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "figmaSans, \"figmaSans Fallback\", \"SF Pro Display\", system-ui, helvetica, sans-serif",
+            "fontSize": "16px",
+            "lineHeight": "23.2px",
+            "borderRadius": "16px",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          }
+        ],
+        "inlineStyleBytes": 143841,
+        "title": "Figma: The collaborative canvas for design, code, and AI",
+        "lang": "en",
+        "tokens": {
+          "--fig-theme-bg": "#FFFFFF",
+          "--fig-theme-btn-primary-bg": "#000000",
+          "--fig-theme-form-error-bg": "#972121"
+        },
+        "availableTokens": {
+          "--fig-theme-btn-primary-bg": "#000000",
+          "--fig-typography-size-formLabel": "0.75rem",
+          "--fig-theme-form-input-bg": "color-mix(in oklch, #000000, transparent 92%)",
+          "--global-font-mono": "\"figmaMono\",\"figmaMono Fallback\",SF Mono,menlo,monospace",
+          "--fig-theme-card-bg": "color-mix(in oklch, #000000, transparent 96%)",
+          "--fig-radius-full": "9999px",
+          "--font-figma-sans": "\"figmaSans\",\"figmaSans Fallback\",SF Pro Display,system-ui,helvetica,sans-serif",
+          "--fig-theme-btn-transparent-bg-hover": "color-mix(in oklch, #000000, transparent 92%)",
+          "--font-figma-mono": "\"figmaMono\",\"figmaMono Fallback\",SF Mono,menlo,monospace",
+          "--fig-radius-24": "1.5rem",
+          "--global-font-sans": "\"figmaSans\",\"figmaSans Fallback\",SF Pro Display,system-ui,helvetica,sans-serif",
+          "--fig-radius-28": "1.75rem",
+          "--fig-theme-btn-ghost-bg-hover": "color-mix(in oklch, #000000, transparent 96%)",
+          "--fig-radius-8": "0.5rem",
+          "--fig-radius-2": "0.125rem",
+          "--fig-theme-form-error-bg": "#972121",
+          "--fig-theme-badge-bg": "color-mix(in oklch, #000000, transparent 92%)",
+          "--fig-radius-12": "0.75rem",
+          "--fig-theme-btn-primary-bg-hover": "color-mix(in oklch, #000000, transparent 15%)",
+          "--fig-theme-bg": "#FFFFFF",
+          "--fig-theme-btn-transparent-bg": "color-mix(in oklch, #000000, transparent 96%)",
+          "--fig-theme-btn-secondary-bg": "color-mix(in oklch, #000000, transparent 100%)",
+          "--fig-theme-btn-ghost-bg": "color-mix(in oklch, #000000, transparent 100%)",
+          "--fig-radius-4": "0.25rem",
+          "--fig-radius-16": "1rem",
+          "--global-cursor-text": "text"
+        },
+        "elements": {
+          "body": {
+            "selector": "body",
+            "tag": "BODY",
+            "href": null,
+            "text": ".css-14r34si{background-color:#FFFFFF;}Skip to main contentProductsWhat you can do in figmaDesign an",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "figmaSans, \"figmaSans Fallback\", \"SF Pro Display\", system-ui, helvetica, sans-serif",
+            "fontSize": "16px",
+            "lineHeight": "23.2px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "heading": {
+            "selector": "h1",
+            "tag": "H1",
+            "href": null,
+            "text": "The full-stack creative canvas",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "figmaSans, \"figmaSans Fallback\", \"SF Pro Display\", system-ui, helvetica, sans-serif",
+            "fontSize": "56px",
+            "lineHeight": "56px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "surface": {
+            "selector": "main",
+            "tag": "MAIN",
+            "href": null,
+            "text": "The full-stack creative canvasGet startedMove fast in the right direction on an AI-native canvas. Te",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "figmaSans, \"figmaSans Fallback\", \"SF Pro Display\", system-ui, helvetica, sans-serif",
+            "fontSize": "16px",
+            "lineHeight": "23.2px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "action": {
+            "selector": "a[href*=\"/signup\"], a[href*=\"signup\"]",
+            "tag": "A",
+            "href": "https://www.figma.com/signup",
+            "text": "Get started",
+            "background": "rgb(0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "figmaSans, \"figmaSans Fallback\", \"SF Pro Display\", system-ui, helvetica, sans-serif",
+            "fontSize": "18px",
+            "lineHeight": "25.2px",
+            "borderRadius": "8px",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "field": null,
+          "card": {
+            "selector": "article, section",
+            "tag": "SECTION",
+            "href": null,
+            "text": "The full-stack creative canvasGet started",
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "figmaSans, \"figmaSans Fallback\", \"SF Pro Display\", system-ui, helvetica, sans-serif",
+            "fontSize": "16px",
+            "lineHeight": "23.2px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "code": null
+        }
+      },
+      "requests": [
+        {
+          "url": "https://www.figma.com/",
+          "sha256": "f631c37a354f7664acf51d2f66053a77a87df10e499d4a898b000bb79c6a08f9",
+          "retrievedAt": "2026-10-27T06:44:33.176Z",
+          "contentType": "text/html; charset=utf-8"
+        },
+        {
+          "url": "https://www.figma.com/_netlify/_next/static/css/617e0bc399c83bea.css",
+          "sha256": "27a46cfda6831e582d3a29cbc2e6e1cd7b620a092b40ba6ee4f635b11aebfddd",
+          "retrievedAt": "2026-10-27T06:44:33.302Z",
+          "contentType": "text/css; charset=UTF-8"
+        }
+      ],
+      "retrievedAt": "2026-10-27T06:44:33.176Z",
+      "method": "Passive Chromium computed styles and CSS custom properties; website scripts/fonts/images blocked; allowed HTTPS sources only."
+    }
+  ]
+}

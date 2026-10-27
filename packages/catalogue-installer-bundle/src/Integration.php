@@ -18,7 +18,7 @@ final readonly class Integration
     {
         $input=$cfg['css']['input'];$bootstrap=$cfg['bootstrap'];$cssBase=self::strip(file_get_contents($this->project->path($input)),'css');$jsBase=self::strip(file_get_contents($this->project->path($bootstrap)),'js');
         $controllers=[];$scan='';$styles=[];$active=null;
-        foreach($packages as $name=>$p){$m=$p['manifest'];foreach($p['sources'] as $path=>$source){$scan.=$source."\n";if('theme'!==$m->kind&&str_ends_with($path,'.css'))$styles[]=$path;}
+        foreach($packages as $name=>$p){$m=$p['manifest'];foreach($p['sources'] as $path=>$source){if(!str_ends_with($path,'.woff2'))$scan.=$source."\n";if('theme'!==$m->kind&&str_ends_with($path,'.css'))$styles[]=$path;}
             foreach($m->controllers as $controller)$controllers[]=$controller;
             if('theme'===$m->kind&&$cfg['activeTheme']===$m->name.'@'.$m->version){$active=StrictJson::decode($p['sources']->{'meta/theme.json'},65536,24);$styles[]='assets/styles/catalogue/'.$name.'/theme.fragment.css';$styles[]='assets/styles/catalogue/'.$name.'/typography.css';}}
         $loader="// Generated Styleguide controller registrations.\n";$registrations=[];
@@ -29,7 +29,7 @@ final readonly class Integration
         $jsBlock="// styleguide:v1:start\nimport { registerCatalogueControllers } from ".json_encode($this->relative($bootstrap,'assets/styleguide/controllers.js'),JSON_UNESCAPED_SLASHES).";\nregisterCatalogueControllers(app);\n// styleguide:v1:end\n";
         $managed=[$input=>$cssBase.($packages?$cssBlock:''),$bootstrap=>$jsBase.($packages?$jsBlock:''),'.styleguide/sources.html'=>$packages?$scan:null,'assets/styleguide/controllers.js'=>$packages?$loader:null];
         // Stage every proposed source; no consumer destination is changed during compilation.
-        $stage=$directory.'/new';foreach($packages as $p)foreach($p['sources'] as $path=>$bytes)if(!str_starts_with($path,'meta/'))$this->project->atomic($stage.'/'.$path,$bytes);
+        $stage=$directory.'/new';foreach($packages as $p)foreach($p['sources'] as $path=>$bytes)if(!str_starts_with($path,'meta/'))$this->project->atomic($stage.'/'.$path,\Styleguide\Contracts\SourceBytes::raw($path,$bytes));
         $this->project->atomic($stage.'/.styleguide/sources.html',$scan);
         $root=$this->project->root;$cssDir=$root.'/'.dirname($input);
         $compile=preg_replace_callback('/@(import|config|source|reference|plugin)\s+([\'"])([^\'"]+)\2/',function($m)use($cssDir){$target=$m[3];if(str_starts_with($target,'.'))$target=$cssDir.'/'.$target;return '@'.$m[1].' '.$this->quote($target);},$cssBase);
@@ -37,10 +37,13 @@ final readonly class Integration
         foreach(array_unique([...array_keys($oldPackages),...array_keys($packages)]) as $name)foreach(['templates/catalogue/'.$name,'assets/controllers/catalogue/'.$name,'assets/controllers/catalogue/'.$name.'_controller.js','assets/catalogue/'.$name,'assets/styles/catalogue/'.$name] as $path)$compile.='@source not '.$this->quote($root.'/'.$path).";\n";
         foreach($styles as $path)$compile.='@import '.$this->quote($stage.'/'.$path).";\n";
         $this->project->atomic($directory.'/compiler/input.css',$compile);$env=[];foreach(array_unique([...array_keys(getenv()),...array_keys($_ENV),...array_keys($_SERVER)])as$key)if(is_string($key))$env[$key]=false;$env=[...$env,'PATH'=>'/usr/local/bin:/usr/bin:/bin','LANG'=>'C.UTF-8','RAYON_NUM_THREADS'=>'1','NODE_ENV'=>'production'];
-        $sources=new \stdClass();foreach($packages as $p)foreach($p['sources'] as $path=>$source)if('theme'!==$p['manifest']->kind||!str_ends_with($path,'.css'))$sources->{$path}=$source;
+        $sources=new \stdClass();foreach($packages as $p)foreach($p['sources'] as $path=>$source)if(!str_ends_with($path,'.woff2')&&('theme'!==$p['manifest']->kind||!str_ends_with($path,'.css')))$sources->{$path}=$source;
         $validator=new Process(['node','--max-old-space-size=128',dirname(__DIR__).'/tooling/validate.mjs',$root],$root,$env);$validator->setInput(json_encode($sources,JSON_THROW_ON_ERROR));$validator->setTimeout(10);$validator->run();
         if(!$validator->isSuccessful()){$error=json_decode($validator->getOutput(),true);throw new CatalogueException(422,'Source validation failed: '.($error['error']??'Fixed parser unavailable; check doctor.'));}
         $process=new Process(['node','--max-old-space-size=256',$root.'/node_modules/@tailwindcss/cli/dist/index.mjs','-i',$directory.'/compiler/input.css','-o',$directory.'/compiler/output.css','--minify'],$root,$env);$process->setTimeout(30);$process->run();if(!$process->isSuccessful())throw new CatalogueException(422,'Fixed Tailwind compilation failed: '.substr($process->getErrorOutput(),0,1200));
-        $managed[$cfg['css']['output']]=file_get_contents($directory.'/compiler/output.css');return ['files'=>$managed,'activeTheme'=>$active?->cssName];
+        $compiled=file_get_contents($directory.'/compiler/output.css');
+        $fontPaths=[];foreach($packages as $p)if('theme'===$p['manifest']->kind){$t=StrictJson::decode($p['sources']->{'meta/theme.json'},65536,24);foreach($t->fonts as $font)foreach($font->faces??[]as$face)$fontPaths[$face->sha256]='assets/styles/catalogue/'.$t->name.'/'.$face->path;}
+        $compiled=preg_replace_callback('~url\(([\'"]?)[^\)\'\"]*fonts/([a-f0-9]{64})\.woff2\1\)~',function($match)use($fontPaths,$cfg){if(!isset($fontPaths[$match[2]]))throw new CatalogueException(422,'Compiled CSS references an undeclared font.');return 'url('.$this->quote($this->relative($cfg['css']['output'],$fontPaths[$match[2]])).')';},$compiled);
+        $managed[$cfg['css']['output']]=$compiled;return ['files'=>$managed,'activeTheme'=>$active?->cssName];
     }
 }

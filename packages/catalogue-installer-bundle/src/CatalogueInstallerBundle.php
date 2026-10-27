@@ -11,7 +11,7 @@ final class CatalogueInstallerBundle extends AbstractBundle
     public function prependExtension(ContainerConfigurator $container,ContainerBuilder $builder):void
     {
         // Package CSS is compiler source. Only the consumer's compiled CSS is served.
-        $container->extension('framework',['asset_mapper'=>['excluded_patterns'=>['*/styles/catalogue/*']]]);
+        $container->extension('framework',['asset_mapper'=>['excluded_patterns'=>['*/styles/catalogue/*.css', '*/styles/catalogue/*.txt']]]);
     }
     public function loadExtension(array $config,ContainerConfigurator $container,ContainerBuilder $builder):void
     {

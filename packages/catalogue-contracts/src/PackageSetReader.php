@@ -9,7 +9,7 @@ final readonly class PackageSetReader
         $format??=strtolower(pathinfo($path,PATHINFO_EXTENSION));
         if('zip'===$format) return $this->zip($path);
         $bytes=file_get_contents($path);
-        $value=match($format){'json'=>StrictJson::decode($bytes,3145728),'yaml','yml'=>SafeYaml::decode($bytes),default=>throw new CatalogueException(422,'Use ZIP, JSON or YAML.')};
+        $value=match($format){'json'=>StrictJson::decode($bytes,10485760),'yaml','yml'=>SafeYaml::decode($bytes,10485760),default=>throw new CatalogueException(422,'Use ZIP, JSON or YAML.')};
         if(!$value instanceof \stdClass || ($value->schemaVersion??null)!==1) throw new CatalogueException(422,'Unknown import format; schemaVersion 1 is required.');
         if(isset($value->manifest,$value->sources)) {
             if(array_diff(array_keys((array)$value),['schemaVersion','manifest','sources']) || !$value->manifest instanceof \stdClass || !$value->sources instanceof \stdClass) throw new CatalogueException(422,'Use an envelope with schemaVersion, manifest and sources.');
@@ -17,15 +17,16 @@ final readonly class PackageSetReader
         }elseif($adjacent && isset($value->name,$value->files)) {
             if(!is_string($value->name) || !preg_match('~^[a-z][a-z0-9-]*/[a-z][a-z0-9-]*$~D',$value->name) || !is_array($value->files) || count($value->files)>100)throw new CatalogueException(422,'Invalid bounded manifest identity/inventory.');
             $manifest=$value;$sources=new \stdClass();$root=realpath(dirname($path));
-            $total=0;
+            $total=0;$fontBytes=0;
             foreach($manifest->files as $file) {
                 if(!is_object($file) || !isset($file->path) || !is_string($file->path)) throw new CatalogueException(422,'Invalid file inventory.');
                 $this->validator->sourcePath($file->path,$manifest->name);$current=$root;
                 foreach(explode('/',$file->path) as $segment){$current.='/'.$segment;if(is_link($current))throw new CatalogueException(422,'Package files may not use symlinks.');}
                 $real=realpath($current);
                 if(!$real || !str_starts_with($real,$root.'/') || !is_file($real) || filesize($real)>1048576) throw new CatalogueException(422,'Missing or excessive manifest payload file.');
-                $sources->{$file->path}=file_get_contents($real);
-                if(($total+=strlen($sources->{$file->path}))>2097152)throw new CatalogueException(413,'Manifest sources exceed 2 MiB.');
+                $sources->{$file->path}=SourceBytes::encode($file->path,file_get_contents($real));
+                if(str_ends_with($file->path,'.woff2')){if(($fontBytes+=filesize($real))>8388608)throw new CatalogueException(413,'Font assets exceed 8 MiB.');}
+                elseif(($total+=strlen($sources->{$file->path}))>2097152)throw new CatalogueException(413,'Manifest text sources exceed 2 MiB.');
             }
         }else throw new CatalogueException(422,'Upload a complete ZIP or manifest/sources envelope. A CLI manifest may read adjacent declared files.');
         $manifest=$this->validator->validate($manifest,$sources);

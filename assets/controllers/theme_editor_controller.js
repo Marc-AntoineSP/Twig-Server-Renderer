@@ -1,8 +1,8 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['frame', 'status', 'compare', 'component', 'publishStatus', 'disableJs'];
-    static values = { document: Object, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, themeUrl: String, publishUrl: String, revision: Number };
+    static targets = ['frame', 'status', 'compare', 'component', 'publishStatus', 'disableJs', 'fontDetails', 'fontSearch', 'fontCategory', 'form', 'variant', 'title', 'saveError', 'saveStatus', 'tryButton', 'retryApply', 'exports'];
+    static values = { document: Object, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, themeUrl: String, publishUrl: String, revision: Number, fonts: Array, family: Object, themeId: String, creating: Boolean, saveUrl: String, newUrl: String, editUrl: String, detailUrl: String };
 
     connect() {
         this.model = structuredClone(this.documentValue);
@@ -10,9 +10,17 @@ export default class extends Controller {
         this.jobs = [];
         this.channels = [];
         this.lastDocuments = [];
+        this.variantEdits = new Map();
         this.element.querySelectorAll('[data-theme-path]').forEach(input => this.readField(input));
+        this.updateFonts();
         this.message = event => this.receive(event);
         window.addEventListener('message', this.message);
+        this.unsaved = event => {if(this.hasUnsaved()){event.preventDefault();event.returnValue='';}};
+        this.beforeVisit = event => {if(this.hasUnsaved()&&!window.confirm('Leave this editor and discard unsaved theme changes?'))event.preventDefault();};
+        this.trialEnded = () => {this.tryEnabled=false;clearTimeout(this.trialTimer);this.tryButtonTarget.setAttribute('aria-pressed','false');};
+        this.saveTrial = () => this.saveAndApply();
+        window.addEventListener('beforeunload',this.unsaved);document.addEventListener('turbo:before-visit',this.beforeVisit);
+        window.addEventListener('appearance:trial-ended',this.trialEnded);window.addEventListener('appearance:save-trial',this.saveTrial);
         this.timer = setTimeout(() => this.run(), 0);
     }
 
@@ -21,6 +29,8 @@ export default class extends Controller {
         clearTimeout(this.timer);
         this.jobs.forEach(id => this.cancel(id));
         window.removeEventListener('message', this.message);
+        clearTimeout(this.trialTimer);window.removeEventListener('beforeunload',this.unsaved);document.removeEventListener('turbo:before-visit',this.beforeVisit);
+        window.removeEventListener('appearance:trial-ended',this.trialEnded);window.removeEventListener('appearance:save-trial',this.saveTrial);
     }
 
     readField(input) {
@@ -32,8 +42,44 @@ export default class extends Controller {
 
     changed(event) {
         if (event.target.dataset.themePath) this.readField(event.target);
+        this.updateFonts();
         this.dirty = true;
         this.schedule();
+        if(this.tryEnabled)this.scheduleTrial();
+    }
+
+    filterFonts() {
+        const query=this.fontSearchTarget.value.toLowerCase().trim(), category=this.fontCategoryTarget.value;
+        const definitions=new Map(this.fontsValue.map(font=>[font.id,font]));
+        for(const select of this.element.querySelectorAll('select[data-theme-path$="FontId"]'))for(const option of select.options){const font=definitions.get(option.value);option.hidden=option.value!==select.value&&(!option.textContent.toLowerCase().includes(query)||!!category&&font?.category!==category);}
+    }
+
+    updateFonts() {
+        const definitions = new Map([...(this.fontsValue || []), ...this.documentValue.fonts].map(font => [font.id,font]));
+        for(const id of ['system-sans','system-serif','system-mono'])if(!definitions.has(id))definitions.set(id,{id,kind:'system',family:id});
+        const selected = [...new Set(['body','heading','code'].map(role=>this.model.typography[role+'FontId']).filter(Boolean))];
+        this.model.fonts = selected.map(id=>definitions.get(id)).filter(Boolean);
+        const details=[];
+        for(const role of ['body','heading','code']){
+            const font=definitions.get(this.model.typography[role+'FontId']);if(!font)continue;
+            if(font.kind==='local'){
+                let style=this.model.typography[role+'Style']||'normal';
+                if(!font.faces.some(f=>f.style===style))style='normal';
+                const supported=font.faces.filter(f=>f.style===style);
+                const weight=this.model.typography[role+'Weight']||400;
+                const candidates=supported.map(f=>Math.max(f.weightMin,Math.min(f.weightMax,weight)));
+                const adjusted=candidates.reduce((best,value)=>Math.abs(value-weight)<Math.abs(best-weight)?value:best,candidates[0]);
+                const styles=this.element.querySelector(`[data-theme-path="typography.${role}Style"]`);
+                if(styles)for(const option of styles.options)option.disabled=!font.faces.some(face=>face.style===option.value);
+                for(const[key,value]of [[role+'Style',style],[role+'Weight',adjusted]]){
+                    this.model.typography[key]=value;
+                    const field=this.element.querySelector(`[data-theme-path="typography.${key}"]`);if(field)field.value=value;
+                }
+                const ranges=[...new Set(font.faces.map(f=>`${f.weightMin}${f.weightMax!==f.weightMin?'–'+f.weightMax:''} ${f.style}`))].join(', ');
+                details.push(`${role}: ${font.family} · ${ranges} · ${font.license} · ${font.sourceVersion} · ${font.source}`);
+            }else {const styles=this.element.querySelector(`[data-theme-path="typography.${role}Style"]`);if(styles)for(const option of styles.options)option.disabled=false;details.push(`${role}: ${font.family} · system fallback`);}
+        }
+        if(this.hasFontDetailsTarget)this.fontDetailsTarget.textContent=details.join(' | ');
     }
 
     pick(event) {
@@ -66,6 +112,7 @@ export default class extends Controller {
 
     async run() {
         clearTimeout(this.timer);
+        if(this.creatingValue&&(!this.model.name||!this.model.cssName)){this.statusTarget.textContent='Enter a theme identifier and CSS name to preview.';return;}
         const epoch = ++this.epoch;
         await Promise.all(this.jobs.map(id => this.cancel(id)));
         this.jobs = [];
@@ -120,8 +167,71 @@ export default class extends Controller {
         if (this.dirty) { this.publishStatusTarget.textContent = 'Save the theme before publishing this revision.'; return; }
         this.publishStatusTarget.textContent = 'Validating and compiling release…';
         try {
-            const release = await this.json(this.publishUrlValue, { method: 'POST', body: JSON.stringify({ expectedRevision: this.revisionValue }) });
+            const release = await this.json(this.publishUrlValue.replace('__THEME__',this.themeIdValue), { method: 'POST', body: JSON.stringify({ expectedRevision: this.revisionValue }) });
             this.publishStatusTarget.textContent = `Theme ${release.version} published immutably.`;
         } catch (error) { this.publishStatusTarget.textContent = error.message; }
     }
+
+    hasUnsaved() {return this.dirty||[...this.variantEdits.values()].some(entry=>entry.dirty);}
+    stashVariant() {if(this.themeIdValue)this.variantEdits.set(this.themeIdValue,{model:structuredClone(this.model),original:structuredClone(this.documentValue),revision:this.revisionValue,dirty:this.dirty});}
+    async switchVariant() {
+        this.stashVariant();const selected=this.variantTarget.value;
+        try {
+            let entry=this.variantEdits.get(selected);
+            if(!entry){const data=await this.json(this.themeUrlValue.replace('__THEME__',selected));entry={model:data.document,original:structuredClone(data.document),revision:data.revision,dirty:false};}
+            this.themeIdValue=selected;this.model=structuredClone(entry.model);this.documentValue=entry.original;this.revisionValue=entry.revision;this.dirty=entry.dirty;
+            this.model.typography={codeFontId:'system-mono',bodyWeight:400,headingWeight:700,codeWeight:400,bodyStyle:'normal',headingStyle:'normal',codeStyle:'normal',...this.model.typography};
+            for(const select of this.element.querySelectorAll('select[data-theme-path$="FontId"]'))for(const font of this.model.fonts)if(![...select.options].some(option=>option.value===font.id))select.add(new Option(font.family,font.id));
+            if(this.hasExportsTarget)this.exportsTarget.href=this.detailUrlValue.replace('__THEME__',selected);
+            for(const input of this.element.querySelectorAll('[data-theme-path]')){
+                const value=input.dataset.themePath.split('.').reduce((parent,key)=>parent?.[key],this.model);
+                if(input.dataset.themeType==='boolean')input.checked=Boolean(value);else input.value=value??'';
+            }
+            this.updateFonts();this.titleTarget.textContent=`Edit ${this.familyValue.label} · ${this.model.colorScheme}`;
+            this.formTarget.querySelector('[name$="[revision]"]').value=this.revisionValue;
+            this.schedule();if(this.tryEnabled)this.scheduleTrial();
+        }catch(error){this.saveErrorTarget.hidden=false;this.saveErrorTarget.textContent=error.message;this.variantTarget.value=this.themeIdValue;}
+    }
+
+    async save(event, apply = false) {
+        event?.preventDefault();if(this.saving)return;
+        if(!this.formTarget.reportValidity())return;
+        this.saving=true;this.saveErrorTarget.hidden=true;this.saveStatusTarget.textContent='Saving theme…';
+        const captured=JSON.stringify(this.model),creating=this.creatingValue;
+        const familyLabel=this.formTarget.querySelector('[name$="[familyLabel]"]').value.trim()||null;
+        const variants=this.formTarget.querySelector('[name$="[startingVariants]"]')?.value||'single';
+        try {
+            const result=await this.json(creating?this.newUrlValue:this.saveUrlValue.replace('__THEME__',this.themeIdValue),{method:creating?'POST':'PUT',body:JSON.stringify({document:JSON.parse(captured),expectedRevision:creating?null:this.revisionValue,familyLabel,variants,expectedFamilyRevision:this.familyValue.revision||null})});
+            this.themeIdValue=result.id;this.revisionValue=result.revision;this.familyValue=result.family;this.documentValue=result.document;this.creatingValue=false;
+            this.dirty=JSON.stringify(this.model)!==captured;
+            if(!this.dirty)this.model=structuredClone(result.document);
+            this.stashVariant();this.formTarget.querySelector('[name$="[revision]"]').value=result.revision;
+            this.tryEnabled=false;clearTimeout(this.trialTimer);this.tryButtonTarget.setAttribute('aria-pressed','false');window.applicationAppearance.revertTrial(true);
+            this.flash(creating?'Theme created.':'Theme saved.');this.saveStatusTarget.textContent='Theme saved. Your applied snapshot is unchanged.';
+            let applyFailed=false;
+            if(apply){
+                const success=await window.applicationAppearance.select({kind:'family',themeId:result.id,themeRevision:result.revision});
+                if(!success){applyFailed=true;this.retryApplyTarget.hidden=false;this.saveErrorTarget.hidden=false;this.saveErrorTarget.textContent='Theme saved, but application appearance was not updated. Your confirmed appearance is kept. Retry Apply saved theme.';}
+                else{this.retryApplyTarget.hidden=true;this.saveStatusTarget.textContent='Theme saved and applied to your application.';}
+            }
+            if(this.dirty)this.saveStatusTarget.textContent+=' Newer edits remain unsaved.';
+            if(creating&&!this.dirty){this.variantEdits.clear();this.dirty=false;location.assign(this.editUrlValue.replace('__THEME__',result.id)+(applyFailed?'?appearanceApplyFailed=1':''));}
+            else if(creating){this.formTarget.querySelector('button[type="submit"]').textContent='Save theme';this.titleTarget.textContent='Edit '+result.family.label;for(const key of ['name','colorScheme'])this.formTarget.querySelector(`[data-theme-path="${key}"]`).disabled=true;}
+        }catch(error){this.saveErrorTarget.hidden=false;this.saveErrorTarget.textContent=error.message;this.saveStatusTarget.textContent='Theme was not saved. Your entered values are kept.';}
+        finally{this.saving=false;}
+    }
+    saveAndApply() {return this.save(null,true);}
+    async retryApplication() {
+        if(await window.applicationAppearance.select({kind:'family',themeId:this.themeIdValue,themeRevision:this.revisionValue})){this.retryApplyTarget.hidden=true;this.saveErrorTarget.hidden=true;this.saveStatusTarget.textContent='Saved theme applied.'+(this.dirty?' Newer edits remain unsaved.':'');}
+    }
+    flash(message) {
+        const existing=document.querySelector('[data-flash]');const alert=existing||document.createElement('div');alert.dataset.flash='';alert.className='alert alert-success mb-6';alert.setAttribute('role','status');alert.textContent=message;if(!existing)this.element.prepend(alert);
+        for(const other of document.querySelectorAll('[data-flash]'))if(other!==alert)other.remove();
+    }
+    tryApplication() {this.tryEnabled=true;this.tryButtonTarget.setAttribute('aria-pressed','true');this.scheduleTrial(0);}
+    scheduleTrial(delay = 300) {
+        clearTimeout(this.trialTimer);
+        this.trialTimer=setTimeout(()=>{if(this.tryEnabled)window.applicationAppearance.tryDocument(structuredClone(this.model));},delay);
+    }
+    revertApplication() {this.tryEnabled=false;clearTimeout(this.trialTimer);this.tryButtonTarget.setAttribute('aria-pressed','false');window.applicationAppearance.revertTrial();}
 }

@@ -20,7 +20,7 @@ use Styleguide\Contracts\PackageSetReader;
 use Styleguide\Contracts\StrictJson;
 final readonly class TransferImporter
 {
-    public function __construct(private PackageSetReader $reader,private PackageGraph $graphs,private CatalogueRepository $catalogue,private EntityManagerInterface $em,private ReleaseSourceReader $releases,private PreviewRenderer $renderer,private ThemeWriter $themes,private ArchiveStore $store,private CanonicalJson $json,private Connection $connection){}
+    public function __construct(private PackageSetReader $reader,private PackageGraph $graphs,private CatalogueRepository $catalogue,private EntityManagerInterface $em,private ReleaseSourceReader $releases,private PreviewRenderer $renderer,private ThemeWriter $themes,private ArchiveStore $store,private CanonicalJson $json,private Connection $connection,private \App\Font\ThemeFontAssets $fontAssets){}
     public function prepare(string $path,?string $format=null,bool $adjacent=false):array
     {
         $set=$this->reader->read($path,$format,$adjacent);$versions=[];$themeFiles=[];$renders=0;$deadline=microtime(true)+45;
@@ -33,13 +33,14 @@ final readonly class TransferImporter
         foreach($set['packages'] as $name=>$package){
             $m=$package['manifest'];$s=$package['sources'];$closure=$this->graphs->resolve($m,$s,$lookup);
             foreach($closure['versions'] as $resolved=>$version){if(isset($versions[$resolved]) && $versions[$resolved]!==$version)throw new CatalogueException(409,'Collection requires incompatible duplicate versions.');$versions[$resolved]=$version;}
-            if('theme'===$m->kind){$themeFiles[$name]=$this->themes->outputs(StrictJson::decode($s->{'meta/theme.json'},65536,24));continue;}
+            if('theme'===$m->kind){$themeFiles[$name]=$this->themes->outputs(StrictJson::decode($s->{'meta/theme.json'},65536,24),$this->fontAssets->fromSources(StrictJson::decode($s->{'meta/theme.json'},65536,24),$s));continue;}
             $examples=isset($s->{'meta/examples.json'})?StrictJson::decode($s->{'meta/examples.json'},65536,24):[];
             if(count($examples)>20)throw new CatalogueException(422,'At most 20 publication/import examples are supported.');
             unset($closure['packages']);
             foreach([$m->defaults,...array_map(static fn($example)=>$example->props,$examples)] as $props){
                 if(++$renders>64 || microtime(true)>$deadline)throw new CatalogueException(422,'Import exceeds its 64-render/45-second validation budget. Use smaller collections.');
-                $result=$this->renderer->render([...$closure,'props'=>$props,'channel'=>bin2hex(random_bytes(16))]);
+                $fontFiles=[];if($closure['theme'])foreach($set['packages']as$tp)if($tp['manifest']->name===$closure['theme']->name)$fontFiles=$this->fontAssets->fromSources($closure['theme'],$tp['sources']);
+                $result=$this->renderer->render([...$closure,'props'=>$props,'channel'=>bin2hex(random_bytes(16)),'fontFiles'=>$fontFiles]);
                 if(!$result['ok'])throw new CatalogueException(422,'Import render/build validation failed: '.$result['error']['message'],[],'import_build_failed');
             }
         }
@@ -83,6 +84,7 @@ final readonly class TransferImporter
                 $result['items'][$name]=$item->getId();
                 if('theme'===$m->kind){
                     $document=StrictJson::decode($package['sources']->{'meta/theme.json'},65536,24);
+                    $this->fontAssets->register($document,$package['sources']);
                     $theme=$this->em->getRepository(Theme::class)->findOneBy(['name'=>$name]);
                     if(!$theme){$theme=new Theme($name,$document);$this->em->persist($theme);}
                     $tr=$this->em->getRepository(ThemeRelease::class)->findOneBy(['theme'=>$theme,'version'=>$m->version]);

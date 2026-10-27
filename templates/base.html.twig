@@ -1,23 +1,29 @@
+{% set appearance = application_appearance() %}
+{% set initialMode = appearance.mode == 'dark' and appearance.variants.dark is defined ? 'dark' : (appearance.variants.light is defined ? 'light' : 'dark') %}
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="{{ appearance.variants[initialMode].cssName }}" data-color-mode="{{ initialMode }}" data-appearance-family="{{ appearance.familyId }}" data-appearance-state="{{ appearance|json_encode|e('html_attr') }}"{% for mode,variant in appearance.variants %} data-appearance-{{ mode }}="{{ variant.id }}"{% endfor %}>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="turbo-cache-control" content="no-cache">
+        <script src="{{ asset('appearance_bootstrap.js') }}" data-turbo-track="reload"></script>
+        {% for variant in appearance.variants %}<link rel="stylesheet" href="{{ variant.url }}" integrity="{{ variant.integrity }}" data-appearance-sheet data-turbo-track="dynamic">{% endfor %}
         <title>{% block title %}Styleguide Studio{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{{ importmap('app') }}{% endblock %}
     </head>
-    <body class="min-h-screen bg-base-200 text-base-content">
+    <body class="min-h-screen bg-base-200 text-base-content" data-controller="appearance" data-appearance-state-value="{{ appearance|json_encode|e('html_attr') }}" data-appearance-csrf-value="{{ csrf_token('api') }}" data-appearance-read-url-value="{{ path('appearance_read') }}" data-appearance-prepare-url-value="{{ path('appearance_prepare') }}" data-appearance-commit-url-value="{{ path('appearance_commit') }}" data-appearance-trial-url-value="{{ path('appearance_trial') }}" data-appearance-families-url-value="{{ path('appearance_families') }}" data-appearance-theme-edit-url-value="{{ path('theme_edit', {id:'__THEME__'}) }}">
         <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
         <header class="border-b border-base-300 bg-base-100">
-            <nav class="navbar mx-auto max-w-6xl px-6" aria-label="Main">
-                <a href="{{ path('studio_home') }}" class="text-xl font-semibold tracking-tight">Styleguide Studio</a>
+            <nav class="navbar mx-auto max-w-6xl flex-wrap gap-2 px-6" aria-label="Main">
+                <a href="{{ path('studio_home') }}" class="font-heading text-xl font-semibold tracking-tight">Styleguide Studio</a>
                 {% if app.user %}<a class="btn btn-ghost ml-4" href="{{ path('catalogue_index') }}">Catalogue</a>{% endif %}
                 {% if app.user %}<a class="btn btn-ghost" href="{{ path('theme_index') }}">Themes</a>{% endif %}
+                {% if app.user %}<a class="btn btn-ghost" href="{{ path('font_index') }}">Fonts</a>{% endif %}
                 {% if is_granted('ROLE_ADMIN') %}<a class="btn btn-ghost" href="{{ path('registry_tokens') }}">Read tokens</a>{% endif %}
                 {% block navigation %}{% endblock %}
                 {% if app.user %}
-                    <div class="ml-auto flex items-center gap-4 text-sm">
+                    <div class="flex flex-wrap items-center gap-4 text-sm">
                         <span>{{ app.user.userIdentifier }}</span>
                         <form action="{{ path('studio_logout') }}" method="post" data-turbo="false">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
@@ -25,8 +31,14 @@
                         </form>
                     </div>
                 {% endif %}
+                {% include 'appearance/_controls.html.twig' %}
             </nav>
         </header>
+        <p class="mx-auto my-2 max-w-6xl px-6 text-sm" aria-live="polite" data-appearance-target="status" {% if appearance.notice is defined %}role="status"{% else %}hidden{% endif %}>{{ appearance.notice|default('') }}</p>
+        <div hidden class="mx-auto max-w-6xl px-6 py-3" data-appearance-target="trialBanner" data-appearance-recovery>
+            <strong>Trying unsaved changes</strong> · Only this editor tab. <button type="button" data-action="appearance#revert">Revert trial</button> <button type="button" data-action="appearance#saveTrial">Save &amp; Apply trial</button>
+        </div>
+        <dialog id="appearance-details-dialog" class="modal"><div class="modal-box bg-base-100 text-base-content"><h2 class="text-xl font-bold">Application appearance</h2><p class="my-4" data-appearance-target="details"></p><p class="alert">Catalogue previews and export settings remain independently selected.</p><button type="button" class="btn mt-4" data-action="appearance#closeDetails">Close appearance details</button></div></dialog>
         <main id="main" class="mx-auto max-w-6xl p-6 md:p-10">
             {% for message in app.flashes('success') %}<div class="alert alert-success mb-6" role="status" data-flash>{{ message }}</div>{% endfor %}
             {% block body %}{% endblock %}

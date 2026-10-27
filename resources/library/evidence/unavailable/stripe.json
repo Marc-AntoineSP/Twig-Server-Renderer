@@ -1,0 +1,30 @@
+{
+  "url": "https://stripe.com/",
+  "reason": "No permitted reference stylesheet loaded; unstyled fallback is not evidence.",
+  "retrievedAt": "2026-10-27T06:47:55.916Z",
+  "diagnostics": [
+    {
+      "mode": "light",
+      "requests": [
+        {
+          "url": "https://stripe.com/fr",
+          "sha256": "f18a74904ef226a4dbc53173f801e793db78202335eec9c5dcd42e1d5030dc3b",
+          "retrievedAt": "2026-10-27T06:44:07.608Z",
+          "contentType": "text/html; charset=utf-8"
+        },
+        {
+          "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/e4746273d30fe790.css",
+          "error": "robots.txt unavailable: HTTP 403: https://b.stripecdn.com/robots.txt"
+        },
+        {
+          "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/d0587afad5d01631.css",
+          "error": "robots.txt unavailable: HTTP 403: https://b.stripecdn.com/robots.txt"
+        },
+        {
+          "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/a86126a5a6c78d53.css",
+          "error": "robots.txt unavailable: HTTP 403: https://b.stripecdn.com/robots.txt"
+        }
+      ]
+    }
+  ]
+}

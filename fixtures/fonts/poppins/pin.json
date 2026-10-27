@@ -1,0 +1,96 @@
+{
+  "package": "@fontsource/poppins",
+  "version": "5.3.0",
+  "tarball": "https://registry.npmjs.org/@fontsource/poppins/-/poppins-5.3.0.tgz",
+  "integrity": "sha512-cms1nM7U6SN8epIV1WMVOV8VsA645aSm3wHfzIQnkk188U341ThbJGSl2Sv54V29gnDbT2arMPfLzvVIIVCceQ==",
+  "tarballSha256": "f4779bb12acaaa07dc7dd8da82ab0f61515fea2f30664535f7a249eeb0dd5bcf",
+  "upstream": {
+    "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/poppins/METADATA.pb",
+    "sha256": "8121646e47a90cbcd2f4664e0df036944880035522b4f25ec51cb9465428b346",
+    "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0"
+  },
+  "faces": [
+    {
+      "path": "fonts/1e91b430ebe5aa347934e70dcd76ca3c594e34d41d14ba3e2f1a7e1dcbc0cfc6.woff2",
+      "sha256": "1e91b430ebe5aa347934e70dcd76ca3c594e34d41d14ba3e2f1a7e1dcbc0cfc6",
+      "bytes": 5964
+    },
+    {
+      "path": "fonts/50d0c1742d80ac71f4cde20e8c04d41a24806af342831f479938b527fbff0972.woff2",
+      "sha256": "50d0c1742d80ac71f4cde20e8c04d41a24806af342831f479938b527fbff0972",
+      "bytes": 8668
+    },
+    {
+      "path": "fonts/248a4c140325101536a69bff763665e7356390cbf0ce326b35bad968e42b5743.woff2",
+      "sha256": "248a4c140325101536a69bff763665e7356390cbf0ce326b35bad968e42b5743",
+      "bytes": 5856
+    },
+    {
+      "path": "fonts/1ddb074f9963be8f6275c42dbd54d18625da8f91c85803121094ec81649f488b.woff2",
+      "sha256": "1ddb074f9963be8f6275c42dbd54d18625da8f91c85803121094ec81649f488b",
+      "bytes": 8504
+    },
+    {
+      "path": "fonts/10a9b6414cbebd6948c3a3a96838480b1ee019e0468033245ea1ddf1143bcda8.woff2",
+      "sha256": "10a9b6414cbebd6948c3a3a96838480b1ee019e0468033245ea1ddf1143bcda8",
+      "bytes": 6012
+    },
+    {
+      "path": "fonts/3ad6c8bd3624555dd79177efe91f0aca20e7f28597fa6b49762c27f337500d8d.woff2",
+      "sha256": "3ad6c8bd3624555dd79177efe91f0aca20e7f28597fa6b49762c27f337500d8d",
+      "bytes": 8724
+    },
+    {
+      "path": "fonts/4c05ae2d20c308c3b949b4578256e5438d0af62a7d32ac6dfcc63a230246adb0.woff2",
+      "sha256": "4c05ae2d20c308c3b949b4578256e5438d0af62a7d32ac6dfcc63a230246adb0",
+      "bytes": 5860
+    },
+    {
+      "path": "fonts/4b0864712c6e7ca75f8c003f7bc1a9270af33d6becd4119463771593274c48d2.woff2",
+      "sha256": "4b0864712c6e7ca75f8c003f7bc1a9270af33d6becd4119463771593274c48d2",
+      "bytes": 8596
+    },
+    {
+      "path": "fonts/0b1fcab42c18b69bcfe9ce4799fcbff5af1621c53ffcfdc4723c6f5ec4ee3ffb.woff2",
+      "sha256": "0b1fcab42c18b69bcfe9ce4799fcbff5af1621c53ffcfdc4723c6f5ec4ee3ffb",
+      "bytes": 5644
+    },
+    {
+      "path": "fonts/7d93459d86585bfcdbb7e0376056226adb25821ee54b96236fe2123e9560929f.woff2",
+      "sha256": "7d93459d86585bfcdbb7e0376056226adb25821ee54b96236fe2123e9560929f",
+      "bytes": 7884
+    },
+    {
+      "path": "fonts/af5fda16a19169e029a132374616728e1bf326d90bef5a552395c5053e21cd0f.woff2",
+      "sha256": "af5fda16a19169e029a132374616728e1bf326d90bef5a552395c5053e21cd0f",
+      "bytes": 5484
+    },
+    {
+      "path": "fonts/cd36de204aca2d5fa263a731f7c20009b5e3d754ba1f1e03c33e93a48f3e7446.woff2",
+      "sha256": "cd36de204aca2d5fa263a731f7c20009b5e3d754ba1f1e03c33e93a48f3e7446",
+      "bytes": 7748
+    },
+    {
+      "path": "fonts/bb1f2d582e7fba586ab70c91ef062d3becaf78b887654953863521b73665d171.woff2",
+      "sha256": "bb1f2d582e7fba586ab70c91ef062d3becaf78b887654953863521b73665d171",
+      "bytes": 5524
+    },
+    {
+      "path": "fonts/f4e80d9dfd374d02989b87a27b5ed4cb78fbb177c27f1478e9a8b0afb7513149.woff2",
+      "sha256": "f4e80d9dfd374d02989b87a27b5ed4cb78fbb177c27f1478e9a8b0afb7513149",
+      "bytes": 8000
+    },
+    {
+      "path": "fonts/ccfd87f69ef00d811da3d06488cec4e79ec99d289cfbcbe4be42031cecae775a.woff2",
+      "sha256": "ccfd87f69ef00d811da3d06488cec4e79ec99d289cfbcbe4be42031cecae775a",
+      "bytes": 5432
+    },
+    {
+      "path": "fonts/9338e65fc077355c7a87ae0d64cc101e23b9bf8ad78ae65f0f319c857311b526.woff2",
+      "sha256": "9338e65fc077355c7a87ae0d64cc101e23b9bf8ad78ae65f0f319c857311b526",
+      "bytes": 7816
+    }
+  ],
+  "licenseSha256": "5c4a92c8f8ce0ab211f4c72889d82383c9644546115d9ba39a4f2d5b8f37014b",
+  "metadataSha256": "cb69cfc2dcbfc350507659915985864c4332bf2e4056cab04f94942006d8ce67"
+}

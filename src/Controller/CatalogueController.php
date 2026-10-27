@@ -69,7 +69,7 @@ final class CatalogueController extends AbstractController
 
     #[Route('/catalogue/{id}/edit', name: 'catalogue_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_EDITOR')]
-    public function edit(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, FormInput $input, RendererPresets $presets, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, FormInput $input, RendererPresets $presets, EntityManagerInterface $entityManager, \App\Font\FontLibrary $fonts): Response
     {
         $draft = $writer->draft($item);
         if ('theme' === $item->getKind()) {
@@ -107,7 +107,7 @@ final class CatalogueController extends AbstractController
 
         if(($rendererSettings->themeReleaseId??null)&&!isset($themeChoices[$rendererSettings->themeReleaseId])){if($selected=$entityManager->find(ThemeRelease::class,$rendererSettings->themeReleaseId))$themeChoices[$selected->getId()]=['label'=>$selected->getTheme()->getName().'@'.$selected->getVersion(),'document'=>$selected->getDocument()];}
 
-        return $this->render('catalogue/edit.html.twig', ['item' => $item, 'draft' => $draft, 'form' => $form, 'rendererSettings' => $rendererSettings, 'themeChoices' => $themeChoices], new Response(status: $status));
+        return $this->render('catalogue/edit.html.twig', ['item' => $item, 'draft' => $draft, 'form' => $form, 'rendererSettings' => $rendererSettings, 'themeChoices' => $themeChoices, 'fontFamilies' => $fonts->catalogue()], new Response(status: $status));
     }
 
     private function errors(FormInterface $form, CatalogueException $error): void

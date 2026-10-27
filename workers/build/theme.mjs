@@ -10,8 +10,11 @@ export function themeCss(theme) {
     if (!validate(theme) || Buffer.byteLength(JSON.stringify(theme)) > 65536) throw new Error('Invalid typed theme.');
     const fonts = new Map();
     for (const font of theme.fonts) {
-        if (font.kind !== 'system' || !Object.hasOwn(families, font.family) || fonts.has(font.id) || font.path || font.sha256) throw new Error('Only unique registered system fonts are supported.');
-        fonts.set(font.id, families[font.family]);
+        if (fonts.has(font.id) || font.path || font.sha256) throw new Error('Duplicate or invalid font identity.');
+        if(font.kind==='system'&&!Object.hasOwn(families,font.family))throw new Error('Unknown system font.');
+        if(font.kind==='local'&&(!font.faces?.length||!font.license||!font.licensePath||!font.licenseSha256))throw new Error('Incomplete local font.');
+        for(const face of font.faces??[])if(face.path!==`fonts/${face.sha256}.woff2`||face.weightMin>face.weightMax)throw new Error('Invalid font face.');
+        fonts.set(font.id, font.kind==='system'?families[font.family]:`"${font.family}", ${families[font.category==='mono'?'system-mono':['serif','display'].includes(font.category)?'system-serif':'system-sans']}`);
     }
     if (!fonts.has(theme.typography.bodyFontId) || !fonts.has(theme.typography.headingFontId)) throw new Error('Unknown theme font reference.');
     let css = `@plugin "/toolchain/node_modules/daisyui/theme/index.js" {\nname: "${theme.cssName}";\ndefault: ${theme.default};\nprefersdark: ${theme.prefersDark};\ncolor-scheme: ${theme.colorScheme};\n`;
@@ -24,5 +27,16 @@ export function themeCss(theme) {
     css += `:where([data-theme="${theme.cssName}"]) body,:where([data-theme="${theme.cssName}"].sg-surface) { font-size: var(--sg-body-size); line-height: var(--sg-line-height); }\n`;
     css += `:where([data-theme="${theme.cssName}"]) :where(h1,h2,h3,h4,h5,h6) { font-family: var(--sg-font-heading); }\n`;
 
+    const used = [theme.typography.bodyFontId, theme.typography.headingFontId, theme.typography.codeFontId];
+    if(theme.typography.codeFontId)css+=`[data-theme="${theme.cssName}"]{--sg-font-code:${fonts.get(theme.typography.codeFontId)};}\n@theme inline{--font-mono:var(--sg-font-code,ui-monospace,monospace);}`;
+    if(theme.typography.codeFontId||theme.fonts.some(f=>f.kind==='local')){
+        for(const [role,selector]of Object.entries({body:'body',heading:':where(h1,h2,h3,h4,h5,h6)',code:':where(code,pre,kbd,samp)'})){
+            css+=`:where([data-theme="${theme.cssName}"]) ${selector}{font-synthesis:none;${role==='code'?'font-family:var(--sg-font-code,ui-monospace,monospace);':''}${theme.typography[role+'Weight']?`font-weight:${theme.typography[role+'Weight']};`:''}${theme.typography[role+'Style']?`font-style:${theme.typography[role+'Style']};`:''}}\n`;
+        }
+    }
+    for(const font of theme.fonts.filter(f=>f.kind==='local'&&used.includes(f.id))){
+        for(const face of font.faces){css+=`@font-face{font-family:"${font.family}";font-style:${face.style};font-weight:${face.weightMin}${face.weightMax!==face.weightMin?' '+face.weightMax:''};font-display:swap;src:url("./${face.path}") format("woff2");unicode-range:${face.unicodeRange};}\n`;}
+    }
+    if(theme.geometry.highContrastBorders){css+=`[data-theme="${theme.cssName}"] :is(.input,.select,.textarea){border-color:var(--color-base-content)}\n[data-theme="${theme.cssName}"] :is(.input-error,.select-error,.textarea-error,[aria-invalid="true"]){border-color:var(--color-error)}\n`;}
     return css;
 }

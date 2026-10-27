@@ -1,0 +1,62 @@
+{
+  "url": "https://stackoverflow.design/product/base/colors/",
+  "reason": "No permitted reference stylesheet loaded; unstyled fallback is not evidence.",
+  "retrievedAt": "2026-10-27T06:48:01.396Z",
+  "diagnostics": [
+    {
+      "mode": "light",
+      "requests": [
+        {
+          "url": "https://stackoverflow.design/system/foundation/colors",
+          "sha256": "2f13e0525bd29fec289015fd23bc3efef549a9d2c88cca5ed5a5638f3a5d160a",
+          "retrievedAt": "2026-10-27T06:44:24.245Z",
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/voice.DbKE_avV.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/voice.DbKE_avV.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/color.Bcw9rWab.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/color.Bcw9rWab.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/start.fQLpgURx.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/start.fQLpgURx.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/typography.Ct42rPhJ.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/typography.Ct42rPhJ.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/ClassTable.QEAXvSp5.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/ClassTable.QEAXvSp5.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/EmailOptionsTable.D9Jk_w8O.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/EmailOptionsTable.D9Jk_w8O.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/GridColumn.DK29-UNu.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/GridColumn.DK29-UNu.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/0.BmL08xr2.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/0.BmL08xr2.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/Example.QZM1iWJN.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/Example.QZM1iWJN.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/logo.DUmvBLOA.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/logo.DUmvBLOA.css"
+        },
+        {
+          "url": "https://stackoverflow.design/product/_app/immutable/assets/flex.B87Kp5UZ.css",
+          "error": "HTTP 404: https://stackoverflow.design/system/_app/immutable/assets/flex.B87Kp5UZ.css"
+        }
+      ]
+    }
+  ]
+}

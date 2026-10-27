@@ -18,14 +18,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class ThemeType extends AbstractType
 {
+    public function __construct(private readonly \App\Font\FontLibrary $fonts) {}
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $path = static fn (string $name, string $type = 'string'): array => ['data-theme-path' => $name, 'data-theme-type' => $type];
         $builder->add('revision', HiddenType::class, ['mapped' => false, 'data' => $options['revision']]);
         $builder->add('name', TextType::class, ['label' => 'Theme name (namespace/slug)', 'disabled' => $options['existing'], 'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 100), new Assert\Regex('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/D')], 'attr' => $path('name')]);
         $builder->add('cssName', TextType::class, ['label' => 'CSS theme name', 'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 100), new Assert\Regex('/^[a-z][a-z0-9-]*$/D')], 'attr' => $path('cssName')]);
+        $builder->add('familyLabel', TextType::class, ['label' => 'Family display name', 'mapped' => false, 'required' => false, 'data' => $options['family_label'], 'constraints' => [new Assert\Length(max: 120)]]);
+        if (!$options['existing']) $builder->add('startingVariants', ChoiceType::class, ['label' => 'Starting variants', 'mapped' => false, 'data' => 'pair', 'choices' => ['Light and dark starting pair' => 'pair', 'This variant only' => 'single']]);
         $builder->add('version', TextType::class, ['label' => 'Proposed release version', 'constraints' => [new Assert\Regex('/^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/D'), new Assert\Length(max: 32)], 'attr' => $path('version')]);
-        $builder->add('colorScheme', ChoiceType::class, ['label' => 'Colour scheme', 'choices' => ['Light' => 'light', 'Dark' => 'dark'], 'attr' => $path('colorScheme')]);
+        $builder->add('colorScheme', ChoiceType::class, ['label' => 'Colour scheme', 'disabled' => $options['existing'], 'choices' => ['Light' => 'light', 'Dark' => 'dark'], 'attr' => $path('colorScheme')]);
         $builder->add('default', CheckboxType::class, ['label' => 'Default theme', 'required' => false, 'attr' => $path('default', 'boolean')]);
         $builder->add('prefersDark', CheckboxType::class, ['label' => 'Prefer for dark mode', 'required' => false, 'attr' => $path('prefersDark', 'boolean')]);
         $colors = $builder->create('colors', FormType::class, ['label' => 'Semantic colours']);
@@ -39,10 +43,16 @@ final class ThemeType extends AbstractType
             $min = str_starts_with($key, 'size') ? 0.125 : 0;
             $geometry->add($key, in_array($key, ['borderPx', 'depth', 'noise'], true) ? IntegerType::class : NumberType::class, [...(in_array($key, ['borderPx', 'depth', 'noise'], true) ? [] : ['html5' => true]), 'label' => $label.('' !== $unit ? ' ('.$unit.')' : ''), 'constraints' => [new Assert\Range(min: $min, max: $max)], 'attr' => [...$path('geometry.'.$key, 'number'), 'min' => $min, 'max' => $max, 'step' => in_array($key, ['borderPx', 'depth', 'noise'], true) ? 1 : .125]]);
         }
+        $geometry->add('highContrastBorders', CheckboxType::class, ['label' => 'Strong field borders', 'required' => false, 'attr' => $path('geometry.highContrastBorders', 'boolean')]);
         $builder->add($geometry);
         $typography = $builder->create('typography', FormType::class, ['label' => 'Typography']);
-        foreach (['bodyFontId' => 'Theme body font', 'headingFontId' => 'Theme heading font'] as $key => $label) {
-            $typography->add($key, ChoiceType::class, ['label' => $label, 'choices' => array_combine($options['font_ids'], $options['font_ids']), 'attr' => $path('typography.'.$key)]);
+        $choices = array_combine(array_unique([...['system-sans', 'system-serif', 'system-mono'], ...$options['font_ids']]), array_unique([...['system-sans', 'system-serif', 'system-mono'], ...$options['font_ids']]));
+        foreach ($this->fonts->catalogue() as $id => $font) { unset($choices[$id]); $choices[$font['family']] = $id; }
+        foreach (['bodyFontId' => 'Theme body font', 'headingFontId' => 'Theme heading font', 'codeFontId' => 'Theme code font'] as $key => $label) {
+            $typography->add($key, ChoiceType::class, ['label' => $label, 'choices' => $choices, 'empty_data' => 'system-mono', 'attr' => $path('typography.'.$key)]);
+            $role = substr($key, 0, -6);
+            $typography->add($role.'Weight', IntegerType::class, ['label' => ucfirst($role).' weight', 'required' => false, 'constraints' => [new Assert\Range(min: 100, max: 1000)], 'attr' => [...$path('typography.'.$role.'Weight', 'number'), 'min' => 100, 'max' => 1000, 'step' => 1]]);
+            $typography->add($role.'Style', ChoiceType::class, ['label' => ucfirst($role).' style', 'choices' => ['Normal' => 'normal', 'Italic (real face only)' => 'italic'], 'attr' => $path('typography.'.$role.'Style')]);
         }
         $typography->add('textClass', ChoiceType::class, ['label' => 'Theme text size', 'choices' => array_combine(['text-xs', 'text-sm', 'text-base', 'text-lg', 'text-xl'], ['text-xs', 'text-sm', 'text-base', 'text-lg', 'text-xl']), 'attr' => $path('typography.textClass')]);
         $typography->add('rootFontSizePx', IntegerType::class, ['label' => 'Theme root size (px)', 'constraints' => [new Assert\Range(min: 12, max: 24)], 'attr' => [...$path('typography.rootFontSizePx', 'number'), 'min' => 12, 'max' => 24]]);
@@ -52,6 +62,6 @@ final class ThemeType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['existing' => false, 'revision' => 0, 'font_ids' => ['system-sans', 'system-serif', 'system-mono']]);
+        $resolver->setDefaults(['existing' => false, 'revision' => 0, 'family_label' => null, 'font_ids' => ['system-sans', 'system-serif', 'system-mono']]);
     }
 }

@@ -1,9 +1,13 @@
 import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
-    static targets = ['rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'reference', 'props', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs'];
-    static values = { tree: Object, choices: Array, revision: Number, item: String, url: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String };
+    static targets = ['rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'reference', 'props', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs', 'bodyFont', 'headingFont', 'codeFont', 'theme', 'presetStatus'];
+    static values = { tree: Object, choices: Array, revision: Number, item: String, url: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, settings: Object, themes: Object, presetUrl: String };
     connect() {
         this.model = structuredClone(this.treeValue); this.path = []; this.epoch = 0;
+        for (const key of ['bodyFont', 'headingFont', 'codeFont']) this[`${key}Target`].value = this.settingsValue[key];
+        this.themeTarget.value = this.settingsValue.themeReleaseId || '';
+        this.disableJsTarget.checked = this.settingsValue.scripts === false;
+        this.frameTarget.style.width = `${this.settingsValue.width || 768}px`;
         this.render();
         this.unload = event => { if (this.dirty) { event.preventDefault(); event.returnValue = ''; } };
         this.message = event => {
@@ -97,6 +101,24 @@ export default class extends Controller {
         finally{this.saving=false;if(saved)this.schedule();}
     }
     schedule() { clearTimeout(this.timer); this.epoch++; this.statusTarget.textContent = 'Stale preview — changes pending'; this.timer = setTimeout(() => this.preview(), 300); }
+    settings() {
+        return { ...this.settingsValue, bodyFont: this.bodyFontTarget.value, headingFont: this.headingFontTarget.value, codeFont: this.codeFontTarget.value, themeReleaseId: this.themeTarget.value || null, scripts: !this.disableJsTarget.checked };
+    }
+    themeChanged() {
+        const theme = this.themesValue[this.themeTarget.value]?.document;
+        if (theme) {
+            for (const key of ['bodyFont', 'headingFont', 'codeFont']) this[`${key}Target`].value = 'theme';
+            this.settingsValue = { ...this.settingsValue, rootSize: theme.typography.rootFontSizePx, textClass: theme.typography.textClass };
+        }
+        this.schedule();
+    }
+    async savePreset() {
+        this.presetStatusTarget.textContent = 'Saving renderer settings…';
+        try {
+            await this.json(this.presetUrlValue, { method: 'PUT', body: JSON.stringify(this.settings()) });
+            this.presetStatusTarget.textContent = 'Renderer settings saved';
+        } catch (error) { this.presetStatusTarget.textContent = error.message; }
+    }
     async cancel(id) { if (!id) return; try { await this.json(this.statusUrlValue.replace('__JOB__',id), { method: 'DELETE', keepalive: true }); } catch {} }
     async preview() {
         if(this.saving)return;
@@ -108,14 +130,14 @@ export default class extends Controller {
             if (epoch !== this.epoch) return;
             this.generatedTarget.value = prepared.sourceMap[prepared.manifestData.entry];
             const channel = [...crypto.getRandomValues(new Uint8Array(16))].map(v=>v.toString(16).padStart(2,'0')).join('');
-            const created = await this.json(this.createUrlValue, { method: 'POST', body: JSON.stringify({ itemId: this.itemValue, sequence: epoch, channel, manifestData: prepared.manifestData, sourceMap: prepared.sourceMap, preset: { scripts: !this.disableJsTarget.checked } }) });
+            const created = await this.json(this.createUrlValue, { method: 'POST', body: JSON.stringify({ itemId: this.itemValue, sequence: epoch, channel, manifestData: prepared.manifestData, sourceMap: prepared.sourceMap, preset: this.settings() }) });
             if (epoch !== this.epoch) { this.cancel(created.id); return; } this.job = created.id;
             let state;
             do { state = await this.json(this.statusUrlValue.replace('__JOB__',created.id)); if (epoch !== this.epoch) return; if (['failed','cancelled','expired'].includes(state.status)) throw Error(state.error?.message || state.status); if (state.status !== 'succeeded') await new Promise(r=>setTimeout(r,100)); } while (state.status !== 'succeeded');
             const document = await this.json(this.documentUrlValue.replace('__JOB__',created.id)); if (epoch !== this.epoch || document.sequence !== epoch) return;
-            this.channel = channel; this.frameTarget.srcdoc = document.html; this.statusTarget.textContent = 'Composition preview current';
+            this.channel = channel; this.frameTarget.setAttribute('sandbox', this.disableJsTarget.checked ? '' : 'allow-scripts'); this.frameTarget.srcdoc = document.html; this.statusTarget.textContent = 'Composition preview current';
         } catch (error) { if (epoch === this.epoch) this.statusTarget.textContent = `Stale preview — ${error.message}`; }
     }
-    width(event) { this.frameTarget.style.width = `${event.currentTarget.dataset.width}px`; }
+    width(event) { const width = Number(event.currentTarget.dataset.width); this.settingsValue = { ...this.settingsValue, width }; this.frameTarget.style.width = `${width}px`; }
     reset() { clearTimeout(this.timer); this.epoch++; this.cancel(this.job); this.job = null; this.channel = null; this.frameTarget.srcdoc = ''; this.statusTarget.textContent = 'Preview reset. Build preview to resume.'; }
 }

@@ -1,0 +1,593 @@
+{
+  "schemaVersion": 1,
+  "reference": "dropbox",
+  "name": "Dropbox",
+  "url": "https://www.dropbox.com/",
+  "surface": "Public marketing homepage",
+  "attribution": "Independent design observations from Dropbox official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+  "modes": [
+    {
+      "mode": "light",
+      "observed": {
+        "documentedColors": [],
+        "controls": [
+          {
+            "selector": "[data-styleguide-sample=\"sample-0\"]",
+            "tag": "A",
+            "href": "#main-content",
+            "text": "Skip to main content",
+            "background": "rgb(30, 25, 25)",
+            "color": "rgb(247, 245, 242)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(247, 245, 242)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-37\"]",
+            "tag": "A",
+            "href": "/plans",
+            "text": "Get started",
+            "background": "rgb(0, 97, 254)",
+            "color": "rgb(247, 245, 242)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "12px",
+            "borderColor": "rgb(0, 97, 254)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "[data-styleguide-sample=\"sample-73\"]",
+            "tag": "A",
+            "href": "/plans",
+            "text": "Try Dropbox free",
+            "background": "rgb(0, 97, 254)",
+            "color": "rgb(247, 245, 242)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "16px",
+            "borderColor": "rgb(0, 97, 254)",
+            "borderWidth": "2px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          }
+        ],
+        "inlineStyleBytes": 0,
+        "title": "Dropbox: Secure cloud storage, file sharing, and more",
+        "lang": "en",
+        "tokens": {},
+        "availableTokens": {
+          "--color__error--dark": "#9a0032",
+          "--dig-color__accent__purple": "#78286e",
+          "--dig-color__identity__on-cyan": "#055463",
+          "--color__inverse__error__background": "#f7561d26",
+          "--DWG__TEMP__color__accent__cloud": "#b4c8e1",
+          "--color__inverse__glyph__accent": "#3984ff",
+          "--dig-color__shadow__elevated": "#0000001a",
+          "--type__body__xsmall--lineheight_label": "14px",
+          "--type__body__medium--fontsize": "14px",
+          "--dig-color__identity__purple": "#c8aff0",
+          "--DWG__TEMP__color__button__primary__active": "#0050d0",
+          "--color__opacity--lighten3": "#fff3",
+          "--dwg-color__secondary__base": "#050505",
+          "--DWG__TEMP__color__brand__graphite_500": "#161313",
+          "--color__alert__border--faint": "#9b003252",
+          "--dig-color__selection__surface--state-2": "#cacdd2",
+          "--DWG__TEMP__color__inverse__success__border": "#b4dc19",
+          "--DWG__TEMP__color__inverse__faint__text": "hsla(36,24%,96%,.6)",
+          "--dig-color__opacity__surface": "#d1d3d63b",
+          "--dig-color__highlight__yellow--bold": "#eecc5d",
+          "--color__inverse__standard__background": "#161313",
+          "--dig-color__secondary__base--state-1": "#2a2b2b",
+          "--type__body__monospace--fontweight_strong": "600",
+          "--color__core__accent": "#0061fe",
+          "--color__black--40": "#999",
+          "--dig-color__identity__on-green": "#175641",
+          "--dig-type__lineheight__label__large": "20px",
+          "--color__inverse__core__primary": "#f7f5f2",
+          "--color__inverse__alert__text": "#fa551e",
+          "--dwg-theme__color__standard__text": "#1e1919",
+          "--dig-color__secondary__surface--state-2": "#cacdd2",
+          "--color__faint__border": "#a6917133",
+          "--dig-type__size__text__small": "12px",
+          "--DWG__TEMP__color__inverse__faint__border": "#8e8b8733",
+          "--dwg-theme__color__core__accent": "#0061fe",
+          "--dig-type__size__text__large": "16px",
+          "--color__attention__border": "#0061fe",
+          "--dig-color__primary__surface--state-2": "#b4d1ff",
+          "--DWG__TEMP__color__inverse__warning__text": "#fad24b",
+          "--color__highlight__permanent": "#8fbaff",
+          "--dig-color__fileicon__container": "#f7f5f2",
+          "--dig-color__primary-cta__on-base": "#f2f7ff",
+          "--color__opacity--lighten2": "#ffffff26",
+          "--dig-color__warning__on-surface": "#755f1a",
+          "--dig-color__highlight__red--bold": "#fb9d83",
+          "--dwg-theme__color__faint__background": "#f7f5f2",
+          "--color__warning__border": "#9b6400",
+          "--color__inverse__disabled__text": "#f7f5f24d",
+          "--type__body__standard--fontsize": "14px",
+          "--dig-color__identity__green": "#b4dc19",
+          "--dig-color__alert__surface": "#f5e5eb",
+          "--color__inverse__faint__border": "#8e8b8733",
+          "--type__title__standard--fontweight_strong": "500",
+          "--dig-color__utility__overlay-blur": "#0000008c",
+          "--color__accent__rust": "#be4b0a",
+          "--color__accent__sunset": "#fa551e",
+          "--dig-color__foldericon__container": "#a1c9f7",
+          "--type__body__medium--lineheight_label": "18px",
+          "--dig-color__alert__on-surface": "#c0154c",
+          "--dwg-theme__color__core__secondary": "#f7f5f2",
+          "--color__sapphire--5": "#edf4ff",
+          "--DWG__TEMP__color__inverse__disabled__text": "hsla(36,24%,96%,.3)",
+          "--color__inverse__glyph__primary": "#696663",
+          "--DWG__TEMP__color__brand__coconut_600": "#eee9e2",
+          "--DWG__TEMP__color__brand__graphite_300": "#242121",
+          "--color__error__border": "#9a0032",
+          "--color__white": "#fff",
+          "--DWG__TEMP__color__inverse__standard__background": "#161313",
+          "--color__highlight__green__mixed": "#9ebb2a",
+          "--DWG__TEMP__color__brand__coconut_200": "#fff",
+          "--color__dragselect__border": "#00000080",
+          "--color__accent__plum": "#78286e",
+          "--dwg-theme__color__attention__background--faint": "rgba(0,97,254,.08)",
+          "--color__accent__tangerine": "#ff8c19",
+          "--dig-radius__medium": "0",
+          "--DWG__TEMP__color__brand__coconut_500": "#f2eee8",
+          "--dwg-theme__color__attention__background": "rgba(0,97,254,.16)",
+          "--dig-color__highlight__green": "#dff29f",
+          "--DWG__TEMP__color__warning__border": "#9b6400",
+          "--DWG__TEMP__color__inverse__standard__text": "#f7f5f2",
+          "--dwg-theme__color__opacity--3": "hsla(36,23%,55%,.32)",
+          "--dig-color__warning__on-base": "#f9f6f0",
+          "--color__highlight__purple__permanent": "#bf9ff4",
+          "--dwg-theme__color__success__border--faint": "rgba(45,122,2,.32)",
+          "--DWG__TEMP__color__inverse__disabled__background": "#d8d3cb",
+          "--color__inverse__error__border": "#f7561d",
+          "--DWG__TEMP__color__brand__coconut_300": "#faf9f7",
+          "--dwg-theme__color__inverse__standard__text": "#f7f5f2",
+          "--color__accent__azalea": "#cd2f7b",
+          "--dig-color__identity__yellow": "#fad24b",
+          "--DWG__TEMP__color__accent__azalea": "#cd2f7b",
+          "--dwg-theme__color__inverse__warning__text": "#fad24b",
+          "--dig-color__identity__red": "#fa551e",
+          "--dig-color__highlight__blue": "#b4d1ff",
+          "--dig-color__selection__base--state-2": "#363739",
+          "--color__accent__orchid": "#c8aff0",
+          "--color__button__primary__hover": "#0057e5",
+          "--color__inverse__opacity--3": "#8e8b8752",
+          "--type__title__small--fontweight": "400",
+          "--type__body__large--fontsize": "16px",
+          "--color__inverse__standard__text": "#f7f5f2",
+          "--dig-color__success__surface--state-2": "#83c3ad",
+          "--DWG__TEMP__color__standard__background": "#fff",
+          "--DWG__TEMP__color__inverse__success__background": "rgba(180,220,25,.3)",
+          "--DWG__TEMP__color__accent__lime": "#b4dc19",
+          "--dig-color__highlight__yellow--bolder": "#dcaf21",
+          "--dig-color__identity__magenta": "#ffafa5",
+          "--type__body__standard--fontweight": "400",
+          "--color__accent__navy": "#283750",
+          "--color__inverse__alert__border": "#fa551e",
+          "--type__body__standard--lineheight_label": "18px",
+          "--DWG__TEMP__color__utility__focusring": "#428bff",
+          "--DWG__TEMP__color__accent__pink": "#ffafa5",
+          "--color__inverse__attention__background": "#3984ff66",
+          "--dig-color__selection__on-base": "#f7f5f2",
+          "--color__inverse__attention__border": "#3984ff",
+          "--dig-radius__xlarge": "0",
+          "--color__highlight__border": "#ffe7aa",
+          "--dwg-theme__color__inverse__disabled__text": "hsla(36,24%,96%,.3)",
+          "--color__success--light": "#b6de19",
+          "--color__inverse__faint__text": "#f7f5f299",
+          "--color__error__text": "#9a0032",
+          "--dig-color__highlight__red": "#fec0af",
+          "--dig-color__accent__red": "#9b0032",
+          "--dwg-theme__color__warning__text": "#9b6400",
+          "--DWG__TEMP__color__faint__border": "#a6917133",
+          "--dig-color__primary__base--state-1": "#004dc7",
+          "--color__sapphire--110": "#00125c",
+          "--color__sapphire--100": "#0d2481",
+          "--dwg-theme__color__alert__border--faint": "rgba(155,0,50,.32)",
+          "--dig-color__identity__on-purple": "#682760",
+          "--dig-color__success__on-surface": "#206f54",
+          "--color__faint__background": "#f7f5f2",
+          "--__desktopMacBodyFontStack": "Atlas Grotesk Web, Atlas Grotesk, system-ui",
+          "--dwg-theme__color__alert__border": "#9b0032",
+          "--color__standard__border": "#a69e9299",
+          "--type__body__small--lineheight_label": "16px",
+          "--dig-color__utility__focus-ring": "#3080ff",
+          "--color__inverse__disabled__border": "#f7f5f24d",
+          "--type__title__small--fontsize": "16px",
+          "--DWG__TEMP__color__faint__background": "#f7f5f2",
+          "--dig-type__lineheight__label__xsmall": "14px",
+          "--color__inverse__warning__border--faint": "#fad24b66",
+          "--dig-color__highlight__purple--bold": "#c1ace7",
+          "--color__inverse__elevated__background": "#2b2929",
+          "--color__inverse__warning__text": "#fad24b",
+          "--dig-color__highlight__yellow": "#fbe8ae",
+          "--dig-color__accent__yellow": "#9b6400",
+          "--DWG__TEMP__color__inverse__warning__border": "#fad24b",
+          "--DWG__TEMP__color__accent__rust": "#be4b0a",
+          "--dig-color__primary-cta__base": "#0061fe",
+          "--dig-color__background__subtle": "#f7f5f2",
+          "--color__inverse__alert__border--faint": "#fa551e66",
+          "--color__disabled__border": "#c0bbb4",
+          "--dig-color__selection__surface--state-1": "#d7dade",
+          "--dig-color__secondary__base--state-2": "#363739",
+          "--type__body__small--fontsize": "12px",
+          "--type__body__large--fontweight_strong": "500",
+          "--type__title__medium--fontsize": "22px",
+          "--color__inverse__highlight__border": "#ffe7aa",
+          "--DWG__TEMP__color__inverse__alert__border--faint": "rgba(250,85,30,.4)",
+          "--type__title__large--fontweight_strong": "500",
+          "--type__body__standard--fontfamily": "Atlas Grotesk Web, Atlas Grotesk, AtlasGrotesk, -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Helvetica, Arial, sans-serif,\"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "--dig-color__highlight__blue--bold": "#8bb7ff",
+          "--type__body__xlarge--fontweight": "400",
+          "--dig-color__opacity__surface--state-1": "#d1d3d661",
+          "--color__opacity--1": "#a6917124",
+          "--dig-color__secondary__on-base": "#f7f5f2",
+          "--DWG__TEMP__color__accent__orchid": "#c8aff0",
+          "--dig-color__success__base": "#0f503c",
+          "--color__crimson--100": "#9b0033",
+          "--dwg-theme__color__opacity--4": "rgba(0,0,0,.08)",
+          "--color__elevated__background": "#fbfaf9",
+          "--DWG__TEMP__color__attention__text": "#0061fe",
+          "--dig-color__background__sunken": "#f1f2f4",
+          "--dig-color__sync__neutral": "#65696e",
+          "--dwg-theme__color__primary__button--active": "#0050d0",
+          "--type__body__standard--fontweight_strong": "500",
+          "--dwg-theme__color__primary__button--hover": "#0057e5",
+          "--color__highlight__yellow__mixed": "#d6a400"
+        },
+        "elements": {
+          "body": {
+            "selector": "body",
+            "tag": "BODY",
+            "href": null,
+            "text": "window.__SERVED_BY_EDISON_WEB_SERVER__ = true;\n\nconst PAGE_INIT_DATA = {\n    sentryOptions: {\"dsn\":\"",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "heading": {
+            "selector": "h1",
+            "tag": "H1",
+            "href": null,
+            "text": "Get to work, with a lot less work",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(30, 25, 25)",
+            "fontFamily": "\"Sharp Grotesk\", SharpGrotesk, \"Sharp Grotesk KR\", \"Sharp Grotesk Thai\", \"Atlas Grotesk Web\", \"Atlas Grotesk\", AtlasGrotesk, -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+            "fontSize": "40px",
+            "lineHeight": "48px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(30, 25, 25)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "surface": {
+            "selector": "main",
+            "tag": "MAIN",
+            "href": null,
+            "text": "Get to work, with a lot less workDropbox delivers tools that help you collaborate with ease, move wo",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "action": {
+            "selector": "a[href*=\"/plans\"]",
+            "tag": "A",
+            "href": "/plans",
+            "text": "Pricing",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(30, 25, 25)",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(30, 25, 25)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "field": null,
+          "card": null,
+          "code": null
+        }
+      },
+      "requests": [
+        {
+          "url": "https://www.dropbox.com/",
+          "sha256": "ef7d7b850f953ae860ff80325ef46795130fc56cc9effb9ae45ac1eb0b03cdb3",
+          "retrievedAt": "2026-10-27T06:44:29.270Z",
+          "contentType": "text/html; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/accessibility-vflIgmyfQ.css",
+          "sha256": "c5c9915783508df4e2a70a4ddf79fea8c44cb775ca40fa7abbaf27d5b1376491",
+          "retrievedAt": "2026-10-27T06:44:30.271Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/dig-fonts/index.metaserver-vfl5iESyn.css",
+          "sha256": "8a4311e35fe912f81d48e2fb58c5b99221e8d581cdd121f9fdaf5d714d09cec9",
+          "retrievedAt": "2026-10-27T06:44:30.337Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/dig-components/tokens-vflT6EF45.css",
+          "sha256": "d70755d0ac0fa6efc917d3095e5068074a82285ca77bc3b0ffa9e9838e7f4678",
+          "retrievedAt": "2026-10-27T06:44:30.268Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/dig-fonts/sharp_grotesk_23.metaserver-vflfbDsxO.css",
+          "sha256": "445f7a6c0a6d5d4f76fc3c5b0036740a72ea614e7bd8b64494fd9836c09c36a3",
+          "retrievedAt": "2026-10-27T06:44:30.377Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/font_sharp_grotesk-vflwgPRUu.scss",
+          "sha256": "3c4652ff387a406d73722412f8b62670c4f238d5e1ef9c089c7a00067f695932",
+          "retrievedAt": "2026-10-27T06:44:30.435Z",
+          "contentType": "text/x-scss; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/notify-vflC8Ebls.css",
+          "sha256": "3b0b9c4092fe25e13dc2e9ca47e11592f8426b827c2f1aa3b769004795499be9",
+          "retrievedAt": "2026-10-27T06:44:30.425Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/warp/skip_to_main_content-vflTjBUa3.css",
+          "sha256": "3c1edea07f8bad97670b6bb5895958b6cc3a0406001b4700ae19f093a469b750",
+          "retrievedAt": "2026-10-27T06:44:30.304Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/index.web-vfl5-i84a.css",
+          "sha256": "6b8c7489761faca2e6f4935bd516fe4fc9e16e4cc06fe79ed03c7328c7c3c3a8",
+          "retrievedAt": "2026-10-27T06:44:30.399Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/font_paper_atlas_grotesk-vflz8hAHu.css",
+          "sha256": "32bd5fc54fc9bc499650950a4bfb5639e76e3f3b90aff33052e97b4f3d3b9ae7",
+          "retrievedAt": "2026-10-27T06:44:30.378Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/css/font_sharp_grotesk-vfl5HqCa_.css",
+          "sha256": "a8a254512b722646b856ab0d0cd35c325eb152190f3758b64877442beebff53b",
+          "retrievedAt": "2026-10-27T06:44:30.376Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/js/styles/flip-icon-in-rtl.module.out-vfl23IWBx.css",
+          "sha256": "7c9a80ca825d2547eda81929a02422a3482cc9ddfa07f46afe80b14b09461039",
+          "retrievedAt": "2026-10-27T06:44:30.288Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/js/ungated-file-app/src/components/file-input/index.module.out-vflY4y1Ks.css",
+          "sha256": "cbe26e7211917a70fb51ab4d7b444550eb53c75ab70eac6a67726ce8a75444e8",
+          "retrievedAt": "2026-10-27T06:44:30.317Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/components/common/warp_navattic_tour_plank/navattic.module.out-vfl-egEH1.css",
+          "sha256": "3fdb736d382de9de3b6dd6741ee3b43d724da2bc4a72f0dfa559bacac23afe56",
+          "retrievedAt": "2026-10-27T06:44:30.425Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/components/dwg/dwg_marketo_form_plank/index.module.out-vflKALJqd.css",
+          "sha256": "5f7152e65a0d4bda4b4b3213bb12d1fa83e9fdc6601e966b20e802d44bd60256",
+          "retrievedAt": "2026-10-27T06:44:30.313Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/components/dwg/dwg_pdf_conversion_plank/index.module.out-vfl3Y86sQ.css",
+          "sha256": "a498d6b57a9906837544be7d215b23cd49e74d3104b17c5e2dde905a18f2c3e5",
+          "retrievedAt": "2026-10-27T06:44:30.332Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/components/dwg/dwg_release_notes_plank/styles.module.out-vfl72agt9.css",
+          "sha256": "b16e7d688df514fa16c536ecc57aa34ee385b0be5394aa2560a4412e83e2b7be",
+          "retrievedAt": "2026-10-27T06:44:30.355Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/metaserver/static/js/warp/context/warp_context.module.out-vflyIPkeL.css",
+          "sha256": "fa8196c9c5bbef6c1006a04587bfb0971102c020837cec505c6d2b31622b288a",
+          "retrievedAt": "2026-10-27T06:44:30.426Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-anchor-target/anchor-target.module.out-vfl9OQ69U.css",
+          "sha256": "f915ca9ddfb6b4f7e34b190c6e154a69397795b3091e113a8100ad3ade4b8ed4",
+          "retrievedAt": "2026-10-27T06:44:30.302Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-animated-ai-sparkle-icon/index.module.out-vflCWPD58.css",
+          "sha256": "6565dd38f3d9bb3dfb4bad94f4a7ca3e3cc05f4e611c82bc753c368fb8bef742",
+          "retrievedAt": "2026-10-27T06:44:30.426Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-animated-paragraph/index.module.out-vflB-IPow.css",
+          "sha256": "a197ffa85568890af5d45aa135fcac21620da2183cac5ad0d1781d81668682b2",
+          "retrievedAt": "2026-10-27T06:44:30.420Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-card/index.module.out-vflHlbPuI.css",
+          "sha256": "4c00962bb68daaa57720ea1b18575556f01861a32eb89287ae7cd25918190c6e",
+          "retrievedAt": "2026-10-27T06:44:30.377Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-label/index.module.out-vfluuxnqu.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-cta-block/index.module.out-vflfJjs_m.css",
+          "sha256": "9e3561a383f8f8d4be86fe15b0ca9cf02eabf825ed2871945b7a9b5e229e6d40",
+          "retrievedAt": "2026-10-27T06:44:30.380Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-cta-select/index.module.out-vflPqx20J.css",
+          "sha256": "00e3660ddd92870ad55ea722725b1a2414692243d4204275564a1ed8158e7920",
+          "retrievedAt": "2026-10-27T06:44:30.428Z",
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-pill/index.module.out-vfl1O9oP6.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-recommendation-pill/index.module.out-vflYL3vJI.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-rive/index.module.out-vflnQt09g.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/components/dwg-strikethrough-text/index.module.out-vflY4afkx.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/clickable-card/index.module.out-vflAFeP4A.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/horizontal-scroll/horizontal-scroll.module.out-vflQDdZxp.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/lightbox/lightbox.module.out-vfl7K-Oef.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/quote-card/index.module.out-vflWfFHzI.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/ticker/list-ticker/list-ticker.module.out-vfl9biCE3.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/ticker/logos-ticker/logos-ticker.module.out-vflZPIBKa.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/components/ticker/loop-ticker/loop-ticker.module.out-vflb24FhK.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/planks/section-wrapper-plank/index.module.out-vfls9B-nK.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/experimental/planks/security-plank/index.module.out-vfl6C5Qwu.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-article-hero-plank/index.module.out-vflRKto6X.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-banner-plank/index.module.out-vflB9kpmz.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-feature-highlight-plank/index.module.out-vfloS2_4H.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-headline-plank/index.module.out-vflpBb47N.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-hero-l3-plank/index.module.out-vflwuZPrQ.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-media-text-plank/index.module.out-vflNjRiXf.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-multi-column-plank/index.module.out-vflJkTVdn.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-plan-cards-v2-plank/index.module.out-vfladK_98.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-promo-banner-plank/index.module.out-vflGX_xMH.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-rich-text-plank/index.module.out-vflcKvJvv.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-rive-plank/index.module.out-vflHiVa6d.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-segmentation-plank/index.module.out-vflpVJncC.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-susi-headline-plank/index.module.out-vflh_MFfK.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-table-of-contents-plank/index.module.out-vflqBbZag.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/planks/dwg-table-plank/index.module.out-vflWqahQH.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/utilities/flip-icon-in-rtl.module.out-vflHLikh0.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://cfl.dropboxstatic.com/static/typescript/component_libraries/dwg-components/src/utilities/scrollbar.module.out-vflaMhf3G.css",
+          "error": "Reference request budget reached."
+        }
+      ],
+      "retrievedAt": "2026-10-27T06:44:29.270Z",
+      "method": "Passive Chromium computed styles and CSS custom properties; website scripts/fonts/images blocked; allowed HTTPS sources only."
+    }
+  ]
+}

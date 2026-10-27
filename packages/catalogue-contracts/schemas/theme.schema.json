@@ -182,6 +182,9 @@
             0,
             1
           ]
+        },
+        "highContrastBorders": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -223,6 +226,43 @@
           "type": "number",
           "minimum": 1,
           "maximum": 2
+        },
+        "codeFontId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "bodyWeight": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 1000
+        },
+        "bodyStyle": {
+          "enum": [
+            "normal",
+            "italic"
+          ]
+        },
+        "headingWeight": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 1000
+        },
+        "headingStyle": {
+          "enum": [
+            "normal",
+            "italic"
+          ]
+        },
+        "codeWeight": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 1000
+        },
+        "codeStyle": {
+          "enum": [
+            "normal",
+            "italic"
+          ]
         }
       },
       "required": [
@@ -267,6 +307,124 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 100
+          },
+          "category": {
+            "enum": [
+              "sans",
+              "serif",
+              "mono",
+              "display"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "pattern": "^https://",
+            "maxLength": 500
+          },
+          "sourceVersion": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "licensePath": {
+            "type": "string",
+            "pattern": "^licenses/[a-z][a-z0-9-]*\\.txt$",
+            "maxLength": 120
+          },
+          "licenseSha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "faces": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 24,
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "pattern": "^fonts/[a-f0-9]{64}\\.woff2$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 48,
+                  "maximum": 1048576
+                },
+                "weightMin": {
+                  "type": "integer",
+                  "minimum": 100,
+                  "maximum": 1000
+                },
+                "weightMax": {
+                  "type": "integer",
+                  "minimum": 100,
+                  "maximum": 1000
+                },
+                "style": {
+                  "enum": [
+                    "normal",
+                    "italic"
+                  ]
+                },
+                "subset": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9-]*$",
+                  "maxLength": 40
+                },
+                "unicodeRange": {
+                  "type": "string",
+                  "pattern": "^U\\+[0-9A-Fa-f]{1,6}(?:-[0-9A-Fa-f]{1,6})?(?:,U\\+[0-9A-Fa-f]{1,6}(?:-[0-9A-Fa-f]{1,6})?)*$",
+                  "maxLength": 2500
+                },
+                "axes": {
+                  "type": "object",
+                  "maxProperties": 10,
+                  "propertyNames": {
+                    "pattern": "^[A-Za-z0-9]{4}$"
+                  },
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "maxLength": 80
+                      },
+                      "min": {
+                        "type": "number"
+                      },
+                      "max": {
+                        "type": "number"
+                      },
+                      "default": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "min",
+                      "max",
+                      "default"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "path",
+                "sha256",
+                "bytes",
+                "weightMin",
+                "weightMax",
+                "style",
+                "subset",
+                "unicodeRange",
+                "axes"
+              ],
+              "additionalProperties": false
+            }
           }
         },
         "required": [
@@ -277,6 +435,193 @@
         "additionalProperties": false
       },
       "maxItems": 20
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "collection": {
+          "const": "website-inspired"
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "reference": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "surface": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "modeOrigin": {
+          "enum": [
+            "observed",
+            "derived"
+          ]
+        },
+        "retrievedAt": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "pattern": "^https://",
+                "maxLength": 800
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "revision": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 100
+              },
+              "method": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "attribution": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "url",
+              "sha256",
+              "method",
+              "attribution"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "values": {
+          "type": "object",
+          "maxProperties": 100,
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "observed",
+                  "adapted",
+                  "derived"
+                ]
+              },
+              "source": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 400
+              },
+              "observed": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ],
+                "maxLength": 2000
+              },
+              "value": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ],
+                "maxLength": 2000
+              },
+              "reason": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "kind",
+              "source",
+              "observed",
+              "value",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "fontSubstitutions": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "enum": [
+                  "body",
+                  "heading",
+                  "code"
+                ]
+              },
+              "observed": {
+                "type": "string",
+                "maxLength": 1000
+              },
+              "selected": {
+                "type": "string",
+                "maxLength": 80
+              },
+              "reason": {
+                "type": "string",
+                "maxLength": 500
+              }
+            },
+            "required": [
+              "role",
+              "observed",
+              "selected",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "omitted": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "managed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "collection",
+        "slug",
+        "title",
+        "reference",
+        "surface",
+        "modeOrigin",
+        "retrievedAt",
+        "sources",
+        "values",
+        "fontSubstitutions",
+        "omitted"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [
@@ -294,5 +639,5 @@
   ],
   "additionalProperties": false,
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$comment": "Validate referenced font IDs. local fonts require path/hash/license and valid WOFF2 bytes; system families resolve through the server allowlist."
+  "$comment": "Local WOFF2 metadata is backward compatible; byte validation and package-local file inventory are enforced by shared validators."
 }

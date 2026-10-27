@@ -1,0 +1,50 @@
+{
+  "url": "https://slack.com/?nojsmode=1",
+  "reason": "No permitted reference stylesheet loaded; unstyled fallback is not evidence.",
+  "retrievedAt": "2026-10-27T07:30:17.580Z",
+  "diagnostics": [
+    {
+      "mode": "light",
+      "requests": [
+        {
+          "url": "https://slack.com/?nojsmode=1",
+          "sha256": "23cd75173f5fcd24fe157e8088aa647e556d973bae48354983f7ba1fc50689b9",
+          "retrievedAt": "2026-10-27T06:44:17.466Z",
+          "contentType": "text/html; charset=utf-8"
+        },
+        {
+          "url": "https://a.slack-edge.com/bv1-13/rollup-style-spacesuit.46977564bf4d542d.min.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://a.slack-edge.com/bv1-13/rollup-style-product-uis-custom.4c221f0db7ec90f6.min.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://a.slack-edge.com/bv1-13/marketing-style-page-index-2025.c8ac49869939be15.min.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://a.slack-edge.com/bv1-13/marketing-style-page-index-2025-df.737fd706c0071d6d.min.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://a.slack-edge.com/bv1-13/legacy-style-libs-swiper.5fac27f383e63eb5.min.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://a.slack-edge.com/bv1-13/marketing-style-page-expanded-nav-es.b2ec11f2ef46e0d1.min.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://a.slack-edge.com/bv1-13/marketing-style-component-bento-box-sticky-toc.bec013b00d3d7582.min.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        },
+        {
+          "url": "https://a.slack-edge.com/bv1-13/marketing-style-onetrust-banner.a766f6366824ca39.min.css",
+          "error": "robots.txt unavailable: self-signed certificate in certificate chain"
+        }
+      ]
+    }
+  ]
+}

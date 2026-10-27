@@ -1,0 +1,1730 @@
+{
+  "schemaVersion": 1,
+  "reference": "github",
+  "name": "GitHub",
+  "url": "https://primer.style/product/primitives/color/",
+  "surface": "Primer product UI design tokens",
+  "attribution": "Independent design observations from GitHub official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+  "modes": [
+    {
+      "mode": "light",
+      "observed": {
+        "documentedColors": [
+          {
+            "text": "Aa --fgColor-accent #0969da",
+            "colors": [
+              "#0969da"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-attention #9a6700",
+            "colors": [
+              "#9a6700"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-black #1f2328",
+            "colors": [
+              "#1f2328"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-closed #d1242f",
+            "colors": [
+              "#d1242f"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-danger #d1242f",
+            "colors": [
+              "#d1242f"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-default #1f2328",
+            "colors": [
+              "#1f2328"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-disabled #818b98",
+            "colors": [
+              "#818b98"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-done #8250df",
+            "colors": [
+              "#8250df"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-draft #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-link #0969da",
+            "colors": [
+              "#0969da"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-muted #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-neutral #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-onEmphasis #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-onInverse #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-open #1a7f37",
+            "colors": [
+              "#1a7f37"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-severe #bc4c00",
+            "colors": [
+              "#bc4c00"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-sponsors #bf3989",
+            "colors": [
+              "#bf3989"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-success #1a7f37",
+            "colors": [
+              "#1a7f37"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-upsell #8250df",
+            "colors": [
+              "#8250df"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-white #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "--bgColor-accent-emphasis #0969da",
+            "colors": [
+              "#0969da"
+            ]
+          },
+          {
+            "text": "--bgColor-accent-muted #ddf4ff",
+            "colors": [
+              "#ddf4ff"
+            ]
+          },
+          {
+            "text": "--bgColor-attention-emphasis #9a6700",
+            "colors": [
+              "#9a6700"
+            ]
+          },
+          {
+            "text": "--bgColor-attention-muted #fff8c5",
+            "colors": [
+              "#fff8c5"
+            ]
+          },
+          {
+            "text": "--bgColor-black #1f2328",
+            "colors": [
+              "#1f2328"
+            ]
+          },
+          {
+            "text": "--bgColor-closed-emphasis #cf222e",
+            "colors": [
+              "#cf222e"
+            ]
+          },
+          {
+            "text": "--bgColor-closed-muted #ffebe9",
+            "colors": [
+              "#ffebe9"
+            ]
+          },
+          {
+            "text": "--bgColor-danger-emphasis #cf222e",
+            "colors": [
+              "#cf222e"
+            ]
+          },
+          {
+            "text": "--bgColor-danger-muted #ffebe9",
+            "colors": [
+              "#ffebe9"
+            ]
+          },
+          {
+            "text": "--bgColor-default #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "--bgColor-disabled #eff2f5",
+            "colors": [
+              "#eff2f5"
+            ]
+          },
+          {
+            "text": "--bgColor-done-emphasis #8250df",
+            "colors": [
+              "#8250df"
+            ]
+          },
+          {
+            "text": "--bgColor-done-muted #fbefff",
+            "colors": [
+              "#fbefff"
+            ]
+          },
+          {
+            "text": "--bgColor-draft-emphasis #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "--bgColor-draft-muted #818b981f",
+            "colors": [
+              "#818b98"
+            ]
+          },
+          {
+            "text": "--bgColor-emphasis #25292e",
+            "colors": [
+              "#25292e"
+            ]
+          },
+          {
+            "text": "--bgColor-inset #f6f8fa",
+            "colors": [
+              "#f6f8fa"
+            ]
+          },
+          {
+            "text": "--bgColor-inverse #25292e",
+            "colors": [
+              "#25292e"
+            ]
+          },
+          {
+            "text": "--bgColor-muted #f6f8fa",
+            "colors": [
+              "#f6f8fa"
+            ]
+          },
+          {
+            "text": "--bgColor-neutral-emphasis #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "--bgColor-neutral-muted #818b981f",
+            "colors": [
+              "#818b98"
+            ]
+          },
+          {
+            "text": "--bgColor-open-emphasis #1f883d",
+            "colors": [
+              "#1f883d"
+            ]
+          },
+          {
+            "text": "--bgColor-open-muted #dafbe1",
+            "colors": [
+              "#dafbe1"
+            ]
+          },
+          {
+            "text": "--bgColor-severe-emphasis #bc4c00",
+            "colors": [
+              "#bc4c00"
+            ]
+          },
+          {
+            "text": "--bgColor-severe-muted #fff1e5",
+            "colors": [
+              "#fff1e5"
+            ]
+          },
+          {
+            "text": "--bgColor-sponsors-emphasis #bf3989",
+            "colors": [
+              "#bf3989"
+            ]
+          },
+          {
+            "text": "--bgColor-sponsors-muted #ffeff7",
+            "colors": [
+              "#ffeff7"
+            ]
+          },
+          {
+            "text": "--bgColor-success-emphasis #1f883d",
+            "colors": [
+              "#1f883d"
+            ]
+          },
+          {
+            "text": "--bgColor-success-muted #dafbe1",
+            "colors": [
+              "#dafbe1"
+            ]
+          },
+          {
+            "text": "--bgColor-transparent #ffffff00",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "--bgColor-upsell-emphasis #8250df",
+            "colors": [
+              "#8250df"
+            ]
+          },
+          {
+            "text": "--bgColor-upsell-muted #fbefff",
+            "colors": [
+              "#fbefff"
+            ]
+          },
+          {
+            "text": "--bgColor-white #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "--borderColor-accent-emphasis #0969da",
+            "colors": [
+              "#0969da"
+            ]
+          },
+          {
+            "text": "--borderColor-accent-muted #54aeff66",
+            "colors": [
+              "#54aeff"
+            ]
+          },
+          {
+            "text": "--borderColor-attention-emphasis #9a6700",
+            "colors": [
+              "#9a6700"
+            ]
+          },
+          {
+            "text": "--borderColor-attention-muted #d4a72c66",
+            "colors": [
+              "#d4a72c"
+            ]
+          },
+          {
+            "text": "--borderColor-closed-emphasis #cf222e",
+            "colors": [
+              "#cf222e"
+            ]
+          },
+          {
+            "text": "--borderColor-closed-muted #ff818266",
+            "colors": [
+              "#ff8182"
+            ]
+          },
+          {
+            "text": "--borderColor-danger-emphasis #cf222e",
+            "colors": [
+              "#cf222e"
+            ]
+          }
+        ],
+        "controls": [
+          {
+            "selector": "[data-styleguide-sample=\"sample-10\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Give feedback",
+            "background": "rgb(246, 248, 250)",
+            "color": "rgb(37, 41, 46)",
+            "fontFamily": "\"Mona Sans VF\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans Backtick Fix\", \"Noto Sans\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "normal",
+            "borderRadius": "6px",
+            "borderColor": "rgb(209, 217, 224)",
+            "borderWidth": "1px",
+            "boxShadow": "rgba(31, 35, 40, 0.04) 0px 1px 0px 0px",
+            "backgroundImage": "none"
+          }
+        ],
+        "inlineStyleBytes": 0,
+        "title": "Color | Primer",
+        "lang": "en",
+        "tokens": {
+          "--bgColor-default": "#fff",
+          "--bgColor-muted": "#f6f8fa",
+          "--bgColor-inset": "#f6f8fa",
+          "--fgColor-default": "#1f2328",
+          "--bgColor-accent-emphasis": "#0969da",
+          "--bgColor-success-emphasis": "#1f883d",
+          "--bgColor-danger-emphasis": "#cf222e",
+          "--bgColor-attention-emphasis": "#9a6700",
+          "--borderRadius-medium": ".375rem"
+        },
+        "availableTokens": {
+          "--diffBlob-hunkNum-bgColor-rest": "#b6e3ff",
+          "--data-yellow-color-emphasis": "#b88700",
+          "--brand-text-weight-300": "400",
+          "--brand-control-radio-dot-checked-hover": "color-mix(in srgb, #08872b, #000 26%)",
+          "--brand-RiverBreakout-variant-gridline-spacing-outerBlock": "4rem",
+          "--brand-Button-icon-size-large": "1.25rem",
+          "--brand-Label-color-green-blue-start": "#08872b",
+          "--base-color-scale-teal-9": "#052b2c",
+          "--control-danger-fgColor-hover": "#d1242f",
+          "--button-danger-borderColor-rest": "#d1d9e0",
+          "--fontStack-sansSerif": "\"Mona Sans VF\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans Backtick Fix\", \"Noto Sans\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "--display-orange-borderColor-emphasis": "#b8500f",
+          "--data-coral-color-muted": "#ffe5db",
+          "--brand-breakpoint-xsmall": "20rem",
+          "--brand-breakpoint-large": "63.25rem",
+          "--brand-IDE-playPauseControl-rest": "#d2d9d4",
+          "--progressBar-bgColor-neutral": "#59636e",
+          "--brand-Tabs-list-borderWidth-active": "max(1px, .0625rem)",
+          "--brand-footer-backToTop-borderColor-hover": "#d2d9d4",
+          "--brand-Prose-blockquote-spacing": "1.5rem",
+          "--brand-text-letterSpacing-100": ".21px",
+          "--brand-Testimonial-quoteMarkColor-pink-blue-end": "#0377ff",
+          "--brand-TextCursorAnimation-cursor-deleteColor": "#3094ff",
+          "--brand-Icon-color-lemon": "#a98906",
+          "--brand-Eyebrowbanner-fgColor-green-blue-end": "#0377ff",
+          "--header-borderColor-divider": "#818b98",
+          "--brand-Grid-spacing-margin": "1rem",
+          "--brand-Eyebrowbanner-icon-background-teal": "#daf9f5",
+          "--base-text-lineHeight-relaxed": "1.625",
+          "--brand-TextCursorAnimation-cursor-animationDuration": ".833s",
+          "--brand-videoPlayer-title-fgColor": "#f2f5f3",
+          "--label-orange-fgColor-hover": "#8d3c11",
+          "--brand-text-size-700": "2.5rem",
+          "--brand-videoPlayer-playButton-bgColor-rest": "#0377ff",
+          "--brand-Testimonial-quote-color-default": "#000",
+          "--base-color-scale-yellow-1": "#ffe777",
+          "--button-danger-borderColor-active": "#1f232826",
+          "--text-body-shorthand-small": "400 .75rem / 1.625 \"Mona Sans VF\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans Backtick Fix\", \"Noto Sans\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "--label-gray-fgColor-hover": "#4e535a",
+          "--label-gray-bgColor-rest": "#e8ecf2",
+          "--bgColor-white": "#fff",
+          "--controlKnob-borderColor-rest": "#d1d9e0",
+          "--brand-Eyebrowbanner-fgColor-purple-red-end": "#cf2230",
+          "--brand-color-text-emphasized": "#08872b",
+          "--label-yellow-borderColor": "#fff0",
+          "--text-title-size-large": "2rem",
+          "--brand-River-label-margin": "1rem",
+          "--bgColor-open-emphasis": "#1f883d",
+          "--brand-Accordion-toggle-color-end": "#0d6731",
+          "--brand-stack-gap-spacious": "3rem",
+          "--brand-text-subhead-size-medium": "1rem",
+          "--bgColor-neutral-emphasis": "#59636e",
+          "--base-color-scale-pink-5": "#ef2aa4",
+          "--brand-FeatureComparisonTable-refreshIndicator-fgColor": "#8534f3",
+          "--brand-LogoSuite-color-control-hover": "#e4ebe6",
+          "--fgColor-white": "#fff",
+          "--color-prettylights-syntax-markup-ignored-text": "#d1d9e0",
+          "--brand-InlineLink-transition-timing": ".3s",
+          "--label-red-fgColor-active": "#880c27",
+          "--brand-Label-color-yellow": "#be7d00",
+          "--brand-control-large-paddingBlock-condensed": ".75rem",
+          "--brand-footer-backToTop-bgColor-rest": "#00000003",
+          "--brand-VideoPlayer-range-borderRadius": ".1875rem",
+          "--brand-Label-color-teal": "#197b7b",
+          "--display-plum-borderColor-muted": "#f0cdfe",
+          "--text-subtitle-weight": "400",
+          "--brand-text-letterSpacing-700": "0",
+          "--button-outline-bgColor-hover": "#0969da",
+          "--bgColor-draft-muted": "#818b981f",
+          "--display-plum-fgColor": "#961edc",
+          "--label-orange-bgColor-rest": "#ffe7d1",
+          "--brand-text-weight-350": "400",
+          "--brand-animation-transition-default": "opacity .6s cubic-bezier(.16, 1, .3, 1), transform .6s cubic-bezier(.16, 1, .3, 1)",
+          "--contribution-winter-bgColor-4": "#0a3069",
+          "--brand-Eyebrowbanner-fgColor-default-end": "#cf2230",
+          "--base-color-scale-lime-3": "#d1f441",
+          "--brand-controlStack-large-gap-spacious": ".75rem",
+          "--text-title-lineHeight-large": "1.5",
+          "--brand-Eyebrowbanner-fgColor-blue-purple-end": "#8534f3",
+          "--control-transparent-bgColor-disabled": "#eff2f5",
+          "--diffBlob-expander-iconColor": "#59636e",
+          "--brand-Label-color-orange": "#b85b06",
+          "--button-danger-bgColor-active": "#a40e26",
+          "--brand-VideoPlayer-closedCaption-margin": "0 auto 15px auto",
+          "--controlKnob-borderColor-disabled": "#eff2f5",
+          "--label-teal-fgColor-hover": "#0d5b63",
+          "--button-outline-borderColor-active": "#1f232826",
+          "--fgColor-onEmphasis": "#fff",
+          "--control-borderColor-selected": "#f6f8fa",
+          "--base-color-scale-yellow-3": "#fabf21",
+          "--brand-control-color-fg-disabled": "#b6bfb8",
+          "--codeMirror-matchingBracket-fgColor": "#1f2328",
+          "--bgColor-success-emphasis": "#1f883d",
+          "--base-color-scale-gray-3": "#c4ccc6",
+          "--text-display-size": "2.5rem",
+          "--brand-FAQGroup-buttonIndicator-active": "#0d6731",
+          "--control-transparent-bgColor-selected": "#818b9826",
+          "--control-checked-bgColor-active": "#0757ba",
+          "--display-green-bgColor-emphasis": "#2c8141",
+          "--brand-IDE-scrollBar-bgColor": "transparent",
+          "--brand-animation-variant-scaleInLeft-start": ".9",
+          "--brand-Timeline-lineLength": "44ch",
+          "--buttonKeybindingHint-primary-borderColor-disabled": "#818b981a",
+          "--brand-Accordion-toggle-color-red": "#cf2230",
+          "--brand-box-spacing-condensed": "1rem",
+          "--label-pink-borderColor": "#fff0",
+          "--text-body-lineHeight-medium": "1.5",
+          "--display-auburn-borderColor-muted": "#e6d6d5",
+          "--brand-RiverBreakout-variant-gridline-spacing-outerInline": "4rem",
+          "--base-color-scale-orange-3": "#f08a3a",
+          "--label-olive-borderColor": "#fff0",
+          "--base-color-scale-teal-8": "#083d3d",
+          "--codeMirror-syntax-fgColor-support": "#0550ae",
+          "--brand-FrostedGlassVFX-blurIntensity-medium": "3rem",
+          "--brand-PricingOptions-item-bgColor-gradient-start": "#f2f5f3",
+          "--display-lime-fgColor": "#476c28",
+          "--brand-control-animation-duration": "80ms",
+          "--brand-LogoSuite-color-control-rest": "#f9fbf9",
+          "--base-color-scale-pink-1": "#ffc9f2",
+          "--display-lemon-bgColor-emphasis": "#866e04",
+          "--diffBlob-additionWord-fgColor": "#1f2328",
+          "--codeMirror-selection-bgColor": "#54aeff66",
+          "--brand-FeatureComparisonTable-label-accentColor": "#08872b",
+          "--base-color-scale-pink-8": "#651643",
+          "--label-purple-fgColor-rest": "#783ae4",
+          "--control-checked-fgColor-rest": "#fff",
+          "--controlTrack-bgColor-disabled": "#818b98",
+          "--brand-NavList-activeIndicator-color": "#08872b",
+          "--brand-Label-color-lime": "#92c219",
+          "--brand-Testimonial-quoteMarkBackground-blue-purple": "#ddf4ff",
+          "--brand-Section-variant-gridline-paddingInline": "4rem",
+          "--brand-borderInset-thick": "inset 0 0 0 max(2px, .125rem)",
+          "--text-title-weight-small": "600",
+          "--brand-Eyebrowbanner-fgColor-pink-blue-end": "#0377ff",
+          "--label-olive-bgColor-rest": "#f0f0ad",
+          "--codeMirror-syntax-fgColor-keyword": "#cf222e",
+          "--buttonKeybindingHint-default-fgColor-disabled": "#818b98",
+          "--base-color-scale-teal-2": "#6ee5dc",
+          "--brand-Testimonial-quoteMarkBackground-coral": "#fff0eb",
+          "--controlKnob-bgColor-checked": "#fff",
+          "--brand-text-size-800": "3rem",
+          "--brand-Eyebrowbanner-fgColor-default-start": "#8534f3",
+          "--label-orange-borderColor": "#fff0",
+          "--data-orange-color-emphasis": "#eb670f",
+          "--avatar-bgColor": "#fff",
+          "--brand-Timeline-bullet-size": ".5rem",
+          "--display-orange-fgColor": "#a24610",
+          "--label-cyan-borderColor": "#fff0",
+          "--brand-FAQ-heading-marginBottom": "6rem",
+          "--brand-FeatureComparisonTable-fourItems-featureColumnWidth": "20%",
+          "--fgColor-black": "#1f2328",
+          "--label-olive-bgColor-hover": "#dbe170",
+          "--color-ansi-white-bright": "#818b98",
+          "--brand-IDE-playPauseControl-hover": "#c4ccc6",
+          "--display-blue-bgColor-muted": "#d1f0ff",
+          "--brand-controlStack-small-gap-condensed": ".5rem",
+          "--brand-Label-color-purple": "#8534f3",
+          "--display-orange-bgColor-emphasis": "#b8500f",
+          "--diffBlob-deletionNum-bgColor": "#ffcecb",
+          "--base-color-scale-green-3": "#5fed83",
+          "--base-color-scale-pink-2": "#f67ed2",
+          "--brand-SubdomainNavBar-searchDialog-shadowColor": "#0000001a",
+          "--base-color-scale-lemon-5": "#a98906",
+          "--brand-RiverBreakout-variant-gridline-spacing-outerBlockEnd": "5rem",
+          "--base-color-scale-blue-6": "#0055d5",
+          "--button-primary-borderColor-active": "#1f232826",
+          "--overlay-bgColor": "#fff",
+          "--label-lime-fgColor-hover": "#3a5b25",
+          "--brand-Accordion-toggle-color-lemon": "#a98906",
+          "--brand-VideoPlayer-playButton-width": "6rem",
+          "--brand-button-subtle-fgColor-rest": "#000",
+          "--button-invisible-fgColor-active": "#25292e",
+          "--button-danger-iconColor-hover": "#fff",
+          "--brand-Testimonial-quoteMarkColor-red-orange-start": "#cf2230",
+          "--buttonKeybindingHint-danger-bgColor-active": "#1f232866",
+          "--brand-color-neutral-emphasis": "#77827a",
+          "--brand-borderWidth-thicker": "max(4px, .25rem)",
+          "--brand-Label-color-indigo": "#4956e5",
+          "--button-outline-fgColor-rest": "#0969da",
+          "--label-auburn-bgColor-hover": "#e6d6d5"
+        },
+        "elements": {
+          "body": {
+            "selector": "body",
+            "tag": "BODY",
+            "href": null,
+            "text": "Skip to main contentSkip to filter inputPrimer/Product UIProduct UIBrand UIOcticonsAccessibilityBran",
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "16px",
+            "lineHeight": "24px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "heading": {
+            "selector": "h1",
+            "tag": "H1",
+            "href": null,
+            "text": "Color",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Mona Sans\", MonaSansFallback, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "40px",
+            "lineHeight": "48px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "surface": {
+            "selector": "main",
+            "tag": "MAIN",
+            "href": null,
+            "text": "Product UIPrimitivesColorColorAn overview of all available color CSS variablesThis page only shows c",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(31, 35, 40)",
+            "fontFamily": "\"Mona Sans VF\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans Backtick Fix\", \"Noto Sans\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "16px",
+            "lineHeight": "24px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(31, 35, 40)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "action": {
+            "selector": "main a[href], main button, a[href], button",
+            "tag": "A",
+            "href": "#skip-nav",
+            "text": "Skip to main content",
+            "background": "rgb(3, 119, 255)",
+            "color": "rgb(9, 105, 218)",
+            "fontFamily": "\"Mona Sans\", MonaSansFallback, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "16px",
+            "lineHeight": "24px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(9, 105, 218)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "field": {
+            "selector": "input, select",
+            "tag": "INPUT",
+            "href": null,
+            "text": "",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(31, 35, 40)",
+            "fontFamily": "\"Mona Sans\", MonaSansFallback, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(31, 35, 40)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "card": null,
+          "code": {
+            "selector": "code, pre",
+            "tag": "CODE",
+            "href": null,
+            "text": "--fgColor-accent",
+            "background": "rgb(246, 248, 250)",
+            "color": "rgb(31, 35, 40)",
+            "fontFamily": "monospace",
+            "fontSize": "13.6px",
+            "lineHeight": "22.6667px",
+            "borderRadius": "8px",
+            "borderColor": "rgb(31, 35, 40)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          }
+        }
+      },
+      "requests": [
+        {
+          "url": "https://primer.style/product/primitives/color/",
+          "sha256": "91ecc8c3e8abc1f42f139256bca31ef2185589274c4c301a722840938ec9becc",
+          "retrievedAt": "2026-10-27T06:44:01.300Z",
+          "contentType": "text/html; charset=utf-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3a1ypu7as9o0k.css",
+          "sha256": "d30f89da1dc1dc170844354f19bfdb6fae36e22543357455645552a05247fec0",
+          "retrievedAt": "2026-10-27T06:44:01.688Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3h3metndm9t56.css",
+          "sha256": "7504719de9cbb1a2330d6158204e1bfda716b1fd45eed237b0b659e152eb4f98",
+          "retrievedAt": "2026-10-27T06:44:02.614Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3wg1jof9l62tp.css",
+          "sha256": "4e12d0a6f662f5a1de3251a5f51c870e6c15ef45783b7a0339fabcee31e6a438",
+          "retrievedAt": "2026-10-27T06:44:03.108Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3g0vt-115gahv.css",
+          "sha256": "a47c3603085564fe567a9ca3e461c66f95c3d5d88c3a4f84c5bf818581a641b4",
+          "retrievedAt": "2026-10-27T06:44:02.565Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/02-v6f_4_ldh0.css",
+          "sha256": "8e513360f669ca03065d14dd9bc75c2c91fd74f725bee9481516be7143eba36c",
+          "retrievedAt": "2026-10-27T06:44:02.395Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1202wcs9u857a.css",
+          "sha256": "8ca4dd6d618cc71fd08d7dac0e02dbb010715f20257613926bfb7ee6fe66b84e",
+          "retrievedAt": "2026-10-27T06:44:02.072Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2-3mv4vno1stt.css",
+          "sha256": "989959b0458cf1fd5dd069ea3a02286aaef6f00a965042344f003c6bb3e84fce",
+          "retrievedAt": "2026-10-27T06:44:02.393Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3ap4f4gcflne1.css",
+          "sha256": "3c9fdeca997751756382032fc5b38f72bc8bbb0138db520fb24e87824d7f089d",
+          "retrievedAt": "2026-10-27T06:44:02.089Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/0q-ykne_0-xi7.css",
+          "sha256": "88bcb44f95f3a8f77609ec1e5ebb9ce7991fb9d2f82ddaf7af70f5c4a5117edf",
+          "retrievedAt": "2026-10-27T06:44:02.086Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2gbdjcontl2i2.css",
+          "sha256": "c6463de92b524f2522eb0e6364bf8f7af4fd0fedc313b519954ad005df2720e5",
+          "retrievedAt": "2026-10-27T06:44:02.170Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1lgeq2htu45js.css",
+          "sha256": "59017efe4ca29a6e2afc7654cd9e59829d118f9bd1bbd04580a08f058d6c9357",
+          "retrievedAt": "2026-10-27T06:44:02.085Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/447orpj0f2m7x.css",
+          "sha256": "2a35949f65986bd73662db2752348a54824b33cfb3e8d4edc6f91627f40432f6",
+          "retrievedAt": "2026-10-27T06:44:02.073Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3wra7pyk5uwvf.css",
+          "sha256": "b5e7914b9171686cf95fd1f2c6c4a00f8882781d60cd68f62cde73ab35f0562c",
+          "retrievedAt": "2026-10-27T06:44:02.159Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/097ap26iinvlk.css",
+          "sha256": "4c6d08e2ec9336afd548aa9b2aa74d9e47db31b951625b48aa39816c8ff159ac",
+          "retrievedAt": "2026-10-27T06:44:02.229Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2yi14t3tjl4qg.css",
+          "sha256": "d2d189f7c3ca468f6a5c1ba771a1ca751976b1675233d533d3603ff3e9f6a577",
+          "retrievedAt": "2026-10-27T06:44:02.158Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2ncl2swcin1co.css",
+          "sha256": "6c9f5216dac4259c0b8c07668fbfde280964e5a31d1301477420da5f979a3754",
+          "retrievedAt": "2026-10-27T06:44:02.156Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/250p9-xrp6u73.css",
+          "sha256": "a5f999038cc79a131b7173a9f9d2ce56d84cdd9660a230a2a68dee80ca546f3d",
+          "retrievedAt": "2026-10-27T06:44:02.164Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1_r07ptpp5uco.css",
+          "sha256": "4d3b672ffe2140fed1f1ba935320881b276556ed038537f5763885834f1a0019",
+          "retrievedAt": "2026-10-27T06:44:02.177Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1lulcfizdgqda.css",
+          "sha256": "bcfbd69ad9b5cb62884fc2cc8c8698e47568ea1edaf64c1890be96adcf8e4afd",
+          "retrievedAt": "2026-10-27T06:44:02.226Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1cqdsq4plc8lu.css",
+          "sha256": "32718694bde73ee90fdbb239ca8b4d38b4749fafab29b17e9cc70716206e2173",
+          "retrievedAt": "2026-10-27T06:44:02.160Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/307vc_1m73ihn.css",
+          "sha256": "c2644d0c18eaf37179a52455c89a7c5222d6f2877ad01d86a5e560c1c627bc7b",
+          "retrievedAt": "2026-10-27T06:44:02.154Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1tbj0-e2v-6q8.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/29sl1yatw3-k3.css",
+          "sha256": "55d34a7e49eef995af1b2b46a3aa4549e4c8312f3a6f780d30553f05dbf61394",
+          "retrievedAt": "2026-10-27T06:44:02.274Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3zfnonmolvvvu.css",
+          "sha256": "2426a16241873bb9f91d92eec96799e1eb62ec32139fb9f69df55179c77ba98a",
+          "retrievedAt": "2026-10-27T06:44:02.160Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/44mj4wf5uwyzj.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/0ibtm302jy2-y.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2i1-mh4553kqc.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/0s60ko5o3y5ag.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2-5fu9h5i3ukf.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3--21h52_r349.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/0wvm2mvel2g_8.css",
+          "error": "Reference request budget reached."
+        }
+      ],
+      "retrievedAt": "2026-10-27T06:44:01.300Z",
+      "method": "Passive Chromium computed styles and CSS custom properties; website scripts/fonts/images blocked; allowed HTTPS sources only."
+    },
+    {
+      "mode": "dark",
+      "observed": {
+        "documentedColors": [
+          {
+            "text": "Aa --fgColor-accent #0969da",
+            "colors": [
+              "#0969da"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-attention #9a6700",
+            "colors": [
+              "#9a6700"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-black #1f2328",
+            "colors": [
+              "#1f2328"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-closed #d1242f",
+            "colors": [
+              "#d1242f"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-danger #d1242f",
+            "colors": [
+              "#d1242f"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-default #1f2328",
+            "colors": [
+              "#1f2328"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-disabled #818b98",
+            "colors": [
+              "#818b98"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-done #8250df",
+            "colors": [
+              "#8250df"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-draft #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-link #0969da",
+            "colors": [
+              "#0969da"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-muted #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-neutral #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-onEmphasis #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-onInverse #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-open #1a7f37",
+            "colors": [
+              "#1a7f37"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-severe #bc4c00",
+            "colors": [
+              "#bc4c00"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-sponsors #bf3989",
+            "colors": [
+              "#bf3989"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-success #1a7f37",
+            "colors": [
+              "#1a7f37"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-upsell #8250df",
+            "colors": [
+              "#8250df"
+            ]
+          },
+          {
+            "text": "Aa --fgColor-white #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "--bgColor-accent-emphasis #0969da",
+            "colors": [
+              "#0969da"
+            ]
+          },
+          {
+            "text": "--bgColor-accent-muted #ddf4ff",
+            "colors": [
+              "#ddf4ff"
+            ]
+          },
+          {
+            "text": "--bgColor-attention-emphasis #9a6700",
+            "colors": [
+              "#9a6700"
+            ]
+          },
+          {
+            "text": "--bgColor-attention-muted #fff8c5",
+            "colors": [
+              "#fff8c5"
+            ]
+          },
+          {
+            "text": "--bgColor-black #1f2328",
+            "colors": [
+              "#1f2328"
+            ]
+          },
+          {
+            "text": "--bgColor-closed-emphasis #cf222e",
+            "colors": [
+              "#cf222e"
+            ]
+          },
+          {
+            "text": "--bgColor-closed-muted #ffebe9",
+            "colors": [
+              "#ffebe9"
+            ]
+          },
+          {
+            "text": "--bgColor-danger-emphasis #cf222e",
+            "colors": [
+              "#cf222e"
+            ]
+          },
+          {
+            "text": "--bgColor-danger-muted #ffebe9",
+            "colors": [
+              "#ffebe9"
+            ]
+          },
+          {
+            "text": "--bgColor-default #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "--bgColor-disabled #eff2f5",
+            "colors": [
+              "#eff2f5"
+            ]
+          },
+          {
+            "text": "--bgColor-done-emphasis #8250df",
+            "colors": [
+              "#8250df"
+            ]
+          },
+          {
+            "text": "--bgColor-done-muted #fbefff",
+            "colors": [
+              "#fbefff"
+            ]
+          },
+          {
+            "text": "--bgColor-draft-emphasis #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "--bgColor-draft-muted #818b981f",
+            "colors": [
+              "#818b98"
+            ]
+          },
+          {
+            "text": "--bgColor-emphasis #25292e",
+            "colors": [
+              "#25292e"
+            ]
+          },
+          {
+            "text": "--bgColor-inset #f6f8fa",
+            "colors": [
+              "#f6f8fa"
+            ]
+          },
+          {
+            "text": "--bgColor-inverse #25292e",
+            "colors": [
+              "#25292e"
+            ]
+          },
+          {
+            "text": "--bgColor-muted #f6f8fa",
+            "colors": [
+              "#f6f8fa"
+            ]
+          },
+          {
+            "text": "--bgColor-neutral-emphasis #59636e",
+            "colors": [
+              "#59636e"
+            ]
+          },
+          {
+            "text": "--bgColor-neutral-muted #818b981f",
+            "colors": [
+              "#818b98"
+            ]
+          },
+          {
+            "text": "--bgColor-open-emphasis #1f883d",
+            "colors": [
+              "#1f883d"
+            ]
+          },
+          {
+            "text": "--bgColor-open-muted #dafbe1",
+            "colors": [
+              "#dafbe1"
+            ]
+          },
+          {
+            "text": "--bgColor-severe-emphasis #bc4c00",
+            "colors": [
+              "#bc4c00"
+            ]
+          },
+          {
+            "text": "--bgColor-severe-muted #fff1e5",
+            "colors": [
+              "#fff1e5"
+            ]
+          },
+          {
+            "text": "--bgColor-sponsors-emphasis #bf3989",
+            "colors": [
+              "#bf3989"
+            ]
+          },
+          {
+            "text": "--bgColor-sponsors-muted #ffeff7",
+            "colors": [
+              "#ffeff7"
+            ]
+          },
+          {
+            "text": "--bgColor-success-emphasis #1f883d",
+            "colors": [
+              "#1f883d"
+            ]
+          },
+          {
+            "text": "--bgColor-success-muted #dafbe1",
+            "colors": [
+              "#dafbe1"
+            ]
+          },
+          {
+            "text": "--bgColor-transparent #ffffff00",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "--bgColor-upsell-emphasis #8250df",
+            "colors": [
+              "#8250df"
+            ]
+          },
+          {
+            "text": "--bgColor-upsell-muted #fbefff",
+            "colors": [
+              "#fbefff"
+            ]
+          },
+          {
+            "text": "--bgColor-white #ffffff",
+            "colors": [
+              "#ffffff"
+            ]
+          },
+          {
+            "text": "--borderColor-accent-emphasis #0969da",
+            "colors": [
+              "#0969da"
+            ]
+          },
+          {
+            "text": "--borderColor-accent-muted #54aeff66",
+            "colors": [
+              "#54aeff"
+            ]
+          },
+          {
+            "text": "--borderColor-attention-emphasis #9a6700",
+            "colors": [
+              "#9a6700"
+            ]
+          },
+          {
+            "text": "--borderColor-attention-muted #d4a72c66",
+            "colors": [
+              "#d4a72c"
+            ]
+          },
+          {
+            "text": "--borderColor-closed-emphasis #cf222e",
+            "colors": [
+              "#cf222e"
+            ]
+          },
+          {
+            "text": "--borderColor-closed-muted #ff818266",
+            "colors": [
+              "#ff8182"
+            ]
+          },
+          {
+            "text": "--borderColor-danger-emphasis #cf222e",
+            "colors": [
+              "#cf222e"
+            ]
+          }
+        ],
+        "controls": [
+          {
+            "selector": "[data-styleguide-sample=\"sample-10\"]",
+            "tag": "BUTTON",
+            "href": null,
+            "text": "Give feedback",
+            "background": "rgb(246, 248, 250)",
+            "color": "rgb(37, 41, 46)",
+            "fontFamily": "\"Mona Sans VF\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans Backtick Fix\", \"Noto Sans\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "normal",
+            "borderRadius": "6px",
+            "borderColor": "rgb(209, 217, 224)",
+            "borderWidth": "1px",
+            "boxShadow": "rgba(31, 35, 40, 0.04) 0px 1px 0px 0px",
+            "backgroundImage": "none"
+          }
+        ],
+        "inlineStyleBytes": 0,
+        "title": "Color | Primer",
+        "lang": "en",
+        "tokens": {
+          "--bgColor-default": "#0d1117",
+          "--bgColor-muted": "#151b23",
+          "--bgColor-inset": "#010409",
+          "--fgColor-default": "#f0f6fc",
+          "--bgColor-accent-emphasis": "#1f6feb",
+          "--bgColor-success-emphasis": "#238636",
+          "--bgColor-danger-emphasis": "#da3633",
+          "--bgColor-attention-emphasis": "#9e6a03",
+          "--borderRadius-medium": ".375rem"
+        },
+        "availableTokens": {
+          "--diffBlob-hunkNum-bgColor-rest": "#0c2d6b",
+          "--data-yellow-color-emphasis": "#895906",
+          "--brand-text-weight-300": "400",
+          "--brand-control-radio-dot-checked-hover": "#309a4d",
+          "--brand-RiverBreakout-variant-gridline-spacing-outerBlock": "4rem",
+          "--brand-Button-icon-size-large": "1.25rem",
+          "--brand-Label-color-green-blue-start": "#5fed83",
+          "--base-color-scale-teal-9": "#052d2e",
+          "--control-danger-fgColor-hover": "#ff7b72",
+          "--button-danger-borderColor-rest": "#3d444d",
+          "--fontStack-sansSerif": "\"Mona Sans VF\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans Backtick Fix\", \"Noto Sans\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "--display-orange-borderColor-emphasis": "#c46212",
+          "--data-coral-color-muted": "#351008",
+          "--brand-breakpoint-xsmall": "20rem",
+          "--brand-breakpoint-large": "63.25rem",
+          "--brand-IDE-playPauseControl-rest": "#4d4e6a",
+          "--progressBar-bgColor-neutral": "#656c76",
+          "--brand-Tabs-list-borderWidth-active": "max(2px, .125rem)",
+          "--brand-footer-backToTop-borderColor-hover": "#ffffff1f",
+          "--brand-Prose-blockquote-spacing": "1.5rem",
+          "--brand-text-letterSpacing-100": ".21px",
+          "--brand-Testimonial-quoteMarkColor-pink-blue-end": "#78bafe",
+          "--brand-TextCursorAnimation-cursor-deleteColor": "#3094ff",
+          "--brand-Icon-color-lemon": "#f4da38",
+          "--brand-Eyebrowbanner-fgColor-green-blue-end": "#78bafe",
+          "--header-borderColor-divider": "#656c76",
+          "--brand-Grid-spacing-margin": "1rem",
+          "--brand-Eyebrowbanner-icon-background-teal": "#024b4d",
+          "--base-text-lineHeight-relaxed": "1.625",
+          "--brand-videoPlayer-title-fgColor": "#d2d9d4",
+          "--brand-TextCursorAnimation-cursor-animationDuration": ".833s",
+          "--label-orange-fgColor-hover": "#f1933b",
+          "--brand-text-size-700": "2.5rem",
+          "--brand-videoPlayer-playButton-bgColor-rest": "#0a50db",
+          "--brand-Testimonial-quote-color-default": "#fff",
+          "--base-color-scale-yellow-1": "#f7d162",
+          "--button-danger-borderColor-active": "#ffffff26",
+          "--text-body-shorthand-small": "400 .75rem / 1.625 \"Mona Sans VF\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans Backtick Fix\", \"Noto Sans\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "--label-gray-fgColor-hover": "#9babbf",
+          "--label-gray-bgColor-rest": "#1c1c1c",
+          "--bgColor-white": "#fff",
+          "--controlKnob-borderColor-rest": "#3d444d",
+          "--brand-Eyebrowbanner-fgColor-purple-red-end": "#fd8986",
+          "--brand-color-text-emphasized": "#23ea57",
+          "--label-yellow-borderColor": "#0000",
+          "--text-title-size-large": "2rem",
+          "--brand-River-label-margin": "1rem",
+          "--bgColor-open-emphasis": "#238636",
+          "--brand-Accordion-toggle-color-end": "#5fed83",
+          "--brand-stack-gap-spacious": "3rem",
+          "--brand-text-subhead-size-medium": "1rem",
+          "--bgColor-neutral-emphasis": "#656c76",
+          "--base-color-scale-pink-5": "#ca2186",
+          "--brand-FeatureComparisonTable-refreshIndicator-fgColor": "#c08bfc",
+          "--brand-LogoSuite-color-control-hover": "#5a5b7c",
+          "--fgColor-white": "#fff",
+          "--color-prettylights-syntax-markup-ignored-text": "#f0f6fc",
+          "--brand-InlineLink-transition-timing": ".3s",
+          "--label-red-fgColor-active": "#f7adab",
+          "--brand-Label-color-yellow": "#fabf21",
+          "--brand-control-large-paddingBlock-condensed": ".75rem",
+          "--brand-footer-backToTop-bgColor-rest": "#00000003",
+          "--brand-VideoPlayer-range-borderRadius": ".1875rem",
+          "--brand-Label-color-teal": "#61eee3",
+          "--display-plum-borderColor-muted": "#40125e",
+          "--text-subtitle-weight": "400",
+          "--brand-text-letterSpacing-700": "0",
+          "--button-outline-bgColor-hover": "#262c36",
+          "--bgColor-draft-muted": "#656c7633",
+          "--display-plum-fgColor": "#d07ef7",
+          "--label-orange-bgColor-rest": "#311708",
+          "--brand-text-weight-350": "400",
+          "--brand-animation-transition-default": "opacity .6s cubic-bezier(.16, 1, .3, 1), transform .6s cubic-bezier(.16, 1, .3, 1)",
+          "--contribution-winter-bgColor-4": "#cae8ff",
+          "--brand-Eyebrowbanner-fgColor-default-end": "#fc5c5d",
+          "--base-color-scale-lime-3": "#b1e119",
+          "--brand-controlStack-large-gap-spacious": ".75rem",
+          "--text-title-lineHeight-large": "1.5",
+          "--brand-Eyebrowbanner-fgColor-blue-purple-end": "#c08bfc",
+          "--control-transparent-bgColor-disabled": "#212830",
+          "--diffBlob-expander-iconColor": "#9198a1",
+          "--brand-Label-color-orange": "#f08a3a",
+          "--button-danger-bgColor-active": "#da3633",
+          "--brand-VideoPlayer-closedCaption-margin": "0 auto 15px auto",
+          "--controlKnob-borderColor-disabled": "#212830",
+          "--label-teal-fgColor-hover": "#1fbdb2",
+          "--button-outline-borderColor-active": "#3d444d",
+          "--fgColor-onEmphasis": "#fff",
+          "--control-borderColor-selected": "#f0f6fc",
+          "--base-color-scale-yellow-3": "#db9d00",
+          "--brand-control-color-fg-disabled": "#353d37",
+          "--codeMirror-matchingBracket-fgColor": "#f0f6fc",
+          "--bgColor-success-emphasis": "#238636",
+          "--base-color-scale-gray-3": "#7c8980",
+          "--text-display-size": "2.5rem",
+          "--brand-FAQGroup-buttonIndicator-active": "#5fed83",
+          "--control-transparent-bgColor-selected": "#656c7633",
+          "--control-checked-bgColor-active": "#3685f3",
+          "--display-green-bgColor-emphasis": "#2f6f37",
+          "--brand-IDE-scrollBar-bgColor": "transparent",
+          "--brand-animation-variant-scaleInLeft-start": ".9",
+          "--brand-Timeline-lineLength": "44ch",
+          "--buttonKeybindingHint-primary-borderColor-disabled": "#656c761a",
+          "--brand-Accordion-toggle-color-red": "#fd8986",
+          "--brand-box-spacing-condensed": "1rem",
+          "--label-pink-borderColor": "#0000",
+          "--text-body-lineHeight-medium": "1.5",
+          "--display-auburn-borderColor-muted": "#3a2422",
+          "--brand-RiverBreakout-variant-gridline-spacing-outerInline": "4rem",
+          "--base-color-scale-orange-3": "#ea7110",
+          "--label-olive-borderColor": "#0000",
+          "--base-color-scale-teal-8": "#024b4d",
+          "--codeMirror-syntax-fgColor-support": "#79c0ff",
+          "--brand-FrostedGlassVFX-blurIntensity-medium": "3rem",
+          "--brand-PricingOptions-item-bgColor-gradient-start": "#0f1511",
+          "--display-lime-fgColor": "#7dae37",
+          "--brand-control-animation-duration": "80ms",
+          "--brand-LogoSuite-color-control-rest": "#090d0a",
+          "--base-color-scale-pink-1": "#fcabe7",
+          "--display-lemon-bgColor-emphasis": "#786008",
+          "--diffBlob-additionWord-fgColor": "#f0f6fc",
+          "--codeMirror-selection-bgColor": "#388bfd66",
+          "--brand-FeatureComparisonTable-label-accentColor": "#5fed83",
+          "--base-color-scale-pink-8": "#520e39",
+          "--label-purple-fgColor-rest": "#b687f7",
+          "--control-checked-fgColor-rest": "#fff",
+          "--controlTrack-bgColor-disabled": "#656c76",
+          "--brand-NavList-activeIndicator-color": "#5fed83",
+          "--brand-Label-color-lime": "#cdf041",
+          "--brand-Testimonial-quoteMarkBackground-blue-purple": "#052063",
+          "--brand-Section-variant-gridline-paddingInline": "4rem",
+          "--brand-borderInset-thick": "inset 0 0 0 max(2px, .125rem)",
+          "--text-title-weight-small": "600",
+          "--brand-Eyebrowbanner-fgColor-pink-blue-end": "#78bafe",
+          "--label-olive-bgColor-rest": "#171e0b",
+          "--codeMirror-syntax-fgColor-keyword": "#ff7b72",
+          "--buttonKeybindingHint-default-fgColor-disabled": "#656c76",
+          "--base-color-scale-teal-2": "#61eee3",
+          "--brand-Testimonial-quoteMarkBackground-coral": "#500a00",
+          "--controlKnob-bgColor-checked": "#fff",
+          "--brand-text-size-800": "3rem",
+          "--brand-Eyebrowbanner-fgColor-default-start": "#c08bfc",
+          "--label-orange-borderColor": "#0000",
+          "--data-orange-color-emphasis": "#984b10",
+          "--avatar-bgColor": "#ffffff1a",
+          "--brand-Timeline-bullet-size": ".5rem",
+          "--display-orange-fgColor": "#ed8326",
+          "--label-cyan-borderColor": "#0000",
+          "--brand-FAQ-heading-marginBottom": "6rem",
+          "--brand-FeatureComparisonTable-fourItems-featureColumnWidth": "20%",
+          "--fgColor-black": "#010409",
+          "--label-olive-bgColor-hover": "#252d10",
+          "--color-ansi-white-bright": "#fff",
+          "--brand-IDE-playPauseControl-hover": "#5a5b7c",
+          "--display-blue-bgColor-muted": "#001a47",
+          "--brand-controlStack-small-gap-condensed": ".5rem",
+          "--brand-Label-color-purple": "#c08bfc",
+          "--display-orange-bgColor-emphasis": "#984b10",
+          "--diffBlob-deletionNum-bgColor": "#f851494d",
+          "--base-color-scale-green-3": "#23ea57",
+          "--base-color-scale-pink-2": "#f67ed2",
+          "--brand-SubdomainNavBar-searchDialog-shadowColor": "#0000001a",
+          "--base-color-scale-lemon-5": "#a98906",
+          "--brand-RiverBreakout-variant-gridline-spacing-outerBlockEnd": "5rem",
+          "--base-color-scale-blue-6": "#1530b7",
+          "--button-primary-borderColor-active": "#ffffff26",
+          "--overlay-bgColor": "#010409",
+          "--label-lime-fgColor-hover": "#89ba36",
+          "--brand-Accordion-toggle-color-lemon": "#f4da38",
+          "--brand-VideoPlayer-playButton-width": "6rem",
+          "--brand-button-subtle-fgColor-rest": "#fff",
+          "--button-invisible-fgColor-active": "#f0f6fc",
+          "--button-danger-iconColor-hover": "#fff",
+          "--brand-Testimonial-quoteMarkColor-red-orange-start": "#fd8986",
+          "--buttonKeybindingHint-danger-bgColor-active": "#01040966",
+          "--brand-color-neutral-emphasis": "#7c8980",
+          "--brand-borderWidth-thicker": "max(4px, .25rem)",
+          "--brand-Label-color-indigo": "#8d9ff8",
+          "--button-outline-fgColor-rest": "#388bfd",
+          "--label-auburn-bgColor-hover": "#3a2422"
+        },
+        "elements": {
+          "body": {
+            "selector": "body",
+            "tag": "BODY",
+            "href": null,
+            "text": "Skip to main contentSkip to filter inputPrimer/Product UIProduct UIBrand UIOcticonsAccessibilityBran",
+            "background": "rgb(0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "16px",
+            "lineHeight": "24px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "heading": {
+            "selector": "h1",
+            "tag": "H1",
+            "href": null,
+            "text": "Color",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(0, 0, 0)",
+            "fontFamily": "\"Mona Sans\", MonaSansFallback, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "40px",
+            "lineHeight": "48px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(0, 0, 0)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "surface": {
+            "selector": "main",
+            "tag": "MAIN",
+            "href": null,
+            "text": "Product UIPrimitivesColorColorAn overview of all available color CSS variablesThis page only shows c",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(31, 35, 40)",
+            "fontFamily": "\"Mona Sans VF\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans Backtick Fix\", \"Noto Sans\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "16px",
+            "lineHeight": "24px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(31, 35, 40)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "action": {
+            "selector": "main a[href], main button, a[href], button",
+            "tag": "A",
+            "href": "#skip-nav",
+            "text": "Skip to main content",
+            "background": "rgb(3, 119, 255)",
+            "color": "rgb(9, 105, 218)",
+            "fontFamily": "\"Mona Sans\", MonaSansFallback, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "16px",
+            "lineHeight": "24px",
+            "borderRadius": "0px",
+            "borderColor": "rgb(9, 105, 218)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "field": {
+            "selector": "input, select",
+            "tag": "INPUT",
+            "href": null,
+            "text": "",
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(31, 35, 40)",
+            "fontFamily": "\"Mona Sans\", MonaSansFallback, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "normal",
+            "borderRadius": "0px",
+            "borderColor": "rgb(31, 35, 40)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          },
+          "card": null,
+          "code": {
+            "selector": "code, pre",
+            "tag": "CODE",
+            "href": null,
+            "text": "--fgColor-accent",
+            "background": "rgb(246, 248, 250)",
+            "color": "rgb(31, 35, 40)",
+            "fontFamily": "monospace",
+            "fontSize": "13.6px",
+            "lineHeight": "22.6667px",
+            "borderRadius": "8px",
+            "borderColor": "rgb(31, 35, 40)",
+            "borderWidth": "0px",
+            "boxShadow": "none",
+            "backgroundImage": "none"
+          }
+        }
+      },
+      "requests": [
+        {
+          "url": "https://primer.style/product/primitives/color/",
+          "sha256": "91ecc8c3e8abc1f42f139256bca31ef2185589274c4c301a722840938ec9becc",
+          "retrievedAt": "2026-10-27T06:44:01.300Z",
+          "contentType": "text/html; charset=utf-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3a1ypu7as9o0k.css",
+          "sha256": "d30f89da1dc1dc170844354f19bfdb6fae36e22543357455645552a05247fec0",
+          "retrievedAt": "2026-10-27T06:44:01.688Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3h3metndm9t56.css",
+          "sha256": "7504719de9cbb1a2330d6158204e1bfda716b1fd45eed237b0b659e152eb4f98",
+          "retrievedAt": "2026-10-27T06:44:02.614Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3wg1jof9l62tp.css",
+          "sha256": "4e12d0a6f662f5a1de3251a5f51c870e6c15ef45783b7a0339fabcee31e6a438",
+          "retrievedAt": "2026-10-27T06:44:03.108Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3g0vt-115gahv.css",
+          "sha256": "a47c3603085564fe567a9ca3e461c66f95c3d5d88c3a4f84c5bf818581a641b4",
+          "retrievedAt": "2026-10-27T06:44:02.565Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/02-v6f_4_ldh0.css",
+          "sha256": "8e513360f669ca03065d14dd9bc75c2c91fd74f725bee9481516be7143eba36c",
+          "retrievedAt": "2026-10-27T06:44:02.395Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1202wcs9u857a.css",
+          "sha256": "8ca4dd6d618cc71fd08d7dac0e02dbb010715f20257613926bfb7ee6fe66b84e",
+          "retrievedAt": "2026-10-27T06:44:02.072Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3ap4f4gcflne1.css",
+          "sha256": "3c9fdeca997751756382032fc5b38f72bc8bbb0138db520fb24e87824d7f089d",
+          "retrievedAt": "2026-10-27T06:44:02.089Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2-3mv4vno1stt.css",
+          "sha256": "989959b0458cf1fd5dd069ea3a02286aaef6f00a965042344f003c6bb3e84fce",
+          "retrievedAt": "2026-10-27T06:44:02.393Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/0q-ykne_0-xi7.css",
+          "sha256": "88bcb44f95f3a8f77609ec1e5ebb9ce7991fb9d2f82ddaf7af70f5c4a5117edf",
+          "retrievedAt": "2026-10-27T06:44:02.086Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2gbdjcontl2i2.css",
+          "sha256": "c6463de92b524f2522eb0e6364bf8f7af4fd0fedc313b519954ad005df2720e5",
+          "retrievedAt": "2026-10-27T06:44:02.170Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1lgeq2htu45js.css",
+          "sha256": "59017efe4ca29a6e2afc7654cd9e59829d118f9bd1bbd04580a08f058d6c9357",
+          "retrievedAt": "2026-10-27T06:44:02.085Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/447orpj0f2m7x.css",
+          "sha256": "2a35949f65986bd73662db2752348a54824b33cfb3e8d4edc6f91627f40432f6",
+          "retrievedAt": "2026-10-27T06:44:02.073Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3wra7pyk5uwvf.css",
+          "sha256": "b5e7914b9171686cf95fd1f2c6c4a00f8882781d60cd68f62cde73ab35f0562c",
+          "retrievedAt": "2026-10-27T06:44:02.159Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/097ap26iinvlk.css",
+          "sha256": "4c6d08e2ec9336afd548aa9b2aa74d9e47db31b951625b48aa39816c8ff159ac",
+          "retrievedAt": "2026-10-27T06:44:02.229Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2yi14t3tjl4qg.css",
+          "sha256": "d2d189f7c3ca468f6a5c1ba771a1ca751976b1675233d533d3603ff3e9f6a577",
+          "retrievedAt": "2026-10-27T06:44:02.158Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2ncl2swcin1co.css",
+          "sha256": "6c9f5216dac4259c0b8c07668fbfde280964e5a31d1301477420da5f979a3754",
+          "retrievedAt": "2026-10-27T06:44:02.156Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/250p9-xrp6u73.css",
+          "sha256": "a5f999038cc79a131b7173a9f9d2ce56d84cdd9660a230a2a68dee80ca546f3d",
+          "retrievedAt": "2026-10-27T06:44:02.164Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1_r07ptpp5uco.css",
+          "sha256": "4d3b672ffe2140fed1f1ba935320881b276556ed038537f5763885834f1a0019",
+          "retrievedAt": "2026-10-27T06:44:02.177Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1lulcfizdgqda.css",
+          "sha256": "bcfbd69ad9b5cb62884fc2cc8c8698e47568ea1edaf64c1890be96adcf8e4afd",
+          "retrievedAt": "2026-10-27T06:44:02.226Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1cqdsq4plc8lu.css",
+          "sha256": "32718694bde73ee90fdbb239ca8b4d38b4749fafab29b17e9cc70716206e2173",
+          "retrievedAt": "2026-10-27T06:44:02.160Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/307vc_1m73ihn.css",
+          "sha256": "c2644d0c18eaf37179a52455c89a7c5222d6f2877ad01d86a5e560c1c627bc7b",
+          "retrievedAt": "2026-10-27T06:44:02.154Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/29sl1yatw3-k3.css",
+          "sha256": "55d34a7e49eef995af1b2b46a3aa4549e4c8312f3a6f780d30553f05dbf61394",
+          "retrievedAt": "2026-10-27T06:44:02.274Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/1tbj0-e2v-6q8.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3zfnonmolvvvu.css",
+          "sha256": "2426a16241873bb9f91d92eec96799e1eb62ec32139fb9f69df55179c77ba98a",
+          "retrievedAt": "2026-10-27T06:44:02.160Z",
+          "contentType": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/44mj4wf5uwyzj.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/0ibtm302jy2-y.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2i1-mh4553kqc.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/0s60ko5o3y5ag.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/2-5fu9h5i3ukf.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/3--21h52_r349.css",
+          "error": "Reference request budget reached."
+        },
+        {
+          "url": "https://primer.style/_next/static/chunks/0wvm2mvel2g_8.css",
+          "error": "Reference request budget reached."
+        }
+      ],
+      "retrievedAt": "2026-10-27T06:44:01.300Z",
+      "method": "Passive Chromium computed styles and CSS custom properties; website scripts/fonts/images blocked; allowed HTTPS sources only."
+    }
+  ]
+}

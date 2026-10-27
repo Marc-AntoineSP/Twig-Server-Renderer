@@ -17,6 +17,8 @@ use Symfony\Component\Yaml\Yaml;
 #[IsGranted('ROLE_READER')]
 final class ThemeExportController extends AbstractController
 {
+    public function __construct(private readonly \App\Packaging\ThemePackager $packager) {}
+
     #[Route('/themes/{id}/export/{file}', name: 'theme_export', methods: ['GET'], requirements: ['file' => 'app\.css|theme\.fragment\.css|typography\.css|preview\.css|theme\.json|theme\.yaml|bundle\.zip'])]
     public function draft(#[MapEntity(id: 'id')] Theme $theme, string $file, ThemeWriter $writer, CanonicalJson $json): Response
     {
@@ -42,18 +44,9 @@ final class ThemeExportController extends AbstractController
 
             return $this->attachment($files[$file], $file, 'theme.json' === $file ? 'application/json' : 'text/css');
         }
-        $path = tempnam(sys_get_temp_dir(), 'studio-theme-');
-        $zip = new \ZipArchive();
-        try {
-            if (true !== $zip->open($path, \ZipArchive::OVERWRITE)) { throw new \RuntimeException('Cannot create theme archive.'); }
-            $prefix = 'assets/styles/catalogue/'.$document->name.'/';
-            foreach ($files as $name => $contents) { $zip->addFromString('theme.json' === $name ? 'meta/theme.json' : $prefix.$name, $contents); }
-            $zip->addFromString('README.md', "Theme output bundle for ".$document->name.".\napp.css, theme.fragment.css and typography.css are Tailwind SOURCE; compile them.\npreview.css is COMPILED standalone CSS for the sample.\nPlace sources under ".$prefix.". Merge a fragment/typography into an existing Tailwind entry, once.\nImport meta/theme.json to round-trip the exact tokens. No font files or remote font dependency.\nThese tokens are not assigned a distribution licence by the studio.\n");
-            $zip->close();
-            $bytes = file_get_contents($path);
-        } finally { unlink($path); }
+        $package = $this->packager->document($document, $files);
 
-        return $this->attachment($bytes, str_replace('/', '-', $document->name).'.zip', 'application/zip');
+        return $this->attachment($package['archiveBytes'], str_replace('/', '-', $document->name).'.zip', 'application/zip');
     }
 
     private function attachment(string $body, string $name, string $type): Response

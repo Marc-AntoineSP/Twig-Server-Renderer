@@ -1,0 +1,1236 @@
+{
+  "schemaVersion": 1,
+  "collection": "website-inspired",
+  "references": [
+    {
+      "id": "github",
+      "name": "GitHub",
+      "url": "https://primer.style/product/primitives/color/",
+      "surface": "Primer product UI design tokens",
+      "hosts": [
+        "primer.style"
+      ],
+      "modes": [
+        "light",
+        "dark"
+      ],
+      "fonts": {
+        "body": "system-sans",
+        "heading": "system-sans",
+        "code": "jetbrains-mono"
+      },
+      "variables": [
+        "--bgColor-default",
+        "--bgColor-muted",
+        "--bgColor-inset",
+        "--fgColor-default",
+        "--bgColor-accent-emphasis",
+        "--bgColor-success-emphasis",
+        "--bgColor-danger-emphasis",
+        "--bgColor-attention-emphasis",
+        "--borderRadius-medium"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from GitHub official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "attributes": {
+        "light": {
+          "data-color-mode": "light",
+          "data-light-theme": "light"
+        },
+        "dark": {
+          "data-color-mode": "dark",
+          "data-dark-theme": "dark"
+        }
+      },
+      "mapping": {
+        "base-100": [
+          "token:--bgColor-default"
+        ],
+        "base-200": [
+          "token:--bgColor-muted"
+        ],
+        "base-300": [
+          "token:--bgColor-inset"
+        ],
+        "base-content": [
+          "token:--fgColor-default"
+        ],
+        "primary": [
+          "token:--bgColor-success-emphasis"
+        ],
+        "secondary": [
+          "token:--bgColor-accent-emphasis"
+        ],
+        "accent": [
+          "token:--bgColor-attention-emphasis"
+        ],
+        "info": [
+          "token:--bgColor-accent-emphasis"
+        ],
+        "success": [
+          "token:--bgColor-success-emphasis"
+        ],
+        "warning": [
+          "token:--bgColor-attention-emphasis"
+        ],
+        "error": [
+          "token:--bgColor-danger-emphasis"
+        ]
+      }
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab",
+      "url": "https://design.gitlab.com/product-foundations/color/",
+      "surface": "Pajamas product UI design-system documentation",
+      "hosts": [
+        "design.gitlab.com",
+        "projects.gitlab.io",
+        "gitlab.com"
+      ],
+      "modes": [
+        "light",
+        "dark"
+      ],
+      "fonts": {
+        "body": "inter",
+        "heading": "inter",
+        "code": "jetbrains-mono"
+      },
+      "variables": [
+        "--gl-color-neutral-0",
+        "--gl-color-neutral-50",
+        "--gl-color-neutral-100",
+        "--gl-color-neutral-950",
+        "--gl-color-blue-500",
+        "--gl-color-purple-500",
+        "--gl-color-green-500",
+        "--gl-color-orange-500",
+        "--gl-color-red-500",
+        "--gl-background-color-default",
+        "--gl-text-color-default",
+        "--gl-background-color-strong",
+        "--gl-background-color-overlap",
+        "--gl-button-confirm-primary-background-color-default"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from GitLab official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "attributes": {
+        "light": {
+          "class": ""
+        },
+        "dark": {
+          "class": "gl-dark"
+        }
+      },
+      "mapping": {
+        "base-100": [
+          "token:--gl-background-color-default"
+        ],
+        "base-200": [
+          "token:--gl-background-color-strong"
+        ],
+        "base-300": [
+          "token:--gl-background-color-overlap"
+        ],
+        "base-content": [
+          "token:--gl-text-color-default"
+        ],
+        "primary": [
+          "token:--gl-button-confirm-primary-background-color-default"
+        ],
+        "secondary": [
+          "token:--gl-color-purple-500"
+        ],
+        "accent": [
+          "token:--gl-color-orange-500"
+        ],
+        "info": [
+          "token:--gl-color-blue-500"
+        ],
+        "success": [
+          "token:--gl-color-green-500"
+        ],
+        "warning": [
+          "token:--gl-color-orange-500"
+        ],
+        "error": [
+          "token:--gl-color-red-500"
+        ]
+      }
+    },
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "url": "https://stripe.com/fr",
+      "surface": "Public marketing homepage",
+      "hosts": [
+        "stripe.com",
+        "www.stripe.com",
+        "b.stripecdn.com",
+        "assets.stripeassets.com"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "inter",
+        "heading": "inter",
+        "code": "source-code-pro"
+      },
+      "variables": [
+        "--hds-color-accent-surface-solid",
+        "--hds-color-util-accent-lemon-200"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "a[href*=\"dashboard.stripe.com/register\"], a[href*=\"/contact/sales\"]",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Stripe official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "primary": [
+          "control:Contacter notre \u00e9quipe:background"
+        ],
+        "secondary": [
+          "token:--hds-color-accent-surface-solid"
+        ],
+        "accent": [
+          "token:--hds-color-util-accent-lemon-200"
+        ]
+      }
+    },
+    {
+      "id": "linear",
+      "name": "Linear",
+      "url": "https://linear.app/",
+      "surface": "Public marketing homepage",
+      "hosts": [
+        "linear.app",
+        "static.linear.app",
+        "webassets.linear.app"
+      ],
+      "modes": [
+        "dark"
+      ],
+      "fonts": {
+        "body": "inter",
+        "heading": "inter",
+        "code": "jetbrains-mono"
+      },
+      "variables": [
+        "--color-bg-primary",
+        "--color-bg-secondary",
+        "--color-text-primary",
+        "--color-text-secondary",
+        "--color-accent"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "a[href=\"/signup\"], a[href*=\"signup\"]",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Linear official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {}
+    },
+    {
+      "id": "vercel",
+      "name": "Vercel",
+      "url": "https://vercel.com/geist/colors",
+      "surface": "Geist design-system colours",
+      "hosts": [
+        "vercel.com",
+        "assets.vercel.com"
+      ],
+      "modes": [
+        "light",
+        "dark"
+      ],
+      "fonts": {
+        "body": "geist",
+        "heading": "geist",
+        "code": "geist-mono"
+      },
+      "variables": [
+        "--ds-background-100",
+        "--ds-background-200",
+        "--ds-gray-1000",
+        "--ds-blue-700",
+        "--ds-blue-900",
+        "--ds-red-700",
+        "--ds-green-700",
+        "--ds-amber-700",
+        "--ds-purple-700"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Vercel official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "attributes": {
+        "light": {
+          "class": "geist light-theme"
+        },
+        "dark": {
+          "class": "geist dark-theme"
+        }
+      },
+      "mapping": {
+        "base-100": [
+          "token:--ds-background-100"
+        ],
+        "base-200": [
+          "token:--ds-background-200"
+        ],
+        "base-content": [
+          "token:--ds-gray-1000"
+        ],
+        "primary": [
+          "token:--ds-gray-1000"
+        ],
+        "secondary": [
+          "token:--ds-blue-700"
+        ],
+        "accent": [
+          "token:--ds-purple-700"
+        ],
+        "info": [
+          "token:--ds-blue-700"
+        ],
+        "success": [
+          "token:--ds-green-700"
+        ],
+        "warning": [
+          "token:--ds-amber-700"
+        ],
+        "error": [
+          "token:--ds-red-700"
+        ]
+      }
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "url": "https://www.notion.com/",
+      "surface": "Public marketing homepage",
+      "hosts": [
+        "www.notion.com",
+        "www.notion.so",
+        "notion.com"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "inter",
+        "heading": "inter",
+        "code": "ibm-plex-mono"
+      },
+      "variables": [
+        "--tatami-color-code-string",
+        "--tatami-color-menu-button-background",
+        "--tatami-color-button-tertiary-background-hover"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "a[href*=\"/signup\"], a[href*=\"signup\"]",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Notion official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "primary": [
+          "control:Get Notion free:background"
+        ],
+        "primary-content": [
+          "control:Get Notion free:color"
+        ],
+        "secondary": [
+          "control:Request a demo:background"
+        ],
+        "accent": [
+          "token:--tatami-color-code-string"
+        ],
+        "base-200": [
+          "token:--tatami-color-menu-button-background"
+        ],
+        "base-300": [
+          "token:--tatami-color-button-tertiary-background-hover"
+        ]
+      }
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "url": "https://slack.com/?nojsmode=1",
+      "surface": "Public marketing homepage",
+      "hosts": [
+        "slack.com",
+        "a.slack-edge.com"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "lato",
+        "heading": "lato",
+        "code": "ibm-plex-mono"
+      },
+      "variables": [],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "a[href*=\"/get-started\"]",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Slack official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "primary": [
+          "control:Get started:background"
+        ],
+        "primary-content": [
+          "control:Get started:color"
+        ],
+        "secondary": [
+          "control:Find your plan:color"
+        ]
+      }
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "url": "https://discord.com/",
+      "surface": "Public marketing homepage",
+      "hosts": [
+        "discord.com",
+        "cdn.prod.website-files.com",
+        "cdn.discordapp.com"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "figtree",
+        "heading": "figtree",
+        "code": "roboto-mono"
+      },
+      "variables": [],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "a[href=\"/login\"]",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Discord official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "primary": [
+          "control:Open Discord in your browser:background"
+        ],
+        "primary-content": [
+          "control:Open Discord in your browser:color"
+        ],
+        "base-100": [
+          "element:body:background"
+        ],
+        "secondary": [
+          "control:Download for Windows:background"
+        ],
+        "secondary-content": [
+          "control:Download for Windows:color"
+        ]
+      }
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "url": "https://developer.spotify.com/documentation/design",
+      "surface": "Spotify developer design guidelines; Encore light documentation surface",
+      "hosts": [
+        "developer.spotify.com",
+        "encore.scdn.co",
+        "developer-assets.spotifycdn.com"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "inter",
+        "heading": "inter",
+        "code": "source-code-pro"
+      },
+      "variables": [
+        "--background-base",
+        "--background-highlight",
+        "--background-press",
+        "--text-base",
+        "--essential-bright-accent",
+        "--text-positive",
+        "--text-bright-accent",
+        "--text-warning",
+        "--text-negative"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Spotify official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "base-100": [
+          "token:--background-base"
+        ],
+        "base-200": [
+          "token:--background-highlight"
+        ],
+        "base-300": [
+          "token:--background-press"
+        ],
+        "base-content": [
+          "token:--text-base"
+        ],
+        "primary": [
+          "token:--essential-bright-accent"
+        ],
+        "secondary": [
+          "token:--text-positive"
+        ],
+        "accent": [
+          "token:--text-bright-accent"
+        ],
+        "success": [
+          "token:--text-positive"
+        ],
+        "warning": [
+          "token:--text-warning"
+        ],
+        "error": [
+          "token:--text-negative"
+        ]
+      }
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube",
+      "url": "https://www.youtube.com/",
+      "surface": "Public video product homepage",
+      "hosts": [
+        "www.youtube.com",
+        "www.gstatic.com"
+      ],
+      "modes": [
+        "light",
+        "dark"
+      ],
+      "fonts": {
+        "body": "roboto",
+        "heading": "roboto",
+        "code": "roboto-mono"
+      },
+      "variables": [
+        "--yt-spec-base-background",
+        "--yt-spec-raised-background",
+        "--yt-spec-menu-background",
+        "--yt-spec-text-primary",
+        "--yt-spec-call-to-action",
+        "--yt-spec-brand-background-primary",
+        "--yt-spec-error-background",
+        "--yt-deprecated-general-background-a",
+        "--yt-deprecated-general-background-b",
+        "--yt-deprecated-text-primary",
+        "--yt-sys-color-baseline--static-brand-red",
+        "--yt-live-chat-item-list-button-background-color",
+        "--yt-sys-color-baseline--text-primary",
+        "--yt-sys-color-baseline--base-background"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from YouTube official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "attributes": {
+        "light": {
+          "dark": null
+        },
+        "dark": {
+          "dark": ""
+        }
+      },
+      "browserScripts": true,
+      "requestLimit": 64,
+      "mapping": {
+        "base-100": [
+          "token:--yt-deprecated-general-background-a"
+        ],
+        "base-200": [
+          "token:--yt-deprecated-general-background-b"
+        ],
+        "base-content": [
+          "token:--yt-deprecated-text-primary",
+          "element:body:color"
+        ],
+        "primary": [
+          "token:--yt-sys-color-baseline--static-brand-red"
+        ],
+        "secondary": [
+          "token:--yt-live-chat-item-list-button-background-color"
+        ]
+      }
+    },
+    {
+      "id": "twitch",
+      "name": "Twitch",
+      "url": "https://dev.twitch.tv/docs/",
+      "surface": "Twitch developer documentation UI; product homepage collection had TLS/style failures",
+      "hosts": [
+        "www.twitch.tv",
+        "static.twitchcdn.net",
+        "static-cdn.jtvnw.net",
+        "assets.twitch.tv",
+        "gql.twitch.tv",
+        "dev.twitch.tv",
+        "static-cdn.jtvnw.net"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "inter",
+        "heading": "inter",
+        "code": "jetbrains-mono"
+      },
+      "variables": [
+        "--color-background-base",
+        "--color-background-body",
+        "--color-text-base",
+        "--color-background-button-primary-default",
+        "--color-text-button-primary",
+        "--color-background-accent",
+        "--color-background-base",
+        "--color-background-body",
+        "--color-text-base",
+        "--color-background-button-primary-default",
+        "--color-text-button-primary",
+        "--color-background-accent"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Twitch official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "attributes": {
+        "light": {
+          "class": "tw-root--hover tw-root--theme-light"
+        },
+        "dark": {
+          "class": "tw-root--hover tw-root--theme-dark"
+        }
+      },
+      "browserScripts": false,
+      "requestLimit": 64,
+      "mapping": {
+        "primary": [
+          "element:action:color"
+        ]
+      }
+    },
+    {
+      "id": "reddit",
+      "name": "Reddit",
+      "url": "https://redditinc.com/",
+      "surface": "Reddit Inc public corporate marketing homepage; product homepage excluded by robots.txt",
+      "hosts": [
+        "www.reddit.com",
+        "www.redditstatic.com",
+        "redditinc.com",
+        "www.redditinc.com",
+        "cdn.prod.website-files.com",
+        "www.redditinc.com"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "ibm-plex-sans",
+        "heading": "ibm-plex-sans",
+        "code": "ibm-plex-mono"
+      },
+      "variables": [
+        "--color-neutral-background",
+        "--color-neutral-background-weak",
+        "--color-neutral-content-strong",
+        "--color-primary-background",
+        "--color-brand-background",
+        "--color-danger-background"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "a[href=\"https://www.reddit.com/\"]",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Reddit official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "primary": [
+          "control:Visit Reddit:background"
+        ],
+        "primary-content": [
+          "control:Visit Reddit:color"
+        ],
+        "secondary": [
+          "control:Reddit press:background"
+        ]
+      }
+    },
+    {
+      "id": "stackoverflow",
+      "name": "Stack Overflow",
+      "url": "https://stackoverflow.design/system/foundation/colors",
+      "surface": "Stacks product UI colour documentation",
+      "hosts": [
+        "stackoverflow.design",
+        "cdn.sstatic.net"
+      ],
+      "modes": [
+        "light",
+        "dark"
+      ],
+      "fonts": {
+        "body": "system-sans",
+        "heading": "system-sans",
+        "code": "source-code-pro"
+      },
+      "variables": [
+        "--white",
+        "--black-025",
+        "--black-050",
+        "--black-800",
+        "--blue-600",
+        "--orange-400",
+        "--green-500",
+        "--red-500",
+        "--yellow-500",
+        "--brand-color-orange",
+        "--brand-color-blue",
+        "--brand-color-purple",
+        "--brand-color-green",
+        "--brand-color-yellow"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Stack Overflow official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "attributes": {
+        "light": {
+          "data-theme": "light"
+        },
+        "dark": {
+          "data-theme": "dark"
+        }
+      },
+      "bodyAttributes": {
+        "light": {
+          "class": "theme-light"
+        },
+        "dark": {
+          "class": "theme-dark"
+        }
+      },
+      "mapping": {
+        "primary": [
+          "token:--brand-color-orange"
+        ],
+        "secondary": [
+          "token:--brand-color-blue"
+        ],
+        "accent": [
+          "token:--brand-color-purple"
+        ],
+        "success": [
+          "token:--brand-color-green"
+        ],
+        "warning": [
+          "token:--brand-color-yellow"
+        ]
+      }
+    },
+    {
+      "id": "airbnb",
+      "name": "Airbnb",
+      "url": "https://www.airbnb.com/",
+      "surface": "Public booking product homepage",
+      "hosts": [
+        "www.airbnb.com",
+        "a0.muscache.com"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "nunito-sans",
+        "heading": "nunito-sans",
+        "code": "inconsolata"
+      },
+      "variables": [
+        "--palette-bg-quaternary",
+        "--palette-bg-primary-core",
+        "--palette-bg-primary-luxe",
+        "--palette-bg-tertiary-core"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "button[data-testid=\"little-search-search-button\"], button[data-testid=\"structured-search-input-search-button\"]",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Airbnb official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "base-200": [
+          "token:--palette-bg-quaternary"
+        ],
+        "primary": [
+          "token:--palette-bg-primary-core"
+        ],
+        "secondary": [
+          "token:--palette-bg-primary-luxe"
+        ],
+        "accent": [
+          "token:--palette-bg-tertiary-core"
+        ]
+      }
+    },
+    {
+      "id": "dropbox",
+      "name": "Dropbox",
+      "url": "https://www.dropbox.com/",
+      "surface": "Public marketing homepage",
+      "hosts": [
+        "www.dropbox.com",
+        "cfl.dropboxstatic.com",
+        "aem.dropbox.com",
+        "fjord.dropboxstatic.com"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "open-sans",
+        "heading": "work-sans",
+        "code": "ibm-plex-mono"
+      },
+      "variables": [
+        "--dig-color__accent__purple",
+        "--color__accent__tangerine"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "a[href*=\"/plans\"]",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Dropbox official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "primary": [
+          "control:Get started:background"
+        ],
+        "primary-content": [
+          "control:Get started:color"
+        ],
+        "secondary": [
+          "token:--dig-color__accent__purple"
+        ],
+        "accent": [
+          "token:--color__accent__tangerine"
+        ],
+        "base-content": [
+          "element:heading:color"
+        ]
+      }
+    },
+    {
+      "id": "figma",
+      "name": "Figma",
+      "url": "https://www.figma.com/",
+      "surface": "Public marketing homepage",
+      "hosts": [
+        "www.figma.com",
+        "static.figma.com",
+        "cdn.sanity.io"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "inter",
+        "heading": "inter",
+        "code": "roboto-mono"
+      },
+      "variables": [
+        "--fig-theme-bg",
+        "--fig-theme-btn-primary-bg",
+        "--fig-theme-form-error-bg"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "a[href*=\"/signup\"], a[href*=\"signup\"]",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Figma official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "base-100": [
+          "token:--fig-theme-bg"
+        ],
+        "primary": [
+          "token:--fig-theme-btn-primary-bg"
+        ],
+        "primary-content": [
+          "control:Get started for free:color"
+        ],
+        "error": [
+          "token:--fig-theme-form-error-bg"
+        ]
+      }
+    },
+    {
+      "id": "wikipedia",
+      "name": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Main_Page",
+      "surface": "Public English encyclopedia product UI",
+      "hosts": [
+        "en.wikipedia.org",
+        "upload.wikimedia.org"
+      ],
+      "modes": [
+        "light",
+        "dark"
+      ],
+      "fonts": {
+        "body": "system-sans",
+        "heading": "libre-baskerville",
+        "code": "system-mono"
+      },
+      "variables": [
+        "--background-color-base",
+        "--background-color-neutral-subtle",
+        "--background-color-interactive-subtle",
+        "--color-base",
+        "--color-progressive",
+        "--color-destructive",
+        "--color-success",
+        "--color-warning"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Wikipedia official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "attributes": {
+        "light": {
+          "class": "client-nojs skin-theme-clientpref-day"
+        },
+        "dark": {
+          "class": "client-nojs skin-theme-clientpref-night"
+        }
+      },
+      "mapping": {
+        "base-100": [
+          "token:--background-color-base"
+        ],
+        "base-200": [
+          "token:--background-color-neutral-subtle"
+        ],
+        "base-300": [
+          "token:--background-color-interactive-subtle"
+        ],
+        "base-content": [
+          "token:--color-base"
+        ],
+        "primary": [
+          "token:--color-progressive"
+        ],
+        "secondary": [
+          "token:--color-success"
+        ],
+        "accent": [
+          "token:--color-warning"
+        ],
+        "info": [
+          "token:--color-progressive"
+        ],
+        "success": [
+          "token:--color-success"
+        ],
+        "warning": [
+          "token:--color-warning"
+        ],
+        "error": [
+          "token:--color-destructive"
+        ]
+      }
+    },
+    {
+      "id": "govuk",
+      "name": "GOV.UK",
+      "url": "https://design-system.service.gov.uk/styles/colour/",
+      "surface": "GOV.UK Design System service UI guidance",
+      "hosts": [
+        "design-system.service.gov.uk"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "system-sans",
+        "heading": "system-sans",
+        "code": "system-mono"
+      },
+      "variables": [],
+      "selectors": {
+        "body": ".govuk-body",
+        "heading": "h1",
+        "surface": "html",
+        "action": ".govuk-button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from GOV.UK official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "base-100": [
+          "documented:body-background"
+        ],
+        "base-200": [
+          "documented:surface-background"
+        ],
+        "base-300": [
+          "documented:template-background"
+        ],
+        "base-content": [
+          "documented:text"
+        ],
+        "primary": [
+          "documented:success"
+        ],
+        "secondary": [
+          "documented:brand"
+        ],
+        "accent": [
+          "documented:focus"
+        ],
+        "info": [
+          "documented:link"
+        ],
+        "success": [
+          "documented:success"
+        ],
+        "warning": [
+          "documented:focus"
+        ],
+        "error": [
+          "documented:error"
+        ]
+      }
+    },
+    {
+      "id": "shopify",
+      "name": "Shopify",
+      "url": "https://shopify.dev/docs/api/app-home/latest/web-components",
+      "surface": "Current Polaris App Home documentation website (documentation UI, not the embedded admin product)",
+      "hosts": [
+        "shopify.dev",
+        "cdn.shopify.com",
+        "polaris-react.shopify.com",
+        "shopify-assets.shopifycdn.com"
+      ],
+      "modes": [
+        "light"
+      ],
+      "fonts": {
+        "body": "inter",
+        "heading": "inter",
+        "code": "ibm-plex-mono"
+      },
+      "variables": [
+        "--p-color-bg",
+        "--p-color-bg-surface",
+        "--p-color-text",
+        "--p-color-bg-fill-brand",
+        "--p-color-bg-fill-success",
+        "--p-color-bg-fill-critical"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Shopify official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "mapping": {
+        "primary": [
+          "element:action:color"
+        ]
+      }
+    },
+    {
+      "id": "atlassian",
+      "name": "Atlassian",
+      "url": "https://atlassian.design/components/tokens/all-tokens",
+      "surface": "Atlassian Design System token documentation",
+      "hosts": [
+        "atlassian.design",
+        "atlassian.design.static.atlassian.com"
+      ],
+      "modes": [
+        "light",
+        "dark"
+      ],
+      "fonts": {
+        "body": "inter",
+        "heading": "inter",
+        "code": "source-code-pro"
+      },
+      "variables": [
+        "--ds-surface",
+        "--ds-surface-sunken",
+        "--ds-text",
+        "--ds-background-brand-bold",
+        "--ds-background-discovery-bold",
+        "--ds-background-success-bold",
+        "--ds-background-danger-bold",
+        "--ds-background-warning-bold",
+        "--ds-background-information-bold"
+      ],
+      "selectors": {
+        "body": "body",
+        "heading": "h1",
+        "surface": "main",
+        "action": "main a[href], main button, a[href], button",
+        "field": "input, select",
+        "card": "article, section",
+        "code": "code, pre"
+      },
+      "attribution": "Independent design observations from Atlassian official public sources; no brand assets or proprietary font binaries redistributed. Source colours are mapped/adapted to daisyUI semantics; no endorsement.",
+      "attributes": {
+        "light": {
+          "data-color-mode": "light",
+          "data-theme": "light:light dark:dark"
+        },
+        "dark": {
+          "data-color-mode": "dark",
+          "data-theme": "light:light dark:dark"
+        }
+      },
+      "mapping": {
+        "base-100": [
+          "token:--ds-surface"
+        ],
+        "base-200": [
+          "token:--ds-surface-sunken"
+        ],
+        "base-content": [
+          "token:--ds-text"
+        ],
+        "primary": [
+          "token:--ds-background-brand-bold"
+        ],
+        "secondary": [
+          "token:--ds-background-discovery-bold"
+        ],
+        "accent": [
+          "token:--ds-background-success-bold"
+        ],
+        "info": [
+          "token:--ds-background-information-bold"
+        ],
+        "success": [
+          "token:--ds-background-success-bold"
+        ],
+        "warning": [
+          "token:--ds-background-warning-bold"
+        ],
+        "error": [
+          "token:--ds-background-danger-bold"
+        ]
+      }
+    }
+  ],
+  "version": "1.2.0"
+}
