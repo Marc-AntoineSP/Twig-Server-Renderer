@@ -89,7 +89,7 @@ final readonly class PreviewJobs
             }
             $closure['safelist'] = array_values(array_unique([...$closure['safelist'], $preset->textClass]));
             $payload = (object) [...$closure, 'props' => $props, 'channel' => $input->channel, 'preset' => $preset->toArray(), 'theme' => $theme];
-            $policyDigest = hash_file('sha256', $this->projectDirectory.'/workers/render/composer.lock').hash_file('sha256', $this->projectDirectory.'/workers/build/package-lock.json').'sandbox-v1';
+            $policyDigest = hash_file('sha256', $this->projectDirectory.'/workers/render/composer.lock').hash_file('sha256', $this->projectDirectory.'/workers/build/package-lock.json').'sandbox-v2-local-fragments';
             $hash = hash('sha256', json_encode($payload, JSON_THROW_ON_ERROR).$policyDigest);
             // Keep the latest 60 jobs, retiring terminal history rather than blocking live editing.
             $this->connection->executeStatement("UPDATE preview_job SET expires_at = CURRENT_TIMESTAMP WHERE id IN (SELECT id FROM preview_job WHERE owner_id = :owner AND status NOT IN ('queued','running') AND expires_at > CURRENT_TIMESTAMP ORDER BY created_at ASC,id ASC LIMIT GREATEST(0,(SELECT COUNT(*) FROM preview_job WHERE owner_id = :owner AND expires_at > CURRENT_TIMESTAMP)-59))",['owner'=>$user->getId()]);

@@ -4,7 +4,7 @@ umask 077
 specs=("$@")
 if ((${#specs[@]} == 0)); then specs=(tests/Browser/appearance.spec.js); fi
 for spec in "${specs[@]}"; do
-    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/theme_components.spec.js) ;; *) echo 'Choose an appearance or theme-component acceptance spec.' >&2; exit 1;; esac
+    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/theme_components.spec.js|tests/Browser/preview.spec.js|tests/Browser/authentication.spec.js) ;; *) echo 'Choose an appearance, preview, authentication or theme-component acceptance spec.' >&2; exit 1;; esac
 done
 fixture_name="appearance-$(date -u +%Y%m%d%H%M%S)-${RANDOM}"
 fixture_dir="var/${fixture_name}"

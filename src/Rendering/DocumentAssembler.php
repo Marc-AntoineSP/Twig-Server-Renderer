@@ -12,7 +12,7 @@ final class DocumentAssembler
     public function assemble(string $html, string $css, string $js, string $channel, array $preset = [], ?array $theme = null, array $fontFiles = [], ?string $themeScope = null): string
     {
         $nonce = bin2hex(random_bytes(16));
-        $csp = "default-src 'none'; script-src 'nonce-".$nonce."'; style-src 'unsafe-inline'; img-src data:; font-src data:; connect-src 'none'; media-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'";
+        $csp = "default-src 'none'; script-src 'nonce-".$nonce."'; style-src 'unsafe-inline'; img-src data:; font-src data:; connect-src 'none'; media-src 'none'; frame-src 'none'; object-src 'none'; base-uri about:; form-action 'none'";
         $tokens = $theme ? json_decode(json_encode($theme, JSON_THROW_ON_ERROR), false, 24, JSON_THROW_ON_ERROR) : null;
         $effective = (object) ['typography' => new \stdClass(), 'fonts' => []]; $families = [];
         foreach (['body', 'heading', 'code'] as $role) {
@@ -42,7 +42,9 @@ final class DocumentAssembler
         if (null !== $themeScope && !preg_match('/^[a-f0-9]{64}$/D', $themeScope)) throw new \InvalidArgumentException('Invalid generated theme scope.');
         $scope = null === $themeScope ? '' : ' data-color-mode="'.$scheme.'" data-appearance-'.$scheme.'="'.$themeScope.'"';
 
-        return '<!doctype html><html lang="en" data-theme="'.$themeName.'"'.$scope.' style="font-size:'.$rootSize.'px"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="'.htmlspecialchars($csp, ENT_QUOTES).'">'
+        // srcdoc otherwise inherits the editor URL: even href="#section" would request
+        // the authenticated studio inside the opaque frame. Keep native fragments local.
+        return '<!doctype html><html lang="en" data-theme="'.$themeName.'"'.$scope.' style="font-size:'.$rootSize.'px"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="'.htmlspecialchars($csp, ENT_QUOTES).'"><base href="about:srcdoc">'
             .'<style>'.$css."\nhtml{color-scheme:".$scheme.'}body{margin:0;padding:1rem;font-synthesis:none;background:'.$surface.';font-family:'.$bodyFont.'}h1,h2,h3,h4,h5,h6{font-family:'.$headingFont.'}code,pre,kbd,samp{font-family:'.$codeFont.'}</style></head><body class="'.$textClass.'">'.$html.'<script nonce="'.$nonce.'">'.$js.'</script><script nonce="'.$nonce.'">'.$bridge.'</script></body></html>';
     }
 }

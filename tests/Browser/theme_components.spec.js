@@ -83,3 +83,19 @@ test('all categories stay within mobile and tablet viewports and tooltips, mocku
     for(const width of [375,768]){await page.setViewportSize({width,height:900});for(const name of ['actions','forms','navigation','data','feedback','layout','mockups']){await category(page,name);await expect(frame(page).locator(`section[data-category="${name}"]`)).toBeVisible();expect(await frame(page).locator('html').evaluate(el=>({width:innerWidth,scroll:el.scrollWidth}))).toEqual(expect.objectContaining({width:expect.any(Number)}));const overflow=await frame(page).locator('html').evaluate(el=>el.scrollWidth-innerWidth);expect(overflow,`${name} at ${width}px`).toBeLessThanOrEqual(1);}await screenshot(page,'mockups-'+width);}
     await page.setViewportSize({width:375,height:900});await category(page,'feedback');const tooltip=card(page,'tooltips').getByRole('button',{name:'Primary',exact:true});await tooltip.focus();await expect(tooltip).toBeFocused();await expect.poll(()=>tooltip.locator('..').evaluate(el=>getComputedStyle(el,'::before').opacity)).toBe('1');await expect(page.getByRole('button',{name:'Restore default appearance',exact:true})).toBeInViewport();await screenshot(page,'mobile-feedback');
 });
+
+test('all showcase links stay local and cross-category navigation never loads the studio login',async({page})=>{
+    await login(page);const t=await theme(page);await open(page,t.id);const before=await state(page),url=page.url(),requests=[];
+    page.on('request',request=>{if(request.frame().parentFrame()&&/^https?:/.test(request.url()))requests.push(request.url());});
+    await category(page,'navigation');const project=card(page,'menus').getByRole('link',{name:'Design system',exact:true});await project.focus();await project.press('Enter');
+    await expect(frame(page).getByLabel('Component category',{exact:true})).toHaveValue('all');await expect(card(page,'cards')).toBeVisible();
+    await card(page,'inputs').getByLabel('Primary input',{exact:true}).fill('Keep showcase state');
+    const links=frame(page).locator('a[href^="#"]'),count=await links.count();expect(count).toBeGreaterThan(10);
+    for(let index=0;index<count;index++){
+        await links.nth(index).click();await expect(frame(page).locator('[data-controller="showcase"]')).toBeVisible();
+        expect(await frame(page).locator('body').evaluate(()=>location.href)).toMatch(/^about:srcdoc#/);
+        await expect(frame(page).getByRole('heading',{name:'Sign in to your studio',exact:true})).toHaveCount(0);
+    }
+    await expect(card(page,'inputs').getByLabel('Primary input',{exact:true})).toHaveValue('Keep showcase state');
+    expect(requests).toEqual([]);expect(page.url()).toBe(url);expect(await state(page)).toEqual(before);expect((await page.request.get('/themes',{maxRedirects:0})).status()).toBe(200);
+});

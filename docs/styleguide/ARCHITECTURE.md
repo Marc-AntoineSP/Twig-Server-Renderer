@@ -174,3 +174,10 @@ preference or preview job and needs no worker compilation. The same opaque ifram
 boundary contains all dialogs, drawers, toasts and example actions. Variant links use
 existing family relationships and never change the studio's saved appearance. See
 THEME_SHOWCASE.md for inventory and acceptance evidence.
+
+The shared preview assembler sets its base URL to `about:srcdoc`, under a matching
+about-only base CSP directive. This makes native fragment links local for both catalogue
+and theme previews, including script-disabled mode, without rewriting user markup or
+granting same-origin access. The preview document policy digest is versioned when this
+behaviour changes. A long-running development preview consumer must restart to load the
+new PHP assembler; existing drafts/releases remain untouched.

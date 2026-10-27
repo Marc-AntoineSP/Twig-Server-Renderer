@@ -469,3 +469,37 @@ OTP/diff/hover cosmetics vary by browser; Chromium is verified. The phone device
 and two bundled illustrative SVGs keep their content colours. Not every modifier
 permutation or accessibility conformance is claimed. No external release/push/deployment
 or new package-format change occurred.
+
+### Preview fragment navigation follow-up — 2026-10-27
+
+User-reported reproduction on `/catalogue/01M5Y9QKN2PE245NAPSBB32363/edit`: clicking
+Overview resolved `#overview` to the editor HTTP URL. The opaque frame requested the
+protected page and rendered `/login#overview` inside itself. The outer editor stayed in
+place. The shared assembler now sets a trusted about:srcdoc base and an about-only base
+CSP rule. No component markup/href or saved data is rewritten, and native links work with
+scripts disabled. The long-running development consumer was restarted to load this fix.
+
+Actual user-component verification, both script modes: Overview/Activity/Settings clicked
+and activated with Enter; frame stays about:srcdoc#..., zero iframe HTTP requests, fresh
+private studio request returns200 and draft comparison remains equal. Evidence:
+`var/preview-navigation-verification/before-fix.json` and `after-fix.json`. The pre-fix
+login reproduction is expected failing-behaviour evidence, not a passing check.
+
+- Focused new development regressions: **2 passed / 45.9s**. All showcase anchors and
+  cross-category targets; catalogue native fragment and Unicode/missing targets, local
+  field state, scripts on/off, no login/network navigation and intact authentication.
+- Full PHPUnit: **123 tests / 736 assertions**, exit0.
+- `make preview-navigation-production`: **12 passed / 3.2m**, exit0, including real
+  login/logout, all catalogue preview isolation/message/CSS checks and all6 showcase
+  flows. The fragment test also proves CSP rejects HTTP(S) bases. Fixture
+  `var/appearance-20261027182113-25049`, release `local-20261027182114-9d211253`.
+  Manifest SHA256 remains read-only and before=after:
+  `41ff52657f613a2a832c0cf68d20edf9b56db2535286ac754016086acd0b762b`.
+  Fixture accounts disabled, own services stopped and evidence retained.
+- `make check`: strict Composer/Compose/container/26YAML/30Twig and diff checks pass.
+
+The existing iframe sandbox has no added permissions. Auth/CSRF, data-only fonts/images,
+denied connections/forms/frames and opaque parent isolation remain enforced. No theme,
+component, account credential, migration or dependency change was required. Reload the
+editor or Build preview to replace an already navigated login frame. Background session
+cookie settings and the production8096 instance were not modified.

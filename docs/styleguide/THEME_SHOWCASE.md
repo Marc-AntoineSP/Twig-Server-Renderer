@@ -69,6 +69,13 @@ hash-scoped tokens and effective light/dark mode; dialogs, drawers, toasts, tool
 native controls inherit the same root. Font and decorative image bytes are embedded;
 the preview makes no HTTP requests. The studio header's theme cannot reach into it.
 
+The shared assembler sets a trusted `<base href="about:srcdoc">`. Otherwise native
+fragment links such as `#overview` inherit the studio URL and can request its protected
+page inside the opaque iframe, displaying the login page. Local fragments now stay in
+the preview even with scripts disabled, including missing/Unicode targets. Original
+href attributes and component source remain unchanged. CSP permits only `about:` base
+URLs; HTTP(S) bases and the existing network capabilities remain blocked.
+
 `make assets` now builds the existing studio CSS plus `assets/styles/showcase.css` and the
 bundled showcase Stimulus runtime. Their source classes are complete literal names in
 the Twig/JS sources, including each semantic colour/size. Production copies the actual

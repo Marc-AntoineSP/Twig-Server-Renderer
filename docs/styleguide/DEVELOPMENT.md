@@ -417,6 +417,12 @@ that detail theme's palette/fonts even when the application has another theme ap
 checks real production CSS plus the existing appearance flows in an isolated fixture.
 See [THEME_SHOWCASE.md](THEME_SHOWCASE.md) for coverage, interactions and browser limits.
 
+Preview links use a trusted `about:srcdoc` base so Overview/Activity/Settings anchors do
+not load the studio login inside the iframe. After changing the PHP assembler, restart
+only `preview-consumer` and rebuild/reload the preview; existing component data is kept.
+`make preview-navigation-production` checks authentication, preview isolation, native
+fragment links with/without scripts and all showcase interactions in an isolated build.
+
 The updated development application is at http://localhost:8095: `/fonts` contains
 the local library and `/themes` contains the managed website presets. Start it with
 `docker compose up -d --wait app database render-worker build-worker preview-consumer`.

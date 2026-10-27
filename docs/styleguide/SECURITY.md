@@ -136,3 +136,10 @@ and form-action 'none'; no extra iframe permissions, upload handler or preferenc
 provided to examples. Viewing requires the existing reader role and personalized HTML
 cache policy. Repeated input groups have unique IDs/names; overlays and their focus stay
 inside the preview. No user component source is rendered by the studio Twig service.
+
+Preview documents have a trusted `about:srcdoc` base, keeping fragment-only links inside
+the current opaque document instead of resolving against an authenticated studio route.
+`base-uri about:` permits that non-network base scheme; HTTP(S) base injection is still
+blocked. Sandbox flags, nonce scripts, data-only font/image sources, denied connections,
+frames and forms are unchanged. Native fragment navigation also works with scripts
+disabled; user templates and href attributes are not rewritten.

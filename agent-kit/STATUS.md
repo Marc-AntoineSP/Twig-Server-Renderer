@@ -1107,3 +1107,55 @@ Exact next step: open http://localhost:8095/themes, open a theme and browse Comp
 showcase. Use category/search and Showcase light/dark to inspect a variant without
 changing your applied application preference. Coverage, limits, commands and evidence:
 docs/styleguide/THEME_SHOWCASE.md and VERIFICATION.md.
+
+## M11 follow-up — Preview links showing the studio login — 2026-10-27
+
+Reproduced the user's exact `/catalogue/01M5Y9QKN2PE245NAPSBB32363/edit` report.
+The sample's native `href="#overview"` resolved against the inherited editor URL;
+navigation inside the opaque iframe requested that protected route and then `/login`.
+This displayed the studio's normal login template inside the preview. It was not a
+requirement to authenticate for component actions. Before/after evidence is retained in
+`var/preview-navigation-verification`.
+
+The shared DocumentAssembler now emits a trusted `<base href="about:srcdoc">` and permits
+only the about base scheme in CSP. Native fragments stay in the current document even
+when preview scripts are disabled; no user HTML, href attributes, templates, theme data
+or renderer preferences are rewritten. HTTP(S) base injection remains blocked. Existing
+sandbox flags, nonce scripts, parent DOM/storage isolation and denied network/form/frame
+capabilities remain. Preview policy digest is `sandbox-v2-local-fragments`. Restarted only
+the development preview-consumer so the persistent PHP process loads the new assembler.
+The existing application at8095 is updated; production8096 was not changed.
+
+Actual verification:
+
+- The exact user component's Overview/Activity/Settings links work by pointer and Enter
+  with scripts on/off: frame URL stays about:srcdoc#..., zero iframe HTTP requests,
+  fresh authenticated studio request still200, original draft byte/data comparison equal.
+  No user account/password or component source was changed.
+- New focused development regressions: **2 passed / 45.9s**, for catalogue native
+  fragments and every showcase link/cross-category navigation. Includes Unicode/missing
+  targets, preserved local input, no iframe reload/login/request and unchanged preferences.
+- Full PHPUnit **123 tests / 736 assertions**, exit0; new assembly contract preserves
+  original markup/SVG/JS-visible hrefs and network restrictions. Existing contracts,
+  renderer, fonts, packaging and isolation checks all pass.
+- `make preview-navigation-production`: **12 browser flows passed / 3.2m**, exit0,
+  against real immutable APP_ENV=prod/APP_DEBUG=0 images. Auth/login/logout; all5 catalogue
+  preview flows (including parent DOM/storage/message isolation); all6 showcase flows.
+  Browser verifies HTTP(S) base injection is blocked and fragment links retain the opaque
+  sandbox with scripts enabled or disabled. Fixture `var/appearance-20261027182113-25049`,
+  tag `local-20261027182114-9d211253`; AssetMapper manifest read-only and identical before/
+  after: `41ff52657f613a2a832c0cf68d20edf9b56db2535286ac754016086acd0b762b`.
+  Three offline font families verify12faces/511,916bytes/errors=[]. Own production test
+  accounts disabled and fixture stopped, volumes/evidence retained.
+- `make check`: Compose/Composer strict/container/26YAML/30Twig all pass; diff checks pass.
+
+Changed: DocumentAssembler, PreviewJobs policy; a focused integration test and browser
+regressions; whitelisted isolated production test driver/Makefile target; relevant
+architecture/development/security/showcase/verification/status documentation. No new
+dependency, migration, data-model change, external deployment, publication or push.
+
+Exact next step: reload the user's editor or use Build preview to replace the already
+navigated iframe. Local anchors now remain in the preview; there is no need to sign in
+inside it. The original component and saved application preferences remain intact.
+Temporary development browser accounts and their credential file were removed after
+verification; no task-owned browser/production fixture remains running.

@@ -72,6 +72,10 @@ appearance-production:
 theme-showcase-production:
 	bash tests/AppearanceProduction/run.sh tests/Browser/appearance.spec.js tests/Browser/theme_components.spec.js
 
+.PHONY: preview-navigation-production
+preview-navigation-production:
+	bash tests/AppearanceProduction/run.sh tests/Browser/preview.spec.js tests/Browser/theme_components.spec.js tests/Browser/authentication.spec.js
+
 .PHONY: consumer
 consumer:
 	COMPOSE='$(COMPOSE)' bash tests/Consumer/run.sh
