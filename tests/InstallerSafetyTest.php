@@ -38,4 +38,11 @@ final class InstallerSafetyTest extends TestCase
         foreach(['http://example.com/api','https://token@example.com/api','https://example.com/api?token=secret','https://example.com/api#fragment'] as $url){try{Registries::validateUrl($url,true);self::fail('Unsafe URL accepted.');}catch(CatalogueException $e){self::assertSame(422,$e->getStatusCode());}}
         Registries::validateUrl('http://studio/api/v1/registry',true);self::assertTrue(true);
     }
+
+    public function testPrivateCredentialFileRejectsSharedPermissions():void
+    {
+        $previous=getenv('XDG_CONFIG_HOME');$tokenEnv=getenv('STYLEGUIDE_TOKEN_PRIVATE');putenv('STYLEGUIDE_TOKEN_PRIVATE');putenv('XDG_CONFIG_HOME='.$this->directory);mkdir($this->directory.'/styleguide');$file=$this->directory.'/styleguide/auth.json';$token='sgt_'.str_repeat('b',64);file_put_contents($file,json_encode(['private'=>$token]));chmod($file,0644);$registries=new Registries(new Project($this->directory,new CanonicalJson()));
+        try{try{$registries->credential('private');self::fail('Shared credential file accepted.');}catch(CatalogueException $e){self::assertSame(403,$e->getStatusCode());}chmod($file,0600);clearstatcache(true,$file);self::assertSame($token,$registries->credential('private'));}
+        finally{if(false===$previous)putenv('XDG_CONFIG_HOME');else putenv('XDG_CONFIG_HOME='.$previous);if(false===$tokenEnv)putenv('STYLEGUIDE_TOKEN_PRIVATE');else putenv('STYLEGUIDE_TOKEN_PRIVATE='.$tokenEnv);}
+    }
 }

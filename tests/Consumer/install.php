@@ -15,7 +15,7 @@ function snapshot():array{
 }
 function stageJournals():array{return glob('/consumer/.styleguide/staging/*/journal.json')?:[];}
 if($phase==='install'){
-    command(['styleguide:registry:add','local','http://studio/api/v1/registry','--allow-http']);
+    command(['styleguide:registry:add','local',getenv('STUDIO_REGISTRY_URL')?:'http://studio/api/v1/registry','--allow-http']);
     $zip=new ZipArchive();check($zip->open('/workspace/var/consumer-artifacts/alert.zip')===true,'Cannot read fixture archive.');$bytes=$zip->getFromName($state['entry']);$zip->close();$path='/consumer/'.$state['entry'];mkdir(dirname($path),0775,true);file_put_contents($path,$bytes);$before=snapshot();
     command(['styleguide:require',$state['alert'].'@1.0.0','--registry=local'],false);check(snapshot()===$before,'Unowned collision partially wrote files.');unlink($path);
     $zip=new ZipArchive();$zip->open('/workspace/var/consumer-artifacts/alert.zip');$manifest=json_decode($zip->getFromName('manifest.json'));$sources=new stdClass();foreach($manifest->files as $f)$sources->{$f->path}=$zip->getFromName($f->path);$zip->close();
@@ -23,6 +23,8 @@ if($phase==='install'){
     foreach($manifest->files as $f)if($f->path===$js){$f->sha256=hash('sha256',$sources->{$js});$f->bytes=strlen($sources->{$js});}
     file_put_contents('/workspace/var/consumer-artifacts/invalid.json',json_encode(['schemaVersion'=>1,'manifest'=>$manifest,'sources'=>$sources],JSON_THROW_ON_ERROR));$before=snapshot();
     $rejected=command(['styleguide:install','/workspace/var/consumer-artifacts/invalid.json'],false);check(str_contains($rejected['output'],'compiler import')&&snapshot()===$before,'Local-file JavaScript policy bypass or partial write.');
+    $sources->{$js}=$originalJs;$cssPath='assets/styles/catalogue/'.$manifest->name.'/imported.css';$sources->{$cssPath}='@\\70 lugin "./payload.js";';$manifest->files=[];foreach($sources as $file=>$content)$manifest->files[]=(object)['path'=>$file,'sha256'=>hash('sha256',$content),'bytes'=>strlen($content)];
+    file_put_contents('/workspace/var/consumer-artifacts/invalid-css.json',json_encode(['schemaVersion'=>1,'manifest'=>$manifest,'sources'=>$sources],JSON_THROW_ON_ERROR));$before=snapshot();$rejected=command(['styleguide:install','/workspace/var/consumer-artifacts/invalid-css.json'],false);check(str_contains($rejected['output'],'CSS directives')&&snapshot()===$before,'Escaped executable CSS directive bypass or partial write.');
     $before=snapshot();$plan=command(['styleguide:require',$state['alert'].'@1.0.0','--registry=local','--dry-run']);check($plan['dryRun']&&$plan['plan']['browserCodeReview'],'No concrete code review.');check(snapshot()===$before,'Dry-run modified consumer files.');
     command(['styleguide:require',$state['alert'].'@1.0.0','--registry=local']);$before=snapshot();$again=command(['styleguide:require',$state['alert'].'@1.0.0','--registry=local']);check($again['changed']===0&&snapshot()===$before,'Reinstall not idempotent.');
     command(['styleguide:require',$state['layout'].'@1.0.0','--registry=local']);command(['styleguide:theme:install',$state['theme'].'@1.0.0','--registry=local']);

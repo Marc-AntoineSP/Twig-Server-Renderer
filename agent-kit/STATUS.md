@@ -615,3 +615,56 @@ HTTP/worker test verifies continued editing and pending-job protection. The full
 rerun above is clean. Remaining M08 work: final production rebuild, real interrupted queue
 redelivery, consistent backup/fresh restore and export/consumer reinstallation, CI/local
 verification script and final acceptance evidence. M08 is not yet declared complete.
+
+
+## M08 recovery verification and final audit in progress
+
+Current branch `feature/m08-recovery-verification` adds checked-in production browser,
+container-boundary, secret-log, actual graceful/SIGKILL queue, backup/restore and consumer
+verification drivers. The CI workflow uses the actual resolved checkout v4 SHA
+11d5960a326750d5838078e36cf38b85af677262 and the same local commands. GitHub-hosted CI
+has not been run; no push is authorized. Acceptance mapping: docs/styleguide/VERIFICATION.md.
+
+Completed actual runs before the final clean checkout:
+
+- Fresh `styleguide-production-final` PostgreSQL/blob/session volumes, seven migrations,
+  immutable images and prod-check all pass. Final observed runtime remains FrankenPHP
+  1.13.4 / PHP 8.5.12 / Caddy 2.11.7 / Debian 13.7 / Symfony 8.1.9 / Twig 3.30.0;
+  pcntl is present. The complete studio suite against production passes **25 flows**.
+- Docker inspection and local HTTPS cookie/forwarding tests pass. Core services have no
+  source mounts or exposed DB/worker ports; workers receive only their own scoped secret.
+- Real blocked-build SIGTERM: consumer exits **0**, job reaches explicit retryable failure
+  in about **12 seconds**. Real SIGKILL: durable message redelivery succeeds after about
+  **72 seconds**, with a different lease/output attempt. The stale compiler directory is
+  actually removed by the parent. No test-only server success response is used.
+- Consistent backup then actual database/app/consumer restart passes normalized source,
+  token and nested Stimulus checks. Fresh project `styleguide-restore-20261027043705`
+  restores PostgreSQL and blob volumes, archive/schema checks pass, saved drafts/tokens
+  match and a new resolved collection is **byte-identical** to the original.
+- Fresh Symfony consumer after restore passes real registry/production browser, modified
+  and unowned collisions, forbidden JS, install SIGKILL recovery, update/remove and offline
+  collection/idempotence checks. Six test-account disable operations succeed (three roles
+  in each production project); restore volumes/backups are retained. The restore project
+  is stopped, including its explicit consumer profile; no unrelated storage is removed.
+- An additional complete consumer/recovery run with operational logging passes **exit 0**,
+  including fresh project `styleguide-restore-20261027050056`. Actual job timing/hash/wait/
+  category records are emitted at info level and actual Docker logs contain none of the
+  runtime secrets, test passwords or read token. Source and exception context stays redacted.
+- Current final PHP gate after CSS policy hardening: **108 tests / 540 assertions**, pass.
+  This includes actual foreign-origin HTTP redirect refusal, private credential permissions,
+  escaped CSS keywords in package validation and actual worker rejection/recovery.
+
+Corrected observed checks: pausing a worker makes Docker health stale; the driver now waits
+for real health recovery before dependent startup. The first test layout nested two separate
+three-column grids, causing pointer overlap at 768 px; the fixture now gives its block the
+full layout width and asserts the responsive block itself. The real layout/alert workflow
+then passes without forced clicks. A fixed Stimulus prerequisite download transiently failed
+TLS certificate validation; a normal verified HTTPS retry succeeds, and the driver now retries
+up to three times without disabling verification. Resume modes report skipped stages explicitly.
+
+Final policy audit actually reproduced an accepted escaped CSS directive. PHP and Node now
+decode CSS escapes before applying the same forbidden-directive profile; imported JS remains
+parse-only. Production job logging was also verified to emit diagnostics rather than merely
+buffering them. Composer image builds cache only public locked dependency downloads with
+BuildKit; no secret enters that cache. Latest policy production image/consumer gate and the
+final fresh Git checkout are still running/pending; M08 is not yet declared complete here.

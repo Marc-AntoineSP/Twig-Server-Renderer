@@ -126,3 +126,22 @@ verifies backup checksums, restores the database and blobs to fresh storage, ver
 and schema, then boots the app. It does not overwrite existing consumer files or old storage.
 Restore also needs a browser check of saved source/theme/composition and another real
 export/consumer installation; a pg_dump success alone is not a completed recovery exercise.
+
+The local verification driver is `make prod-test` after production boot and development
+bootstrap. It runs production Chromium, local TLS, private-boundary inspection, a fresh
+consumer, real graceful stop/SIGKILL redelivery, backup, restart, fresh restore and repeated
+consumer installation. It disables its random accounts afterward; create your own admin
+for use. The checked-in CI workflow calls the same commands and does no push/deployment.
+Its checkout action is pinned to the v4 tag SHA actually resolved with git ls-remote.
+
+If an external prerequisite download fails, fix connectivity/trust and retry; TLS verification
+stays enabled. The driver retries importmap downloads three times. A reviewed interrupted
+verification can resume with PRODUCTION_FROM=consumer, or PRODUCTION_FROM=restored-consumer
+plus PRODUCTION_RESTORE_ENV/PRODUCTION_BACKUP for an already verified restored target.
+These modes reuse recorded evidence; they do not claim to rerun skipped stages. Full CI
+runs the default complete sequence. Normal operations never need these test-only flags.
+
+Operational job records are emitted at info level with job/input hashes, queue wait,
+duration and error category; private data still passes through the global redactor. CSS
+policy checks decode escaped directive keywords in both the shared PHP validator and fixed
+Node parser before rejecting executable/import configuration. Source modules remain parse-only.

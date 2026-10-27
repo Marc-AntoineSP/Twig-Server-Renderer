@@ -41,7 +41,7 @@ final readonly class PackageValidator
             $this->path($path);
             $this->owned($path, $manifest->name);
             if(str_starts_with($path,'meta/'))PortablePath::check('.styleguide/packages/'.$manifest->name.'/'.$manifest->version.'/'.$path);
-            if ('theme' !== $manifest->kind && str_ends_with($path, '.css') && preg_match('/@(?:plugin|config|import|tailwind|source|reference)\b/i', $source)) $this->fail('sourceMap', 'Executable CSS directives are not accepted in package assets.');
+
             $key = strtolower($path);
             if (isset($seen[$key])) {
                 $this->fail('sourceMap', 'Case-insensitive path collision: '.$path);
@@ -50,6 +50,7 @@ final readonly class PackageValidator
             if (!is_string($source) || !mb_check_encoding($source, 'UTF-8')) {
                 $this->fail('sourceMap.'.$path, 'Source must be UTF-8 text.');
             }
+            if ('theme' !== $manifest->kind && str_ends_with($path, '.css') && CssPolicy::hasExecutableDirective($source)) $this->fail('sourceMap', 'Executable CSS directives are not accepted in package assets.');
             if (strlen($source) > 1048576 || ($total += strlen($source)) > 2097152) {
                 $this->fail('sourceMap', 'Sources exceed 1 MiB per file or 2 MiB in total.');
             }
@@ -176,7 +177,7 @@ final readonly class PackageValidator
         }
         foreach ($sources as $path => $source) {
             if (!str_starts_with($path, 'meta/') && !in_array($path, [$prefix.'app.css', $prefix.'theme.fragment.css', $prefix.'typography.css', $prefix.'preview.css'], true)) $this->fail('theme', 'Unexpected theme payload.');
-            if ($path === $prefix.'preview.css' && preg_match('/@(?:plugin|config|import|source|tailwind)\b/i', $source)) $this->fail('theme', 'preview.css must be compiled CSS.');
+            if ($path === $prefix.'preview.css' && CssPolicy::hasExecutableDirective($source)) $this->fail('theme', 'preview.css must be compiled CSS.');
         }
     }
 

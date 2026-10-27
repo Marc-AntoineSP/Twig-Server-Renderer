@@ -75,10 +75,18 @@ final class WorkerBoundaryTest extends KernelTestCase
         self::assertTrue($this->render('Recovered after timeout')['ok']);
     }
 
-    public function testCompilerRejectsCssPlugins(): void
+    public static function forbiddenCss():iterable
+    {
+        yield ['@plugin "untrusted";'];
+        yield ['@\\70 lugin "untrusted";'];
+        yield ['@im\\70ort "https://untrusted.example/style.css";'];
+    }
+
+    #[DataProvider('forbiddenCss')]
+    public function testCompilerRejectsCssPlugins(string $source): void
     {
         self::bootKernel();
-        $result = self::getContainer()->get(WorkerClient::class)->build(['sources' => (object) ['assets/catalogue/tests/worker/unsafe.css' => '@plugin "untrusted";'], 'controllers' => [], 'safelist' => []]);
+        $result = self::getContainer()->get(WorkerClient::class)->build(['sources' => (object) ['assets/catalogue/tests/worker/unsafe.css' => $source], 'controllers' => [], 'safelist' => []]);
         self::assertFalse($result['ok']);
         self::assertTrue(self::getContainer()->get(WorkerClient::class)->ready());
     }

@@ -46,6 +46,7 @@ class PreviewJob
     public function getInputHash(): string { return $this->inputHash; }
     public function getStatus(): string { return $this->expiresAt < new \DateTimeImmutable() ? 'expired' : $this->status; }
     public function getError(): ?array { return $this->error; }
+    public function getCreatedAt(): \DateTimeImmutable { return $this->createdAt; }
     public function getRunToken(): ?string { return $this->runToken; }
     public function getPayload(): array { return json_decode(json_encode($this->payload, JSON_THROW_ON_ERROR), true, 64, JSON_THROW_ON_ERROR); }
 }

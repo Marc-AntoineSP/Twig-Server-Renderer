@@ -3,7 +3,8 @@ import {posix} from 'node:path';
 export function validateSources(sources,parse,transform) {
     for(const [path,source] of Object.entries(sources)) {
         if(path.endsWith('.css')) {
-            if(/@(import|plugin|config)\b/i.test(source))throw Error('Imported CSS configuration and plugins are forbidden.');
+            const decoded=source.replace(/\\(?:([a-f0-9]{1,6})(?:\r\n|[ \t\r\n\f])?|([^\r\n\f]))/gi,(_,hex,escaped)=>{if(!hex)return escaped;const point=parseInt(hex,16);return String.fromCodePoint(!point||point>0x10ffff||(point>=0xd800&&point<=0xdfff)?0xfffd:point);});
+            if(/@(import|plugin|config|tailwind|source|reference)\b/i.test(decoded))throw Error('Imported CSS configuration and plugins are forbidden.');
             try{transform({filename:path,code:Buffer.from(source),errorRecovery:false});}catch(error){throw Error(`CSS syntax error in ${path}:${error.loc?.line||1}: ${error.message}`);}
         }
         if(!path.endsWith('.js'))continue;

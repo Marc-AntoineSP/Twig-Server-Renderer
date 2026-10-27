@@ -61,4 +61,8 @@ prod-check:
 	$(PRODUCTION) exec -T app php bin/console styleguide:cleanup
 	$(PRODUCTION) exec -T app php bin/console styleguide:storage:verify
 prod-down:
-	$(PRODUCTION) down
+	$(PRODUCTION) -f compose.local-tls.yaml down
+
+.PHONY: prod-test
+prod-test:
+	PRODUCTION='$(PRODUCTION)' bash tests/Production/run.sh

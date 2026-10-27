@@ -71,4 +71,10 @@ final class PortableContractsTest extends KernelTestCase
         try{try{(new SafeArchive())->read($path);self::fail('Duplicate entry accepted.');}catch(CatalogueException $e){self::assertSame(422,$e->getStatusCode());}}finally{unlink($path);}
         $this->expectException(CatalogueException::class);StrictJson::decode('['.str_repeat('0,',20001).'0]');
     }
+
+    public function testPackageAssetsRejectEscapedExecutableCssDirectives():void
+    {
+        self::bootKernel();$factory=self::getContainer()->get(SourceFactory::class);$validator=self::getContainer()->get(PackageValidator::class);
+        foreach(['@\\70 lugin "./payload.js";','@im\\70ort "https://untrusted.example/style.css";','@\\000072eference "./config.css";']as$css){[$m,$s]=$factory->initial(new CreateItemInput('contracts/css-policy','component','CSS policy'));$s->{'assets/styles/catalogue/contracts/css-policy/extra.css'}=$css;try{$validator->validate($m,$s,true);self::fail('Escaped directive accepted by package validation.');}catch(CatalogueException $e){self::assertSame(422,$e->getStatusCode());}}
+    }
 }

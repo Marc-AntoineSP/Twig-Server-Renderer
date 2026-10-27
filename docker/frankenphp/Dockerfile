@@ -43,7 +43,9 @@ COPY agent-kit/examples ./agent-kit/examples
 COPY fixtures ./fixtures
 COPY workers/render/composer.lock ./workers/render/composer.lock
 COPY workers/build/package-lock.json ./workers/build/package-lock.json
-RUN rm src/Command/BrowserAccountsCommand.php \
+RUN --mount=type=cache,target=/tmp/composer-cache \
+    export COMPOSER_CACHE_DIR=/tmp/composer-cache \
+ && rm src/Command/BrowserAccountsCommand.php \
  && composer install --no-dev --no-scripts --no-interaction --optimize-autoloader \
  && php bin/console importmap:install --env=prod --no-debug
 COPY --from=studio-assets /app/assets/styles/app.css ./assets/styles/app.css
