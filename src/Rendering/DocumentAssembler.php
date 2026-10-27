@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Rendering;
+use Styleguide\Contracts\FontRegistry;
 
 final class DocumentAssembler
 {

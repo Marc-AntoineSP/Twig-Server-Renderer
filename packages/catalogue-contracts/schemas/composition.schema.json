@@ -1,0 +1,110 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "root": {
+      "$ref": "#/$defs/node"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "root"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "node": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "container"
+            },
+            "tag": {
+              "enum": [
+                "div",
+                "section",
+                "article",
+                "header",
+                "footer",
+                "main",
+                "aside",
+                "nav"
+              ]
+            },
+            "classes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "maxItems": 100
+            },
+            "children": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/node"
+              },
+              "maxItems": 500
+            }
+          },
+          "required": [
+            "type",
+            "tag",
+            "classes",
+            "children"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "reference"
+            },
+            "name": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]*/[a-z][a-z0-9-]*$",
+              "maxLength": 100
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+            },
+            "props": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "type",
+            "name",
+            "version",
+            "props"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "text"
+            },
+            "value": {
+              "type": "string",
+              "maxLength": 10000
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

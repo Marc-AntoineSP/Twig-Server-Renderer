@@ -1,0 +1,20 @@
+{
+    "name": "styleguide/catalogue-contracts",
+    "description": "Shared bounded package, theme, archive and exact dependency validation.",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.5",
+        "ext-json": "*",
+        "ext-zip": "*",
+        "opis/json-schema": "^2.6",
+        "symfony/http-kernel": "^8.1",
+        "symfony/yaml": "^8.1",
+        "ext-mbstring": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Styleguide\\Contracts\\": "src/"
+        }
+    }
+}

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Catalogue;
+use Styleguide\Contracts\CatalogueException;
 
 final class FormInput
 {

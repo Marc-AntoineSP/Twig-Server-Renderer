@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Catalogue;
+namespace Styleguide\Contracts;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

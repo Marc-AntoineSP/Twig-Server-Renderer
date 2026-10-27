@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60da1ca2326b5b4400b4421062d24828",
+    "content-hash": "98dd34a4250d46a74cea8dc4be066152",
     "packages": [
         {
             "name": "composer/semver",
@@ -2096,6 +2096,38 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "styleguide/catalogue-contracts",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/catalogue-contracts",
+                "reference": "cc5553bca6428aedf068a98e92c7fafceceef14a"
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-zip": "*",
+                "opis/json-schema": "^2.6",
+                "php": "^8.5",
+                "symfony/http-kernel": "^8.1",
+                "symfony/yaml": "^8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Styleguide\\Contracts\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Shared bounded package, theme, archive and exact dependency validation.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "symfony/asset",

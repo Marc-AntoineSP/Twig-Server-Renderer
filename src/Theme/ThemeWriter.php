@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Theme;
+use Styleguide\Contracts\ThemeValidator;
+use Styleguide\Contracts\ThemeCssGenerator;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Entity\Theme;
 use App\Entity\ThemeRelease;
 use App\Rendering\WorkerClient;

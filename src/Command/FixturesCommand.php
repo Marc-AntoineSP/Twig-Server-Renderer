@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Catalogue\CatalogueWriter;
 use App\Catalogue\CreateItemInput;
-use App\Catalogue\Validation\PackageValidator;
+use Styleguide\Contracts\PackageValidator;
 use App\Repository\CatalogueRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

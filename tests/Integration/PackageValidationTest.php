@@ -2,11 +2,11 @@
 
 namespace App\Tests\Integration;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Catalogue\CreateItemInput;
 use App\Catalogue\SourceFactory;
-use App\Catalogue\Validation\PackageValidator;
-use App\Catalogue\Validation\PropsValidator;
+use Styleguide\Contracts\PackageValidator;
+use Styleguide\Contracts\PropsValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

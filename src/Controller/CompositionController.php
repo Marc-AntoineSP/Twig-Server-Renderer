@@ -1,6 +1,6 @@
 <?php
 namespace App\Controller;
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Catalogue\CatalogueWriter;
 use App\Catalogue\CreateItemInput;
 use App\Catalogue\DraftInput;
@@ -8,7 +8,7 @@ use App\Composition\CompositionCompiler;
 use App\Composition\CompositionInput;
 use App\Entity\CatalogueItem;
 use App\Entity\Release;
-use App\Shared\CanonicalJson;
+use Styleguide\Contracts\CanonicalJson;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

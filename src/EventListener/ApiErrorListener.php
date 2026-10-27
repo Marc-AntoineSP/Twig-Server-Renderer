@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;

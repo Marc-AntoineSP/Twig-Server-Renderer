@@ -2,11 +2,11 @@
 
 namespace App\Tests\Integration;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Catalogue\CatalogueWriter;
 use App\Catalogue\CreateItemInput;
 use App\Catalogue\SourceFactory;
-use App\Catalogue\Validation\PackageValidator;
+use Styleguide\Contracts\PackageValidator;
 use App\Entity\Release;
 use App\Rendering\DependencyResolver;
 use App\Tests\DatabaseTestCase;
@@ -61,7 +61,7 @@ final class DependencyResolverTest extends DatabaseTestCase
 
     private function resolve(array $dependencies): array
     {
-        [$manifest, $sources] = self::getContainer()->get(SourceFactory::class)->initial(new CreateItemInput($this->packageName('root'), 'block', 'Root'));
+        [$manifest, $sources] = self::getContainer()->get(SourceFactory::class)->initial(new CreateItemInput($this->packageName('root'), 'component', 'Root'));
         $manifest->dependencies = array_map(static fn (array $dependency): object => (object) $dependency, $dependencies);
 
         return self::getContainer()->get(DependencyResolver::class)->resolve($manifest, $sources);

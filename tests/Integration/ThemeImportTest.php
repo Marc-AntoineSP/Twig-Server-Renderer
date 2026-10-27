@@ -2,12 +2,12 @@
 
 namespace App\Tests\Integration;
 
-use App\Catalogue\CatalogueException;
-use App\Shared\CanonicalJson;
-use App\Theme\ThemeCssGenerator;
+use Styleguide\Contracts\CatalogueException;
+use Styleguide\Contracts\CanonicalJson;
+use Styleguide\Contracts\ThemeCssGenerator;
 use App\Theme\ThemeFactory;
-use App\Theme\ThemeImporter;
-use App\Theme\ThemeValidator;
+use Styleguide\Contracts\ThemeImporter;
+use Styleguide\Contracts\ThemeValidator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Yaml\Yaml;
 

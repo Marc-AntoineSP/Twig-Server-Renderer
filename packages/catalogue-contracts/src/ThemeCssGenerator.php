@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Theme;
+namespace Styleguide\Contracts;
 
-use App\Rendering\FontRegistry;
-use App\Shared\CanonicalJson;
+use Styleguide\Contracts\FontRegistry;
+use Styleguide\Contracts\CanonicalJson;
 
 final readonly class ThemeCssGenerator
 {

@@ -10,7 +10,8 @@ Last updated: 2026-10-27. Scope: M00–M08, including a local production build; 
 | M03 Live editor | Complete | 68 PHPUnit tests/248 assertions and 15 Chromium tests pass |
 | M04 Theme laboratory | Complete | 71 PHPUnit tests/285 assertions and 17 Chromium flows pass |
 | M05 Composition | Complete | 75 PHPUnit tests/325 assertions and 19 Chromium flows pass |
-| M06–M08 | Not started | Existing design/contracts only |
+| M06 Imports/exports/registry | In progress | Shared contract feature passes 83 tests/363 assertions; 19 browser regressions pass |
+| M07–M08 | Not started | Existing design/contracts only |
 
 ## Repository audit and preservation
 
@@ -366,3 +367,31 @@ unknown/self/conflicting references, invalid props, CSRF/revisions and ownership
 Existing dependency cycle/archive-integrity tests still pass. Schema and git diff checks
 pass; AGENTS/README hashes remain unchanged. M05 is complete before M06. Next: shared
 contract validation for studio/consumer, safe import/export, registry and scoped tokens.
+
+
+## M06 shared contracts feature
+
+Branch `feature/m06-package-contracts` extracts validation into the local Composer library
+`packages/catalogue-contracts` version 0.1.0, with a locked root path-repository dependency.
+Official Composer path-repository behavior checked at https://getcomposer.org/doc/05-repositories.md#path.
+No external package versions changed. Studio and future consumer use the same strict JSON,
+portable paths, bounded ZIP reader, inventory/props/theme validation, composition serializer
+and exact dependency graph. Normative schema copies are checked for equality. Runtime
+render/build isolation is unchanged. Root JSON bodies reject duplicate keys before DTO
+mapping; a structural scan bounds allocations. All nested Stimulus controller files must
+be declared with their actual path-derived identifier. Unsafe URL schemes fail regardless
+of prop name. Theme packages validate all generated source CSS against typed tokens.
+
+Actual feature gates: final `make check test` exit 0, **83 tests/363 assertions**. Full
+browser regression after extraction passes **19 flows**. Then the rebuilt compiler's
+literal package-CSS inclusion was verified by real compiler output in the final PHPUnit
+run. Adversarial real ZIP tests include exact duplicate central-directory entries,
+traversal/absolute/drive/backslash/dot/reserved paths, case collisions, symlinks and expansion
+bombs. Tests cover escaped duplicate JSON keys and allocation limits, root HTTP ambiguity,
+nested controller compilation, arbitrary-key URL schemes and the real Ember theme fixture.
+Composer root/library validation and root audit pass; git diff checks pass.
+
+Corrected an autowiring failure from old implicit namespace references during extraction,
+and a malformed JSON test string. Worker image rebuilt/recreated after CSS inclusion fix.
+M06 is still in progress. Next: private registry/scoped tokens, safe staged transfer,
+resolved/static/theme exports and clean-studio round-trip checks before M07.

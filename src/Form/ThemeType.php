@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Theme\ThemeCssGenerator;
-use App\Theme\ThemeValidator;
+use Styleguide\Contracts\ThemeCssGenerator;
+use Styleguide\Contracts\ThemeValidator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

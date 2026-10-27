@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Entity\Theme;
 use App\Entity\ThemeRelease;
-use App\Shared\CanonicalJson;
+use Styleguide\Contracts\CanonicalJson;
 use App\Theme\ThemeWriter;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

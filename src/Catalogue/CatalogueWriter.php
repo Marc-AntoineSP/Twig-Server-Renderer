@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Catalogue;
+use Styleguide\Contracts\CatalogueException;
 
-use App\Catalogue\Validation\PackageValidator;
+use Styleguide\Contracts\PackageValidator;
 use App\Entity\CatalogueItem;
 use App\Entity\Draft;
 use App\Entity\User;

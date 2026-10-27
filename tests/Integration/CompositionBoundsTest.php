@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Integration;
-use App\Catalogue\CatalogueException;
-use App\Composition\CompositionValidator;
+use Styleguide\Contracts\CatalogueException;
+use Styleguide\Contracts\CompositionValidator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 final class CompositionBoundsTest extends KernelTestCase
 {

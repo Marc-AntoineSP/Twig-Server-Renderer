@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Catalogue\Validation;
+namespace Styleguide\Contracts;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use Opis\JsonSchema\CompliantValidator;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 
@@ -144,6 +144,7 @@ final class PropsValidator
             return;
         }
         foreach ($value as $name => $child) {
+            if (is_string($child) && preg_match('/^(?:javascript|vbscript|data|file|blob):/i', preg_replace('/[\\x00-\\x20\\x7f]/', '', $child))) $this->fail($field.'.'.$name, 'Unsafe URL scheme.');
             if (is_string($child) && preg_match('/(?:^|_)(?:url|href|src|action)$|(?:Url|Href|Src)$/', (string) $name)) {
                 $url = trim($child);
                 if (preg_match('/[\x00-\x20\x7f\\\\]/', $url) || str_starts_with($url, '//') || (preg_match('/^[a-z][a-z0-9+.-]*:/i', $url) && !preg_match('/^(https?:|mailto:|tel:)/i', $url))) {

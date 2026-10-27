@@ -83,6 +83,14 @@ final class WorkerBoundaryTest extends KernelTestCase
         self::assertTrue(self::getContainer()->get(WorkerClient::class)->ready());
     }
 
+    public function testLiteralPackageStylesArePresentInActualCompiledOutput(): void
+    {
+        self::bootKernel();
+        $result=self::getContainer()->get(WorkerClient::class)->build(['sources'=>(object)['assets/catalogue/tests/worker/style.css'=>'.owned-custom-style { color: #123456; }'],'controllers'=>[],'safelist'=>[]]);
+        self::assertTrue($result['ok'],json_encode($result));
+        self::assertStringContainsString('.owned-custom-style { color: #123456; }',$result['css']);
+    }
+
     public static function forbiddenImports(): iterable
     {
         yield ['import fs from "node:fs"; export default class {}'];

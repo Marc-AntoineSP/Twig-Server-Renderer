@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Rendering;
+namespace Styleguide\Contracts;
 
 final class FontRegistry
 {

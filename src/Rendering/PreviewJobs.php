@@ -2,15 +2,15 @@
 
 namespace App\Rendering;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Catalogue\CatalogueWriter;
-use App\Catalogue\Validation\PackageValidator;
-use App\Catalogue\Validation\PropsValidator;
+use Styleguide\Contracts\PackageValidator;
+use Styleguide\Contracts\PropsValidator;
 use App\Entity\CatalogueItem;
 use App\Entity\PreviewJob;
 use App\Entity\User;
 use App\Entity\ThemeRelease;
-use App\Theme\ThemeValidator;
+use Styleguide\Contracts\ThemeValidator;
 use App\Message\RenderPreview;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -81,6 +81,7 @@ final readonly class PreviewJobs
             if (null === $theme && null !== $preset->themeReleaseId) {
                 $theme = ($this->entityManager->find(ThemeRelease::class, $preset->themeReleaseId) ?? throw new CatalogueException(404, 'Theme release not found.'))->getDocument();
             }
+            $theme ??= $closure['theme'] ?? null;
             if (null !== $theme) {
                 if (!$theme instanceof \stdClass) { throw new CatalogueException(422, 'Theme data must be an object.'); }
                 $this->themes->validate($theme);

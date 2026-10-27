@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Theme;
+namespace Styleguide\Contracts;
 
-use App\Catalogue\CatalogueException;
-use App\Rendering\FontRegistry;
+use Styleguide\Contracts\CatalogueException;
+use Styleguide\Contracts\FontRegistry;
 use Opis\JsonSchema\CompliantValidator;
 use Opis\JsonSchema\Errors\ErrorFormatter;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final readonly class ThemeValidator
 {
     public const COLORS = ['base-100', 'base-200', 'base-300', 'base-content', 'primary', 'primary-content', 'secondary', 'secondary-content', 'accent', 'accent-content', 'neutral', 'neutral-content', 'info', 'info-content', 'success', 'success-content', 'warning', 'warning-content', 'error', 'error-content'];
 
-    public function __construct(#[Autowire('%kernel.project_dir%/agent-kit/schemas/theme.schema.json')] private string $schemaPath)
+    public function __construct(private string $schemaPath = __DIR__.'/../schemas/theme.schema.json')
     {
     }
 

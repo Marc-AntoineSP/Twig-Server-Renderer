@@ -2,7 +2,7 @@
 
 namespace App\Rendering;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 
 final readonly class PreviewRenderer
 {

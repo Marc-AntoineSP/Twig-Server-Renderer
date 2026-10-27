@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Catalogue\CatalogueWriter;
 use App\Catalogue\CreateItemInput;
 use App\Catalogue\DraftInput;

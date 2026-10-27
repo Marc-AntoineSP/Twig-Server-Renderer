@@ -1,8 +1,8 @@
 <?php
 namespace App\Packaging;
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Catalogue\CatalogueWriter;
-use App\Catalogue\Validation\PackageValidator;
+use Styleguide\Contracts\PackageValidator;
 use App\Entity\CatalogueItem;
 use App\Entity\Release;
 use App\Rendering\DependencyResolver;

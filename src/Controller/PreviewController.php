@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Entity\PreviewJob;
 use App\Rendering\PreviewInput;
 use App\Rendering\PreviewJobs;

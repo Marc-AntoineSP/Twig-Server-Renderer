@@ -30,7 +30,7 @@ try {
     const theme = job.theme ? themeCss(job.theme) : '';
     await writeFile(join(directory, 'input.css'), `@import "/toolchain/node_modules/tailwindcss/index.css" source(none);\n@source "${directory}/scan.txt";\n@plugin "/toolchain/node_modules/daisyui/index.js" { themes: ${theme ? 'false' : 'light --default, dark --prefersdark'}; }\n${theme}`);
     await execute(process.execPath, ['--max-old-space-size=128', '/toolchain/node_modules/@tailwindcss/cli/dist/index.mjs', '-i', join(directory, 'input.css'), '-o', join(directory, 'output.css'), '--minify'], { cwd: '/toolchain', timeout: 7000, maxBuffer: 1048576 });
-    const css = await readFile(join(directory, 'output.css'), 'utf8');
+    const css = (await readFile(join(directory, 'output.css'), 'utf8')) + '\n' + Object.entries(job.sources).filter(([path]) => path.endsWith('.css')).map(([, source]) => source).join('\n');
     const identifiers = new Set();
     const imports = [];
     const registrations = [];

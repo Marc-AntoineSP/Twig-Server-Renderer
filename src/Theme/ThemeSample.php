@@ -5,7 +5,7 @@ namespace App\Theme;
 use App\Catalogue\CatalogueWriter;
 use App\Catalogue\CreateItemInput;
 use App\Catalogue\SourceFactory;
-use App\Catalogue\Validation\PackageValidator;
+use Styleguide\Contracts\PackageValidator;
 use App\Entity\CatalogueItem;
 use App\Repository\CatalogueRepository;
 

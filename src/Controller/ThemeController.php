@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Entity\CatalogueItem;
 use App\Entity\Theme;
 use App\Entity\ThemeRelease;

@@ -1,5 +1,5 @@
 <?php
-namespace App\Composition;
+namespace Styleguide\Contracts;
 final class TwigLiteral
 {
     public static function encode(mixed $value): string

@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Entity\Theme;
 use App\Entity\ThemeRelease;
-use App\Shared\CanonicalJson;
-use App\Theme\ThemeImporter;
+use Styleguide\Contracts\CanonicalJson;
+use Styleguide\Contracts\ThemeImporter;
 use App\Theme\ThemeImportInput;
 use App\Theme\ThemeUpdateInput;
 use App\Theme\ThemeWriter;

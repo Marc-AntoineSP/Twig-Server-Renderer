@@ -1,5 +1,6 @@
 <?php
 namespace App\Tests\Functional;
+use Styleguide\Contracts\CatalogueException;
 use App\Catalogue\CatalogueWriter;
 use App\Catalogue\CreateItemInput;
 use App\Packaging\PublishInput;
@@ -30,7 +31,7 @@ final class CompositionTest extends DatabaseTestCase
         ];
         foreach($cases as [$root,$status]) {
             try { self::getContainer()->get(CompositionCompiler::class)->materialize($block->getManifestData(),$block->getSourceMap(),(object)['schemaVersion'=>1,'root'=>$root]); self::fail('Invalid reference accepted.'); }
-            catch(\App\Catalogue\CatalogueException $e) { self::assertSame($status,$e->getStatusCode()); }
+            catch(\Styleguide\Contracts\CatalogueException $e) { self::assertSame($status,$e->getStatusCode()); }
         }
         self::assertSame(1,$block->getRevision());
     }

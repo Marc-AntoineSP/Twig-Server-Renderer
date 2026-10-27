@@ -1,0 +1,192 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*/[a-z][a-z0-9-]*$",
+      "maxLength": 100
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "kind": {
+      "enum": [
+        "component",
+        "block",
+        "layout",
+        "theme"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "entry": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)[A-Za-z0-9_.\\-/]+$",
+      "maxLength": 240
+    },
+    "propsSchema": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)[A-Za-z0-9_.\\-/]+$",
+      "maxLength": 240
+    },
+    "defaults": {
+      "type": "object"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*/[a-z][a-z0-9-]*$",
+            "maxLength": 100
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          }
+        },
+        "required": [
+          "name",
+          "version"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 100
+    },
+    "controllers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "pattern": "^catalogue--[a-z][a-z0-9-]*--[a-z][a-z0-9-]*$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)[A-Za-z0-9_.\\-/]+$",
+            "maxLength": 240
+          }
+        },
+        "required": [
+          "identifier",
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 100
+    },
+    "safelist": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "maxItems": 500
+    },
+    "compatibility": {
+      "type": "object",
+      "properties": {
+        "php": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "twig": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "tailwind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "daisyui": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "stimulus": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "php",
+        "twig",
+        "tailwind",
+        "daisyui",
+        "stimulus"
+      ],
+      "additionalProperties": false
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)[A-Za-z0-9_.\\-/]+$",
+            "maxLength": 240
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 52428800
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "bytes"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 500
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "name",
+    "version",
+    "kind",
+    "title",
+    "description",
+    "entry",
+    "dependencies",
+    "controllers",
+    "safelist",
+    "compatibility",
+    "files",
+    "license"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Semantic rules: non-theme needs propsSchema/defaults; theme needs meta/theme.json and no controllers; verify every path/hash, package ownership, dependency closure and defaults. V1 accepts stable x.y.z releases only."
+}

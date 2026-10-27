@@ -1,7 +1,7 @@
 <?php
 namespace App\Packaging;
-use App\Catalogue\CatalogueException;
-use App\Shared\CanonicalJson;
+use Styleguide\Contracts\CatalogueException;
+use Styleguide\Contracts\CanonicalJson;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 final readonly class ArchiveStore
 {

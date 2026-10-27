@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared;
+namespace Styleguide\Contracts;
 
 final class CanonicalJson
 {

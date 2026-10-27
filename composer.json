@@ -48,7 +48,8 @@
         "symfony/web-link": "8.1.*",
         "symfony/yaml": "8.1.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "styleguide/catalogue-contracts": "0.1.0"
     },
     "config": {
         "allow-plugins": {
@@ -111,5 +112,17 @@
         "symfony/maker-bundle": "^1.0",
         "symfony/stopwatch": "8.1.*",
         "symfony/web-profiler-bundle": "8.1.*"
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/catalogue-contracts",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "styleguide/catalogue-contracts": "0.1.0"
+                }
+            }
+        }
+    ]
 }

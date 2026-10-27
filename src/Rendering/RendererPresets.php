@@ -2,9 +2,9 @@
 
 namespace App\Rendering;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use App\Catalogue\CatalogueWriter;
-use App\Catalogue\Validation\PropsValidator;
+use Styleguide\Contracts\PropsValidator;
 use App\Entity\CatalogueItem;
 use App\Entity\RendererPreset;
 use App\Entity\User;

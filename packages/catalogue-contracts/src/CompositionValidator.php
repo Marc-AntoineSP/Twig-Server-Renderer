@@ -1,11 +1,10 @@
 <?php
-namespace App\Composition;
-use App\Catalogue\CatalogueException;
+namespace Styleguide\Contracts;
+use Styleguide\Contracts\CatalogueException;
 use Opis\JsonSchema\CompliantValidator;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 final readonly class CompositionValidator
 {
-    public function __construct(#[Autowire('%kernel.project_dir%/agent-kit/schemas/composition.schema.json')] private string $schema) {}
+    public function __construct(private string $schema = __DIR__.'/../schemas/composition.schema.json') {}
     public function validate(\stdClass $document): void
     {
         try { $json = json_encode($document, JSON_THROW_ON_ERROR, 64); }

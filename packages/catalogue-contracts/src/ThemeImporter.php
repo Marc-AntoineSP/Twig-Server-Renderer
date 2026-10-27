@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Theme;
+namespace Styleguide\Contracts;
 
-use App\Catalogue\CatalogueException;
+use Styleguide\Contracts\CatalogueException;
 use Symfony\Component\Yaml\Yaml;
 
 final readonly class ThemeImporter
@@ -18,7 +18,7 @@ final readonly class ThemeImporter
         }
         try {
             $document = match ($format) {
-                'json' => json_decode($content, false, 24, JSON_THROW_ON_ERROR),
+                'json' => StrictJson::decode($content, 262144, 24),
                 'yaml' => $this->yaml($content),
                 'css' => $this->css($content),
                 default => throw new CatalogueException(422, 'Choose JSON, YAML or this application’s generated CSS.'),
@@ -53,7 +53,7 @@ final readonly class ThemeImporter
         $match = [$matches[0][0], $matches[1][0]];
         $decoded = base64_decode($match[1], true);
         if (false === $decoded) { throw new CatalogueException(422, 'Invalid CSS theme metadata.'); }
-        $document = json_decode($decoded, false, 24, JSON_THROW_ON_ERROR);
+        $document = StrictJson::decode($decoded, 65536, 24);
         if (!$document instanceof \stdClass) { throw new CatalogueException(422, 'Invalid CSS theme metadata.'); }
         $this->validator->validate($document);
         $normalized = $this->normalizeCss($content);
@@ -63,7 +63,7 @@ final readonly class ThemeImporter
         throw new CatalogueException(422, 'CSS declarations differ from their embedded theme data. Reconcile edited CSS with theme.json; no changes were imported.', [], 'css_token_conflict');
     }
 
-    private function normalizeCss(string $css): string
+    public static function normalizeCss(string $css): string
     {
         return preg_replace_callback('~"(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\'|/\*.*?\*/|\s+~s', static fn (array $part): string => in_array($part[0][0], ['"', "'"], true) ? $part[0] : '', $css);
     }
