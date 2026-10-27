@@ -25,12 +25,15 @@ final class PersistenceTest extends DatabaseTestCase
         $repository = self::getContainer()->get(CatalogueRepository::class);
         $item = $repository->named('awui/alert');
         self::assertNotNull($item);
+        $before=self::getContainer()->get(CatalogueWriter::class)->draft($item)->getSourceMap();
+        $release=self::getContainer()->get(EntityManagerInterface::class)->getRepository(Release::class)->findOneBy(['item'=>$item,'version'=>'1.0.0']);self::assertNotNull($release);$path=self::getContainer()->getParameter('kernel.project_dir').'/var/catalogue/'.$release->getArchiveKey();self::assertFileExists($path);self::assertSame($release->getArchiveHash(),hash_file('sha256',$path));
         $item->reviseMetadata('Preserved fixture edit', 'My description', ['my-tag']);
         self::getContainer()->get(EntityManagerInterface::class)->flush();
         $tester->execute([]);
         self::assertSame(0, $tester->getStatusCode());
         self::assertSame('Preserved fixture edit', $repository->named('awui/alert')->getTitle());
         self::assertNotNull($repository->named('awui/notice-grid'));
+        self::assertEquals($before,self::getContainer()->get(CatalogueWriter::class)->draft($item)->getSourceMap());
     }
 
     public function testReleaseSnapshotIsImmutableAndDatabaseEnforcesVersionUniqueness(): void

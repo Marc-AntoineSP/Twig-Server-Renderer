@@ -668,3 +668,15 @@ parse-only. Production job logging was also verified to emit diagnostics rather 
 buffering them. Composer image builds cache only public locked dependency downloads with
 BuildKit; no secret enters that cache. Latest policy production image/consumer gate and the
 final fresh Git checkout are still running/pending; M08 is not yet declared complete here.
+
+## Fresh-checkout fixture regression correction
+
+The final fresh-clone run at commit 7a7c04a bootstrapped and passed lint, but its empty
+PostgreSQL test database exposed a real error: the legacy notice-grid fixture referenced
+awui/alert@1.0.0 before an immutable release existed. Earlier populated test data had hidden
+that dependency, so this is not recorded as a passing fresh run. Branch
+`feature/m08-clean-bootstrap-fix` installs the validated bundled alert snapshot through the
+same safe import pipeline before generating the notice-grid draft. It never publishes an
+edited user draft. New composition source is materialized canonically; existing drafts and
+releases remain untouched. The existing persistence test now checks the dependency archive
+and hash plus complete source preservation. The corrected clean-checkout gate follows.
