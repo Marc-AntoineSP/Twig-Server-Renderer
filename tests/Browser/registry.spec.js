@@ -1,0 +1,24 @@
+import { test, expect } from '@playwright/test';
+import { randomBytes } from 'node:crypto';
+import { login, createAlert } from './helpers.js';
+test('administrator issues a one-time scoped token and revokes real registry access', async ({ page }) => {
+    await login(page, 'admin');
+    const { item } = await createAlert(page);
+    await page.goto('/registry-tokens');
+    const label = `Browser ${randomBytes(5).toString('hex')}`;
+    await page.getByLabel('Token label', { exact: true }).fill(label);
+    await page.getByLabel('Package scopes', { exact: true }).fill('browser/*');
+    const response = await Promise.all([page.waitForResponse(r=>r.url().endsWith('/registry-tokens') && r.request().method()==='POST'),page.getByRole('button', { name: 'Create read token', exact: true }).click()]);
+    expect(response[0].headers()['x-debug-token']).toBeUndefined();
+    const token = await page.locator('[data-read-token]').textContent();
+    expect(token).toMatch(/^sgt_[a-f0-9]{64}$/);
+    const url = `/api/v1/registry/${item.name}`;
+    const headers = { Authorization: `Bearer ${token}` };
+    expect((await page.request.get(url, { headers })).status()).toBe(200);
+    expect((await page.request.get('/api/v1/registry/other/private', { headers })).status()).toBe(403);
+    await page.reload();
+    await expect(page.locator('[data-read-token]')).toHaveCount(0);
+    await page.getByRole('button', { name: `Revoke ${label}`, exact: true }).click();
+    await expect(page.locator('[data-flash]')).toHaveText('Registry token revoked.');
+    expect((await page.request.get(url, { headers })).status()).toBe(401);
+});

@@ -13,6 +13,10 @@ security:
         dev:
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
+        registry:
+            pattern: ^/api/v1/registry/
+            stateless: true
+            custom_authenticators: [App\Security\RegistryAuthenticator]
         main:
             lazy: true
             provider: studio_users

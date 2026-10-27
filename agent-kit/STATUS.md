@@ -395,3 +395,28 @@ Corrected an autowiring failure from old implicit namespace references during ex
 and a malformed JSON test string. Worker image rebuilt/recreated after CSS inclusion fix.
 M06 is still in progress. Next: private registry/scoped tokens, safe staged transfer,
 resolved/static/theme exports and clean-studio round-trip checks before M07.
+
+## M06 private registry feature
+
+Branch `feature/m06-private-registry` adds hashed scoped/expiring/revocable read tokens,
+administrator SSR token management and real create/revoke console commands. A separate
+stateless firewall grants a registry-only ROLE_READER identity and never creates a studio
+session. Owner status, expiry, revocation and exact/namespace/all scopes precede every
+metadata/manifest/archive ETag check. Archive bytes are integrity-verified and private.
+Generated/reviewed/applied `Version20261027004207`; schema mapping/database validate.
+Token pages and registry requests explicitly disable development profiler collection.
+
+Actual gates: `make check test` exit 0, **86 tests/399 assertions**. Targeted Chromium
+admin issue/download-scope/reload/revoke flow **1 passed**. Real commands issue hashed
+tokens and revoke by ID. HTTP tests verify bytes/hash, private caching, 304 only after
+authorization, wrong scope, expired/disabled/revoked tokens and no Set-Cookie/session
+privilege escalation. Production container lint (`--env=prod --no-debug`) passes with
+optional profiler service absent; this is configuration validation, not a production
+image/deployment claim. Git diff checks pass. Temporary browser accounts/tokens removed.
+
+Corrected checks: private helper collided with AbstractController::json; renamed it.
+BinaryFileResponse defaults to public and now explicitly uses public:false. HTML invalid
+CSRF is handled as 403 before the authentication redirect. Nullable Profiler autowiring
+initially injected null; explicit optional service injection now prevents debug-token
+headers on private token/registry responses, verified in the real development browser.
+M06 still pending package transfer and clean-studio round-trip before M07.

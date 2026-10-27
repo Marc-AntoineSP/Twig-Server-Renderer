@@ -14,6 +14,7 @@
                 <a href="{{ path('studio_home') }}" class="text-xl font-semibold tracking-tight">Styleguide Studio</a>
                 {% if app.user %}<a class="btn btn-ghost ml-4" href="{{ path('catalogue_index') }}">Catalogue</a>{% endif %}
                 {% if app.user %}<a class="btn btn-ghost" href="{{ path('theme_index') }}">Themes</a>{% endif %}
+                {% if is_granted('ROLE_ADMIN') %}<a class="btn btn-ghost" href="{{ path('registry_tokens') }}">Read tokens</a>{% endif %}
                 {% block navigation %}{% endblock %}
                 {% if app.user %}
                     <div class="ml-auto flex items-center gap-4 text-sm">

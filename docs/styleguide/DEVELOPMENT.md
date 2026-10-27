@@ -224,3 +224,19 @@ are owned by meta/composition.json and cannot be edited through the source API. 
 and convert to source creates another named item and keeps the original tree unchanged.
 Source-owned items have their visual builder disabled. No database migration was needed:
 composition source belongs to the existing versioned, validated source map.
+
+The private registry is `/api/v1/registry/{namespace}/{slug}` with exact-version
+`/{version}/manifest` and `/{version}/archive` endpoints. It accepts Bearer read tokens
+through a separate stateless firewall. Studio cookies alone do not authorize registry
+requests. Tokens cannot create studio sessions. Every request checks active owner,
+expiry/revocation and package scope before ETag handling; downloads remain private.
+Administrators manage tokens at `/registry-tokens`, where plaintext is shown once, or:
+
+```
+make console ARGS="styleguide:token:create admin@example.test --scope='awui/*' --days=30"
+make console ARGS="styleguide:token:revoke TOKEN_ID"
+```
+
+Only hashes persist. Keep plaintext outside project configuration/lockfiles. Token pages
+and registry requests are excluded from development profiling. Production profiler services
+are absent. Download integrity is reported by archive SHA-256 in package metadata and headers.
