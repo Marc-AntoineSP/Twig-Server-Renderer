@@ -36,13 +36,7 @@ final readonly class ThemeImporter
 
     private function yaml(string $content): mixed
     {
-        // V1 has no use for aliases, anchors, custom tags or YAML objects.
-        if (preg_match('/(^|[\s\[\]{},])(?:[&*][A-Za-z0-9_-]+|!!|!php)/m', $content)) {
-            throw new CatalogueException(422, 'YAML anchors, aliases and custom types are not supported.');
-        }
-        $value = Yaml::parse($content, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
-
-        return json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 24, JSON_THROW_ON_ERROR);
+        return SafeYaml::decode($content, 262144);
     }
 
     private function css(string $content): \stdClass

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %}Import packages{% endblock %}
+{% block body %}
+<h1 class="text-3xl font-bold">Import packages</h1>
+<p class="my-4">Choose a source ZIP, resolved collection ZIP or canonical JSON/YAML manifest-and-sources envelope. Imported JavaScript is built for the sandbox; no package hooks run on the server. Existing drafts are preserved.</p>
+<section data-controller="package-import" data-package-import-url-value="{{ path('package_import_api') }}" data-package-import-csrf-value="{{ csrf_token('api') }}" data-package-import-item-url-value="{{ path('catalogue_show',{id:'__ITEM__'}) }}">
+<label for="package-file">Complete local package (10 MiB maximum)</label><input id="package-file" class="file-input my-3 w-full" type="file" accept=".zip,.json,.yaml,.yml" data-package-import-target="file" data-action="change->package-import#changed">
+<details class="my-4"><summary>Paste a JSON/YAML envelope instead</summary><label for="package-format">Envelope format</label><select id="package-format" class="select w-full" data-package-import-target="format" data-action="change->package-import#changed"><option value="json">JSON</option><option value="yaml">YAML</option></select><label for="package-content">Envelope content</label><textarea id="package-content" class="textarea w-full font-mono" rows="14" data-package-import-target="content" data-action="input->package-import#changed"></textarea></details>
+<div class="my-4 flex flex-wrap gap-3"><button class="btn btn-outline" type="button" data-mode="validate" data-action="package-import#run">Validate package</button><button class="btn btn-outline" type="button" data-mode="dry-run" data-action="package-import#run">Dry-run import</button><button class="btn btn-primary" type="button" disabled data-package-import-target="apply" data-mode="apply" data-action="package-import#run">Apply reviewed import</button></div>
+<p role="status" data-package-import-target="status"></p><pre class="my-4 max-h-96 overflow-auto whitespace-pre-wrap break-all rounded border border-base-300 p-4 text-sm" aria-label="Import plan" data-package-import-target="plan"></pre><div class="flex flex-wrap gap-3" data-package-import-target="links"></div>
+</section>
+<p class="mt-6 text-sm">Limits include 100 files/package, 1 MiB/file, 2 MiB/source closure, 500 archive entries and 100:1 expansion. YAML is bounded to 20,000 lines/32 levels. Validation renders at most 64 variants within a 45-second budget. Larger source collections should be split. Theme token documents alone use the <a class="link" href="{{ path('theme_import') }}">theme importer</a>.</p>
+{% endblock %}

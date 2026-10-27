@@ -5,8 +5,8 @@ final readonly class PackageGraph
     public function __construct(private PackageValidator $validator,private CompositionTemplate $compositions,private CanonicalJson $json) {}
     public function resolve(\stdClass $manifest,\stdClass $sources,callable $lookup):array
     {
-        $versions=[];$visiting=[];$packages=[];$allSources=new \stdClass();$templates=new \stdClass();$controllers=[];$identifiers=[];$safelist=[];$bytes=0;$theme=null;
-        $visit=function(\stdClass $m,\stdClass $files,int $depth) use(&$visit,&$versions,&$visiting,&$packages,$allSources,$templates,&$controllers,&$identifiers,&$safelist,&$bytes,&$theme,$lookup):void {
+        $versions=[];$visiting=[];$packages=[];$allSources=new \stdClass();$templates=new \stdClass();$controllers=[];$identifiers=[];$safelist=[];$bytes=0;$theme=null;$themeNames=[];
+        $visit=function(\stdClass $m,\stdClass $files,int $depth) use(&$visit,&$versions,&$visiting,&$packages,$allSources,$templates,&$controllers,&$identifiers,&$safelist,&$bytes,&$theme,&$themeNames,$lookup):void {
             $m=$this->validator->validate($m,$files,0===$depth);
             if($depth>20 || (!isset($versions[$m->name]) && count($versions)>=100)) throw new CatalogueException(422,'Dependency graph exceeds depth/package limits.');
             if(isset($visiting[$m->name])) throw new CatalogueException(422,'Dependency cycle detected at '.$m->name.'.');
@@ -23,8 +23,9 @@ final readonly class PackageGraph
             }
             if('theme'===$m->kind) {
                 $tokens=StrictJson::decode($files->{'meta/theme.json'},65536,24);
-                if(null!==$theme && $theme->name!==$tokens->name) throw new CatalogueException(409,'Select one theme per resolved package graph.');
-                $theme=$tokens;
+                if(isset($themeNames[$tokens->cssName]) && $themeNames[$tokens->cssName]!==$tokens->name) throw new CatalogueException(409,'Theme CSS names collide.');
+                $themeNames[$tokens->cssName]=$tokens->name;
+                $theme??=$tokens;
             }
             foreach($files as $path=>$source) {
                 $key=str_starts_with($path,'meta/')?'metadata/'.$m->name.'/'.substr($path,5):$path;

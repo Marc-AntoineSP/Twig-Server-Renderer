@@ -29,6 +29,9 @@ final readonly class CatalogueWriter
     public function create(CreateItemInput $input, ?User $user, ?\stdClass $manifest = null, ?\stdClass $sources = null): Draft
     {
         $this->validateInput($input);
+        if ($this->entityManager->getRepository(\App\Entity\Theme::class)->findOneBy(['name' => $input->name])) {
+            throw new CatalogueException(409, 'That name belongs to a typed theme.');
+        }
         if ($this->catalogue->named($input->name)) {
             throw new CatalogueException(409, 'That catalogue name already exists.', ['name' => ['Choose a unique namespace/slug.']], 'duplicate_name');
         }
@@ -60,6 +63,7 @@ final readonly class CatalogueWriter
 
     public function save(CatalogueItem $item, int $expectedRevision, DraftInput $input, User $user): Draft
     {
+        if ('theme' === $item->getKind()) throw new CatalogueException(409, 'Edit theme drafts in the theme laboratory.');
         $this->validateInput($input);
         $manifest = clone $input->manifestData;
         $manifest->title = $input->title;

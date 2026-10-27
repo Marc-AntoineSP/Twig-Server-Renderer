@@ -31,6 +31,7 @@ final readonly class PackageValidator
         if (!$result->isValid()) {
             throw new CatalogueException(422, 'Manifest structure is invalid.', (new ErrorFormatter())->format($result->error()));
         }
+        if (strlen($manifest->version)>32) $this->fail('version','Stable versions must fit 32 characters.');
         if (count((array) $sources) > 100) {
             $this->fail('sourceMap', 'At most 100 draft files are supported.');
         }
@@ -66,6 +67,9 @@ final readonly class PackageValidator
         }
         if (!$refreshInventory && count($inventory) !== count((array) $sources)) {
             $this->fail('manifestData.files', 'Inventory must contain every payload file exactly once.');
+        }
+        if (!$refreshInventory && (!isset($sources->{'meta/LICENSE'}, $sources->{'meta/README.md'}) || '' === trim($sources->{'meta/LICENSE'}) || '' === trim($sources->{'meta/README.md'}))) {
+            $this->fail('metadata', 'Immutable packages require nonempty meta/LICENSE and meta/README.md.');
         }
         $this->path($manifest->entry);
         $this->owned($manifest->entry, $manifest->name);
@@ -127,6 +131,7 @@ final readonly class PackageValidator
         }
         $dependencies = [];
         foreach ($manifest->dependencies as $dependency) {
+            if (strlen($dependency->version)>32) $this->fail('dependencies','Stable dependency versions must fit 32 characters.');
             if ($dependency->name === $manifest->name || isset($dependencies[$dependency->name])) {
                 $this->fail('manifestData.dependencies', 'Self dependencies and duplicate dependency names are forbidden.');
             }
@@ -162,6 +167,11 @@ final readonly class PackageValidator
             if (!str_ends_with($name, '.css')) continue;
             $path = $prefix.$name;
             if (!isset($sources->$path) || ThemeImporter::normalizeCss($sources->$path) !== ThemeImporter::normalizeCss($expected)) $this->fail('theme', 'Theme source CSS conflicts with canonical tokens: '.$name);
+            if (str_contains($sources->$path, 'styleguide-theme-v1:')) {
+                $embedded=(new ThemeImporter($this->themes,$this->themeCss))->parse($sources->$path,'css');
+                $json=new CanonicalJson();
+                if($json->encode($embedded)!==$json->encode($document))$this->fail('theme','CSS embedded metadata conflicts with meta/theme.json.');
+            }
         }
         foreach ($sources as $path => $source) {
             if (!str_starts_with($path, 'meta/') && !in_array($path, [$prefix.'app.css', $prefix.'theme.fragment.css', $prefix.'typography.css', $prefix.'preview.css'], true)) $this->fail('theme', 'Unexpected theme payload.');
@@ -172,6 +182,11 @@ final readonly class PackageValidator
     public function path(string $path): void
     {
         PortablePath::check($path);
+    }
+
+    public function sourcePath(string $path,string $name):void
+    {
+        $this->path($path);$this->owned($path,$name);
     }
 
     private function owned(string $path, string $name): void

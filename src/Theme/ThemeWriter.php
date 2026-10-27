@@ -15,13 +15,14 @@ use Doctrine\ORM\OptimisticLockException;
 
 final readonly class ThemeWriter
 {
-    public function __construct(private EntityManagerInterface $entityManager, private ThemeValidator $validator, private ThemeCssGenerator $css, private WorkerClient $worker)
+    public function __construct(private EntityManagerInterface $entityManager, private ThemeValidator $validator, private ThemeCssGenerator $css, private WorkerClient $worker, private \App\Repository\CatalogueRepository $catalogue)
     {
     }
 
     public function create(\stdClass $document): Theme
     {
         $this->validator->validate($document);
+        if (($item = $this->catalogue->named($document->name)) && 'theme' !== $item->getKind()) throw new CatalogueException(409, 'That name belongs to a non-theme catalogue item.');
         if ($this->entityManager->getRepository(Theme::class)->findOneBy(['name' => $document->name])) { throw new CatalogueException(409, 'Theme name already exists.'); }
         $theme = new Theme($document->name, $document);
         $this->entityManager->persist($theme);

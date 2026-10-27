@@ -3,11 +3,11 @@
 {% block body %}
     <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div><p class="text-sm text-primary">Your private library</p><h1 class="text-3xl font-bold">Catalogue</h1></div>
-        {% if is_granted('ROLE_EDITOR') %}<a class="btn btn-primary" href="{{ path('catalogue_new') }}">New item</a>{% endif %}
+        {% if is_granted('ROLE_EDITOR') %}<a class="btn btn-outline" href="{{ path('package_import') }}">Import package</a><a class="btn btn-primary" href="{{ path('catalogue_new') }}">New item</a>{% endif %}
     </div>
     <form method="get" action="{{ path('catalogue_index') }}" class="mb-8 grid gap-4 rounded-box border border-base-300 bg-base-100 p-4 md:grid-cols-4" role="search">
         <label>Search<input type="search" name="q" value="{{ query.q }}" placeholder="Name, title, tag or description"></label>
-        <label>Kind<select name="kind"><option value="">All kinds</option>{% for kind in ['component', 'block', 'layout'] %}<option value="{{ kind }}" {{ query.kind == kind ? 'selected' : '' }}>{{ kind|capitalize }}</option>{% endfor %}</select></label>
+        <label>Kind<select name="kind"><option value="">All kinds</option>{% for kind in ['component', 'block', 'layout', 'theme'] %}<option value="{{ kind }}" {{ query.kind == kind ? 'selected' : '' }}>{{ kind|capitalize }}</option>{% endfor %}</select></label>
         <label>Sort<select name="sort"><option value="updated" {{ query.sort == 'updated' ? 'selected' : '' }}>Recently updated</option><option value="name" {{ query.sort == 'name' ? 'selected' : '' }}>Name</option></select></label>
         <button type="submit" class="btn btn-neutral self-end">Find items</button>
     </form>

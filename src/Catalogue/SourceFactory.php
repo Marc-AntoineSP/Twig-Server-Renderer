@@ -21,6 +21,8 @@ final class SourceFactory
             $entry => '<section class="rounded-box bg-base-100 p-6"><h2 class="text-xl font-bold">{{ message }}</h2></section>'."\n",
             'meta/props.schema.json' => json_encode($props, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n",
             'meta/examples.json' => json_encode([(object) ['name' => 'Default', 'props' => $manifest->defaults]], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)."\n",
+            'meta/LICENSE' => "UNLICENSED\nNo distribution rights are granted by this generated declaration.\n",
+            'meta/README.md' => '# '.$input->name."\n\nInclude `".substr($entry, 10)."` with declared props.\nInstall exact dependencies with the local Symfony installer bundle. Compile Tailwind/daisyUI sources.\nReview browser JavaScript before installation into your application.\n",
         ];
 
         if (in_array($input->kind, ['block', 'layout'], true)) {

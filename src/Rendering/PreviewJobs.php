@@ -58,6 +58,7 @@ final readonly class PreviewJobs
                 throw new CatalogueException(429, 'At most three previews may be pending per account.');
             }
             $item = $this->entityManager->find(CatalogueItem::class, $input->itemId) ?? throw new CatalogueException(404, 'Catalogue item not found.');
+            if ('theme' === $item->getKind()) throw new CatalogueException(422, 'Use the theme laboratory to preview theme tokens.');
             $draft = $this->catalogue->draft($item);
             $manifest = $input->manifestData ?? $draft->getManifestData();
             $sources = $input->sourceMap ?? $draft->getSourceMap();

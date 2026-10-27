@@ -240,3 +240,66 @@ make console ARGS="styleguide:token:revoke TOKEN_ID"
 Only hashes persist. Keep plaintext outside project configuration/lockfiles. Token pages
 and registry requests are excluded from development profiling. Production profiler services
 are absent. Download integrity is reported by archive SHA-256 in package metadata and headers.
+
+Package transfer is available from catalogue release cards and `/imports`:
+
+- Source ZIP preserves the exact immutable archive bytes and per-file inventory.
+- Resolved collection ZIP includes `index.json`, all transitive package ZIPs and their
+  SHA-256 values. An optional immutable theme is another collection root. No registry
+  access is needed to import a collection. Missing/unreachable archives are rejected.
+- JSON/YAML use `{schemaVersion: 1, manifest: {...}, sources: {path: text}}` envelopes.
+  They preserve JSON objects versus arrays and are repacked canonically when imported.
+- Static ZIP contains `index.html` with embedded compiled CSS/JS, labelled compiled
+  copies and all dependency licence declarations. It runs offline without studio URLs.
+- Theme output/package downloads distinguish editable Tailwind sources from compiled
+  sample CSS. Generated packages default to UNLICENSED and grant no extra distribution
+  rights. Existing licence files/declarations are preserved, never silently replaced.
+
+Import Validate/Dry-run runs structural and semantic validation, exact graph resolution,
+composition ownership checks and actual sandbox/build validation. Review the resulting
+file/licence/dependency plan before Apply. Apply requires the current plan hash, checks
+it again under a database transaction lock and installs immutable blobs before release
+records. New items get imported drafts; existing drafts are preserved even when another
+release version is added. Identical immutable archives skip; changed bytes at the same
+version conflict. A failed validation/transaction does not partially change the catalogue.
+Orphan blobs after a crash are handled by retention cleanup; release records never precede
+blobs. Exports are owner-authorized, expire in 30 minutes, and have a 20-artifact/100-MiB
+per-account quota. No token, hook or studio asset URL is put in packages.
+
+The shared text profile bounds 100 files/package, 1 MiB/file, 2 MiB/closure, 10 MiB ZIP,
+50 MiB inflated, 500 ZIP entries and 100:1 expansion. YAML parsing uses Symfony 8.1's
+alias-rejection flag and a 32-level/20,000-line bound; it preserves empty objects and
+sequences. Unused YAML anchors have no persisted representation. Custom types and all
+alias references fail. Import render validation permits 64 variants with a 45-second
+budget; split larger collections. ZIP/JSON remain alternatives for large YAML presentations.
+
+Server-operator commands (run through `make console ARGS="..."`):
+
+```
+styleguide:import /path/package.zip --dry-run
+styleguide:import /path/package.zip
+styleguide:import /path/manifest.json --dry-run
+styleguide:export namespace/name@1.0.0 --format=collection --output=/path/new.zip
+styleguide:export namespace/name@1.0.0 --format=static --theme=namespace/theme@1.0.0 --output=/path/snapshot.zip
+styleguide:theme:import /path/theme.json --dry-run
+styleguide:theme:import /path/theme.json --revision=2
+styleguide:theme:export namespace/theme@1.0.0 --output=/path/theme.zip
+```
+
+A CLI manifest can read only its adjacent declared, owned, nonsymlinked files. HTTP
+imports require a complete ZIP or envelope and cannot read adjacent server files.
+CLI imports are server-operator writes (updatedBy is null); they do not invent an account.
+Exports refuse an existing output file. Theme draft replacement requires its revision.
+Theme registry publication is an explicit action on an immutable theme release card.
+
+`tests/Browser/roundtrip.mjs prepare` creates and exports a real component → block →
+layout plus theme and writes ignored `var/roundtrip/` artifacts. After preparing temporary
+accounts, run it with `docker compose run --rm browser node tests/Browser/roundtrip.mjs prepare`.
+Clean up those accounts before another stack prepares its own accounts file. In a separate
+Compose project with fresh database/blob volumes, build/migrate/start the same source,
+create temporary accounts, and run `roundtrip.mjs verify` in that project's browser service.
+It checks four new imported releases, exact normalized source/token data, pixel-identical
+preview screenshots and nested Stimulus dismissal. Disable the development toolbar only
+in the screenshot harness so account/timing overlays do not contaminate preview comparison.
+The verified M06 project was `styleguide-m06-clean` on loopback port 8101; it is now stopped
+with its test volumes retained. This is a clean development-store test, not a production claim.

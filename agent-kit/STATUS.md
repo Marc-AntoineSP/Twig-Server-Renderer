@@ -10,7 +10,7 @@ Last updated: 2026-10-27. Scope: M00–M08, including a local production build; 
 | M03 Live editor | Complete | 68 PHPUnit tests/248 assertions and 15 Chromium tests pass |
 | M04 Theme laboratory | Complete | 71 PHPUnit tests/285 assertions and 17 Chromium flows pass |
 | M05 Composition | Complete | 75 PHPUnit tests/325 assertions and 19 Chromium flows pass |
-| M06 Imports/exports/registry | In progress | Shared contract feature passes 83 tests/363 assertions; 19 browser regressions pass |
+| M06 Imports/exports/registry | Complete | 93 tests/469 assertions, 21 browser flows, clean-store pixel-identical round-trip |
 | M07–M08 | Not started | Existing design/contracts only |
 
 ## Repository audit and preservation
@@ -420,3 +420,48 @@ CSRF is handled as 403 before the authentication redirect. Nullable Profiler aut
 initially injected null; explicit optional service injection now prevents debug-token
 headers on private token/registry responses, verified in the real development browser.
 M06 still pending package transfer and clean-studio round-trip before M07.
+
+
+## M06 package transfer completion
+
+Branch `feature/m06-package-transfer` adds safe ZIP/manifest/envelope/YAML ingestion,
+reviewed validate/dry-run plans, transactional apply with staged immutable blobs, complete
+resolved collections, source/JSON/YAML/static/theme exports, scoped owner-only expiring
+artifacts and operator CLI import/export commands. New items receive imported drafts;
+existing modified drafts stay unchanged. Unlicensed generated themes say UNLICENSED;
+provided licence files remain authoritative. Source CSS and compiled snapshots are labelled.
+Theme packages use the same token/CSS/marker validator, have real immutable archives, and
+can be explicitly published to the private registry. Source and theme namespaces cannot
+silently collide. Template/JS validation uses the actual isolated workers, not mocks.
+
+Actual completion gates: `make assets check test browser` **exit 0**, **93 PHPUnit tests /
+469 assertions** and **21 Chromium flows**. Tests cover real staged imports, unchanged
+catalogue after invalid builds/stale plans, identical import idempotence and modified-draft
+preservation, private owner exports and archive hashes, JSON/YAML empty object/array fidelity,
+missing closure/checksum rejection, theme packaging, operator commands and output collision
+preservation. Chromium opens a downloaded static index by file://, checks actual styles and
+Stimulus dismissal and observes **zero HTTP requests**, then reviews/applies a real import.
+
+Clean-store gate: `roundtrip.mjs prepare` on the main stack creates/publishes a real alert,
+block, layout and theme and exports a complete collection. Built a separate Compose project
+`styleguide-m06-clean` with **fresh PostgreSQL/blob volumes**, loopback port 8101, applied
+all migrations and ran `roundtrip.mjs verify`: **exit 0**. Four new releases import;
+normalized manifests/sources and typed tokens match; source/target PNG hashes match exactly;
+nested alerts preserve order/props, font/theme styling and functional Stimulus dismissal.
+Temporary accounts removed and clean project stopped; its test volumes are retained.
+This is fresh development storage, not a production deployment check. M08 remains required.
+
+Corrected checks: Symfony YAML dumps empty arrays as maps by default; explicit empty-array
+sequence dumping plus object-map parsing now preserves both. YAML uses the installed
+Symfony 8.1 parser's alias rejection/depth controls rather than a regex that rejected literal
+punctuation in sources. Pixel comparison first caught the development toolbar overlay
+(account/timing text); the harness hides that overlay and the complete test was repeated
+on fresh storage. Static alert uses literal flex, not a presumed grid; browser assertion fixed.
+CSS marker metadata is also compared with authoritative theme JSON. Final schema, root
+Composer audit, build npm audit and git diff checks pass; AGENTS/README hashes remain intact.
+M06 is complete before M07. Next: actual Symfony installer bundle and fresh consumer gates,
+then immutable local production images, cleanup and backup/restore acceptance in M08.
+
+Final M06 guard: concurrent theme-package uniqueness violations map to HTTP 409, matching
+normal immutable publication. Targeted real theme package test passes **1 test/6 assertions**
+and container lint passes after that guard. No remote publication, deployment or branch push.

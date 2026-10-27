@@ -9,6 +9,7 @@ use App\Catalogue\SearchQuery;
 use App\Entity\CatalogueItem;
 use App\Entity\Release;
 use App\Entity\ThemeRelease;
+use App\Entity\Theme;
 use App\Form\DraftType;
 use App\Form\NewItemType;
 use App\Repository\CatalogueRepository;
@@ -61,6 +62,7 @@ final class CatalogueController extends AbstractController
         return $this->render('catalogue/show.html.twig', [
             'item' => $item, 'draft' => $writer->draft($item), 'sourceFiles' => (array) $writer->draft($item)->getSourceMap(),
             'releases' => $entityManager->getRepository(Release::class)->findBy(['item' => $item], ['createdAt' => 'DESC']),
+            'exportThemes' => $entityManager->getRepository(ThemeRelease::class)->findBy([], ['createdAt' => 'DESC'], 100),
         ]);
     }
 
@@ -69,6 +71,10 @@ final class CatalogueController extends AbstractController
     public function edit(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, FormInput $input, RendererPresets $presets, EntityManagerInterface $entityManager): Response
     {
         $draft = $writer->draft($item);
+        if ('theme' === $item->getKind()) {
+            $theme = $entityManager->getRepository(Theme::class)->findOneBy(['name' => $item->getName()]) ?? throw new CatalogueException(409, 'Typed theme draft not found.');
+            return $this->redirectToRoute('theme_edit', ['id' => $theme->getId()]);
+        }
         if (isset($draft->getSourceMap()->{'meta/composition.json'})) {
             return $this->redirectToRoute('composition_edit', ['id' => $item->getId()]);
         }
