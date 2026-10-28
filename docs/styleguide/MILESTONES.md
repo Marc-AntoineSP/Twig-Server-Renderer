@@ -229,3 +229,17 @@ comparisons also pass in a second fresh environment; deliberate pixel regression
 wrong ownership proofs, failure/SIGTERM teardown and immutable production checks pass.
 Human screen-reader checks remain unrun. Legacy consumer/restore topologies are guarded
 before mutations and require a separate migration. See BROWSER_TESTS.md and STATUS.md.
+
+## Improvement prompt 01 — Useful workspace homepage
+
+Replace stale bootstrap readiness with permission-aware tasks, bounded Recently updated
+draft/composition/theme summaries and compact personal item/theme-variant favorites.
+Keep the existing shared-reader catalogue, editor destinations and independent empty
+states; filter accessible targets and personal favorites before limiting results.
+
+Completed 2026-10-28: Docker builds/lints, **151 PHPUnit tests / 1446 assertions**,
+**79 browser tests** across the existing three-engine suite, twelve unchanged visual
+comparisons, and eight additional empty-workspace role/width/mode checks pass. Sixteen
+homepage axe scans have no violations; editor-button contrast incompletes remain for
+manual assessment. No migrations, dependency/configuration changes or working data
+mutations. See DEVELOPMENT.md, BROWSER_TESTS.md and STATUS.md for exact evidence/limits.

@@ -23,6 +23,7 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | M14 Profile and browser setup | Complete |141PHPUnit/1245assertions;3development +6production browser flows; live PAT/OAuth checks; original account/data hashes preserved |
 | M15 Personal favorites | Complete |146PHPUnit/1375assertions;58development flows verified across full/focused runs;7production flows; stable variant/item identity and unchanged original data |
 | Improvement prompt 12 | Complete for requested scope |148PHPUnit/1382assertions;71browser tests;3engines;12visual baselines;owned-resource rejection/failure/interruption/teardown gates;6immutable-production flows |
+| Improvement prompt 01 | Complete for requested scope |151PHPUnit/1446assertions;79browser tests;8 additional empty-workspace UI checks;bounded personal projections;role/ordering/deletion gates |
 
 ## Repository audit and preservation
 
@@ -1598,3 +1599,122 @@ cleanup command after recovery. No remote publication, deployment or push occurr
 Exact next step: use `make browser` (or `make browser-smoke`/`make browser-visual`) as the
 safe foundation for prompts01–11. Baseline changes require deliberate `make browser-baselines`
 and PNG review; migrate legacy consumer/recovery topology as a separate scoped task.
+
+## Improvement prompt 01 — Workspace homepage (2026-10-28)
+
+Scope: `prompts/01-workspace-homepage.md` and its matching prompt pack. All three
+packaged SHA256SUMS entries verified. The requested shorthand `1-workspace-homage`
+resolves to that existing prompt. Starting source still contained Docker/PostgreSQL/
+AssetMapper readiness and the obsolete claim that rendering/publishing awaited workers.
+There is no existing infrastructure administration page to move those messages into;
+development setup remains documented in DEVELOPMENT.md.
+
+Implemented a short task area, Recently updated and Your favorites using the shared
+shell/card conventions. Editors can create an item/theme, import, and resume existing
+source/composition/theme editors; readers get detail views and browse actions. Managed
+and built-in themes always open their detail view. Cards show title, stable name/kind,
+composition/variant label, draft revision, latest release or Unreleased, and UTC time.
+Recent work and favorites have independent permitted empty states. Favorite management
+continues through the existing catalogue/theme stars; no extra homepage mutation API.
+
+WorkspaceRepository returns two SQL projections, each limited to six scalar summaries.
+It never hydrates source/theme documents or the complete favorite set. An inner draft
+join and supported kinds exclude missing/unsupported catalogue targets before LIMIT;
+the favorite owner predicate also precedes LIMIT. Recent timestamps use the greatest
+metadata/draft update, followed by descending stable ID. Typed theme variants use their
+own update/revision/release and family label. Built-in defaults stay out of recent work
+but may appear in personal favorites. Existing enabled readers share all catalogue
+drafts/themes; updated_by is attribution, not a new per-author privacy rule. Authentication,
+personal favorite ownership, private/no-store HTML and anonymous login redirects remain.
+
+Changed files: HomeController, new WorkspaceRepository, studio/home and new workspace
+card partial; BootstrapTest and new WorkspaceTest; browser bootstrap/catalogue checks
+and new workspace.spec.js; DEVELOPMENT.md, BROWSER_TESTS.md, MILESTONES.md and this handoff.
+No dependencies, migrations, configuration, worker policy or navigation-shell changes.
+The twelve user-staged prompt files remain unchanged and excluded from implementation.
+
+Checks so far: locked Docker app/runner and CSS/AssetMapper builds; strict Composer,
+container, 34 YAML and 42 Twig checks pass. Fresh owned run
+`browser-8cca47a42ec08e3a3b07cf67` passes **151 PHPUnit tests / 1446 assertions** in
+91.4 seconds. Coverage includes real timestamp/tie ordering and six-row limits, an older
+favorite beyond the recent limit, other-user exclusion, missing draft/deleted targets,
+real release summaries, exact light/dark identities, permitted destinations, escaped
+titles, anonymous/reader access, and transactional independent empty states. Truncation
+in that empty-state test requires the isolated `_test` database and rolls back.
+
+Failed checks resolved: the first PHP run reached 151 tests/1439 assertions with one
+test-fixture error from a detached User after HTTP requests; the test now reacquires its
+managed reference. An inherited bootstrap CSS assertion targeted the plain appearance
+recovery control; it now checks the actual daisyUI Create item action. No product CSS or
+recovery behavior was changed to satisfy that assertion. The first retained run
+`browser-9cac59ba87b01ad8487868a1` was fully cleaned with its exact harness command.
+The first complete browser attempt passed 74/79: that CSS assertion plus four editor
+workspace cases failed. Existing favorite regression tests intentionally leave more
+than six newer editor favorites, pushing old seeds outside the bounded homepage. The
+new workspace cases now use the harness's separate editor actor, restore temporary
+favorite changes, and retain the real six-item ordering. After rebuilding the runner,
+a fresh normal build/run verifies the corrected tests; no product behavior was changed
+for this fixture assumption. The first complete run was also fully cleaned.
+
+Final fresh browser run `browser-d12e7ec3de55a482821e37a3`: **79/79 pass in 5.4 minutes**
+(73 Chromium, 3 Firefox, 3 WebKit), including all eight populated workspace role/width/
+mode checks, real create/resume/save, and all twelve existing pixel comparisons. Existing
+visual baselines remain unchanged. After the normal suite, a one-off owned-store review
+stopped only this run's queue consumer, reverified database/blob ownership in PHP, emptied
+only its disposable catalogue with TRUNCATE CASCADE, and checked eight empty workspace
+combinations (reader/editor × 390/1440px × light/dark). All eight passed actual layout,
+keyboard focus/Enter, permitted destination and axe checks. PHPUnit empty fixtures remain
+transactional; this separate UI review's whole environment is removed afterward.
+
+Sixteen homepage axe reports have **zero violations**. The eight reader reports have
+no incomplete findings. Four populated editor reports retain color-contrast incomplete
+groups for nine gradient/background-image buttons each; four empty editor reports retain
+the same finding for two buttons each. No rules were disabled. Full-page captures retain
+the real shell/recovery control and are not pixel baselines. Reviewed populated narrow/
+wide and empty mobile/desktop captures in light/dark, with additional editor dark capture;
+automated checks exercised keyboard access, not a human screen-reader/keyboard session.
+
+Exact commands used (all framework/build/browser execution in Docker):
+
+```sh
+# From the matching pack directory: all three entries OK.
+sha256sum --check SHA256SUMS
+# First complete run: lints + 151 PHP passes; 74/79 browser before fixture corrections.
+python3 tests/BrowserHarness/run.py run --with-checks --keep
+# Final fresh build/browser suite after those test corrections: 79/79.
+python3 tests/BrowserHarness/run.py run --keep
+# Local retained one-off script, not a new default test-harness mode:
+python3 var/browser-verification/workspace-empty.py browser-d12e7ec3de55a482821e37a3
+make browser-cleanup RUN=browser-9cac59ba87b01ad8487868a1
+make browser-cleanup RUN=browser-8cca47a42ec08e3a3b07cf67
+make browser-cleanup RUN=browser-d12e7ec3de55a482821e37a3
+git diff --check
+```
+
+Current measured versions: FrankenPHP 1.13.4 / PHP 8.5.12 / Caddy 2.11.7, Symfony
+8.1.9, PHPUnit 13.4.3, Node 24.22.1 and Chromium 156.0.8078.4. The existing pinned
+Playwright 1.64.1, Tailwind 4.3.3, daisyUI 5.7.50 and Stimulus 3.2.2 locks are unchanged.
+
+Evidence: `var/browser-verification/workspace-{initial,complete,final-browser,empty}.log`,
+matching cleanup logs and the retained one-off empty-review Python/JS scripts. Final
+populated captures/reports are under
+`var/browser-runs/browser-d12e7ec3de55a482821e37a3/artifacts/invocation-098c4ff3/results/workspace-*`;
+empty captures/reports are under that run's `artifacts/workspace-empty/`. All are ignored
+review evidence; no credentials belong in artifacts. No working catalogue was used,
+seeded or cleaned. No remote publication, deployment, push or production-stack mutation.
+
+Remaining limits: human screen-reader checks and manual assessment of axe's button
+contrast findings remain unrun. Shared navigation and the floating appearance recovery
+control are unchanged (prompt 02 scope). Fresh immutable-production/profile acceptance
+was not repeated for this homepage change; compiled Docker/AssetMapper browser assets
+and the complete existing PHP/browser gates were exercised. No migration/configuration
+or new dependency is needed. Exact next step: review `/` with normal reader/editor
+accounts, or select the next numbered prompt explicitly; do not run fixture commands
+against the working studio. Cleanup/resource audit is recorded immediately below.
+
+Final resource audit: all three task runs have zero containers (including stopped),
+volumes, networks, private files and per-run worker tags, with CLEANED receipts present.
+Reusable app/runner images and build cache remain. No containers are running on this
+host, matching the starting inventory. Evidence: `var/browser-verification/workspace-resource-audit.json`.
+The staged prompt diff still hashes to
+`d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.

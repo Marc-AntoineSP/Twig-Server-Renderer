@@ -3,7 +3,7 @@ import { login } from './helpers.js';
 
 test('editor creates, edits, reloads and searches a draft while sources stay inert', async ({ page }) => {
     await login(page);
-    await page.getByRole('link', { name: 'Open catalogue', exact: true }).click();
+    await page.getByRole('link', { name: 'Browse catalogue', exact: true }).click();
     await page.getByRole('link', { name: 'New item' }).click();
     const name = `browser/component-${Date.now()}`;
     await page.getByLabel('Name (namespace/slug)').fill(name);

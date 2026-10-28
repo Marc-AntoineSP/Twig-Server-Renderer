@@ -12,8 +12,9 @@ final class BootstrapTest extends DatabaseTestCase
         $this->signIn($client, $this->account('ROLE_READER'));
         $client->request('GET', '/');
         self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('h1', 'Build a language');
-        self::assertSelectorExists('[data-action="studio#toggle"]');
+        self::assertSelectorTextContains('h1', 'Your workspace');
+        self::assertSelectorTextContains('#recent-items h2', 'Recently updated');
+        self::assertSelectorTextContains('#personal-favorites h2', 'Your favorites');
         self::assertSelectorExists('script[type="importmap"]');
     }
 

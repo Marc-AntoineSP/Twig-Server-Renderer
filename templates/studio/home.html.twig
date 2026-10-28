@@ -1,17 +1,60 @@
 {% extends 'base.html.twig' %}
+{% block title %}Workspace · Styleguide Studio{% endblock %}
 {% block body %}
-    <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Private component workshop</p>
-    <h1 class="mb-6 text-4xl font-bold tracking-tight md:text-5xl">Build a language for your interface.</h1>
-    <p class="max-w-2xl text-lg">A catalogue for portable Twig, Tailwind and Stimulus components, blocks and layouts.</p>
-    <a class="btn btn-primary mt-6" href="{{ path('catalogue_index') }}">Open catalogue</a>
-    <section class="card mt-10 max-w-2xl border border-base-300 bg-base-100 shadow-sm" data-controller="studio">
-        <div class="card-body">
-            <h2 class="card-title">Your studio is ready</h2>
-            <p>The application and PostgreSQL run in Docker. Assets are served locally through AssetMapper.</p>
-            <div class="card-actions mt-3">
-                <button type="button" class="btn btn-primary" data-action="studio#toggle" aria-expanded="false" aria-controls="studio-help">About this workshop</button>
-            </div>
-            <p id="studio-help" class="mt-3" data-studio-target="help" hidden>Source stays in your private catalogue. Rendering and publishing become available after the isolated workers are implemented.</p>
+    <section class="mb-10" aria-labelledby="workspace-heading">
+        <p class="mb-2 text-sm font-semibold text-primary">Styleguide Studio</p>
+        <h1 id="workspace-heading" class="text-4xl font-bold tracking-tight">Your workspace</h1>
+        <p class="mt-3 max-w-2xl">Pick up a draft, revisit a favorite, or explore the shared catalogue.</p>
+        <div class="mt-5 flex flex-wrap gap-3">
+            {% if is_granted('ROLE_EDITOR') %}
+                <a class="btn btn-primary" href="{{ path('catalogue_new') }}">Create item</a>
+                <a class="btn btn-outline" href="{{ path('theme_new') }}">Create theme</a>
+                <a class="btn btn-outline" href="{{ path('package_import') }}">Import package</a>
+            {% endif %}
+            <a class="btn btn-ghost" href="{{ path('catalogue_index') }}">Browse catalogue</a>
+        </div>
+    </section>
+
+    <section class="mb-10" aria-labelledby="recent-heading" id="recent-items">
+        <h2 id="recent-heading" class="text-2xl font-bold">Recently updated</h2>
+        <p class="mb-5 mt-2 text-sm">The latest saved drafts and compositions in the shared catalogue.</p>
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {% for entry in recent %}
+                {% include 'studio/_workspace_item.html.twig' with {entry: entry, compact: false} only %}
+            {% else %}
+                <div class="card border border-base-300 bg-base-100 md:col-span-2 lg:col-span-3">
+                    <div class="card-body items-start">
+                        <h3 class="card-title">No drafts yet</h3>
+                        {% if is_granted('ROLE_EDITOR') %}
+                            <p>Start with a component, block or layout.</p>
+                            <a class="btn btn-primary btn-sm mt-2" href="{{ path('catalogue_new') }}">Create your first item</a>
+                        {% else %}
+                            <p>Saved work will appear here when an editor adds it. Explore the available themes.</p>
+                            <a class="btn btn-outline btn-sm mt-2" href="{{ path('theme_index') }}">Browse themes</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section aria-labelledby="favorites-heading" id="personal-favorites">
+        <h2 id="favorites-heading" class="text-2xl font-bold">Your favorites</h2>
+        <p class="mb-5 mt-2 text-sm">Personal shortcuts to items and theme variants, ordered by their last update.</p>
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {% for entry in favorites %}
+                {% include 'studio/_workspace_item.html.twig' with {entry: entry, compact: true} only %}
+            {% else %}
+                <div class="rounded-box border border-base-300 bg-base-100 p-5 md:col-span-2 lg:col-span-3">
+                    <h3 class="font-semibold">No favorites yet</h3>
+                    <p class="mt-2">Use the star on an item or theme to keep it here. Your choices stay personal.</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            <a class="link" href="{{ path('catalogue_index', {favorites: 1}) }}">Favorite items</a>
+            <a class="link" href="{{ path('theme_index', {favorites: 1}) }}">Favorite themes</a>
+            {% if favorites is empty %}<a class="link" href="{{ path('theme_index') }}">Find a theme to favorite</a>{% endif %}
         </div>
     </section>
 {% endblock %}

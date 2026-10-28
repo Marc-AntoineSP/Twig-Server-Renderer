@@ -107,6 +107,12 @@ disabled screenshot animations/caret stabilize these tests without hiding loader
 masking controls. There are no screenshot masks. Other existing tests keep normal
 motion so their timer/reduced-motion assertions retain meaning.
 
+`workspace.spec.js` checks reader/editor homepage permissions, personal item/theme
+shortcuts, keyboard destinations and layout at 390px/1440px in light/dark mode. Its
+eight full-page screenshots and axe reports are review artifacts, rather than pixel
+baselines. `bootstrap.spec.js` creates, resumes and saves a real draft from the homepage.
+PHPUnit covers ordering, limits, missing/deleted targets and independent empty states.
+
 Baselines live in `tests/Browser/baselines/chromium/`. Missing or changed images fail;
 ordinary runs never write baselines. To generate reviewable candidates deliberately:
 

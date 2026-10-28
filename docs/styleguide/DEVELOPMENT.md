@@ -75,6 +75,25 @@ Update pins deliberately and rerun the checks. The initial skeleton already supp
 Symfony 8.1, Doctrine, Twig, Security, AssetMapper, Stimulus, Forms and PHPUnit; these
 are retained rather than generating a replacement app.
 
+## Workspace homepage
+
+After signing in, `/` shows up to six recently updated drafts/compositions/themes and
+six personal favorite shortcuts. Recent work belongs to the shared reader catalogue;
+it is ordered by the saved update time, then stable item ID, rather than browsing history.
+Built-in appearance defaults are excluded from recent work. Theme favorites retain the
+exact variant ID and light/dark label, including built-in variants.
+
+Editors can Create item, Create theme, Import package and Resume in the existing source,
+composition or theme editor. Readers get View links and catalogue/theme browsing.
+Managed/built-in themes open their detail view. Each card shows its draft revision,
+latest release (or Unreleased) and UTC update time. The two sections have independent
+empty states. Add/remove favorites with the existing stars in Catalogue or Themes.
+
+The homepage uses two bounded scalar queries with personal filtering before the limit;
+it does not hydrate source documents or load the complete favorite set. No new migration,
+configuration, telemetry or permission model is required. Check it with
+`make browser BROWSER_ARGS='tests/Browser/bootstrap.spec.js tests/Browser/workspace.spec.js --project=chromium'`.
+
 ## Catalogue workflow
 
 Load validated example drafts without overwriting existing items:

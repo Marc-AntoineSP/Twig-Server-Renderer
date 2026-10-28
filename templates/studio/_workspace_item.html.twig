@@ -1,0 +1,22 @@
+{% set viewRoute = entry.kind == 'theme' ? 'theme_show' : 'catalogue_show' %}
+{% set editRoute = entry.kind == 'theme' ? 'theme_edit' : (entry.composition ? 'composition_edit' : 'catalogue_edit') %}
+<article class="card min-w-0 border border-base-300 bg-base-100 shadow-sm" data-workspace-id="{{ entry.id }}">
+    <div class="card-body {{ compact ? 'gap-2 p-5' : '' }}">
+        <div class="flex flex-wrap gap-2 text-sm">
+            <span class="badge badge-outline">{{ entry.kind|capitalize }}{{ entry.composition ? ' · Composition' : '' }}</span>
+            {% if entry.color_scheme %}<span class="badge badge-ghost">{{ entry.color_scheme|capitalize }}</span>{% endif %}
+            {% if entry.favorite and not compact %}<span class="badge badge-soft">Favorite</span>{% endif %}
+        </div>
+        <h3 class="card-title min-w-0 break-words"><a class="link-hover" href="{{ path(viewRoute, {id: entry.id}) }}">{{ entry.title }}</a></h3>
+        <p class="break-all font-mono text-xs">{{ entry.name }}</p>
+        <p class="text-sm">Draft r{{ entry.revision }} · {{ entry.release_version ? 'Released v' ~ entry.release_version : 'Unreleased' }}</p>
+        <p class="text-xs">Updated <time datetime="{{ entry.updated_at|date('c', 'UTC') }}">{{ entry.updated_at|date('Y-m-d H:i', 'UTC') }} UTC</time></p>
+        <div class="card-actions mt-2">
+            {% if is_granted('ROLE_EDITOR') and entry.editable %}
+                <a class="btn btn-primary btn-sm" href="{{ path(editRoute, {id: entry.id}) }}" aria-label="Resume {{ entry.name }}{{ entry.color_scheme ? ' · ' ~ entry.color_scheme|capitalize : '' }}">Resume</a>
+            {% else %}
+                <a class="btn btn-outline btn-sm" href="{{ path(viewRoute, {id: entry.id}) }}" aria-label="View {{ entry.name }}{{ entry.color_scheme ? ' · ' ~ entry.color_scheme|capitalize : '' }}">View</a>
+            {% endif %}
+        </div>
+    </div>
+</article>
