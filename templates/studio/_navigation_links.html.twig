@@ -1,0 +1,8 @@
+{% for link in [
+    ['Catalogue', 'catalogue_index', 'catalogue'],
+    ['Themes', 'theme_index', 'theme'],
+    ['Fonts', 'font_index', 'font']
+] %}
+    {% set label = link[0] %}{% set destination = link[1] %}{% set section = link[2] %}
+    <a href="{{ path(destination) }}"{% if activeSection == section %} aria-current="{{ currentRoute == destination ? 'page' : 'location' }}"{% endif %}>{{ label }}</a>
+{% endfor %}

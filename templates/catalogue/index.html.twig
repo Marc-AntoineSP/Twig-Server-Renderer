@@ -16,7 +16,7 @@
     <p class="mb-4 text-sm" role="status">{{ total }} {{ total == 1 ? 'item' : 'items' }} · Page {{ page }} of {{ pages }}</p>
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {% for item in items %}
-            <article class="card border border-base-300 bg-base-100 shadow-sm">
+            <article class="card min-w-0 border border-base-300 bg-base-100 shadow-sm">
                 {% if summaries[item.id].thumbnail %}<div class="h-32 overflow-hidden border-b border-base-300" aria-hidden="true"><iframe title="Release thumbnail {{ item.name }}" tabindex="-1" sandbox="" loading="lazy" class="pointer-events-none" style="width:768px;height:320px;transform:scale(.4);transform-origin:top left;border:0" srcdoc="{{ summaries[item.id].thumbnail|e('html_attr') }}"></iframe></div>{% endif %}
                 <div class="card-body">
                     <div class="flex gap-2"><span class="badge badge-outline">{{ item.kind }}</span><span class="badge badge-ghost">Draft r{{ summaries[item.id].revision }}</span>{% if summaries[item.id].release_version %}<span class="badge badge-success">{{ summaries[item.id].release_version }}</span>{% endif %}</div>

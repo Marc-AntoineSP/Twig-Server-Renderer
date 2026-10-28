@@ -22,7 +22,7 @@ async function family(page,{primary='#164E63',base='#F1F8FA',variants='pair',loc
     }
     return result;
 }
-async function apply(page,f){await page.goto('/themes/'+f.id);await page.getByRole('button',{name:'Apply theme',exact:true}).click();await expect(status(page)).toHaveText('Applied '+f.family.label+'.');await expect(root(page)).toHaveAttribute('data-appearance-family',f.family.id);}
+async function apply(page,f){await page.goto('/themes/'+f.id);await page.getByRole('button',{name:'Apply theme',exact:true}).click();await expect(status(page)).toHaveText('Applied '+f.family.label+'.');await expect(root(page)).toHaveAttribute('data-appearance-family',f.family.id);await page.mouse.move(0,0);}
 async function appearanceMenu(page){const menu=page.locator('[data-appearance-target="menu"]');if(!await menu.evaluate(el=>el.open))await menu.locator('summary').click();return menu;}
 async function reset(page){await page.getByRole('button',{name:'Restore default appearance',exact:true}).click();await expect(status(page)).toHaveText('Applied Studio default.');}
 
@@ -101,7 +101,7 @@ test('single variant keeps requested mode, explains unavailable toggle and gains
     await appearanceMenu(page);await expect(page.locator('[data-appearance-target="unavailable"]')).toContainText('Only light is available');
     await page.goto(`/themes/${f.id}/edit`);await page.getByRole('button',{name:'Create dark variant',exact:true}).click();await expect(page.getByLabel('Edit family variant',{exact:true}).locator('option')).toHaveCount(2);
     await page.getByRole('button',{name:'Save & Apply',exact:true}).click();await expect(page.locator('[data-theme-editor-target="saveStatus"]')).toHaveText('Theme saved and applied to your application.');await expect(root(page)).toHaveAttribute('data-color-mode','dark');await expect(root(page)).toHaveAttribute('data-appearance-family',f.family.id);await expect(page.getByRole('button',{name:'Switch to light mode',exact:true})).toBeEnabled();
-    await page.setViewportSize({width:375,height:812});await expect(page.getByRole('button',{name:'Restore default appearance',exact:true})).toBeInViewport();await page.getByRole('button',{name:'Switch to light mode',exact:true}).focus();await page.keyboard.press('Enter');await expect(root(page)).toHaveAttribute('data-color-mode','light');
+    await page.setViewportSize({width:375,height:812});await page.getByRole('link',{name:'Skip to appearance recovery',exact:true}).focus();await page.keyboard.press('Enter');await expect(page.getByRole('button',{name:'Restore default appearance',exact:true})).toBeInViewport();await page.getByRole('button',{name:'Switch to light mode',exact:true}).focus();await page.keyboard.press('Enter');await expect(root(page)).toHaveAttribute('data-color-mode','light');
     const focusedToggle=page.getByRole('button',{name:'Switch to dark mode',exact:true});await expect(focusedToggle).toBeFocused();await expect(focusedToggle).toHaveCSS('outline-style','solid');expect(await focusedToggle.evaluate(el=>parseFloat(getComputedStyle(el).outlineWidth))).toBeGreaterThanOrEqual(2);
     await screenshot(page,'mobile-recovery');
     await page.getByRole('button',{name:'Restore default appearance',exact:true}).click();await expect(status(page)).toHaveText('Applied Studio default.');expect((await state(page)).mode).toBe('system');

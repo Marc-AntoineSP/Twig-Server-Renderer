@@ -232,6 +232,14 @@ COMPOSE_MCP.md. No publishing, source authoring or administration tools are expo
 
 ## Browser acceptance resources
 
+The shared shell uses native disclosure navigation/account/appearance controls, with
+one lifecycle-scoped Stimulus enhancement for Escape, dismissal and Turbo cleanup.
+Recovery occupies document flow and uses independent safe styling. Native modal dialogs
+receive the same fixed recovery form inside their scrollable content, preserving the
+browser's top-layer/inert boundary. A small SSR reset action reuses AppearanceManager
+for the built-in default when JavaScript is unavailable; normal requests retain the
+existing prepare/load/commit transaction. No appearance storage or preview boundary changes.
+
 The standalone Compose browser topology builds self-contained app/runner images and
 allocates unique database, blob and runtime volumes plus internal worker networks for
 each invocation. It mounts no writable working checkout. Queue consumers use the same

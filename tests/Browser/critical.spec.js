@@ -45,6 +45,8 @@ test('critical: keyboard navigation, appearance disclosure, personal favorites a
         await expect(other.locator('[data-controller~="favorite"] button')).toHaveAttribute('aria-pressed', 'false');
         expect((await other.request.post('/api/v1/items', {data: {name: 'browser/reader-denied', kind: 'component', title: 'Denied'}})).status()).toBe(403);
     } finally { await reader.close(); }
+    await page.locator('summary[aria-controls="account-options"]').focus();
+    await page.keyboard.press('Enter');
     await page.getByRole('link', {name: 'Profile', exact: true}).focus();
     await page.keyboard.press('Enter');
     await expect(page.getByRole('heading', {level: 1})).toContainText('My profile');
@@ -100,6 +102,10 @@ test('critical: theme detail, disclosure and showcase keyboard dialog', async ({
     await opener.focus(); await page.keyboard.press('Enter');
     const dialog = page.getByRole('dialog', {name: 'Review your sample', exact: true});
     await expect(dialog).toBeVisible();
+    const recovery = dialog.getByRole('button', {name: 'Restore default appearance', exact: true});
+    await expect(recovery).toBeVisible(); await recovery.focus(); await expect(recovery).toBeFocused();
+    await page.keyboard.press('Tab');
+    await expect(dialog.getByRole('button', {name: 'Cancel dialog', exact: true})).toBeFocused();
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden(); await expect(opener).toBeFocused();
 });

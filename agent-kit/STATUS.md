@@ -24,6 +24,7 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | M15 Personal favorites | Complete |146PHPUnit/1375assertions;58development flows verified across full/focused runs;7production flows; stable variant/item identity and unchanged original data |
 | Improvement prompt 12 | Complete for requested scope |148PHPUnit/1382assertions;71browser tests;3engines;12visual baselines;owned-resource rejection/failure/interruption/teardown gates;6immutable-production flows |
 | Improvement prompt 01 | Complete for requested scope |151PHPUnit/1446assertions;79browser tests;8 additional empty-workspace UI checks;bounded personal projections;role/ordering/deletion gates |
+| Improvement prompt 02 | Complete for requested scope |154PHPUnit/1502assertions;89browser tests;6immutable-production flows;111px mobile shell including safe recovery;12updated/reviewed visual baselines |
 
 ## Repository audit and preservation
 
@@ -1717,4 +1718,152 @@ volumes, networks, private files and per-run worker tags, with CLEANED receipts 
 Reusable app/runner images and build cache remain. No containers are running on this
 host, matching the starting inventory. Evidence: `var/browser-verification/workspace-resource-audit.json`.
 The staged prompt diff still hashes to
+`d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.
+
+## Improvement prompt 02 — Navigation and appearance recovery (2026-10-28)
+
+Scope: matching prompt02 and pack, all three SHA256SUMS entries verified. Starting
+owned run `browser-fc8953cd47462bcd510f8ebf` measured header heights of **229px at
+320px**, **193px at 390px**, and **65px at 1440px**. Recovery was fixed, z-index
+2147483000 and 41px tall. A seeded catalogue thumbnail additionally forced 794px
+document width on both narrow viewports. These are fresh runtime measurements,
+retained under its `artifacts/navigation-before/`, not the historical review dimensions.
+
+Implementation: one compact mobile header with ordinary native Navigation, Appearance
+and Account disclosures, concise section context and visible mode toggle. Desktop links
+remain inline. Email/Profile/Sign out/admin Read tokens move into Account. Active page
+links use aria-current=page, parent sections use location, with an underline. Labels
+and long emails have bounded wrapping/truncation. Native disclosures work without JS;
+Shell Stimulus adds expanded-state reflection, Escape/restore, outside click/focus
+dismissal and Turbo cleanup. Navigation has no focus trap.
+
+Recovery occupies a reserved strip below the navigation row, with hardcoded safe colors, fonts,
+focus and 44px controls. Trial and error states gain explicit safe explanations, keeping
+Revert trial separate from resetting the saved family/system preference. The same
+trusted form is added inside native modal/dialog drawer content, respecting top-layer
+inertness. Only modal dialogs get Tab boundary containment, and close restores their
+opener (or the disclosure summary when the original menu action is hidden). Main content
+is an isolated document layer; shell disclosures sit above it; dialogs use the native
+top layer. There is no recovery z-index escalation or fixed content overlay. The theme
+showcase and sidebar layout stay intact. A minimal catalogue card min-width correction
+removes the thumbnail-driven overflow found in the baseline.
+
+JavaScript reset retains prepare/load/commit and existing trial semantics. A narrowly
+scoped CSRF-protected POST /appearance/reset is a real no-JS fallback through the same
+AppearanceManager and optimistic revision checks. It can select only built-in default/
+system for the current account, or the existing validated guest mode cookie. It accepts
+no owner/theme/redirect selection, and redirects to Workspace/Sign in. No migrations,
+new dependencies or changes to source/preview isolation. Native skip links bypass Turbo
+so reaching recovery cannot initiate a visit while an editor is active.
+
+Initial verification: Docker app/runner/CSS/AssetMapper builds, strict Composer,
+container, 34 YAML and 44 Twig checks; **154 PHPUnit tests / 1502 assertions** pass.
+Six width/mode shell cases and no-JS navigation/reset/logout pass, as do the strengthened
+three-engine critical modal checks after focus fixes. The complete regression run
+and deliberate visual-baseline review results follow below.
+
+Resolved failed checks: the first PHP run had six failures from old nav email selectors,
+a generic _token collision, inert template status markup and a new home-link assertion.
+Account selectors are updated, the reset field is uniquely named, and a live role is
+assigned only after modal cloning. Browser audits caught compact-brand/translated-label
+name mismatches; accessible names now derive from visible text/labelled spans. A test
+outside-click point was under the open panel; it now uses the visible search field.
+Old appearance color checks needed the pointer moved off the hovered Apply button and
+the mode badge's existing color utilities retained. Modal Tab/close focus needed actual
+boundary handling and restoration after the browser's close work. New hit-area assertions
+wait for modal animation; touch checks exclude hidden trial controls; Turbo assertions
+wait for the rendered destination, not just its URL. No checks were disabled to hide
+these findings. Temporary logs/artifacts remain under var/browser-verification/navigation-*.
+
+Final geometry at **320/390/1440px**: **56px navigation row + 54px recovery strip,
+111px total including header border**, static positioning, and document scroll width
+exactly equal to viewport width. Menus now open below the complete header/recovery strip
+so they cannot cover reset, including when trial/error content expands it. The account
+container's unnecessary generic aria-label and the text-glyph navigation icon were also
+replaced with valid native naming/SVG markup after axe's incomplete findings were reviewed.
+
+Final fresh run `browser-a7a032554515b48f9cc05683` passes strict Composer, container,
+34 YAML / 44 Twig lint, **154 PHPUnit tests / 1502 assertions (96.6s)** and **89/89
+Playwright tests (6.2m)**: 83 Chromium, 3 Firefox, 3 WebKit. This includes all ten shell
+flows, both changed showcase focus/recovery paths, all existing application/source/
+composition tests and twelve visual comparisons. After that full run, the unreadable
+fixture was strengthened to force the light variant and assert actual white-on-white
+body colors after Save & Apply, rather than possibly selecting the readable paired dark
+variant. It also checks reset leaves the saved theme colors unchanged. Only that test
+fixture changed; rebuilding the runner and rerunning the focused case passes **1/1 in
+4.9s**. Application code is unchanged from the passing full gate.
+
+The first broad attempt was **83/89**, with four intentionally stale visual cases and
+two showcase assertions still expecting the old floating recovery / old last drawer
+control. Its anchored grep did not exclude the visual cases because Playwright matches
+full titles. Those assertions now use the recovery skip link and the new final modal
+control. A fresh focused shell/showcase run passes **18/18**. Deliberate baseline
+generation then passes **4/4** and writes all twelve PNGs. All twelve were inspected
+(listing/composer/theme detail × 390/1440px × light/dark), with the full-width showcase
+and left sidebar retained. The subsequent independent fresh full run compares them
+successfully. Ordinary test commands still cannot update baselines.
+
+Six final shell axe reports have **zero violations**. Their single incomplete finding
+is contrast for the artificially long email in the open account panel; it remains in
+the reports for manual assessment. Earlier generic-role/name mismatches were fixed;
+no axe rules or screenshot masks were disabled. Keyboard, touch, Escape, outside click,
+back/forward DOM restoration, 200% text reflow and Chromium 2× pinch zoom were automated.
+This is not a human screen-reader session, browser-UI zoom certification or a claim of
+application-wide WCAG conformance. W3C target-size/focus and APG disclosure references
+were checked and are linked in APPEARANCE.md; 44px is the product target.
+
+`make profile-production` additionally passes **6/6 in 39.4s**, the official SDK smoke,
+font/schema checks and unchanged read-only AssetMapper manifest after post-build theme
+creation/application, in isolated `appearance-20261028203941-27933`. An earlier production
+run also passed 6/6 in 40.0s. Both projects' runtime volumes/networks/credentials were
+removed by their normal traps; immutable build images/evidence remain. No working
+production deployment, remote publication or branch push occurred.
+
+Exact principal commands:
+
+```sh
+# In the matching prompt-pack directory: three checksum entries OK.
+sha256sum --check SHA256SUMS
+make browser-start
+python3 tests/BrowserHarness/run.py run --with-checks --keep -- tests/Browser/shell.spec.js tests/Browser/appearance.spec.js tests/Browser/critical.spec.js tests/Browser/authentication.spec.js tests/Browser/profile.spec.js
+python3 tests/BrowserHarness/run.py run --keep -- tests/Browser/shell.spec.js tests/Browser/theme_components.spec.js --project=chromium
+python3 tests/BrowserHarness/run.py test --run-id browser-1f233dd10586498f498c44d2 --update-baselines -- tests/Browser/visual.spec.js --project=chromium
+python3 tests/BrowserHarness/run.py run --with-checks --keep
+make browser-run RUN=browser-a7a032554515b48f9cc05683 BROWSER_ARGS='tests/Browser/shell.spec.js --project=chromium --grep unreadable'
+make profile-production
+make browser-cleanup RUN=browser-a7a032554515b48f9cc05683
+git diff --check
+```
+
+Changed files: base and appearance controls/reset/nav-link Twig partials, one catalogue
+card class; Shell/Appearance Stimulus, shell.css and studio.input.css; AppearanceController
+and the exact guest reset access rule in security.yaml; new functional ShellTest/browser
+shell.spec.js, existing authentication/appearance/profile/critical/showcase checks and
+twelve PNG baselines; APPEARANCE, PROFILE, DEVELOPMENT, ARCHITECTURE, CONTRACTS, SECURITY,
+BROWSER_TESTS, MILESTONES and this handoff. No operator environment variables, new
+dependency or database migration are needed. The checked-in route/access rule supplies
+the guest fallback; this is not a new guest catalogue permission.
+
+Measured toolchain: FrankenPHP 1.13.4 / PHP 8.5.12 / Caddy 2.11.7, Symfony 8.1.9,
+PHPUnit 13.4.3, Node 24.22.1; Chromium 156.0.8078.4, Firefox 157.0, WebKit 27.2.
+Existing Playwright 1.64.1, Tailwind 4.3.3, daisyUI 5.7.50 and Stimulus 3.2.2 locks remain.
+Logs: `var/browser-verification/navigation-{baseline,initial,focused,focused-final,dialog-gate,complete,review,baselines,measurements,final,unreadable-final,production-final}.log`
+and corresponding cleanup logs. Final browser evidence is under
+`var/browser-runs/browser-a7a032554515b48f9cc05683/artifacts/`; reviewed shell/zoom/touch
+captures are also under `browser-1f233dd10586498f498c44d2/artifacts/invocation-b7445957/`.
+
+Remaining checks: human screen-reader use, manual assessment of the retained long-email
+contrast finding, and real browser-UI zoom beyond the measured text-reflow/pinch paths.
+Ordinary navigation and the fallback reset are verified with JavaScript disabled; other
+appearance actions retain their existing JS requirement. The no-JS strip explains that
+reset navigates to Workspace/Sign in and edits should be saved first. Exact next step:
+review the shell with normal accounts or explicitly select the next numbered prompt.
+Cleanup audit follows below. The twelve user-staged prompt files remain unchanged.
+
+Final cleanup audit: **all eight browser runs and both production fixtures** have zero
+containers (including stopped), volumes, networks and private credential files. Browser
+CLEANED receipts exist and their per-run worker tags are removed. Reusable locked
+app/runner/toolchain images and build cache remain. No containers are running on the host.
+Evidence: `var/browser-verification/navigation-resource-audit.json`. No working catalogue
+was used for fixtures or cleanup. The staged prompt diff retains SHA-256
 `d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.

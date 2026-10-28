@@ -123,6 +123,10 @@ The default family supports anonymous login appearance; catalogue families requi
 signed-in reader. Saved CSS routes authorize before ETag/cache handling; trial CSS also
 requires its owner and is not cacheable. See APPEARANCE.md for bounds and lifecycle.
 
+`POST /appearance/reset` is the CSRF-protected SSR fallback for the fixed built-in
+default/system selection. It accepts no theme/owner/redirect selection; guests can
+only reset their existing mode cookie. Normal JS reset retains prepare/load/commit.
+
 Use a versioned /api/v1 prefix. Session-authenticated edit endpoints require CSRF;
 registry download endpoints accept scoped Bearer tokens. JSON errors contain code,
 message, fieldErrors and requestId; never a stack trace in production.

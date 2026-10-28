@@ -36,7 +36,7 @@ final class AuthenticationTest extends DatabaseTestCase
         $client->submitForm('Sign in', ['_username' => $user->getEmail(), '_password' => 'Test password 2026!']);
         self::assertResponseRedirects('http://localhost/');
         $client->followRedirect();
-        self::assertSelectorTextContains('nav', $user->getEmail());
+        self::assertSelectorTextContains('#account-options', $user->getEmail());
         $client->request('POST', '/logout');
         self::assertResponseStatusCodeSame(403);
         $client->request('GET', '/');

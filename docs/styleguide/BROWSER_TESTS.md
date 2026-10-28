@@ -113,6 +113,15 @@ eight full-page screenshots and axe reports are review artifacts, rather than pi
 baselines. `bootstrap.spec.js` creates, resumes and saves a real draft from the homepage.
 PHPUnit covers ordering, limits, missing/deleted targets and independent empty states.
 
+`shell.spec.js` adds 320px/390px/1440px light/dark disclosure, account, active-link and
+recovery checks, long translated labels/emails, keyboard dismissal/restoration and Turbo
+back navigation. It also exercises an unreadable saved/trial theme, a real recovery
+failure/retry, no-JavaScript forms/navigation/logout, touch drawer recovery and 200% text
+reflow plus Chromium's 2× pinch zoom. The existing critical suite checks modal recovery
+and Tab containment in all three engines. These are automated checks, not a manual
+screen-reader session or browser-UI zoom certification. Shell geometry and contrast
+audits do not establish application-wide WCAG conformance.
+
 Baselines live in `tests/Browser/baselines/chromium/`. Missing or changed images fail;
 ordinary runs never write baselines. To generate reviewable candidates deliberately:
 

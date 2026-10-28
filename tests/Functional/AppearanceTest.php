@@ -125,7 +125,7 @@ final class AppearanceTest extends DatabaseTestCase
         $state = $this->read(); $this->browser->request('GET', '/'); self::assertResponseIsSuccessful();
         self::assertSelectorExists('script[src*="appearance_bootstrap"]'); self::assertSelectorCount(2, 'link[data-appearance-sheet]');
         self::assertSelectorCount(2, 'link[data-appearance-sheet][integrity^="sha256-"]');
-        self::assertSelectorExists('button[data-appearance-recovery]'); self::assertSelectorExists('html[data-color-mode]');
+        self::assertSelectorExists('#appearance-recovery button[type="submit"]'); self::assertSelectorExists('html[data-color-mode]');
         self::assertTrue($this->browser->getResponse()->headers->hasCacheControlDirective('no-store')); self::assertTrue($this->browser->getResponse()->headers->hasCacheControlDirective('private'));
         $this->browser->request('GET', $state['variants']['light']['url']); self::assertResponseIsSuccessful();
         self::assertFalse($this->browser->getResponse()->isCacheable() && $this->browser->getResponse()->headers->hasCacheControlDirective('public'));

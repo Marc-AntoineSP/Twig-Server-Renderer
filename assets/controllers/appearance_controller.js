@@ -51,6 +51,7 @@ export default class extends Controller {
         this.variantLinkTarget.hidden = available || !variant.themeId;
         if (!this.variantLinkTarget.hidden) this.variantLinkTarget.href = this.themeEditUrlValue.replace('__THEME__', variant.themeId);
         this.trialBannerTarget.hidden = !state.trial;
+        this.updateRecovery();
         for (const badge of this.appliedTargets) {
             const active = !state.trial && !this.initialStylesMissing && badge.dataset.familyId === state.familyId && badge.dataset.variantMode === mode;
             badge.hidden = !active;
@@ -62,7 +63,18 @@ export default class extends Controller {
         document.fonts.ready.then(()=>{if (this.current === state) this.fontStatus();});
     }
 
-    message(text, failed = false) {this.statusTarget.textContent = text; this.statusTarget.dataset.failed = String(failed); this.statusTarget.hidden = !text;if(text)this.statusTarget.setAttribute('role','status');else this.statusTarget.removeAttribute('role');}
+    message(text, failed = false) {this.statusTarget.textContent = text; this.statusTarget.dataset.failed = String(failed); this.statusTarget.hidden = !text;if(text)this.statusTarget.setAttribute('role','status');else this.statusTarget.removeAttribute('role');this.updateRecovery();}
+    updateRecovery() {
+        const trial = Boolean(this.current?.trial), failed = this.statusTarget.dataset.failed === 'true';
+        for (const region of this.element.querySelectorAll('[data-appearance-recovery]')) region.dataset.recoveryState = failed ? 'error' : (trial ? 'trial' : 'normal');
+        for (const action of this.element.querySelectorAll('[data-appearance-trial-only]')) action.hidden = !trial;
+        for (const message of this.element.querySelectorAll('[data-appearance-recovery-message]')) {message.textContent = this.statusTarget.textContent; message.hidden = this.statusTarget.hidden;}
+        const explanation = this.element.querySelector('[data-appearance-recovery-explanation]');
+        explanation.hidden = !trial && !failed;
+        explanation.textContent = trial
+            ? 'Revert trial restores your saved appearance without saving editor changes. Restore default also replaces your saved appearance with Studio default and system mode.'
+            : 'Restore default saves Studio default and system mode. Unsaved editor changes are kept.';
+    }
     async json(url, options = {}) {
         let response;
         const signal=options.signal?AbortSignal.any([options.signal,AbortSignal.timeout(15000)]):AbortSignal.timeout(15000);
@@ -144,6 +156,7 @@ export default class extends Controller {
     toggle() {const mode=window.StyleguideAppearance.effectiveMode(this.current);return this.select({kind:'mode',mode:mode==='dark'?'light':'dark'});}
     systemAppearance() {return this.select({kind:'mode',mode:'system'});}
     restoreDefault() {return this.select({kind:'default'});}
+    reset(event) {event.preventDefault();return this.restoreDefault();}
     applyTheme(event) {return this.select({kind:'family',themeId:event.currentTarget.dataset.themeId,themeRevision:Number(event.currentTarget.dataset.themeRevision)});}
     applyFamily() {return this.select({kind:'family',familyId:this.familyTarget.value});}
     async refreshFamilies() {

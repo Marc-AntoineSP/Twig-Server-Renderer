@@ -1,5 +1,8 @@
 {% set appearance = application_appearance() %}
 {% set initialMode = appearance.mode == 'dark' and appearance.variants.dark is defined ? 'dark' : (appearance.variants.light is defined ? 'light' : 'dark') %}
+{% set currentRoute = app.request.attributes.get('_route', '') %}
+{% set activeSection = currentRoute starts with 'catalogue_' or currentRoute starts with 'composition_' or currentRoute == 'package_import' ? 'catalogue' : (currentRoute starts with 'theme_' ? 'theme' : (currentRoute starts with 'font_' ? 'font' : '')) %}
+{% set pageContext = currentRoute starts with 'profile_' ? 'My profile' : (currentRoute == 'registry_tokens' ? 'Read tokens' : (currentRoute == 'studio_login' ? 'Sign in' : (activeSection ? {catalogue: 'Catalogue', theme: 'Themes', font: 'Fonts'}[activeSection] : 'Workspace'))) %}
 <!DOCTYPE html>
 <html lang="en" data-theme="{{ appearance.variants[initialMode].cssName }}" data-color-mode="{{ initialMode }}" data-appearance-family="{{ appearance.familyId }}" data-appearance-state="{{ appearance|json_encode|e('html_attr') }}"{% for mode,variant in appearance.variants %} data-appearance-{{ mode }}="{{ variant.id }}"{% endfor %}>
     <head>
@@ -12,34 +15,63 @@
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{{ importmap('app') }}{% endblock %}
     </head>
-    <body class="min-h-screen bg-base-200 text-base-content" data-controller="appearance" data-appearance-state-value="{{ appearance|json_encode|e('html_attr') }}" data-appearance-csrf-value="{{ csrf_token('api') }}" data-appearance-read-url-value="{{ path('appearance_read') }}" data-appearance-prepare-url-value="{{ path('appearance_prepare') }}" data-appearance-commit-url-value="{{ path('appearance_commit') }}" data-appearance-trial-url-value="{{ path('appearance_trial') }}" data-appearance-families-url-value="{{ path('appearance_families') }}" data-appearance-theme-edit-url-value="{{ path('theme_edit', {id:'__THEME__'}) }}">
-        <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
-        <header class="border-b border-base-300 bg-base-100">
-            <nav class="navbar mx-auto max-w-6xl flex-wrap gap-2 px-6" aria-label="Main">
-                <a href="{{ path('studio_home') }}" class="font-heading text-xl font-semibold tracking-tight">Styleguide Studio</a>
-                {% if app.user %}<a class="btn btn-ghost ml-4" href="{{ path('catalogue_index') }}">Catalogue</a>{% endif %}
-                {% if app.user %}<a class="btn btn-ghost" href="{{ path('theme_index') }}">Themes</a>{% endif %}
-                {% if app.user %}<a class="btn btn-ghost" href="{{ path('font_index') }}">Fonts</a>{% endif %}
-                {% if is_granted('ROLE_ADMIN') %}<a class="btn btn-ghost" href="{{ path('registry_tokens') }}">Read tokens</a>{% endif %}
-                {% block navigation %}{% endblock %}
+    <body class="min-h-screen bg-base-200 text-base-content" data-controller="appearance shell" data-appearance-state-value="{{ appearance|json_encode|e('html_attr') }}" data-appearance-csrf-value="{{ csrf_token('api') }}" data-appearance-read-url-value="{{ path('appearance_read') }}" data-appearance-prepare-url-value="{{ path('appearance_prepare') }}" data-appearance-commit-url-value="{{ path('appearance_commit') }}" data-appearance-trial-url-value="{{ path('appearance_trial') }}" data-appearance-families-url-value="{{ path('appearance_families') }}" data-appearance-theme-edit-url-value="{{ path('theme_edit', {id:'__THEME__'}) }}">
+        <a href="#main" class="shell-skip" data-turbo="false">Skip to content</a>
+        <a href="#appearance-recovery" class="shell-skip" data-turbo="false">Skip to appearance recovery</a>
+        <header class="studio-header border-b border-base-300 bg-base-100">
+            <div class="shell-bar">
                 {% if app.user %}
-                    <div class="flex flex-wrap items-center gap-4 text-sm">
-                        <a class="link" href="{{ path('profile_show') }}">Profile</a><span class="break-all">{{ app.user.userIdentifier }}</span>
-                        <form action="{{ path('studio_logout') }}" method="post" data-turbo="false">
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
-                            <button class="btn btn-ghost btn-sm" type="submit">Sign out</button>
-                        </form>
-                    </div>
+                    <details class="shell-disclosure shell-mobile-navigation" name="studio-shell" data-shell-disclosure>
+                        <summary aria-controls="mobile-navigation" aria-label="Navigation"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></summary>
+                        <nav class="shell-panel" id="mobile-navigation" aria-label="Main">
+                            <a href="{{ path('studio_home') }}"{% if currentRoute == 'studio_home' %} aria-current="page"{% endif %}>Workspace</a>
+                            {% include 'studio/_navigation_links.html.twig' %}
+                            {{ block('navigation') }}
+                        </nav>
+                    </details>
                 {% endif %}
+                <a href="{{ path('studio_home') }}" class="shell-brand"{% if currentRoute == 'studio_home' %} aria-current="page"{% endif %}>
+                    <span class="shell-brand-full">Styleguide Studio</span><span class="shell-brand-short">Studio</span>
+                    <span class="shell-context">{% block page_context %}{{ pageContext }}{% endblock %}</span>
+                </a>
+                {% if app.user %}<nav class="shell-desktop-navigation" aria-label="Main">{% include 'studio/_navigation_links.html.twig' %}{% block navigation %}{% endblock %}</nav>{% endif %}
                 {% include 'appearance/_controls.html.twig' %}
-            </nav>
+                {% if app.user %}
+                    <details class="shell-disclosure" name="studio-shell" data-shell-disclosure>
+                        <summary aria-controls="account-options" aria-labelledby="account-control-label"{% if currentRoute starts with 'profile_' or currentRoute == 'registry_tokens' %} class="shell-current"{% endif %}><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg><span id="account-control-label" class="shell-control-label">Account</span></summary>
+                        <div class="shell-panel" id="account-options">
+                            <p class="shell-account-email">{{ app.user.userIdentifier }}</p>
+                            <a href="{{ path('profile_show') }}"{% if currentRoute starts with 'profile_' %} aria-current="{{ currentRoute == 'profile_show' ? 'page' : 'location' }}"{% endif %}>Profile</a>
+                            {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('registry_tokens') }}"{% if currentRoute == 'registry_tokens' %} aria-current="page"{% endif %}>Read tokens</a>{% endif %}
+                            <form action="{{ path('studio_logout') }}" method="post" data-turbo="false">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}"><button type="submit">Sign out</button>
+                            </form>
+                        </div>
+                    </details>
+                {% endif %}
+            </div>
+        <section id="appearance-recovery" class="appearance-recovery" data-appearance-recovery aria-label="Appearance recovery" tabindex="-1">
+            <div class="recovery-row">
+                {% include 'appearance/_reset.html.twig' %}
+                <p aria-live="polite" data-appearance-target="status" {% if appearance.notice is defined %}role="status"{% else %}hidden{% endif %}>{{ appearance.notice|default('') }}</p>
+            </div>
+            <noscript><p>Save edits first. Reset opens {{ app.user ? 'Workspace' : 'Sign in' }} when JavaScript is off.</p></noscript>
+            <p data-appearance-recovery-explanation hidden></p>
+            <div hidden data-appearance-target="trialBanner">
+                <strong>Trying unsaved changes</strong><p>Only this editor tab. Your saved appearance is unchanged.</p>
+                <div class="recovery-row"><button type="button" data-action="appearance#revert">Revert trial</button><button type="button" data-action="appearance#saveTrial">Save &amp; Apply trial</button></div>
+            </div>
+        </section>
         </header>
-        <p class="mx-auto my-2 max-w-6xl px-6 text-sm" aria-live="polite" data-appearance-target="status" {% if appearance.notice is defined %}role="status"{% else %}hidden{% endif %}>{{ appearance.notice|default('') }}</p>
-        <div hidden class="mx-auto max-w-6xl px-6 py-3" data-appearance-target="trialBanner" data-appearance-recovery>
-            <strong>Trying unsaved changes</strong> · Only this editor tab. <button type="button" data-action="appearance#revert">Revert trial</button> <button type="button" data-action="appearance#saveTrial">Save &amp; Apply trial</button>
-        </div>
+        <template data-shell-target="recoveryTemplate"><section class="appearance-recovery" data-appearance-recovery data-modal-recovery aria-label="Appearance recovery in dialog">
+            <strong>Appearance recovery</strong>
+            <p>Restore default saves Studio default and system mode. Editor changes are kept.</p>
+            <p data-appearance-recovery-message hidden></p>
+            <div class="recovery-row">{% include 'appearance/_reset.html.twig' %}<button type="button" data-appearance-trial-only data-action="appearance#revert" hidden>Revert trial</button></div>
+            <p data-appearance-trial-only hidden>Revert trial restores the saved appearance without saving editor changes.</p>
+        </section></template>
         <dialog id="appearance-details-dialog" class="modal"><div class="modal-box bg-base-100 text-base-content"><h2 class="text-xl font-bold">Application appearance</h2><p class="my-4" data-appearance-target="details"></p><p class="alert">Catalogue previews and export settings remain independently selected.</p><button type="button" class="btn mt-4" data-action="appearance#closeDetails">Close appearance details</button></div></dialog>
-<main id="main" class="{% block main_class %}mx-auto max-w-6xl p-6 md:p-10{% endblock %}">
+<main id="main" tabindex="-1" class="studio-main {% block main_class %}mx-auto max-w-6xl p-6 md:p-10{% endblock %}">
             {% for message in app.flashes('success') %}<div class="alert alert-success mb-6" role="status" data-flash>{{ message }}</div>{% endfor %}
             {% block body %}{% endblock %}
         </main>

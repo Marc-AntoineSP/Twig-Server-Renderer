@@ -9,7 +9,7 @@ test.afterEach(async ({page}) => {
     });
 });
 
-async function openProfile(page){await page.getByRole('link',{name:'Profile',exact:true}).click();await expect(page.getByRole('heading',{name:'My profile',exact:true})).toBeVisible();}
+async function openProfile(page){await page.locator('summary[aria-controls="account-options"]').click();await page.getByRole('link',{name:'Profile',exact:true}).click();await expect(page.getByRole('heading',{name:'My profile',exact:true})).toBeVisible();}
 
 test('profile manages personal credentials and verifies the real MCP endpoint without server commands',async({page})=>{
     test.setTimeout(90000);await login(page);await openProfile(page);

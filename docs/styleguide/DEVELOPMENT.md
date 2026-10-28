@@ -77,6 +77,12 @@ are retained rather than generating a replacement app.
 
 ## Workspace homepage
 
+The compact header uses Navigation on narrow screens, Account for Profile/Sign out and
+administrator Read tokens, and Appearance for secondary theme options. The moon/sun
+mode button remains visible. Recovery occupies a safe strip below the header controls; the
+keyboard skip link reaches it without a Turbo visit. Native dialogs include recovery
+inside their content. See APPEARANCE.md for trial/reset distinctions and no-JS fallback.
+
 After signing in, `/` shows up to six recently updated drafts/compositions/themes and
 six personal favorite shortcuts. Recent work belongs to the shared reader catalogue;
 it is ordered by the saved update time, then stable item ID, rather than browsing history.

@@ -129,6 +129,14 @@ and cannot update Theme or AppearancePreference records. Personalized HTML is pr
 no-store; only the built-in system-font default CSS is available without a login.
 See APPEARANCE.md for request, stylesheet, tab-slot and trial-history limits.
 
+The server-rendered appearance recovery form additionally accepts a CSRF-protected
+POST at `/appearance/reset`. This fixed action prepares/persists only the built-in
+default family in system mode, with the current preference revision. It accepts no
+owner, theme or return-URL selection. Anonymous reset only writes the validated guest
+mode cookie. JavaScript enhancement retains the existing tab-bound prepare/commit API.
+Recovery controls cloned into application-owned native dialogs remain trusted shell UI;
+no user HTML/JavaScript is moved into the studio or outside its opaque preview iframe.
+
 The theme-detail component reference renders only repository-owned Twig partials and
 bundled controllers directly in the application. User-created/imported Twig, CSS and
 JavaScript remain in the isolated renderer/frame; this trusted presentation does not

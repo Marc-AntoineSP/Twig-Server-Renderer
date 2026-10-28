@@ -243,3 +243,19 @@ comparisons, and eight additional empty-workspace role/width/mode checks pass. S
 homepage axe scans have no violations; editor-button contrast incompletes remain for
 manual assessment. No migrations, dependency/configuration changes or working data
 mutations. See DEVELOPMENT.md, BROWSER_TESTS.md and STATUS.md for exact evidence/limits.
+
+## Improvement prompt 02 — Compact navigation and reserved recovery
+
+Use native mobile disclosures and inline desktop navigation, concise context, personal
+account actions and visible mode control. Keep recovery in a safe reserved strip and
+inside native modal content, with distinct trial/reset semantics and a real no-JS reset
+fallback. Preserve source isolation, the theme showcase/sidebar and existing permissions.
+
+Completed 2026-10-28: **154 PHPUnit tests / 1502 assertions**, **89 browser tests** across
+three engines, twelve deliberately updated/reviewed visual comparisons and **6 immutable
+production flows** pass. A strengthened white-on-white saved/trial recovery fixture also
+passes independently. Measured mobile header is 111px total (56px controls, 54px recovery,
+border) at both 320px and 390px, without horizontal overflow. Six shell axe scans have
+no violations; the long-email contrast incomplete remains for manual review. No migration
+or new dependency; the fixed CSRF-protected guest reset route adds one access rule.
+See APPEARANCE.md, BROWSER_TESTS.md and STATUS.md for commands, evidence and remaining checks.

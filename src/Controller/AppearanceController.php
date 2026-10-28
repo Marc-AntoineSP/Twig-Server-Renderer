@@ -19,6 +19,20 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class AppearanceController extends AbstractController
 {
+    #[Route('/appearance/reset', name: 'appearance_reset', methods: ['POST'])]
+    #[IsCsrfTokenValid('appearance-reset', tokenKey: '_appearance_token')]
+    public function reset(Request $request, AppearanceManager $manager, GuestAppearance $guest): Response
+    {
+        $state = $manager->prepare(['kind' => 'default'], $this->account(), $guest->mode($request));
+        $manager->persist($state, $this->account(), $state['revision']);
+        $this->addFlash('success', 'Default appearance restored.');
+        $response = $this->redirectToRoute($this->account() ? 'studio_home' : 'studio_login', status: 303);
+        $response->headers->set('Cache-Control', 'private, no-store');
+        if (!$this->account()) $response->headers->setCookie($guest->cookie('system', $request));
+
+        return $response;
+    }
+
     #[Route('/api/v1/appearance', name: 'appearance_read', methods: ['GET'], format: 'json')]
     public function read(Request $request, AppearanceManager $manager, GuestAppearance $guest): JsonResponse
     {

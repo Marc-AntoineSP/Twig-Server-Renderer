@@ -23,8 +23,45 @@ The production verification described below uses a separate, disposable local pr
   and an editor link. Adding another variant does not silently change previously applied
   snapshots: apply the updated family to select it.
 - **Restore default appearance** selects the complete built-in light/dark family and
-  system mode. Its fixed, independently legible control remains reachable when trying
-  poor colours, large fonts, mobile layouts or development-tool overlays.
+  system mode. Its independently legible strip reserves document space below the
+  compact header controls. **Skip to appearance recovery** reaches it by keyboard.
+  Native dialogs and drawers include their own recovery form inside the modal content.
+
+## Navigation and recovery
+
+At narrow widths, **Navigation** opens ordinary links; **Account** contains the full
+email, Profile, Sign out and administrator Read tokens. The primary moon/sun mode control
+stays visible beside **Appearance**. Desktop primary links remain inline. Active links
+use a visible underline and `aria-current` (`location` for a parent section). Native
+disclosures work without JavaScript; enhancement adds Escape/focus restoration, outside
+click/focus dismissal and cleanup on Turbo visits. They do not trap focus.
+
+Recovery uses fixed safe colours, fonts, borders, focus outlines and 44px controls rather
+than selected theme tokens. It never floats over editor fields. During a trial the strip
+explains **Revert trial** (restore the saved appearance and keep unsaved editor text) versus
+**Restore default appearance** (save Studio default with system mode). Errors gain a safe
+explanation and retry path. Save & Apply trial keeps its existing editor behavior.
+
+Modal dialogs make the document behind them inert. The shell adds a safe recovery form
+within the dialog's scrollable content, alongside its existing actions; native modal
+focus containment and Escape remain. Resetting does not close the dialog or discard
+editor inputs. Layer order is document/recovery/content, shell disclosures, then native
+top-layer dialogs. Disclosures open below the recovery strip, so reset remains exposed
+even when a menu is open. The full-width showcase and details sidebar keep their layout.
+
+With JavaScript, reset uses the existing prepare/load/commit flow in place. Without it,
+the CSRF-protected `POST /appearance/reset` form reuses AppearanceManager, reads the
+current preference revision, and selects only the built-in default/system mode. It
+redirects to Workspace (or Sign in for guests); the no-JS strip tells users to save edits
+first because this is a full navigation. Guest reset uses the existing mode cookie;
+it cannot select catalogue themes. No new migration or appearance-storage format exists.
+
+Shell controls aim for 44px touch targets. This product target does not establish
+conformance: [WCAG 2.2 target-size guidance](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+defines a 24px minimum with exceptions. [Focus-not-obscured guidance](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)
+and the [APG disclosure navigation pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/)
+inform the reserved strip, ordinary links and focus restoration; assistive-technology
+and manual contrast checks remain separate from automated tests.
 
 Application backgrounds, navigation/header, menu/sidebar, cards, forms, tables, alerts,
 native dialogs, buttons and body/heading/code typography inherit semantic tokens. The
@@ -168,7 +205,8 @@ verified offline staging store. After production asset compilation it creates, e
 trials and applies new families/variants through the browser and checks real computed
 colours, native control mode, decoded fonts, independent preview settings and account
 isolation. It verifies the read-only AssetMapper manifest hash before and after. Its
-temporary accounts are disabled and its project stopped without removing volumes.
+owned project, volumes and private credentials are removed after verification; sanitized
+evidence remains available for review.
 Existing development, production and consumer data are preserved.
 Production and development browser runs use separate artifact directories, so they can
 run against their isolated services without overwriting each other's traces.

@@ -1,6 +1,6 @@
 # Profile and MCP connection setup
 
-Open **http://localhost:8095/profile**, or select **Profile** in the application navigation.
+Open **http://localhost:8095/profile**, or select **Account → Profile** in the application header.
 All Studio-side personal credential and ChatGPT OAuth client setup is available here.
 The existing console commands remain available for operators and automation.
 
