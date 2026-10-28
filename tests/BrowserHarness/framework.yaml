@@ -1,0 +1,6 @@
+when@dev:
+    web_profiler:
+        toolbar: false
+    framework:
+        profiler:
+            collect: false

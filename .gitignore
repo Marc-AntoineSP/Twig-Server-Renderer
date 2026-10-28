@@ -24,6 +24,7 @@
 /assets/showcase/showcase.js
 /test-results/
 /playwright-report/
+/tests/BrowserHarness/__pycache__/
 /workers/*/vendor/
 /workers/*/node_modules/
 /tools/library/node_modules/

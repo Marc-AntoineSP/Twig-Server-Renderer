@@ -1,0 +1,7 @@
+tests/BrowserHarness/** text eol=lf
+tests/AppearanceProduction/run.sh text eol=lf
+tests/Consumer/run.sh text eol=lf
+tests/FontConsumer/run.sh text eol=lf
+tests/Production/run.sh text eol=lf
+compose.browser.yaml text eol=lf
+tests/Browser/baselines/**/*.png binary

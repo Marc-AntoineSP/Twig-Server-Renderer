@@ -2,6 +2,8 @@
 set -euo pipefail
 read -r -a compose <<< "${COMPOSE:-docker compose}"
 dc() { "${compose[@]}" "$@"; }
+# Fail before fixture creation or cleanup unless this is an owned disposable studio.
+dc exec -T app php tests/BrowserHarness/verify.php
 cleanup() { dc exec -T app php bin/console styleguide:test:accounts --cleanup; rm -f var/consumer-auth/styleguide/auth.json; }
 trap cleanup EXIT
 dc stop consumer

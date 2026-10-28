@@ -214,3 +214,18 @@ M15 completed2026-10-28:146PHPUnit/1375assertions; all58development flows verifi
 across the full run and3focused reruns;7/7immutable-production browser flows/54.2s,
 official SDK smoke, unchanged original row hashes and font registry. Migration applied
 in development/test/isolated production; existing production was not redeployed.
+
+## Improvement prompt 12 — Isolated acceptance and targeted regressions
+
+Disposable, run-owned database/blob/runtime/workers; deterministic bounded fixtures;
+authenticated target proof before browser mutations; exact teardown and retained-run
+commands. Preserve Chromium coverage and add focused Firefox/WebKit keyboard and
+accessibility checks, twelve reviewed visual baselines, and a manual verification list.
+
+Completed 2026-10-28: fresh owned lifecycle builds, lints, **148 PHPUnit tests / 1382
+assertions and 71 browser tests** pass. Nine axe reports have no violations; their
+gradient/background-image contrast findings remain explicitly incomplete. Twelve visual
+comparisons also pass in a second fresh environment; deliberate pixel regression,
+wrong ownership proofs, failure/SIGTERM teardown and immutable production checks pass.
+Human screen-reader checks remain unrun. Legacy consumer/restore topologies are guarded
+before mutations and require a separate migration. See BROWSER_TESTS.md and STATUS.md.

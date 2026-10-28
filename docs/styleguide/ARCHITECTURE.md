@@ -230,6 +230,18 @@ pipeline and opaque iframe. No AI provider or new runtime/screenshot service is 
 Full operation map, configuration, measured checks and account-dependent ChatGPT steps:
 COMPOSE_MCP.md. No publishing, source authoring or administration tools are exposed.
 
+## Browser acceptance resources
+
+The standalone Compose browser topology builds self-contained app/runner images and
+allocates unique database, blob and runtime volumes plus internal worker networks for
+each invocation. It mounts no writable working checkout. Queue consumers use the same
+owned database and blobs as the app; renderer/compiler keep their existing isolation.
+An empty-store initialization binds a private run receipt to a database comment and
+blob sentinel. BrowserRunGuard verifies both before account/seed commands and an HMAC
+health challenge verifies the actual browser target before tests/login. This adds no
+application migration, per-item privacy model or production authentication bypass.
+See BROWSER_TESTS.md for lifecycle, deterministic fixtures, artifact policy and gates.
+
 ## Personal profile and browser MCP setup
 
 /profile extends the existing cookie-authenticated studio with account details/password

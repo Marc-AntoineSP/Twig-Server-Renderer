@@ -3,6 +3,12 @@ import {randomBytes,createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 import {login} from './helpers.js';
 
+test.afterEach(async ({page}) => {
+    if (!page.isClosed()) await page.locator('input[type="password"], [data-profile-mcp-target="credential"], [data-profile-mcp-target="clientSecret"]').evaluateAll(elements => {
+        for (const element of elements) { element.value = ''; element.removeAttribute('value'); }
+    });
+});
+
 async function openProfile(page){await page.getByRole('link',{name:'Profile',exact:true}).click();await expect(page.getByRole('heading',{name:'My profile',exact:true})).toBeVisible();}
 
 test('profile manages personal credentials and verifies the real MCP endpoint without server commands',async({page})=>{

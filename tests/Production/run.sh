@@ -4,6 +4,11 @@ umask 077
 base=${PRODUCTION:-docker compose --env-file var/production/compose.env -f compose.production.yaml}
 read -r -a dc <<< "$base"
 read -r -a testdc <<< "$base -f compose.production-test.yaml"
+# Verify the target before account creation, publication, pause/restart or recovery mutations.
+if ! "${dc[@]}" exec -T app php -r 'require "vendor/autoload.php"; $k=new App\Kernel("prod",false); $k->boot(); (new App\Testing\BrowserRunGuard($k->getContainer()->get("doctrine")->getConnection()))->verify();'; then
+ echo 'This recovery driver requires a verified disposable studio. Use make appearance-production/profile-production for maintained isolated checks; see docs/styleguide/BROWSER_TESTS.md.' >&2
+ exit 2
+fi
 environment=${PRODUCTION_ENV:-var/production/compose.env}
 project=$(sed -n 's/^STUDIO_PROJECT=//p' "$environment")
 release=$(sed -n 's/^STUDIO_RELEASE=//p' "$environment")

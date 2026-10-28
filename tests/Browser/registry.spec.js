@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { randomBytes } from 'node:crypto';
 import { login, createAlert } from './helpers.js';
+test.afterEach(async ({page}) => {
+    if (!page.isClosed()) await page.locator('[data-read-token]').evaluateAll(elements => elements.forEach(element => { element.textContent = '[redacted]'; }));
+});
 test('administrator issues a one-time scoped token and revokes real registry access', async ({ page }) => {
     await login(page, 'admin');
     const { item } = await createAlert(page);

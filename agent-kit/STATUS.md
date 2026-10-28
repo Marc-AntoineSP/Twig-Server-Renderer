@@ -22,6 +22,7 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | M13 Composer MCP | Complete |135PHPUnit/1138assertions; officialSDK + actualCodex round trips; concurrent writes;3production browser flows; ChatGPT account setup documented |
 | M14 Profile and browser setup | Complete |141PHPUnit/1245assertions;3development +6production browser flows; live PAT/OAuth checks; original account/data hashes preserved |
 | M15 Personal favorites | Complete |146PHPUnit/1375assertions;58development flows verified across full/focused runs;7production flows; stable variant/item identity and unchanged original data |
+| Improvement prompt 12 | Complete for requested scope |148PHPUnit/1382assertions;71browser tests;3engines;12visual baselines;owned-resource rejection/failure/interruption/teardown gates;6immutable-production flows |
 
 ## Repository audit and preservation
 
@@ -1477,3 +1478,123 @@ implementation or acceptance gate remains. No publication, branch push or extern
 Exact next step: open http://localhost:8095/catalogue or /themes, use a title's star, then
 check Favorites only and Find items/Find themes. In a composition, use Favorites only above
 the reference insertion picker. Development already has the migration and rebuilt CSS.
+
+## Improvement prompt 12 — Isolated browser acceptance — completed 2026-10-28
+
+Read both selected prompts/12-isolated-browser-tests.md and its supplied prompt pack;
+all three packaged Markdown checksums pass. Verified the review against this checkout:
+Make browser provisioned users in the configured development app, helpers persisted
+catalogue fixtures there, cleanup removed only accounts, and Playwright used Chromium
+with a working-app URL fallback. Existing production appearance tooling supplied the
+local isolation precedent. The user's twelve staged prompt files remain separate.
+
+Implemented a standalone Docker acceptance topology with unique 96-bit run identities,
+private PostgreSQL/blob/runtime volumes, sessions/cache/OAuth keys, app-side consumers,
+internal renderer/compiler networks and null mail. No writable checkout or published
+host port is used. Empty-store initialization binds the private receipt to PostgreSQL
+metadata and blob sentinels; account/seed commands and a fresh HTTP HMAC challenge fail
+closed when either store/identity is wrong. Normal browser checks never use working
+credentials or catalogue data. No application migration is required.
+
+Four random-password actors (including a separate visual editor), four stable catalogue
+items, three immutable item releases, two theme releases, paired variants and private
+favorites are bounded seeds. Display timestamps are fixed. Five pinned Fontsource
+families/22 faces/661852 bytes support existing real-font tests. The working-theme
+reference in fonts.spec.js now selects the owned released theme. CRLF normalization
+occurs only in image copies of repository fixtures whose byte hashes require LF.
+
+Make commands cover start/seed/run/check/cleanup, full browser, three-engine smoke,
+visual comparisons and deliberate baseline updates. Per-run lifecycle locks prevent
+concurrent operations on one fixture; independent projects coexist. Normal failure,
+SIGINT/SIGTERM and explicit cleanup use exact receipts/Docker labels, mounts and networks.
+Worker image deletion uses exact tags plus project/service labels; shared tool caches
+are preserved. Retained mode prints the exact cleanup command. Credentials are removed,
+traces stay disabled, one-time profile/read-token fields are scrubbed, and bounded text
+artifacts redact secrets. Production appearance/profile tooling uses the same proof,
+private acquisition inputs, immutable assets, scoped teardown and internal networks.
+
+Completed checks (actual Docker/browser execution):
+
+- `python3 tests/BrowserHarness/run.py run --with-checks`: exit 0 in fresh project
+  browser-aec5b542047eb7a17155b62f. Locked image/CSS/JS builds, migrations, strict Composer,
+  container, 34 YAML and 41 Twig checks pass. **148 PHPUnit / 1382 assertions**, 89.9s;
+  **71 Playwright tests**, 5.2min: 65 Chromium plus three Firefox and three WebKit.
+  Normal teardown completed. Evidence: var/browser-verification/complete-gate.log.
+- Nine axe reports: zero automated violations. Reviewed the retained incomplete
+  color-contrast findings: daisyUI background images/gradients prevent deriving the
+  effective background (3 listing, 13 composer, 3 sidebar node occurrences per engine).
+  They are not suppressed or certified as compliant. Reports remain under the fresh
+  project's artifacts/invocation-*/results; preview frames and the separately themed
+  demonstration are explicitly outside application-control audits.
+- Twelve deterministic Chromium/Linux PNGs cover listing/composer/theme detail at
+  390/1440px in light/dark. `test --update-baselines -- tests/Browser/visual.spec.js
+  --project=chromium` deliberately generated candidates; spot-reviewed narrow/wide,
+  light/dark images. A second fresh project browser-5099ed1dcdcc08f74f336fab ran the
+  same four cases/12 comparisons without updates: **4/4 pass, 14.6s**.
+- `test --visual-probe -- tests/Browser/visual.spec.js --project=chromium --grep
+  '1440px light'`: deliberate heading-size regression was rejected by pixel comparison;
+  all baseline hashes stayed unchanged. The command's expected-failure gate passes.
+- `test -- tests/Browser/favorites.spec.js --project=chromium --grep 'theme variant
+  stars' --repeat-each=3`: **3/3 pass, 13.0s** after explicit initial mode and waiting
+  for Turbo's new variant DOM before opening its mobile disclosure. Keyboard focus,
+  cancellation and accessibility checks pass in all three engines; no human keyboard
+  or screen-reader session is claimed.
+- `make profile-production`: **6/6 pass, 45.1s**, plus official SDK smoke, valid
+  schema/mapping, font verification and identical before/after read-only AssetMapper
+  manifest. Fixture appearance-20261028180136-2582 was removed. Final production cleanup
+  changes were rechecked with `bash tests/AppearanceProduction/run.sh
+  tests/Browser/authentication.spec.js`: **1/1 pass, 2.2s**, immutable checks and teardown.
+- `python3 tests/BrowserHarness/safety.py <owned-run> <second-owned-run>`: repeated seed
+  leaves row counts unchanged; wrong run, database and blob proofs reject account cleanup
+  or browser startup before catalogue mutation. Two live projects have disjoint storage/
+  networks and no host ports; default development configuration is also disjoint.
+- `python3 tests/BrowserHarness/lifecycle.py`: real failed-test and SIGTERM commands
+  leave no matching containers, volumes, networks or private credentials. Serial
+  teardown/image-ID comparison followed by another live project's authentication test
+  proves shared images remain usable. Syntax checks and git diff --check pass.
+- Final scoped inventory: all 17 recorded browser runs and five production fixtures
+  have no runtime containers/volumes/networks or private credentials. Old exact owned
+  worker tags were removed after label checks; reusable tool/immutable image caches and
+  sanitized evidence remain. The working Compose stack was not running before/after;
+  it was not started or modified to prove preservation. No working-row hash comparison
+  or three-simultaneous-stack runtime test is claimed.
+
+Observed tool versions: FrankenPHP1.13.4/PHP8.5.12/Symfony8.1.9; Node24.22.1;
+Playwright1.64.1 with Chromium156.0.8078.4, Firefox157.0 and WebKit27.2;
+new exact @axe-core/playwright/axe-core4.14.0 recorded in package.json/package-lock.json.
+Tailwind4.3.3/daisyUI5.7.50/Stimulus3.2.2 and existing application/worker locks remain.
+
+Changed files: Makefile, Compose browser/appearance configuration, FrankenPHP test image
+stage, package manifest/lock, Playwright config, .gitattributes/.gitignore and existing CI;
+BrowserRunGuard/BrowserRunController, BrowserAccountsCommand/BrowserSeedCommand and health
+access rule; tests/BrowserHarness lifecycle/proof/fixture/production tools, functional
+BrowserSafetyTest, critical/visual suites and twelve baselines. Existing helpers/fonts/
+favorites/profile/registry tests now remove working-state assumptions, await actual DOM
+state and scrub secrets. Consumer/font-consumer/production-recovery drivers receive a
+pre-mutation ownership guard. Updated DEVELOPMENT, BROWSER_TESTS, ARCHITECTURE, SECURITY,
+MILESTONES and this handoff.
+
+Failed checks resolved during implementation: inherited HTTP healthcheck on the queue
+consumer; debug-off AssetMapper URLs without compilation; missing test .env/schema copies;
+CRLF fixture checksum drift; WebKit rejecting single-label session cookies (owned studio.test
+alias); missing Manrope/working GitHub theme and offline artifact directory; reduced-motion
+setting interfering with the existing timer test; favorites contaminating visual choices;
+mobile Turbo timing and inherited appearance mode. Earlier full run had 62/71 passes,
+then 70/71 before those focused fixes; the final fresh complete gate passes 71/71.
+A cleanup experiment with Compose --rmi local also removed a shared app tag; the final
+implementation removes only labelled per-run worker tags. An image-ID check overlapping
+another image build was rerun serially and passed. No such experiment remains in the
+normal commands, and none accessed working catalogue data.
+
+Remaining limits: human screen-reader/interactive keyboard checks are unrun; use the
+checklist in BROWSER_TESTS.md. Axe gradient contrast findings require manual assessment;
+automation does not certify accessibility. The legacy consumer/font-consumer and full
+backup/restore driver topologies still require migration to owned resources; they now
+fail before mutations on an unowned studio. CI uses the owned full PHP/browser gate and
+immutable profile/compose/authentication harness; fresh full consumer/restore acceptance
+was not rerun. Docker/host SIGKILL or daemon loss requires retrying the exact printed
+cleanup command after recovery. No remote publication, deployment or push occurred.
+
+Exact next step: use `make browser` (or `make browser-smoke`/`make browser-visual`) as the
+safe foundation for prompts01–11. Baseline changes require deliberate `make browser-baselines`
+and PNG review; migrate legacy consumer/recovery topology as a separate scoped task.

@@ -1,0 +1,116 @@
+# Standalone: never merge this file with the development Compose configuration.
+name: ${BROWSER_RUN_ID:?Use make browser or browser-start}
+
+x-app-environment: &app_environment
+  APP_ENV: dev
+  APP_DEBUG: "0"
+  APP_SECRET: ${BROWSER_APP_SECRET:?Private run configuration required}
+  DATABASE_URL: postgresql://browser:${BROWSER_DB_PASSWORD:?}@database:5432/browser?serverVersion=17&charset=utf8
+  MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+  MAILER_DSN: null://null
+  LOCK_DSN: flock
+  STUDIO_TEST_RUN_ID: ${BROWSER_RUN_ID:?}
+  RENDER_WORKER_URL: http://render-worker:8080
+  BUILD_WORKER_URL: http://build-worker:8080
+  RENDER_WORKER_TOKEN: ${BROWSER_WORKER_TOKEN:?}
+  BUILD_WORKER_TOKEN: ${BROWSER_WORKER_TOKEN:?}
+  MCP_COMPOSE_ENABLED: "1"
+  MCP_PUBLIC_HOST: studio.test
+  MCP_PUBLIC_BASE_URL: http://studio
+
+x-app: &app
+  image: styleguide-browser-app:local
+  build:
+    context: .
+    dockerfile: docker/frankenphp/Dockerfile
+    target: browser-test
+    args: {LOCAL_UID: "${LOCAL_UID:-1000}", LOCAL_GID: "${LOCAL_GID:-1000}"}
+  environment: *app_environment
+  networks: [studio, workers]
+  volumes:
+    - runtime:/app/var
+    - blobs:/app/var/catalogue
+    - ${BROWSER_RUN_DIRECTORY:?}/private:/run/styleguide-test
+  security_opt: [no-new-privileges:true]
+
+services:
+  app:
+    <<: *app
+    networks:
+      studio: {aliases: [studio, studio.test]}
+      workers: {}
+    tmpfs: [/data, /config]
+    healthcheck:
+      test: [CMD, php, -r, "exit(@file_get_contents('http://localhost/health/ready') === false ? 1 : 0);"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  preview-consumer:
+    <<: *app
+    command: [php, bin/console, messenger:consume, async, --memory-limit=128M, --time-limit=3600, --sleep=0.1, --no-interaction]
+    init: true
+    mem_limit: 256m
+    pids_limit: 64
+    healthcheck:
+      test: [CMD, php, -r, "foreach(glob('/proc/[0-9]*/cmdline') as $$p){if(in_array('messenger:consume',explode(chr(0),@file_get_contents($$p)?:''),true))exit(0);}exit(1);"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+  database:
+    image: postgres:17-trixie@sha256:b8faeff7712663c2773a190181e1246e37e364b887611c04658c28b44e2408fe
+    environment:
+      POSTGRES_DB: browser
+      POSTGRES_USER: browser
+      POSTGRES_PASSWORD: ${BROWSER_DB_PASSWORD:?}
+    networks: [studio]
+    volumes: [database:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD, pg_isready, -U, browser, -d, browser]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  render-worker:
+    extends: {file: compose.yaml, service: render-worker}
+    environment: {WORKER_TOKEN: "${BROWSER_WORKER_TOKEN:?}"}
+  build-worker:
+    extends: {file: compose.yaml, service: build-worker}
+    environment: {WORKER_TOKEN: "${BROWSER_WORKER_TOKEN:?}"}
+  browser:
+    image: styleguide-browser-runner:local
+    build: {context: ., dockerfile: tests/BrowserHarness/Dockerfile}
+    profiles: [tools]
+    working_dir: /app
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    init: true
+    shm_size: 1gb
+    mem_limit: 2g
+    pids_limit: 512
+    networks: [studio]
+    environment:
+      STUDIO_BASE_URL: http://studio.test
+      STUDIO_TEST_RUN_ID: ${BROWSER_RUN_ID:?}
+      STUDIO_ACCOUNTS_FILE: /run/styleguide-test/accounts.json
+      STUDIO_TEST_OWNERSHIP_FILE: /run/styleguide-test/ownership.json
+      STUDIO_TEST_FIXTURES_FILE: /run/styleguide-test/fixtures.json
+      STUDIO_BROWSER_ARTIFACTS: /artifacts
+      CI: ${CI:-}
+    volumes:
+      - ${BROWSER_RUN_DIRECTORY:?}/private:/run/styleguide-test:ro
+      - ${BROWSER_RUN_DIRECTORY:?}/artifacts:/artifacts
+      - ${BROWSER_RUN_DIRECTORY:?}/baselines:/app/tests/Browser/baselines
+    tmpfs: [/app/var:mode=1777]
+
+volumes:
+  database:
+    labels: {studio.browser.run: "${BROWSER_RUN_ID:?}"}
+  blobs:
+    labels: {studio.browser.run: "${BROWSER_RUN_ID:?}"}
+  runtime:
+    labels: {studio.browser.run: "${BROWSER_RUN_ID:?}"}
+networks:
+  studio:
+    internal: true
+    labels: {studio.browser.run: "${BROWSER_RUN_ID:?}"}
+  workers:
+    internal: true
+    labels: {studio.browser.run: "${BROWSER_RUN_ID:?}"}

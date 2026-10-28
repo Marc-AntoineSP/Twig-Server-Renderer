@@ -48,7 +48,7 @@ COPY workers/render/composer.lock ./workers/render/composer.lock
 COPY workers/build/package-lock.json ./workers/build/package-lock.json
 RUN --mount=type=cache,target=/tmp/composer-cache \
     export COMPOSER_CACHE_DIR=/tmp/composer-cache \
- && rm src/Command/BrowserAccountsCommand.php \
+ && rm src/Command/BrowserAccountsCommand.php src/Command/BrowserSeedCommand.php \
  && composer install --no-dev --no-scripts --no-interaction --optimize-autoloader \
  && php bin/console importmap:install --env=prod --no-debug
 COPY --from=studio-assets /app/assets/styles/app.css ./assets/styles/app.css
@@ -57,6 +57,48 @@ RUN php bin/console asset-map:compile --env=prod --no-debug \
  && rm -rf var/cache var/log \
  && mkdir -p var/cache var/log var/sessions var/catalogue \
  && chown -R studio:studio var
+
+# Self-contained disposable acceptance app: no writable checkout mount or local secrets.
+FROM node:24-trixie-slim@sha256:43b9ba1142b8dcf33fa8f922ca1be85714adc444e0586c7cf7726daaeabc1bea AS browser-fonts
+WORKDIR /app
+COPY tools/library ./tools/library
+COPY resources/library/fonts.json resources/library/fonts.lock.json ./resources/library/
+RUN npm ci --prefix tools/library --ignore-scripts --no-audit --no-fund
+RUN for family in inter lora jetbrains-mono atkinson-hyperlegible manrope; do node tools/library/fonts-download.mjs --family=$family || exit 1; done
+
+FROM dev AS browser-test
+USER root
+ENV APP_ENV=dev APP_DEBUG=0
+COPY composer.json composer.lock symfony.lock importmap.php .env .env.test phpunit.dist.xml ./
+COPY packages ./packages
+COPY bin ./bin
+COPY config ./config
+COPY src ./src
+COPY migrations ./migrations
+COPY templates ./templates
+COPY public/index.php ./public/index.php
+COPY assets ./assets
+COPY agent-kit/examples ./agent-kit/examples
+COPY fixtures ./fixtures
+COPY resources ./resources
+COPY tests ./tests
+COPY agent-kit/schemas ./agent-kit/schemas
+COPY tests/BrowserHarness/framework.yaml ./config/packages/browser_harness.yaml
+COPY tools ./tools
+COPY workers/render/composer.lock ./workers/render/composer.lock
+COPY workers/build/package-lock.json ./workers/build/package-lock.json
+RUN --mount=type=cache,target=/tmp/composer-cache \
+    php tests/BrowserHarness/normalize-fixtures.php \
+ && COMPOSER_CACHE_DIR=/tmp/composer-cache composer install --no-scripts --no-interaction \
+ && php bin/console importmap:install --env=dev --no-debug
+COPY --from=studio-assets /app/assets/styles/app.css ./assets/styles/app.css
+COPY --from=studio-assets /app/assets/showcase/showcase.js ./assets/showcase/showcase.js
+COPY --from=browser-fonts /app/resources/library/fonts.lock.json ./resources/library/fonts.lock.json
+COPY --from=browser-fonts /app/var/library-staging ./var/library-staging
+RUN php bin/console asset-map:compile --env=dev --no-debug \
+ && rm -rf var/cache var/log \
+ && mkdir -p var/catalogue var/sessions && chown -R studio:studio var
+USER studio
 
 FROM dev AS production
 USER root

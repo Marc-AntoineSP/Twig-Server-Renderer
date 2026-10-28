@@ -38,8 +38,25 @@ check:
 	$(COMPOSE) exec app php bin/console lint:yaml config
 	$(COMPOSE) exec app php bin/console lint:twig templates
 browser:
-	$(COMPOSE) exec -T app php bin/console styleguide:test:accounts
-	@status=0; $(COMPOSE) run --rm browser npm run test:browser || status=$$?; $(COMPOSE) exec -T app php bin/console styleguide:test:accounts --cleanup; exit $$status
+	python3 tests/BrowserHarness/run.py run -- $(BROWSER_ARGS)
+
+.PHONY: browser-start browser-seed browser-run browser-cleanup browser-check browser-smoke browser-visual browser-baselines
+browser-start:
+	python3 tests/BrowserHarness/run.py start --keep
+browser-seed:
+	python3 tests/BrowserHarness/run.py seed --run-id '$(RUN)'
+browser-run:
+	python3 tests/BrowserHarness/run.py test --run-id '$(RUN)' -- $(BROWSER_ARGS)
+browser-cleanup:
+	python3 tests/BrowserHarness/run.py cleanup --run-id '$(RUN)'
+browser-check:
+	python3 tests/BrowserHarness/run.py check --run-id '$(RUN)'
+browser-smoke:
+	python3 tests/BrowserHarness/run.py run -- tests/Browser/critical.spec.js
+browser-visual:
+	python3 tests/BrowserHarness/run.py run -- tests/Browser/visual.spec.js --project=chromium
+browser-baselines:
+	python3 tests/BrowserHarness/run.py run --update-baselines -- tests/Browser/visual.spec.js --project=chromium
 logs:
 	$(COMPOSE) logs --tail=100 -f app
 

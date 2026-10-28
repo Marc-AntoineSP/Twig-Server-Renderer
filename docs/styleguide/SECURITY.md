@@ -209,3 +209,20 @@ read-only tool; they cannot test arbitrary URLs or mutate catalogue data. After 
 validated, its actual same origin is permitted by the MCP Origin guard; untrusted hosts
 and cross-origin requests remain rejected. Server-wide enablement/HTTPS/proxy settings
 stay deployment-controlled. No external account connection is claimed by a local probe.
+
+## Acceptance test ownership
+
+Browser fixture creation and cleanup require a private run receipt, matching PostgreSQL
+database-comment ownership and a matching blob-root sentinel. Initialization refuses
+nonempty stores. A fresh HMAC challenge verifies the actual HTTP target before browser
+tests and login; target names and environment flags grant no mutation authority. The
+proof route returns 404 in ordinary installations. Production fixture mounts support
+only this proof and do not bypass studio authentication or enable fixture CLI commands.
+
+The standalone test project has isolated caches/sessions/OAuth keys and internal
+networks, null mail transport, no host ports and no writable checkout mount. Teardown
+checks exact project labels, mounts and resource names. Shared tool images are retained;
+only exact project-owned worker image tags are removed after label checks. Logs and
+text artifacts redact credentials, and one-time fields are scrubbed before automatic
+failure screenshots. Traces that could capture credentials stay disabled. See
+BROWSER_TESTS.md for retained-run handling, accessibility scope and manual limits.

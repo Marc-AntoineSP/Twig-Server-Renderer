@@ -47,11 +47,14 @@ inherit editor and reader permissions. Accounts are stored in PostgreSQL; regist
 is private. Login and every mutation require CSRF. Publishing is deferred until render
 and build validation exist.
 
-`make browser` provisions random, temporary dev/test accounts for all three roles,
-stores credentials in ignored `var/browser/accounts.json` (mode 0600), and removes the
-accounts and file after the test run. Interrupted runs can be cleaned with
-`make console ARGS='styleguide:test:accounts --cleanup'`. No browser-test account is
-available in production.
+`make browser` builds a disposable Docker application with its own database, blobs,
+sessions, caches, workers and credentials, runs Playwright, then removes its exact
+owned resources. It never seeds or cleans the working catalogue. No running development
+stack is needed. Use `make browser-start`, then `browser-seed`, `browser-run` and
+`browser-cleanup RUN=<the exact printed run ID>` for retained debugging. Direct test
+runs without database/blob ownership proof fail closed. See [BROWSER_TESTS.md](BROWSER_TESTS.md)
+for engines, accessibility scope, deliberate visual baseline updates, safe artifact
+handling, manual checks and the migration status of legacy integration drivers.
 
 `GET /health` checks HTTP liveness; `GET /health/ready` checks database connectivity
 and returns 503 on failure. The Compose readiness check uses the latter. Framework
@@ -104,6 +107,8 @@ profile caps files at 1 MiB each, 2 MiB total and 100 files; props/schema/exampl
 64 KiB bounds. Props use the documented v1 subset, with nonrecursive local `$defs`
 references. Executable URL schemes in URL/href/src/action props are rejected. Binary
 uploads, full dependency resolution and publication are later milestones.
+
+Historical restart acceptance commands below require an owned disposable target and the harness credential/ownership environment. Do not run them against the development studio. See BROWSER_TESTS.md.
 
 For the explicit restart acceptance check:
 

@@ -52,6 +52,12 @@ test('catalogue stars persist across devices, combine filters and return links, 
 
 test('theme variant stars stay independent of Apply and work on mobile in both modes', async ({page}) => {
     test.setTimeout(60000); await login(page); const prefix = 'favorite-theme-'+randomBytes(5).toString('hex');
+    await page.getByRole('button', {name: 'Restore default appearance', exact: true}).click();
+    await expect(page.locator('[data-appearance-target="status"]')).toHaveText('Applied Studio default.');
+    if (await page.locator('html').getAttribute('data-color-mode') !== 'dark') {
+        await page.getByRole('button', {name: 'Switch to dark mode', exact: true}).click();
+    }
+    await expect(page.locator('html')).toHaveAttribute('data-color-mode', 'dark');
     const doc = JSON.parse(readFileSync('agent-kit/examples/packages/ember/meta/theme.json', 'utf8')); doc.name='browser/'+prefix; doc.cssName=prefix;
     const family = await api(page, 'POST', '/api/v1/themes', {document: doc, variants: 'pair', familyLabel: prefix});
     const light = family.family.variants.light.id, dark = family.family.variants.dark.id;
@@ -65,12 +71,17 @@ test('theme variant stars stay independent of Apply and work on mobile in both m
     await page.getByRole('button', {name: 'Apply theme', exact: true}).click(); await expect(page.locator('[data-appearance-target="status"]')).toContainText('Applied '+prefix);
     await pressed(star(page, 'theme', dark), true);
     await page.setViewportSize({width: 390, height: 844});
-    const disclosure = page.locator('[data-theme-sidebar] > details'); if (!await disclosure.evaluate(el=>el.open)) await disclosure.locator(':scope > summary').click();
+    const disclosure = page.locator('[data-theme-sidebar] > details');
+    await expect(disclosure).not.toHaveAttribute('open', '');
+    await disclosure.locator(':scope > summary').click();
     await star(page, 'theme', dark).click(); await pressed(star(page, 'theme', dark), false);
     await expect(page.locator('html')).toHaveAttribute('data-appearance-family', family.family.id);
     await shot(page, 'theme-detail-mobile-dark');
     await page.getByRole('link', {name: 'Showcase light', exact: true}).click(); await expect(page).toHaveURL(new RegExp('/themes/'+light));
-    if (!await disclosure.evaluate(el=>el.open)) await disclosure.locator(':scope > summary').click();
+    // Turbo changes the URL before replacing the old variant's DOM/disclosure.
+    await expect(star(page, 'theme', light)).toBeAttached();
+    await expect(disclosure).not.toHaveAttribute('open', '');
+    await disclosure.locator(':scope > summary').click();
     await pressed(star(page, 'theme', light), false); await star(page, 'theme', light).click(); await pressed(star(page, 'theme', light), true);
     await page.getByRole('button', {name: 'Switch to light mode', exact: true}).click(); await expect(page.locator('html')).toHaveAttribute('data-color-mode','light');
     await shot(page, 'theme-detail-mobile-light');

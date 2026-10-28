@@ -80,7 +80,8 @@ test('composition renderer saves theme and body heading code choices without cha
     const before=await(await page.request.get(`/api/v1/items/${itemId}/draft`)).json();
     const current=page.locator('[data-composition-target="status"]');
     await expect(current).toHaveText('Composition preview current',{timeout:30000});
-    const option=page.getByLabel('Published theme',{exact:true}).locator('option').filter({hasText:'websites/github-inspired-dark@1.2.0'});
+    const seeded=JSON.parse(readFileSync(process.env.STUDIO_TEST_FIXTURES_FILE,'utf8'))['theme-dark'];
+    const option=page.getByLabel('Published theme',{exact:true}).locator('option').filter({hasText:seeded.name+'@1.0.0'});
     const themeId=await option.getAttribute('value');expect(themeId).toBeTruthy();
     await page.getByLabel('Published theme',{exact:true}).selectOption(themeId);
     await expect(page.getByLabel('Code font',{exact:true})).toHaveValue('theme');
@@ -97,7 +98,7 @@ test('composition renderer saves theme and body heading code choices without cha
     await expect(page.getByLabel('Code font',{exact:true})).toHaveValue('jetbrains-mono');
     const iframe=page.locator('iframe[title="Composition preview"]');await expect(iframe).toHaveAttribute('sandbox','allow-scripts');await expect(iframe).toHaveCSS('width','375px');
     const frame=page.frameLocator('iframe[title="Composition preview"]');
-    await expect(frame.locator('html')).toHaveAttribute('data-theme','github-inspired-dark');
+    await expect(frame.locator('html')).toHaveAttribute('data-theme',seeded.name.replace('/','-'));
     const faces=await frame.locator('body').evaluate(async()=>{
         for(const family of ['Inter','Lora','JetBrains Mono']) await document.fonts.load(`400 16px "${family}"`,'Français œ € English');
         return [...document.fonts].filter(face=>face.status==='loaded').map(face=>face.family.replaceAll('"',''));

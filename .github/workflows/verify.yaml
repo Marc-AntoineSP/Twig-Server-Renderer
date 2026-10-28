@@ -8,10 +8,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # verified v4 tag
-      - run: make bootstrap check test browser consumer
-      - run: make prod-init prod-build prod-migrate prod-up prod-check
-      - run: bash tests/Production/run.sh
-      - if: failure()
-        run: docker compose ps --all && docker compose logs --tail=50 app preview-consumer build-worker render-worker
-      - if: always()
-        run: docker compose down && make prod-down
+      - run: python3 tests/BrowserHarness/run.py run --with-checks
+      - run: make profile-production
+      # Legacy consumer/recovery drivers fail closed until moved to owned resources.
+      # Each harness cleans its exact project on success, failure and termination.
