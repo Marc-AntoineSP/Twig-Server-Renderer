@@ -24,6 +24,7 @@ final readonly class ThemeComponentShowcase
             'integrity' => 'sha256-'.base64_encode(hash('sha256', $css, true)),
             'prefix' => 'sg-'.strtolower($theme->getId()), 'categories' => self::CATEGORIES,
             'mode' => $tokens->colorScheme,
+            'name' => $tokens->name, 'revision' => $theme->getRevision(),
         ];
     }
 }

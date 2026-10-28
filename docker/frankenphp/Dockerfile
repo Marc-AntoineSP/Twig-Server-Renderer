@@ -38,6 +38,7 @@ COPY config ./config
 COPY src ./src
 COPY migrations ./migrations
 COPY templates ./templates
+COPY translations ./translations
 COPY public/index.php ./public/index.php
 COPY assets ./assets
 COPY agent-kit/examples ./agent-kit/examples
@@ -76,6 +77,7 @@ COPY config ./config
 COPY src ./src
 COPY migrations ./migrations
 COPY templates ./templates
+COPY translations ./translations
 COPY public/index.php ./public/index.php
 COPY assets ./assets
 COPY agent-kit/examples ./agent-kit/examples

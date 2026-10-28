@@ -1,0 +1,30 @@
+{% set helpId = 'theme-actions-' ~ theme.id %}
+<section aria-label="{{ 'theme.actions.heading'|trans }}" class="{{ sidebar ? 'space-y-2' : 'mt-4 space-y-2' }}" data-theme-actions>
+    <p class="break-words text-sm" id="{{ helpId }}-draft">{{ 'theme.actions.draft'|trans({'%name%': theme.name, '%revision%': theme.revision, '%mode%': theme.document.colorScheme}) }}</p>
+    <div class="flex flex-wrap gap-2">
+        <button class="btn btn-primary h-auto min-h-11 whitespace-normal py-2" type="button" data-action="appearance#applyTheme" data-theme-id="{{ theme.id }}" data-theme-revision="{{ theme.revision }}" aria-describedby="{{ helpId }}-appearance">{{ 'theme.actions.apply'|trans }}</button>
+        <a class="btn btn-outline h-auto min-h-11 whitespace-normal py-2" href="{{ path('theme_show', {id: theme.id, returnTo: returnTo}) }}#component-showcase" aria-describedby="{{ helpId }}-draft">{{ 'theme.actions.browse'|trans }}</a>
+    </div>
+    <p class="text-sm" id="{{ helpId }}-appearance">{{ 'theme.actions.appearance_help'|trans }}</p>
+    {% if is_granted('ROLE_EDITOR') %}
+        {% if publishedRelease %}
+            <p class="break-words text-sm" id="{{ helpId }}-release">{{ 'theme.actions.release'|trans({'%name%': publishedRelease.document.name, '%version%': publishedRelease.version, '%mode%': publishedRelease.document.colorScheme}) }}</p>
+            <form method="post" action="{{ path('theme_apply', {id: theme.id}) }}" data-turbo="false">
+                <input type="hidden" name="_token" value="{{ csrf_token('theme-apply') }}">
+                <input type="hidden" name="releaseId" value="{{ publishedRelease.id }}">
+                <button class="btn btn-outline h-auto min-h-11 whitespace-normal py-2" type="submit" aria-describedby="{{ helpId }}-release {{ helpId }}-renderer">{{ 'theme.actions.preview'|trans }}</button>
+            </form>
+            <p class="text-sm" id="{{ helpId }}-renderer">{{ 'theme.actions.renderer_help'|trans }}</p>
+        {% else %}
+            <button class="btn btn-outline h-auto min-h-11 whitespace-normal py-2" type="button" disabled aria-describedby="{{ helpId }}-unavailable">{{ 'theme.actions.preview'|trans }}</button>
+            <p class="text-sm" id="{{ helpId }}-unavailable">{{ 'theme.actions.unpublished'|trans }}</p>
+            <p class="text-sm">{{ (family.builtIn or theme.document.provenance.managed|default(false) ? 'theme.actions.publish_copy' : 'theme.actions.publish_draft')|trans }}</p>
+        {% endif %}
+        <div class="flex flex-wrap gap-2">
+            {% if not family.builtIn and not theme.document.provenance.managed|default(false) %}<a class="btn btn-outline" href="{{ path('theme_edit', {id: theme.id, returnTo: returnTo}) }}">{{ 'theme.actions.edit'|trans }}</a>{% endif %}
+            <form method="post" action="{{ path('theme_duplicate', {id: theme.id}) }}" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('theme-duplicate') }}"><button class="btn btn-outline" type="submit">{{ 'theme.actions.duplicate'|trans }}</button></form>
+        </div>
+    {% else %}
+        <p class="text-sm">{{ 'theme.actions.editor_required'|trans }}</p>
+    {% endif %}
+</section>

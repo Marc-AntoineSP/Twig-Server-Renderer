@@ -68,7 +68,7 @@ test('theme variant stars stay independent of Apply and work on mobile in both m
     await page.getByLabel('Favorites only', {exact: true}).check(); await page.getByRole('combobox', {name: 'Mode', exact: true}).selectOption('dark'); await page.getByRole('button', {name: 'Find themes', exact: true}).click();
     await expect(page.locator('article.card')).toHaveCount(1); await expect(page.locator('article.card')).toContainText('dark · revision'); await shot(page, 'theme-desktop');
     await page.locator('article.card h2 a').click(); await expect(page).toHaveURL(new RegExp('/themes/'+dark)); await expect(page.locator('[data-theme-sidebar]')).toBeVisible(); await pressed(star(page, 'theme', dark), true);
-    await page.getByRole('button', {name: 'Apply theme', exact: true}).click(); await expect(page.locator('[data-appearance-target="status"]')).toContainText('Applied '+prefix);
+    await page.getByRole('button', {name: 'Apply to application', exact: true}).click(); await expect(page.locator('[data-appearance-target="status"]')).toContainText('Applied '+prefix);
     await pressed(star(page, 'theme', dark), true);
     await page.setViewportSize({width: 390, height: 844});
     const disclosure = page.locator('[data-theme-sidebar] > details');

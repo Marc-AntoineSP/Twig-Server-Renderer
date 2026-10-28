@@ -6,7 +6,7 @@ variants already recorded in that family. The current variant is highlighted. A 
 variant remains usable without inventing an opposite palette.
 
 The showcase always uses the detail page's saved draft revision, even when the studio
-header is using another family or mode. Existing Apply theme, Edit, Duplicate/Edit,
+header is using another family or mode. Apply to application, Edit theme, Duplicate/Edit,
 release/export and application light/dark actions retain their meanings. Viewing,
 filtering or interacting with the examples never applies a theme or saves preferences.
 
@@ -24,6 +24,38 @@ footers, browser mockups and code span the grid. Long tables/code scroll locally
 page uses normal document scrolling, with no showcase iframe, height cap or inner scroll
 panel. `#component-showcase` and category fragment anchors remain useful. The search
 controls stay with the catalogue.
+
+## Theme action map
+
+Gallery cards and the detail sidebar share the same translated action partial. The
+swatches and inline showcase identify the saved **draft revision, name and mode**.
+The separate editor action identifies the **published name, version and mode**; its
+colors can differ from the draft. A proposed draft version is not a published version.
+
+| Visible action | Route / method | Target and permission | Saved effect | Destination |
+| --- | --- | --- | --- | --- |
+| Apply to application | Existing `POST /api/v1/appearance/prepare`, then `/commit` after CSS loads | Selected Theme revision and family variants; signed-in reader; API CSRF | Current user's appearance snapshots; existing light/dark/system preference retained | Current page, restyled |
+| Browse component showcase | `GET /themes/{selectedVariantId}#component-showcase` (may retain `returnTo`) | Selected variant's saved draft; reader | None; no renderer preset, appearance or content write | Existing inline examples |
+| Preview published theme in component editor | `POST /themes/{id}/apply` | Exact displayed ThemeRelease belonging to that Theme; editor; `theme-apply` CSRF | Current user's sample-component renderer theme, body/heading font selection, text size and root size; other settings preserved | 303 to sample `/catalogue/{itemId}/edit`; notice identifies release and saved effect |
+| Showcase light / Showcase dark | `GET /themes/{variantId}#component-showcase` | Explicit family variant; reader | None | That variant's saved draft examples |
+| Edit theme / Duplicate/Edit | Existing GET editor / CSRF-protected POST duplicate | Existing editor and managed/built-in rules | Existing explicit save / independent copy semantics | Theme editor |
+
+The existing sample component is created lazily on the first published-editor POST if
+it is absent. Read-only showcase browsing never calls that creation path.
+
+The published form includes `releaseId`, so a newer release appearing between viewing
+and submitting cannot change the displayed selection. The server checks the release's
+Theme identity. Existing POST clients without that field still select the latest
+publication by creation time, with ID as a deterministic tie breaker. Version order
+does not replace publication order. Gallery metadata is loaded in a bounded batch for
+the twelve visible cards; it does not query releases once per card.
+
+Draft-only variants keep their read-only showcase. The unavailable published preview
+explains that editors can publish from **Edit theme**, or **Duplicate/Edit** a managed/
+built-in theme first. Readers retain browsing and personal application appearance;
+renderer-preset mutations still require editor access. A missing or mismatched release
+returns a usable 422 page linking back to the draft showcase and writes no settings.
+No route was converted into a mutating GET, and no storage migration is required.
 
 ## Included examples
 

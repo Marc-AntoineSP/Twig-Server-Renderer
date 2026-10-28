@@ -114,6 +114,14 @@ database metadata. A family references distinct saved Theme variants; an applied
 AppearanceSnapshot identifies a specific theme revision and its validated generated CSS.
 Package releases, renderer presets and user preferences retain independent identities.
 
+Theme action labels distinguish draft browsing, application appearance and the published
+component-editor preview. `GET /themes/{variantId}#component-showcase` reads that saved
+draft. The existing CSRF-protected editor `POST /themes/{id}/apply` accepts an optional
+`releaseId` belonging to that Theme; gallery/detail forms pin their displayed immutable
+release. Omitting it retains latest-publication selection. Missing/mismatched releases
+return 422 without saving. The POST saves only the current user's sample renderer preset
+and redirects to its component editor. See THEME_SHOWCASE.md for the full action map.
+
 `GET /api/v1/appearance` reads the current user's saved selection (or the validated guest
 mode). CSRF-protected `POST .../prepare` validates/captures a family or mode candidate;
 `POST .../commit` requires its session/account/client-bound token, sequence and expected

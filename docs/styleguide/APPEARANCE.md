@@ -1,9 +1,10 @@
 # Personal application appearance
 
 The updated development application is at **http://localhost:8095**. Open **Themes**,
-choose **Apply theme**, and the actual application shell uses that family's saved token
-snapshots. The header shows the active family and mode. **Preview showcase** retains the
-previous, independently saved catalogue renderer action. Applying an application theme
+choose **Apply to application**, and the actual application shell uses that family's saved token
+snapshots. The header shows the active family and mode. **Browse component showcase** opens the selected saved draft without changing settings.
+**Preview published theme in component editor** saves separate renderer settings for the
+sample component and opens its editor, with the selected immutable version identified. Applying an application theme
 does not change a component, composition, renderer preset or export selection.
 
 The existing local production instance at port 8096 uses its independently built image,
@@ -85,7 +86,7 @@ family display name preserves its IDs and users' snapshot references.
 
 | Action | Theme data | Application appearance |
 | --- | --- | --- |
-| Apply theme | Uses validated saved revisions of the available variants | Saves the current user's family/snapshot selection, preserving mode preference |
+| Apply to application | Uses validated saved revisions of the available variants | Saves the current user's family/snapshot selection, preserving mode preference |
 | Save theme / Create theme | Saves valid data with optimistic revision checks | Keeps the previously applied snapshots |
 | Save & Apply | Saves, then prepares and loads the saved family's CSS before selecting it | Updates only the current user's preference |
 | Try on application | Does not save the theme | Temporarily applies valid editor tokens in this tab |

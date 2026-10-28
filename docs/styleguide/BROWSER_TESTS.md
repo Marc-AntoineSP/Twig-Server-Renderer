@@ -122,6 +122,13 @@ and Tab containment in all three engines. These are automated checks, not a manu
 screen-reader session or browser-UI zoom certification. Shell geometry and contrast
 audits do not establish application-wide WCAG conformance.
 
+`theme_actions.spec.js` distinguishes read-only draft browsing, exact published-release
+selection and application appearance, including a publication between form display and
+submit, a draft-only opposite variant and reader denial. Six width/mode cases cover
+320px/390px/1440px, keyboard navigation, wrapped labels and application-control axe scans.
+Their screenshots/reports are retained as review artifacts. Existing showcase tests
+continue to check exports, renderer selection, responsive layout and opaque editor frames.
+
 Baselines live in `tests/Browser/baselines/chromium/`. Missing or changed images fail;
 ordinary runs never write baselines. To generate reviewable candidates deliberately:
 

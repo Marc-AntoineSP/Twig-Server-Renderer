@@ -1,0 +1,20 @@
+theme.actions.heading: Theme actions
+theme.actions.apply: Apply to application
+theme.actions.browse: Browse component showcase
+theme.actions.preview: Preview published theme in component editor
+theme.actions.draft: 'Draft revision %revision% · %name% · %mode%. The swatches and component showcase use this draft.'
+theme.actions.appearance_help: Saves this family's current draft snapshots as your application appearance and keeps your mode preference.
+theme.actions.release: 'Published preview: %name%@%version% · %mode%. Its colors may differ from the draft above.'
+theme.actions.renderer_help: Opens the sample component editor and saves your renderer theme and typography settings for that component only. Application appearance is unchanged.
+theme.actions.unpublished: No published release. The draft component showcase is available.
+theme.actions.publish_draft: Use Edit theme, then Publish theme release to enable the component editor preview.
+theme.actions.publish_copy: Use Duplicate/Edit to make an editable copy, then publish a release of that copy.
+theme.actions.editor_required: Editor access is required to save a published theme in the component renderer.
+theme.actions.edit: Edit theme
+theme.actions.duplicate: Duplicate/Edit
+theme.actions.gallery_help: Browse component showcase opens the selected draft without saving settings. Apply to application saves your personal appearance. The published-theme editor preview saves separate renderer settings. Website references are independent adaptations without endorsement.
+theme.actions.variant_help: Variant links browse each draft. Apply to application saves the family snapshots and keeps your mode preference.
+theme.actions.showcase_draft: 'Draft revision %revision% · %name% · %mode%. These examples use saved draft tokens, not a published release.'
+theme.actions.preview_opened: 'Opened %name%@%version% (%mode%) in %component%. Saved your renderer theme and typography settings for this component. Application appearance is unchanged.'
+theme.actions.unavailable_title: Published theme preview unavailable
+theme.actions.missing_release: The selected release is unavailable for this theme. No renderer settings or application appearance changed. Browse the draft showcase, then open Theme details to edit and publish a release if permitted.

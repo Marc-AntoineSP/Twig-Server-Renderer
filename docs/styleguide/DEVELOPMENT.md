@@ -433,9 +433,10 @@ leaves original drafts/releases untouched.
 
 ## Local fonts and website presets
 
-Application appearance is documented in [APPEARANCE.md](APPEARANCE.md). **Apply theme**
-now selects your personal application snapshot; **Preview showcase** retains the independent
-renderer action described below. Header light/dark/system controls, Save & Apply and
+Application appearance is documented in [APPEARANCE.md](APPEARANCE.md). **Apply to application**
+selects your personal application snapshot. **Browse component showcase** reads the selected
+draft; **Preview published theme in component editor** saves separate sample renderer
+settings and opens its editor. The exact action map is in [THEME_SHOWCASE.md](THEME_SHOWCASE.md). Header light/dark/system controls, Save & Apply and
 temporary editor trials share the existing theme/font data. Run the additive migration
 before using this extension, and `make appearance-production` for its isolated production
 asset check. Component previews and their export/preset choices remain independent.

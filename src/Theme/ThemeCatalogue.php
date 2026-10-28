@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class ThemeCatalogue
 {
-    public function __construct(private EntityManagerInterface $em, private Favorites $favorites) {}
+    public function __construct(private EntityManagerInterface $em, private Favorites $favorites, private \App\Repository\ThemeReleaseRepository $releases) {}
 
     public function search(ThemeSearchQuery $query): array
     {
@@ -33,6 +33,6 @@ final readonly class ThemeCatalogue
         if ($ids) {
             foreach ($this->em->getRepository(Theme::class)->findBy(['id' => $ids]) as $theme) $themes[$theme->getId()] = $theme;
         }
-        return ['themes' => array_map(fn ($id) => $themes[$id], $ids), 'total' => $total, 'pages' => $pages, 'page' => $page, 'query' => $query, 'hasFavorites' => (bool) $this->favorites->states()['theme']];
+        return ['themes' => array_map(fn ($id) => $themes[$id], $ids), 'publishedReleases' => $this->releases->latestForThemes(array_values($themes)), 'total' => $total, 'pages' => $pages, 'page' => $page, 'query' => $query, 'hasFavorites' => (bool) $this->favorites->states()['theme']];
     }
 }

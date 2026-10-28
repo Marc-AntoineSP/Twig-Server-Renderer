@@ -28,7 +28,7 @@ test('all Twig examples share the selected palette and real fonts independently 
     const selected=await theme(page,{fonts:true}),application=await theme(page,{fonts:true,primary:'#64204C',base:'#FFF1FA'});
     application.document.typography.rootFontSizePx=20;application.document.typography.bodyWeight=584;
     await api(page,'PUT','/api/v1/themes/'+application.id,{document:application.document,expectedRevision:application.revision});
-    await open(page,application.id);await expect(card(page,'buttons').getByRole('button',{name:'Primary',exact:true})).toHaveCSS('background-color',rgb('#64204C'));await expect(showcase(page)).toHaveCSS('background-color',rgb('#FFF1FA'));await page.getByRole('button',{name:'Apply theme',exact:true}).click();await expect(page.locator('[data-appearance-target="status"]')).toHaveText('Applied '+application.family.label+'.');const saved=await state(page);
+    await open(page,application.id);await expect(card(page,'buttons').getByRole('button',{name:'Primary',exact:true})).toHaveCSS('background-color',rgb('#64204C'));await expect(showcase(page)).toHaveCSS('background-color',rgb('#FFF1FA'));await page.getByRole('button',{name:'Apply to application',exact:true}).click();await expect(page.locator('[data-appearance-target="status"]')).toHaveText('Applied '+application.family.label+'.');const saved=await state(page);
     await open(page,selected.id);await expect(page.locator('body')).toHaveCSS('background-color',rgb('#FFF1FA'));await expect(page.locator('body')).toHaveCSS('font-family',/^Inter,/);await expect(page.locator('body')).toHaveCSS('font-weight','584');await expect(page.locator('html')).toHaveCSS('font-size','20px');await expect(showcase(page)).toHaveCSS('font-size','16px');await expect(showcase(page)).toHaveAttribute('data-color-mode','light');
     await expect(showcase(page)).toHaveCSS('background-color',rgb('#F1F8FA'));await expect(card(page,'buttons').getByRole('button',{name:'Primary',exact:true})).toHaveCSS('background-color',rgb('#164E63'));
     await expect(showcase(page)).toHaveCSS('font-family',/^"?Showcase-[a-f0-9]+ Inter"?,/);await expect(showcase(page)).toHaveCSS('font-weight','472');await expect(showcase(page).locator('#component-showcase-heading')).toHaveCSS('font-family',/^"?Showcase-[a-f0-9]+ Lora"?,/);await expect(showcase(page).locator('#component-showcase-heading')).toHaveCSS('font-weight','631');await expect(card(page,'code').locator('code').first()).toHaveCSS('font-family',/^"?Showcase-[a-f0-9]+ JetBrains Mono/);
@@ -128,7 +128,7 @@ test('sidebar downloads, immutable release package, edit, duplicate and create k
     await expect(history.getByRole('status')).toContainText('Theme package is available in the private registry.',{timeout:45000});
     const packageLink=history.getByRole('link',{name:'Download immutable theme package',exact:true});await expect(packageLink).toBeVisible();
     const archive=await page.request.get(await packageLink.getAttribute('href'));expect(archive.status()).toBe(200);expect((await archive.body()).subarray(0,2).toString()).toBe('PK');
-    await sidebar.getByRole('button',{name:'Apply to showcase',exact:true}).click();await expect(page).toHaveURL(/\/catalogue\/[0-9A-Z]{26}\/edit$/);
+    await sidebar.getByRole('button',{name:'Preview published theme in component editor',exact:true}).click();await expect(page).toHaveURL(/\/catalogue\/[0-9A-Z]{26}\/edit$/);
     await expect(page.getByLabel('Published theme',{exact:true})).toHaveValue(release.id);await expect(page.locator('iframe[title="Component preview"]')).toHaveAttribute('sandbox','allow-scripts');expect(await state(page)).toEqual(before);
     await open(page,t.id);
     await sidebar.getByRole('link',{name:'Edit theme',exact:true}).click();await expect(page).toHaveURL(new RegExp(`/themes/${t.id}/edit(?:\\?|$)`));
@@ -142,8 +142,8 @@ test('mobile details collapse accessibly, category anchors work and desktop uses
     await login(page);const t=await theme(page);await page.setViewportSize({width:375,height:900});await open(page,t.id);
     const disclosure=page.locator('[data-theme-sidebar] > details'),summary=disclosure.locator(':scope > summary');
     await expect(disclosure).not.toHaveAttribute('open','');await expect(summary).toBeVisible();await expect(page.getByRole('heading',{name:'Component showcase',exact:true})).toBeInViewport();
-    await summary.focus();await page.keyboard.press('Enter');await expect(disclosure).toHaveAttribute('open','');await expect(page.getByRole('button',{name:'Apply theme',exact:true})).toBeVisible();
-    await page.getByRole('button',{name:'Apply theme',exact:true}).focus();await page.setViewportSize({width:1440,height:1000});await expect(disclosure).toHaveAttribute('open','');
+    await summary.focus();await page.keyboard.press('Enter');await expect(disclosure).toHaveAttribute('open','');await expect(page.getByRole('button',{name:'Apply to application',exact:true})).toBeVisible();
+    await page.getByRole('button',{name:'Apply to application',exact:true}).focus();await page.setViewportSize({width:1440,height:1000});await expect(disclosure).toHaveAttribute('open','');
     await page.setViewportSize({width:768,height:900});await expect(disclosure).not.toHaveAttribute('open','');await expect(summary).toBeFocused();
     await page.setViewportSize({width:1920,height:1080});await expect(page.locator('[data-theme-sidebar]')).toHaveCSS('width','300px');
     const layout=await page.locator('[data-showcase-column]').boundingBox();expect(layout.width).toBeGreaterThan(1450);expect(layout.x+layout.width).toBeGreaterThan(1880);

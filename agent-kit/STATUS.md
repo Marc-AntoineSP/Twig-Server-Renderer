@@ -25,6 +25,7 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | Improvement prompt 12 | Complete for requested scope |148PHPUnit/1382assertions;71browser tests;3engines;12visual baselines;owned-resource rejection/failure/interruption/teardown gates;6immutable-production flows |
 | Improvement prompt 01 | Complete for requested scope |151PHPUnit/1446assertions;79browser tests;8 additional empty-workspace UI checks;bounded personal projections;role/ordering/deletion gates |
 | Improvement prompt 02 | Complete for requested scope |154PHPUnit/1502assertions;89browser tests;6immutable-production flows;111px mobile shell including safe recovery;12updated/reviewed visual baselines |
+| Improvement prompt 03 | Complete for requested scope |157PHPUnit/1568assertions;96browser tests across three engines;20immutable-production flows;read-only draft browsing and exact published-release selection;4reviewed theme-detail baselines |
 
 ## Repository audit and preservation
 
@@ -1867,3 +1868,150 @@ app/runner/toolchain images and build cache remain. No containers are running on
 Evidence: `var/browser-verification/navigation-resource-audit.json`. No working catalogue
 was used for fixtures or cleanup. The staged prompt diff retains SHA-256
 `d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.
+
+
+## Improvement prompt 03 — Theme action clarity (2026-10-28)
+
+Scope: selected prompt03 and matching pack; all three checksum entries verified.
+Fresh owned baseline `browser-a151d1fbaf2cf6fd3a8151a0` confirms the detail action
+**Apply to showcase** posts to `/themes/{id}/apply`, saves the selected immutable
+release in the current user's sample renderer preset and opens `/catalogue/{id}/edit`.
+The application appearance API state remains identical. This reproduces the supplied
+source observation against the current checkout. The first ad-hoc probe closed the
+already-open desktop disclosure and timed out; correcting that probe passed.
+Evidence: `var/browser-verification/theme-actions-baseline.log`.
+
+Implemented one shared translated gallery/sidebar action partial: **Apply to application**,
+**Browse component showcase** (the existing read-only draft detail + fragment), and
+**Preview published theme in component editor** (the existing CSRF/editor-only POST).
+Draft swatches/inline examples identify revision, name and mode; published previews
+identify the immutable name/version/mode and explain the separate saved renderer effect.
+New forms pin their displayed release ID and the server checks its Theme identity.
+Older POST clients without `releaseId` still select the latest publication; ties use ID.
+A bounded gallery batch selects releases for the visible twelve cards. No migration,
+new dependency, new endpoint or appearance/preset storage redesign is introduced.
+Draft-only variants retain browsing, explain the unavailable preview and give a permitted
+Edit/publish or Duplicate/Edit next step. Missing/cross-theme releases return a usable
+422 page without writes. The full action/permission/state map is in THEME_SHOWCASE.md.
+
+First fresh check `browser-5fab23519ca4a8610daa7951` built/linted successfully but its
+157 PHP tests had two failures and one error (1511 assertions). All three new tests saw
+translation keys: Docker copied no translation catalogue. Both self-contained app stages
+now copy `translations/`; this is required for the existing Symfony translation mechanism
+in immutable images. No browser test ran after that failed PHP gate. Verification reruns
+and production checks follow below. Baseline runtime resources have been cleaned.
+
+
+Fresh rerun `browser-4084262b22099df87cdbeb6c`: Docker/CSS/AssetMapper builds, strict
+Composer, container, 34 YAML and 46 Twig checks pass; **157 PHPUnit tests / 1568
+assertions (105.7s)** pass, including read-only database snapshots, pinned old release
+after a newer publication, legacy selection, independent accounts, CSRF/GET/reader
+rejection and missing/wrong-theme 422 states. Focused browser verification is running.
+
+`make theme-showcase-production`: **20/20 Chromium flows (1.3m)** pass in owned
+`appearance-20261028211403-3001`, including changed labels, actual published-editor
+selection, new post-build families, trial/save/recovery, inline examples and exports.
+Mapping/schema checks pass. The read-only AssetMapper manifest remains unchanged.
+Its normal cleanup removed runtime containers, volumes, networks and credentials.
+No working production instance was deployed or modified. Log:
+`var/browser-verification/theme-actions-production.log`.
+
+
+Focused browser result: **14/15** pass (1.0m). All six 320/390/1440 light/dark action
+flows and eight existing showcase workflows pass. The new final reader assertion
+incorrectly expected a readable empty renderer preset; that API is editor-only. The
+assertion now checks 403 and unchanged editor selection. Only this test changed; the
+rebuilt runner's exact-release flow passes **1/1 (8.6s)**, including publication after
+form display, actual older palette in the opaque iframe, reload persistence, draft-only
+opposite variant, browsing without writes, Apply independence and reader denials.
+Six axe reports have zero violations; gradient primary controls and short release-count
+badges retain color-contrast incompletes for manual assessment. No rules were disabled.
+
+The translation catalogue's explicit Docker YAML lint passes (1 file). Runtime confirms
+PHP 8.5.12 and Symfony 8.1.9. An ad-hoc version probe initially omitted the Composer
+autoloader; `php bin/console --version` corrected that tooling-only error.
+
+Deliberate visual generation passes **4/4 (15.8s)**. All four changed theme-detail PNGs
+were inspected at 390/1440 in light/dark; the full-width showcase and left sidebar remain.
+Two additional focused screenshots (320 light, 1440 dark) show wrapped labels and visible
+keyboard focus. An explicit unrelated-baseline byte check caught a composer-390-dark
+candidate differing by seven pixels at a rounded corner (x24-26,y511-513). The original
+was restored; all eight listing/composer source baselines remain byte-identical to HEAD.
+The candidate/original and pixel analysis remain in var/browser-verification; no new
+masks/tolerances were added. A new independent full run with the reviewed theme baselines
+and original other baselines is now running.
+
+
+Final independent run `browser-fc8ae20140a0cfcc2501a85d` is **exit 0**: locked Docker/
+CSS/AssetMapper builds, strict Composer, container, 34 YAML / 46 Twig lint, **157 PHPUnit
+tests / 1568 assertions (98.7s)** and **96/96 browser tests (6.5m)**. Browser split:
+90 Chromium, 3 Firefox, 3 WebKit. All seven new action flows, existing appearance/source/
+authentication/favorites/workspace/composer/showcase workflows and all twelve visual
+comparisons pass. The eight unrelated original baselines pass without modification.
+No application code changed after the passing immutable-production gate. Only the reader
+assertion correction and reviewed theme PNGs preceded the independent final run.
+
+Exact principal shell commands (from repository root unless noted):
+
+```sh
+# In "prompt pack/03-theme-action-clarity/03-theme-action-clarity":
+sha256sum --check SHA256SUMS
+python3 tests/BrowserHarness/run.py start --keep
+python3 tests/BrowserHarness/run.py run --with-checks --keep -- tests/Browser/theme_actions.spec.js tests/Browser/theme_components.spec.js --project=chromium
+make theme-showcase-production
+python3 tests/BrowserHarness/run.py run --with-checks --keep
+make browser-cleanup RUN=browser-a151d1fbaf2cf6fd3a8151a0
+make browser-cleanup RUN=browser-5fab23519ca4a8610daa7951
+make browser-cleanup RUN=browser-4084262b22099df87cdbeb6c
+git diff --check
+```
+
+The retained review operations used the same Run helper with its lifecycle lock held
+and ownership verified; exact build/lint/test calls were:
+
+```python
+r = Run('browser-4084262b22099df87cdbeb6c')
+r.compose('--profile', 'tools', 'build', 'browser')
+r.app('php', 'bin/console', 'lint:yaml', 'translations')
+r.test(['tests/Browser/theme_actions.spec.js', '--project=chromium', '--grep', 'exact published release'])
+r.test(['tests/Browser/visual.spec.js', '--project=chromium'], update_baselines=True)
+```
+
+The final version capture/cleanup also runs through the verified, locked Run helper:
+`r.app('frankenphp', 'version')`, a runner Node/browser version query, then `r.cleanup()`.
+Logs are `var/browser-verification/theme-actions-{baseline-start,baseline,focused,
+focused-final,production,reviewed-gate,review-final,final,final-cleanup}.log`; artifacts
+are under each corresponding `var/browser-runs/{runId}/artifacts/invocation-*/`.
+
+Changed files (28): ThemeController, ThemeRelease's repository mapping,
+ThemeReleaseRepository, ThemeCatalogue and ThemeComponentShowcase; shared theme actions,
+gallery/sidebar/inline header and unavailable-page Twig; messages.en.yaml and the two
+Docker translation COPY instructions; new ThemeActionsTest/theme_actions.spec.js,
+renamed selectors in appearance/favorites/theme_components, four theme-detail PNGs;
+APPEARANCE, THEME_SHOWCASE, DEVELOPMENT, BROWSER_TESTS, CONTRACTS, MILESTONES and this status.
+No migration, dependency update or operator environment setting is needed. Rebuilt
+application images must include the translation catalogue; both app image stages now do.
+
+Remaining limits: only the configured English message catalogue is supplied; human
+screen-reader checks and manual contrast assessment remain unrun. Six new automated
+application-control audits have zero violations, with gradient/short-badge contrast
+incompletes retained for review; they do not certify application-wide accessibility.
+No working catalogue was used for fixtures/cleanup, no real user content changed, and
+no deployment, remote publication or branch push occurred. Exact next step: review the
+clarified theme actions, or explicitly select the next numbered prompt. Final owned-
+resource cleanup audit follows below; user-staged prompt files remain unchanged.
+
+
+Final cleanup audit: **all four browser runs and the production fixture** have zero
+containers (including stopped), volumes, networks and private credential files. All
+four browser CLEANED receipts exist and their per-run worker image tags are removed.
+Reusable locked app/runner/production images and build cache remain. Evidence:
+`var/browser-verification/theme-actions-resource-audit.json`. All six final theme-action
+axe reports retain zero violations. The staged prompt diff retains SHA-256
+`d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.
+
+Measured runtime: FrankenPHP 1.13.4 / PHP 8.5.12 / Caddy 2.11.7, Symfony 8.1.9,
+PHPUnit 13.4.3, Node 24.22.1; Chromium 156.0.8078.4, Firefox 157.0, WebKit 27.2.
+Existing locked Playwright 1.64.1, Tailwind 4.3.3, daisyUI 5.7.50 and Stimulus 3.2.2
+remain unchanged. Final cleanup/version command exited 0. The only remaining staged
+user changes are the twelve numbered prompts, excluded from the implementation commit.

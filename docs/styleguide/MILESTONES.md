@@ -259,3 +259,18 @@ border) at both 320px and 390px, without horizontal overflow. Six shell axe scan
 no violations; the long-email contrast incomplete remains for manual review. No migration
 or new dependency; the fixed CSRF-protected guest reset route adds one access rule.
 See APPEARANCE.md, BROWSER_TESTS.md and STATUS.md for commands, evidence and remaining checks.
+
+## Improvement prompt 03 — Theme action clarity
+
+Separate read-only draft showcase browsing, personal application appearance and the
+existing published-theme component editor workflow. Identify draft revisions and exact
+published versions/modes, retain POST/CSRF/role boundaries and support draft-only states.
+Completed 2026-10-28: Docker builds/lints, **157 PHPUnit tests / 1568 assertions**,
+**96 browser tests** across three engines, twelve visual comparisons (four reviewed
+updated theme-detail baselines) and **20 immutable-production flows** pass. Seven new
+browser flows prove exact release selection after a concurrent publication, draft-only
+variant browsing, independent appearance/preset state and reader denial. Six new axe
+reports have no violations; contrast incompletes and human screen-reader checks remain
+for manual review. No migration, dependency update or operator setting; rebuilt images
+now include Symfony's translated messages. The action map is in THEME_SHOWCASE.md;
+commands, cleanup audit and limitations are in STATUS.md.

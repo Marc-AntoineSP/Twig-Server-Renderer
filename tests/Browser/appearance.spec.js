@@ -22,7 +22,7 @@ async function family(page,{primary='#164E63',base='#F1F8FA',variants='pair',loc
     }
     return result;
 }
-async function apply(page,f){await page.goto('/themes/'+f.id);await page.getByRole('button',{name:'Apply theme',exact:true}).click();await expect(status(page)).toHaveText('Applied '+f.family.label+'.');await expect(root(page)).toHaveAttribute('data-appearance-family',f.family.id);await page.mouse.move(0,0);}
+async function apply(page,f){await page.goto('/themes/'+f.id);await page.getByRole('button',{name:'Apply to application',exact:true}).click();await expect(status(page)).toHaveText('Applied '+f.family.label+'.');await expect(root(page)).toHaveAttribute('data-appearance-family',f.family.id);await page.mouse.move(0,0);}
 async function appearanceMenu(page){const menu=page.locator('[data-appearance-target="menu"]');if(!await menu.evaluate(el=>el.open))await menu.locator('summary').click();return menu;}
 async function reset(page){await page.getByRole('button',{name:'Restore default appearance',exact:true}).click();await expect(status(page)).toHaveText('Applied Studio default.');}
 
@@ -33,7 +33,7 @@ test('Apply changes the real shell, fonts, forms, menu and dialog while catalogu
     await apply(page,a);
     await expect(page.locator('body > header')).toHaveCSS('background-color',rgb('#F1F8FA'));
     await expect(page.locator('body')).toHaveCSS('background-color',rgb('#F1F8FA'));
-    await expect(page.getByRole('button',{name:'Apply theme',exact:true})).toHaveCSS('background-color',rgb('#164E63'));
+    await expect(page.getByRole('button',{name:'Apply to application',exact:true})).toHaveCSS('background-color',rgb('#164E63'));
     await expect(page.locator('body')).toHaveCSS('font-family',/^Inter,/);await expect(page.locator('body')).toHaveCSS('font-weight','472');await expect(page.locator('h1')).toHaveCSS('font-family',/^Lora,/);
     const loaded=await page.locator('body').evaluate(async()=>{await document.fonts.ready;return [...document.fonts].filter(f=>f.status==='loaded').map(f=>({family:f.family,weight:f.weight,style:f.style}));});
     expect(loaded.some(f=>f.family.replaceAll('"','')==='Inter'&&f.style==='italic'&&f.weight==='100 900')).toBe(true);expect(loaded.some(f=>f.family.replaceAll('"','')==='Lora')).toBe(true);
@@ -109,7 +109,7 @@ test('single variant keeps requested mode, explains unavailable toggle and gains
 
 test('failed CSS and preference persistence retain confirmed appearance and saved editor changes remain retryable',async({page})=>{
     await login(page);await reset(page);const a=await family(page),b=await family(page,{primary:'#64204C'});await apply(page,a);const original=await state(page);
-    await page.goto('/themes/'+b.id);await page.route('**/appearance/assets/*.css',route=>route.abort());await page.getByRole('button',{name:'Apply theme',exact:true}).click();await expect(status(page)).toContainText('stylesheet could not load');expect(await state(page)).toEqual(original);await expect(root(page)).toHaveAttribute('data-appearance-family',a.family.id);await page.unroute('**/appearance/assets/*.css');
+    await page.goto('/themes/'+b.id);await page.route('**/appearance/assets/*.css',route=>route.abort());await page.getByRole('button',{name:'Apply to application',exact:true}).click();await expect(status(page)).toContainText('stylesheet could not load');expect(await state(page)).toEqual(original);await expect(root(page)).toHaveAttribute('data-appearance-family',a.family.id);await page.unroute('**/appearance/assets/*.css');
     await page.goto(`/themes/${b.id}/edit`);await page.getByLabel('primary',{exact:true}).fill('#442277');await page.route('**/api/v1/appearance/commit',route=>route.fulfill({status:503,json:{message:'Preference storage unavailable.'}}));await page.getByRole('button',{name:'Save & Apply',exact:true}).click();await expect(page.locator('[data-theme-editor-target="saveError"]')).toContainText('Theme saved, but application appearance was not updated');
     const saved=await(await page.request.get('/api/v1/themes/'+b.id)).json();expect(saved.document.colors.primary).toBe('#442277');expect(await state(page)).toEqual(original);await page.unroute('**/api/v1/appearance/commit');
     await page.getByRole('button',{name:'Retry Apply saved theme',exact:true}).click();await expect(status(page)).toHaveText('Applied '+b.family.label+'.');await expect(root(page)).toHaveAttribute('data-appearance-family',b.family.id);
@@ -123,11 +123,11 @@ test('reordered A B C preparation responses cannot replace C and a later failure
             const response=await route.fetch();let release;const gate=new Promise(resolve=>{release=resolve;});releases.push(release);observed++;notify?.();await gate;try{await route.fulfill({response});}catch{}
         }else await route.continue();
     });
-    let wait=started();await page.locator(`article[data-theme-id="${a.id}"]`).getByRole('button',{name:'Apply theme',exact:true}).click();await wait;
-    wait=started();await page.locator(`article[data-theme-id="${b.id}"]`).getByRole('button',{name:'Apply theme',exact:true}).click();await wait;
-    await page.locator(`article[data-theme-id="${c.id}"]`).getByRole('button',{name:'Apply theme',exact:true}).click();await expect(status(page)).toHaveText('Applied '+c.family.label+'.');expect(observed).toBe(2);releases.reverse().forEach(release=>release());await page.unroute('**/api/v1/appearance/prepare');
+    let wait=started();await page.locator(`article[data-theme-id="${a.id}"]`).getByRole('button',{name:'Apply to application',exact:true}).click();await wait;
+    wait=started();await page.locator(`article[data-theme-id="${b.id}"]`).getByRole('button',{name:'Apply to application',exact:true}).click();await wait;
+    await page.locator(`article[data-theme-id="${c.id}"]`).getByRole('button',{name:'Apply to application',exact:true}).click();await expect(status(page)).toHaveText('Applied '+c.family.label+'.');expect(observed).toBe(2);releases.reverse().forEach(release=>release());await page.unroute('**/api/v1/appearance/prepare');
     expect((await state(page)).familyId).toBe(c.family.id);await expect(root(page)).toHaveAttribute('data-appearance-family',c.family.id);
-    await page.route('**/appearance/assets/*.css',route=>route.abort());await page.locator(`article[data-theme-id="${d.id}"]`).getByRole('button',{name:'Apply theme',exact:true}).click();await expect(status(page)).toContainText('stylesheet could not load');expect((await state(page)).familyId).toBe(c.family.id);await expect(root(page)).toHaveAttribute('data-appearance-family',c.family.id);
+    await page.route('**/appearance/assets/*.css',route=>route.abort());await page.locator(`article[data-theme-id="${d.id}"]`).getByRole('button',{name:'Apply to application',exact:true}).click();await expect(status(page)).toContainText('stylesheet could not load');expect((await state(page)).familyId).toBe(c.family.id);await expect(root(page)).toHaveAttribute('data-appearance-family',c.family.id);
 });
 
 test('new theme creation offers pair, trials are temporary and Save and Apply works with already compiled utilities',async({page})=>{
@@ -144,7 +144,7 @@ test('a real application font decoding failure keeps readable fallbacks and show
     await login(page);await reset(page);const f=await family(page,{localFonts:true});
     const external=[];page.on('request',request=>{if(new URL(request.url()).origin!==new URL(page.url()).origin&&!request.url().startsWith('data:'))external.push(request.url());});
     await page.route('**/fonts/assets/*.woff2',route=>route.fulfill({status:200,contentType:'font/woff2',body:Buffer.from('invalid-woff2')}));
-    await page.goto('/themes/'+f.id);await page.getByRole('button',{name:'Apply theme',exact:true}).click();await expect(root(page)).toHaveAttribute('data-appearance-family',f.family.id);
+    await page.goto('/themes/'+f.id);await page.getByRole('button',{name:'Apply to application',exact:true}).click();await expect(root(page)).toHaveAttribute('data-appearance-family',f.family.id);
     await expect(status(page)).toContainText('Readable system fallback');
     const fonts=await page.evaluate(async()=>{await document.fonts.ready;return [...document.fonts].map(font=>({family:font.family,status:font.status}));});expect(fonts.some(font=>font.family.replaceAll('"','')==='Inter'&&font.status==='error')).toBe(true);
     expect(external).toEqual([]);await expect(page.getByRole('button',{name:'Restore default appearance',exact:true})).toBeInViewport();await reset(page);
@@ -164,7 +164,7 @@ test('a lost success response restores the last confirmed saved preference rathe
     await page.route('**/api/v1/appearance/commit',async route=>{
         if(!interrupted){interrupted=true;const response=await route.fetch();expect(response.ok()).toBe(true);await route.fulfill({status:503,json:{message:'The success response was lost.'}});}else await route.continue();
     });
-    await page.getByRole('button',{name:'Apply theme',exact:true}).click();await expect(status(page)).toContainText('success response was lost');
+    await page.getByRole('button',{name:'Apply to application',exact:true}).click();await expect(status(page)).toContainText('success response was lost');
     await expect.poll(async()=>{const current=await state(page);return {family:current.familyId,light:current.variants.light.id,mode:current.mode};}).toEqual({family:original.familyId,light:original.variants.light.id,mode:original.mode});
     await page.reload();await expect(root(page)).toHaveAttribute('data-appearance-family',a.family.id);
 });

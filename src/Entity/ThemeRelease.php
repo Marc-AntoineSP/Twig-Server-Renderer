@@ -6,7 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
-#[ORM\Entity(readOnly: true)]
+#[ORM\Entity(repositoryClass: \App\Repository\ThemeReleaseRepository::class, readOnly: true)]
 #[ORM\UniqueConstraint(name: 'theme_release_version_unique', columns: ['theme_id', 'version'])]
 class ThemeRelease
 {

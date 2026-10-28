@@ -13,6 +13,7 @@ use App\Theme\ThemeFormData;
 use App\Theme\ThemeSample;
 use App\Theme\ThemeComponentShowcase;
 use App\Theme\ThemeWriter;
+use App\Repository\ThemeReleaseRepository;
 use App\Appearance\ThemeFamilies;
 use App\Appearance\ThemeFamilyWriter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[IsGranted('ROLE_READER')]
 final class ThemeController extends AbstractController
@@ -67,7 +69,8 @@ final class ThemeController extends AbstractController
         $document = null; $error = null;
         try { $document = $showcase->presentation($theme); }
         catch (CatalogueException) { $error = 'A selected font asset is unavailable. Restore its local files or choose another theme variant, then reload the showcase.'; }
-        return $this->render('theme/show.html.twig', ['theme' => $theme, 'showcase' => $document, 'showcaseError' => $error, 'ratios' => $contrast->ratios($theme->getDocument()), 'releases' => $entityManager->getRepository(ThemeRelease::class)->findBy(['theme' => $theme], ['createdAt' => 'DESC'])]);
+        $releases = $entityManager->getRepository(ThemeRelease::class)->findBy(['theme' => $theme], ['createdAt' => 'DESC', 'id' => 'DESC']);
+        return $this->render('theme/show.html.twig', ['theme' => $theme, 'showcase' => $document, 'showcaseError' => $error, 'ratios' => $contrast->ratios($theme->getDocument()), 'releases' => $releases, 'publishedRelease' => $releases[0] ?? null]);
     }
 
     #[Route('/themes/{id}/showcase/{hash}.css', name: 'theme_showcase_css', requirements: ['hash' => '[a-f0-9]{64}'], methods: ['GET'])]
@@ -103,13 +106,18 @@ final class ThemeController extends AbstractController
     #[Route('/themes/{id}/apply', name: 'theme_apply', methods: ['POST'])]
     #[IsGranted('ROLE_EDITOR')]
     #[IsCsrfTokenValid('theme-apply', tokenKey: '_token')]
-    public function apply(#[MapEntity(id: 'id')] Theme $theme, EntityManagerInterface $em, ThemeSample $sample, \App\Rendering\RendererPresets $presets): Response
+    public function apply(Request $request, #[MapEntity(id: 'id')] Theme $theme, ThemeReleaseRepository $releases, ThemeSample $sample, \App\Rendering\RendererPresets $presets, TranslatorInterface $translator): Response
     {
-        $release = $em->getRepository(ThemeRelease::class)->findOneBy(['theme' => $theme], ['createdAt' => 'DESC']) ?? throw new CatalogueException(422, 'Publish a theme release before applying it.');
+        // Existing clients may omit releaseId; new forms pin the release displayed to the user.
+        $release = $request->request->has('releaseId')
+            ? $releases->findOneBy(['id' => $request->request->getString('releaseId'), 'theme' => $theme])
+            : $releases->latest($theme);
+        if (!$release) return $this->render('theme/preview_unavailable.html.twig', ['theme' => $theme], new Response(status: 422));
         $item = $sample->item(); $tokens = $release->getDocument();
         $settings = (array) $presets->read($item, $this->getUser());
         $settings = [...$settings, 'themeReleaseId' => $release->getId(), 'bodyFont' => 'theme', 'headingFont' => 'theme', 'textClass' => $tokens->typography->textClass, 'rootSize' => $tokens->typography->rootFontSizePx];
         $presets->save($item, $this->getUser(), new \App\Rendering\RendererSettings(...$settings));
+        $this->addFlash('success', $translator->trans('theme.actions.preview_opened', ['%name%' => $tokens->name, '%version%' => $release->getVersion(), '%mode%' => $tokens->colorScheme, '%component%' => $item->getTitle()]));
 
         return $this->redirectToRoute('catalogue_edit', ['id' => $item->getId()], 303);
     }
