@@ -182,3 +182,30 @@ registry/package writes and theme/font administration remain outside MCP. Existi
 Twig loading, isolated worker networks/resource limits and opaque iframe privileges are
 unchanged. Preview snapshots are owner-only, and MCP retrieval rechecks captured reference
 permissions. No screenshot or visual-inspection capability is implied by returned HTML.
+
+## Profile and browser credential setup
+
+Profile routes require a studio cookie session and CSRF for writes; a composer bearer
+cannot authenticate these administration pages. The actor always comes from the session,
+with no user ID/roles/enabled fields accepted for profile mutation. Email changes require
+the current password, canonical uniqueness and a current profile fingerprint; password
+changes require confirmation. Sensitive checks are throttled to5per5minutes per account.
+Current-session identity is preserved; old sessions and that user's MCP/OAuth grants cease
+to authorize after a password change. Existing other-user grants remain unchanged.
+
+Personal tokens reuse hash-only ComposeTokens storage, bounded expiry/scopes/catalogue
+patterns and owner-only listing/revocation. Web issuance limits an account to20active
+credentials. Shared OAuth client creation/enable/disable requires ROLE_ADMIN and CSRF;
+creation uses the maintained manager/hasher and exact documented HTTPS ChatGPT callbacks,
+authorization-code/refresh grants, composer scopes and S256. Secrets are returned once,
+absent from subsequent lists/config downloads, URLs, browser storage and session storage.
+
+All /profile responses have private/no-store headers and profiler capture is disabled,
+including error responses. The trusted controller scrubs secret DOM values/attributes
+before cache/navigation. Downloads reference a client environment variable and contain
+no secret. Browser probes omit studio cookies, send the supplied bearer only to the fixed
+same-origin MCP endpoint, follow no redirects and time out. They call discovery and a
+read-only tool; they cannot test arbitrary URLs or mutate catalogue data. After Host is
+validated, its actual same origin is permitted by the MCP Origin guard; untrusted hosts
+and cross-origin requests remain rejected. Server-wide enablement/HTTPS/proxy settings
+stay deployment-controlled. No external account connection is claimed by a local probe.

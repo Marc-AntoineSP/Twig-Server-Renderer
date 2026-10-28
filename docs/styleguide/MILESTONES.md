@@ -170,3 +170,25 @@ M13 completed2026-10-27:135PHPUnit/1138assertions, real official SDK + Codex0.16
 round trips, concurrent revision/retry checks, manual/MCP browser flows and3/3immutable
 production acceptance flows. ChatGPT account linking remains credential-dependent setup,
 not a claimed client verification. See VERIFICATION.md and STATUS.md for measured evidence.
+
+## M14 — Profile and browser MCP setup
+
+Add an authenticated personal profile linked from navigation. Edit display name/email and
+password without changing roles or other accounts. Reuse composer credentials and the
+maintained OAuth client manager for browser issuance/revocation and admin client setup.
+Provide copy/download client configuration, actual browser MCP discovery/read-only checks,
+and OAuth readiness feedback with accurate external-connection status. Protect sensitive
+forms/one-time secrets, preserve existing catalogue/preferences and rendering isolation.
+
+### Completion gate
+
+Real profile validation/persistence/login continuity, CSRF/ownership/role checks, token
+issuance/hash-only storage/revocation and HTTP MCP verification from the profile, OAuth
+client registration/disable, responsive accessible flows and immutable production assets.
+Run existing authentication/MCP/composer regressions; record measured checks and any
+account-dependent client setup in STATUS.md and VERIFICATION.md.
+
+M14 completed2026-10-27:141PHPUnit/1245assertions,3development and6immutable-production
+browser flows, actual PAT/OAuth MCP checks from/profile and unchanged asset/content hashes.
+External ChatGPT account linking remains explicitly outside local verification. See
+PROFILE.md, VERIFICATION.md and STATUS.md.

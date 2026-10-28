@@ -662,3 +662,74 @@ the composer surface. Existing pre-integration unpublished history cannot be rec
 node IDs count toward the64KiBdocument cap, and old external validators need the optional-ID
 schema extension for new metadata. Chromium is the browser checked here. No required M13
 implementation or local acceptance gate remains unfinished.
+
+## M14 — Profile and browser MCP setup, 2026-10-27
+
+The live development application now exposes /profile from navigation. Account details,
+passwords, personal token creation/revocation, client configuration, actual browser
+MCP/OAuth checks and administrator OAuth client setup use the existing application.
+See PROFILE.md for permissions, implementation/file map and the UI workflow.
+
+- `make assets`: pass. No dependency/lockfile/version changes. Existing PHP8.5.12,
+  Symfony8.1.9, FrankenPHP1.13.4/Trixie, Twig3.30.0, Tailwind4.3.3, daisyUI5.7.50,
+  Stimulus3.2.2 and Playwright1.64.1 remain.
+- Additive migration **Version20261027215409** generated/reviewed and installed in dev/test;
+  it adds only nullable studio_user.display_name VARCHAR100. Original IDs, emails, hashes,
+  roles and enabled flags are preserved. Schema/mapping validation passes. Restarted only
+  the development preview-consumer to load the updated User metadata.
+- `make check test`: **141 tests / 1,245 assertions**, exit0,1m23.7s. Composer strict,
+  container,33YAML/36Twig pass. Final evidence:var/profile-verification/verified-checks.log.
+  New real functional flows cover uniqueness/canonicalization, incorrect current password,
+  retained attempted fields/cleared secrets, current-session continuity, stale profile
+  fingerprint, reader mass-assignment rejection/escaping, password throttling, old-session
+  rejection and owned PAT/OAuth access/refresh/code revocation with other users preserved.
+  They also cover CSRF/role/foreign-token isolation, one-time secret refresh, config without
+  secrets, exact callback registration, hashed client secrets and client deactivation.
+- Development browser **3/3pass,17.8s** (browser-acceptance.log): actual profile save/reload,
+  native section links preserving unsaved input, one-time mask/show/copy/download controls,
+  real bearer initialize/notification/discovery/capabilities calls, cookie omission,
+  OAuth discovery checks, read-only scopes, revoked-token rejection, owner metadata and
+ 1440/768/375pxwidths without horizontal document overflow. Mobile light and desktop dark
+  screenshots were visually inspected; a real appearance toggle is restored afterward.
+- Admin browser flow registers a real client in the profile, follows local authorization
+  and CSRF consent, exchanges code+S256 verifier+client secret, then verifies the resulting
+  JWT through the profile's actual MCP test. Disabling the client makes that JWT fail;
+  re-enable/disable works through the UI. The external ChatGPT callback is inspected as a
+  Location header and **never visited**; no ChatGPT account connection is claimed.
+- `make profile-production`: **6/6browser flows /45.6s**, exit0. Includes all3new profile
+  flows plus existing login/logout, full manual composition/edit/reorder/nesting/source
+  conversion and concurrent manual/MCP revision/preview regression flows. Also runs the
+  official SDK network smoke with26tools and exact preview8/restoration9. Actual current
+  Twig/CSS/Stimulus assets are production-built and immutable; new profile/account/token/
+  client changes require no asset rebuild/redeployment of the running image.
+  Fixture:var/appearance-20261027223038-13445; image:local-20261027223039-4d2896b4.
+- Read-only production manifest SHA256 before=after:
+  `6e8185df5895c5426a17e0b68472712d8cafece6c79b2c01261aee176cbe2049`.
+  Fixture fonts3families/12faces/511,916bytes/errors=[]. Production has informational
+  vendor/Doctrine deprecations, no error-level PHP log. Evidence:production-acceptance.log
+  and the fixture's manifests, network smoke and browser output.
+- Original existing fields of **7accounts**,534themes/284families/512items/512drafts/
+ 114catalogue releases/100theme releases/1renderer preset/375snapshots/1appearance
+  preference/6MCPcredentials retain baseline row hashes. Name defaults are nullable and
+  no original account was edited during testing. Full font registry still verifies
+ 42families/208faces/6,713,012bytes/errors=[]. Test actors/credential files are removed,
+  production test accounts disabled, OAuth fixture clients disabled, task-owned production
+  containers stopped. Existing development8095, production8096 and consumer8110 preserved.
+
+Corrected failures: Symfony's test form helper retained checked default scope fields when
+an array override was merged; the functional test now submits the actual intended form
+array, and native browser unchecking separately proves scope narrowing. The first browser
+and production run found a real405when reloading the POST credential URL after download.
+One-time responses now normalize the visible URL to/profile, and GET return routes safely
+redirect there with no secret. The failed production run5/6is retained in production.log;
+final production6/6passes. Native section links bypass Turbo to retain unsaved fields.
+The Origin guard accepts the actual origin only after trusted Host validation, making
+same-origin Docker browser checks work while existing hostile host/origin tests pass.
+
+Remaining boundaries: browser verification proves a connection to Studio, not an external
+Codex/ChatGPT account link. Actual ChatGPT linking still requires account/workspace access
+and reachable HTTPS/OAuth or a supported tunnel setup. Client config/environment still
+belongs to the user's client computer; Studio does not modify local client files or
+publish a tunnel. Server enablement/origin/proxy/HTTPS policy stays deployment-controlled.
+The existing dev-only PHPUnit advisory remains unchanged; no new dependency was added.
+No external deployment/publication, branch push or real catalogue deletion occurred.

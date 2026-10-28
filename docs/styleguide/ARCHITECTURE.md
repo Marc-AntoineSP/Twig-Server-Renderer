@@ -216,3 +216,20 @@ bindings capture saved revisions and reuse the existing queued renderer/compiler
 pipeline and opaque iframe. No AI provider or new runtime/screenshot service is added.
 Full operation map, configuration, measured checks and account-dependent ChatGPT steps:
 COMPOSE_MCP.md. No publishing, source authoring or administration tools are exposed.
+
+## Personal profile and browser MCP setup
+
+/profile extends the existing cookie-authenticated studio with account details/password
+forms, personal composer-token lifecycle, client configuration and read-only MCP checks.
+AccountProfile reuses the existing User/hasher, locks profile updates, checks a fingerprint
+and updates only permitted personal fields. Password/email identity checks keep the
+current session coherent; password changes revoke that user's MCP/OAuth grants. A nullable
+display name is the only schema addition. Existing roles, User IDs and catalogue links stay.
+
+ComposeConnections adapts existing ComposeTokens and League ClientManager; it does not
+create another token/authorization server. Personal token ownership is checked even for
+admins. Only administrators manage shared predefined ChatGPT clients. Application-owned
+Twig renders forms and metadata; one scoped Stimulus controller copies one-time secrets
+and performs actual cookie-free same-origin MCP initialize/discovery/capabilities calls.
+It also checks OAuth discovery consistency. No draft is changed by these diagnostics,
+and external client account linking remains explicitly unverified. See PROFILE.md.

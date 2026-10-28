@@ -19,7 +19,7 @@ final readonly class ComposeRequestGuard
         if(!$this->enabled){$event->setResponse(new JsonResponse(['error'=>'not_found'],404));return;}
         if(!in_array(strtolower($r->getHost()),['localhost','127.0.0.1','studio',strtolower($this->publicHost)],true)){$event->setResponse(new JsonResponse(['error'=>'invalid_host'],403));return;}
         if($r->headers->has('Origin')) {
-            $origins=[rtrim($this->base,'/'),'http://localhost:8095','http://127.0.0.1:8095'];
+            $origins=[rtrim($this->base,'/'),$r->getSchemeAndHttpHost(),'http://localhost:8095','http://127.0.0.1:8095'];
             if(!in_array($r->headers->get('Origin'),$origins,true)){$event->setResponse(new JsonResponse(['error'=>'invalid_origin'],403));return;}
         }
         if((int)$r->headers->get('Content-Length',0)>262144||strlen($r->getContent())>262144)$event->setResponse(new JsonResponse(['error'=>'request_too_large'],413));

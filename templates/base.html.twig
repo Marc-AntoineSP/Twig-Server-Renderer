@@ -24,7 +24,7 @@
                 {% block navigation %}{% endblock %}
                 {% if app.user %}
                     <div class="flex flex-wrap items-center gap-4 text-sm">
-                        <span>{{ app.user.userIdentifier }}</span>
+                        <a class="link" href="{{ path('profile_show') }}">Profile</a><span class="break-all">{{ app.user.userIdentifier }}</span>
                         <form action="{{ path('studio_logout') }}" method="post" data-turbo="false">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
                             <button class="btn btn-ghost btn-sm" type="submit">Sign out</button>

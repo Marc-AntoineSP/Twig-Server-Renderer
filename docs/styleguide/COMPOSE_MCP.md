@@ -169,6 +169,15 @@ studio login cookie authenticates that consent flow, but never authenticates MCP
 Debug profiles are disabled on MCP/OAuth requests so credentials/codes are not retained
 in the profiler. Request bodies are bounded to256KiB; existing preview quotas remain.
 
+## Browser profile setup
+
+Open **/profile** from the navigation to edit your account, create/revoke personal MCP
+credentials, copy/download Codex settings and test the actual authenticated endpoint.
+Administrators can also register/enable/disable predefined ChatGPT OAuth clients there.
+These Studio-side actions require no console commands. See [PROFILE.md](PROFILE.md) for
+the browser workflow, permissions and the distinction between local checks and external
+client account linking. The CLI instructions below remain an operator/automation option.
+
 ## Start locally and connect Codex
 
 For a fresh checkout, `make bootstrap` installs locked dependencies/assets, initializes

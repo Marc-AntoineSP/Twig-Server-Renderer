@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block title %}My profile · Styleguide Studio{% endblock %}
+{% block body %}
+<div class="mb-8 flex flex-wrap items-start justify-between gap-4"><div><p class="text-sm opacity-70">Personal settings</p><h1 class="text-3xl font-bold">My profile</h1><p class="mt-2 break-all">{{ account.displayName ?: account.email }}</p></div><div class="flex flex-wrap gap-2">{% for role in account.roles %}{% if role != 'ROLE_READER' or account.roles|length == 1 %}<span class="badge badge-outline">{{ role|replace({'ROLE_':''})|lower|capitalize }}</span>{% endif %}{% endfor %}</div></div>
+<div class="grid min-w-0 gap-8 lg:grid-cols-[14rem_minmax(0,1fr)]">
+    <aside><nav data-turbo="false" aria-label="Profile sections" class="lg:sticky lg:top-6"><ul class="menu menu-horizontal flex-wrap rounded-box bg-base-100 lg:menu-vertical"><li><a href="#account">Account details</a></li><li><a href="#password">Password</a></li><li><a href="#mcp">MCP connections</a></li><li><a href="#chatgpt">ChatGPT setup</a></li></ul></nav></aside>
+    <div class="min-w-0 space-y-8">
+        {% if error %}<div role="alert" class="alert alert-error" id="profile-error"><div><p class="font-semibold">{{ error }}</p>{% if fieldErrors %}<ul class="mt-2 list-disc pl-5">{% for field,messages in fieldErrors %}{% for message in messages %}<li>{{ message }}</li>{% endfor %}{% endfor %}</ul>{% endif %}</div></div>{% endif %}
+        <section id="account" aria-labelledby="account-title" class="card border border-base-300 bg-base-100"><div class="card-body min-w-0">
+            <h2 id="account-title" class="card-title">Account details</h2><p class="text-sm opacity-70">Your catalogue, drafts and appearance stay with this account.</p>
+            <form action="{{ path('profile_details') }}" method="post" data-turbo="false" class="mt-4 grid gap-4" aria-describedby="{{ errorSection == 'details' ? 'profile-error' : 'account-help' }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('profile-details') }}"><input type="hidden" name="state" value="{{ profileState }}">
+                <div class="grid gap-2"><label for="profile-name" class="font-medium">Display name</label><input id="profile-name" name="displayName" class="input w-full" maxlength="100" autocomplete="name" value="{{ profileValues.displayName }}"></div>
+                <div class="grid gap-2"><label for="profile-email" class="font-medium">Email address</label><input id="profile-email" name="email" type="email" class="input w-full" maxlength="180" autocomplete="email" required value="{{ profileValues.email }}"></div>
+                <p id="account-help" class="text-sm opacity-70">Changing your sign-in email requires your current password.</p>
+                <div class="grid gap-2"><label for="profile-current-password" class="font-medium">Current password for email change</label><input id="profile-current-password" name="currentPassword" type="password" class="input w-full" maxlength="4096" autocomplete="current-password"></div>
+                <div><button class="btn btn-primary" type="submit">Save account details</button></div>
+            </form>
+        </div></section>
+        <section id="password" aria-labelledby="password-title" class="card border border-base-300 bg-base-100"><div class="card-body">
+            <h2 id="password-title" class="card-title">Change password</h2><p class="text-sm opacity-70">Use at least 12 characters. Changing it signs out other browser sessions and revokes existing MCP credentials and OAuth grants.</p>
+            <form action="{{ path('profile_password') }}" method="post" data-turbo="false" class="mt-4 grid gap-4">
+                <input type="hidden" name="_token" value="{{ csrf_token('profile-password') }}">
+                <div class="grid gap-2"><label for="password-current" class="font-medium">Current password</label><input id="password-current" name="currentPassword" type="password" class="input w-full" required maxlength="4096" autocomplete="current-password"></div>
+                <div class="grid gap-2"><label for="password-new" class="font-medium">New password</label><input id="password-new" name="newPassword" type="password" class="input w-full" required minlength="12" maxlength="4096" autocomplete="new-password"></div>
+                <div class="grid gap-2"><label for="password-confirmation" class="font-medium">Confirm new password</label><input id="password-confirmation" name="confirmation" type="password" class="input w-full" required minlength="12" maxlength="4096" autocomplete="new-password"></div>
+                <div><button class="btn btn-primary" type="submit">Update password</button></div>
+            </form>
+        </div></section>
+        {% include 'profile/_mcp.html.twig' %}
+    </div>
+</div>
+{% endblock %}

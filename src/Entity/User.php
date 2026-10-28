@@ -21,6 +21,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Column]
     private string $password = '';
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $displayName = null;
+
     #[ORM\Column(type: Types::JSONB)]
     private array $roles;
 
@@ -43,6 +46,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    public function updateProfile(?string $displayName, string $email): void
+    {
+        $this->displayName = $displayName;
+        $this->email = $email;
     }
 
     public function getUserIdentifier(): string

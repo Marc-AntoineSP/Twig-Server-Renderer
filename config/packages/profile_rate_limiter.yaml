@@ -1,0 +1,6 @@
+framework:
+    rate_limiter:
+        profile_password:
+            policy: fixed_window
+            limit: 5
+            interval: '5 minutes'

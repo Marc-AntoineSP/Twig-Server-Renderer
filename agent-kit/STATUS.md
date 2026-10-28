@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-10-27. Scope: M00–M08, font/theme library and M10–M13 complete, including local immutable production verification; no remote deployment or push.
+Last updated: 2026-10-27. Scope: M00–M08, font/theme library and M10–M14 complete, including local immutable production verification; no remote deployment or push.
 
 Earlier sections retain historical checkpoints. The final handoff below supersedes their in-progress notes.
 
@@ -20,6 +20,7 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | M11 Component reference | Complete |65panels/7categories; catalogue native fragments preserve opaque sandbox isolation |
 | M12 Inline detail layout | Complete |123PHPUnit/752assertions;20production flows; all50 development flows verified across full/focused runs;24existing-theme responsive renders |
 | M13 Composer MCP | Complete |135PHPUnit/1138assertions; officialSDK + actualCodex round trips; concurrent writes;3production browser flows; ChatGPT account setup documented |
+| M14 Profile and browser setup | Complete |141PHPUnit/1245assertions;3development +6production browser flows; live PAT/OAuth checks; original account/data hashes preserved |
 
 ## Repository audit and preservation
 
@@ -1308,3 +1309,71 @@ your Codex config, set STYLEGUIDE_COMPOSE_MCP_TOKEN in its process environment a
 See COMPOSE_MCP.md for exact commands/revocation, the sample pricing-layout prompt and
 clearly separated credential-dependent ChatGPT connection instructions. All local M13
 implementation and acceptance gates are complete.
+
+## M14 — Profile and browser MCP setup — completed2026-10-27
+
+Open **http://localhost:8095/profile**, or select **Profile** in the navigation. Account
+name/email/password, personal MCP credentials, copy/download Codex settings, real browser
+connection tests and administrator ChatGPT client controls now work through the UI.
+Console commands remain optional operator tools. PROFILE.md documents the workflow,
+permissions and precise external-connection boundaries; COMPOSE_MCP.md links to it first.
+
+AccountProfile and ComposeConnections reuse User, existing hashers, ComposeTokens and
+League ClientManager. CSRF/self-ownership/roles protect all writes. Profile fingerprints
+and row locks prevent stale overwrites; email/password identity changes verify the current
+password with5checks/5minlimit. Current sessions remain coherent, old sessions expire and
+password changes revoke this actor's MCP/OAuth access/refresh/code grants, preserving other
+actors. Shared OAuth administration requires ROLE_ADMIN. Secrets are shown once, scrubbed
+on navigation, absent from lists/URLs/storage/config downloads and excluded from profiler capture.
+Actual cookie-free same-origin MCP calls prove discovery/read-only capabilities without
+changing catalogue data. Local OAuth readiness and external account linking are distinct.
+
+Migration Version20261027215409 adds only nullable display_name VARCHAR100 to studio_user,
+installed in dev/test. Development preview-consumer restarted to load User metadata; no
+original production deployment was replaced. No dependency/lock/version changes.
+
+Completed gates:
+
+- make assets/check;33YAML/36Twig; **141PHPUnit/1245assertions**, exit0,1m23.7s.
+  Actual validation, persistence/login continuity, password/old-session/grant revocation,
+  ownership/roles/CSRF, metadata fingerprints, throttling, secret lifecycle and MCP/OAuth
+  regressions pass. Evidence:var/profile-verification/verified-checks.log.
+- Development browser3/3pass/17.8s. Actual account save, unsaved fragment navigation,
+  credential scopes/revocation, config download, live PAT/OAuth MCP checks and cookie
+  omission pass.1440/768/375px, mobile light and desktop dark reviewed, no document overflow.
+- Immutable production **6/6flows/45.6s**, exit0, plus official SDK26tool preview/history
+  smoke. Fixture var/appearance-20261027223038-13445, image local-20261027223039-4d2896b4.
+  Includes all3new profile flows and original authentication/manual composer/MCP conflict/
+  captured-preview flows. Admin-created client performs real local code/PKCE/token/JWT
+  validation and disable/enable from the profile. External ChatGPT callback is not visited.
+- Manifest read-only and before=after:
+  6e8185df5895c5426a17e0b68472712d8cafece6c79b2c01261aee176cbe2049. New saved account/token/
+  client changes need no production asset rebuild/redeployment. Fixture fonts3/12/511,916
+  bytes verify. Schema/mapping valid; source/font/export/worker isolation tests remain green.
+- Original7accounts' pre-existing fields,534themes/284families/512items/512drafts/114releases/
+  100theme releases/1renderer preset/375snapshots/1personal preference/6MCPcredentials retain
+  hashes. Fonts42families/208faces/6,713,012bytes/errors=[]. Browser actors/files removed;
+  test OAuth clients disabled and production test accounts disabled/containers stopped.
+  Existing8095/8096/8110 services preserved. No original account, content or preference edit.
+
+Corrected failures: form-helper checkbox merging vs native submission; POST-URL reload405
+(real browser/first production5/6) fixed with canonical profile history and safe GET return
+routes; native fragment links preserve unsaved fields. Same-origin MCP requests from
+validated Docker hosts work while hostile hosts/origins remain rejected. Final6/6production
+and141/1245PHPUnit gates pass; failed-run evidence is retained in VERIFICATION.md.
+
+Changed: User/ComposeToken, ProfileController, two Profile services, profile Twig partials,
+profile_mcp Stimulus, base navigation, private-profiler/Origin guards, rate limiter/migration,
+ProfileTest/profile.spec.js, Makefile/isolated production driver and relevant docs/status.
+Stack remains PHP8.5.12/Symfony8.1.9/FrankenPHP1.13.4/Trixie/Tailwind4.3.3/daisyUI5.7.50/
+Stimulus3.2.2. Existing dev PHPUnit advisory is recorded; no new dependency was introduced.
+
+Remaining boundaries: user must complete configuration in the external client and actual
+ChatGPT account linking; reachable HTTPS/OAuth/tunnel/workspace access remains user-supplied.
+Profile cannot override deployment-level MCP disable/origin/ingress policy or write files
+on a client computer. Browser checks are labelled accordingly. No external publication,
+deployment or push. No required M14 implementation or local acceptance gate remains.
+
+Exact next step: open /profile, save personal details if desired, expand Create a personal
+MCP credential, create/copy it, click Test MCP connection, then copy/download the client
+settings. Administrators can register the exact ChatGPT callback in the next section.

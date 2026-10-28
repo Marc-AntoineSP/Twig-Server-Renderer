@@ -18,6 +18,10 @@ final class ComposeToken
         #[ORM\Column(type:'datetimetz_immutable')] private \DateTimeImmutable $expiresAt,
     ){$this->id=(string)new Ulid();$this->createdAt=new \DateTimeImmutable();}
     public function getId():string{return $this->id;}
+    public function getLabel():string{return $this->label;}
+    public function getCreatedAt():\DateTimeImmutable{return $this->createdAt;}
+    public function getExpiresAt():\DateTimeImmutable{return $this->expiresAt;}
+    public function getRevokedAt():?\DateTimeImmutable{return $this->revokedAt;}
     public function getOwner():User{return $this->owner;}
     public function getScopes():array{return $this->scopes;}
     public function getCataloguePatterns():array{return $this->cataloguePatterns;}

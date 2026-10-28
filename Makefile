@@ -112,3 +112,7 @@ prod-test:
 .PHONY: mcp-init mcp-smoke compose-mcp-production
 compose-mcp-production:
 	bash tests/AppearanceProduction/run.sh tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js tests/Browser/authentication.spec.js
+
+.PHONY: profile-production
+profile-production:
+	bash tests/AppearanceProduction/run.sh tests/Browser/profile.spec.js tests/Browser/authentication.spec.js tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js

@@ -4,14 +4,14 @@ umask 077
 specs=("$@")
 if ((${#specs[@]} == 0)); then specs=(tests/Browser/appearance.spec.js); fi
 for spec in "${specs[@]}"; do
-    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/theme_components.spec.js|tests/Browser/preview.spec.js|tests/Browser/authentication.spec.js|tests/Browser/composition.spec.js|tests/Browser/compose_mcp.spec.js) ;; *) echo 'Choose an appearance, preview, authentication, composition or theme-component acceptance spec.' >&2; exit 1;; esac
+    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/theme_components.spec.js|tests/Browser/preview.spec.js|tests/Browser/authentication.spec.js|tests/Browser/composition.spec.js|tests/Browser/compose_mcp.spec.js|tests/Browser/profile.spec.js) ;; *) echo 'Choose an appearance, preview, authentication, composition, profile or theme-component acceptance spec.' >&2; exit 1;; esac
 done
 fixture_name="appearance-$(date -u +%Y%m%d%H%M%S)-${RANDOM}"
 fixture_dir="var/${fixture_name}"
 docker compose exec -T app php tools/production/init.php "$fixture_name"
 sed -i "s/^STUDIO_PRODUCTION_PORT=.*/STUDIO_PRODUCTION_PORT=${APPEARANCE_PRODUCTION_PORT:-8125}/" "$fixture_dir/compose.env"
 mcp_check=0
-for spec in "${specs[@]}"; do if [[ "$spec" == tests/Browser/compose_mcp.spec.js ]]; then mcp_check=1; fi; done
+for spec in "${specs[@]}"; do if [[ "$spec" == tests/Browser/compose_mcp.spec.js || "$spec" == tests/Browser/profile.spec.js ]]; then mcp_check=1; fi; done
 if ((mcp_check)); then
     printf '\nMCP_COMPOSE_ENABLED=1\nMCP_PUBLIC_HOST=localhost\nMCP_PUBLIC_BASE_URL=http://localhost:%s\n' "${APPEARANCE_PRODUCTION_PORT:-8125}" >> "$fixture_dir/compose.env"
 fi
