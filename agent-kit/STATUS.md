@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-10-27. Scope: M00–M08, font/theme library and M10–M14 complete, including local immutable production verification; no remote deployment or push.
+Last updated: 2026-10-28. Scope: M00–M08, font/theme library and M10–M14 complete, including local immutable production verification; no remote deployment or push.
 
 Earlier sections retain historical checkpoints. The final handoff below supersedes their in-progress notes.
 
@@ -1377,3 +1377,35 @@ deployment or push. No required M14 implementation or local acceptance gate rema
 Exact next step: open /profile, save personal details if desired, expand Create a personal
 MCP credential, create/copy it, click Test MCP connection, then copy/download the client
 settings. Administrators can register the exact ChatGPT callback in the next section.
+
+## Requested MCP draft exercise — 2026-10-28
+
+Used the existing styleguide_compose endpoint through the installed Codex0.164.0 MCP
+client, with no model turn, configuration edit, publication, deployment or push.
+Discovered26tools and10released studio-showcase component types; inspected all10props
+schemas. Created layout `codex/codex-2026-10-28`, title `codex-2026-10-28`, item
+`01M60K5SG4JFE87J100G61ZMV1`. Two typed batches saved revision3 with29nodes and14component
+instances: navigation, alert, stats,3cards, tabs, progress, fields, accordion, dialog and
+3button variants. A bounded responsive container holds the content with mobile gutters
+and responsive1/2/3column grids. Existing references remain pinned to1.0.0.
+
+Actual checks: compose_validate returned valid=true/no warnings at revision3; compose_get
+confirmed14reference nodes. compose_render_preview/get_preview succeeded for that exact
+revision at1280px using existing light theme release01M5ZE9SBNGCKK9JEA7MJMM7ZV. Preview
+job01M60KGVD6WYPBJJ09YH7HMY2A returned136975bytes of HTML. Parsed its actual style output
+and verified max-w-7xl, responsive gutters and md/xl/lg grid selectors plus document CSP.
+Final compose_search_catalogue confirmed releases=[]; the layout remains unpublished.
+No browser/screenshot check was run; visualInspectionAvailable=false. No dependencies or
+application source changed; only this status file changed in the repository.
+
+Initial native MCP startup failed because the configured bearer-token environment setting
+names an unset variable. A temporary process-only credential override connected successfully;
+the saved client setting remains unchanged. The first sandboxed client exited; the approved
+launch outside that filesystem sandbox worked. An oversized terminal batch was rejected
+before execution, so two smaller batches were used. No credential values were saved in
+task files. Command: python3 /tmp/styleguide-compose-20261028-client.py. Check evidence:
+/tmp/styleguide-compose-20261028-verification.json. Temporary client has been stopped.
+
+Exact next step: open the authenticated composer and captured preview:
+http://127.0.0.1:8095/catalogue/01M60K5SG4JFE87J100G61ZMV1/compose
+http://127.0.0.1:8095/catalogue/composition-previews/01M60KGVD6WYPBJJ09YH7HMY2A
