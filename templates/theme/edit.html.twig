@@ -4,12 +4,12 @@
 <section data-controller="theme-editor" data-theme-editor-document-value="{{ document|json_encode|e('html_attr') }}"
  data-theme-editor-creating-value="{{ creating ? 'true' : 'false' }}" data-theme-editor-theme-id-value="{{ creating ? '' : theme.id }}" data-theme-editor-family-value="{{ family|json_encode|e('html_attr') }}"
  data-theme-editor-save-url-value="{{ path('theme_save_api', {id:'__THEME__'}) }}" data-theme-editor-new-url-value="{{ path('theme_create_api') }}" data-theme-editor-edit-url-value="{{ path('theme_edit', {id:'__THEME__'}) }}"
- data-theme-editor-detail-url-value="{{ path('theme_show', {id:'__THEME__'}) }}"
+ data-theme-editor-detail-url-value="{{ path('theme_show', {id:'__THEME__', returnTo: listing_return('theme_index')}) }}"
  data-theme-editor-fonts-value="{{ fontDefinitions|json_encode|e('html_attr') }}" data-theme-editor-csrf-value="{{ csrf_token('api') }}" data-theme-editor-revision-value="{{ form.revision.vars.value }}"
  data-theme-editor-create-url-value="{{ path('preview_create') }}" data-theme-editor-status-url-value="{{ path('preview_status', {id: '__JOB__'}) }}"
  data-theme-editor-document-url-value="{{ path('preview_document', {id: '__JOB__'}) }}" data-theme-editor-theme-url-value="{{ path('theme_read_api', {id: '__THEME__'}) }}"
  data-theme-editor-publish-url-value="{{ path('theme_publish_api', {id:'__THEME__'}) }}">
-<div class="flex flex-wrap items-center justify-between gap-3"><h1 class="text-3xl font-bold" data-theme-editor-target="title">{{ creating ? 'Create theme' : 'Edit ' ~ family.label }}</h1>{% if not creating %}<a class="link" data-theme-editor-target="exports" href="{{ path('theme_show', {id: theme.id}) }}">Releases and exports</a>{% endif %}<a class="link" href="{{ path('theme_new') }}">New theme</a></div>
+<div class="flex flex-wrap items-center justify-between gap-3"><h1 class="text-3xl font-bold" data-theme-editor-target="title">{{ creating ? 'Create theme' : 'Edit ' ~ family.label }}</h1>{% if not creating %}{% include 'favorites/_button.html.twig' with {kind: 'theme', item: theme} %}{% endif %}{% if not creating %}<a class="link" data-theme-editor-target="exports" href="{{ path('theme_show', {id: theme.id, returnTo: listing_return('theme_index')}) }}">Releases and exports</a>{% endif %}<a class="link" href="{{ path('theme_new') }}">New theme</a></div>
 <p class="my-3">Save theme keeps your applied snapshot. Save &amp; Apply saves a new revision and updates your personal application appearance. Try on application keeps edits unsaved in this tab.</p>
 {% if not creating %}
 {% include 'theme/_provenance.html.twig' %}

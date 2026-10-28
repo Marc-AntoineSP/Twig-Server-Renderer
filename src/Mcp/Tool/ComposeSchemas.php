@@ -12,6 +12,7 @@ final class ComposeSchemas
         'search_catalogue' => [
             'type' => 'object',
             'properties' => [
+                'favoritesOnly' => ['type' => 'boolean', 'description' => 'Only the authenticated user’s personal favorites; catalogue permissions and release eligibility still apply.'],
                 'query' => ['type' => 'string', 'maxLength' => 120],
                 'kind' => [
                     'type' => 'string',

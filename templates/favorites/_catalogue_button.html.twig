@@ -1,0 +1,6 @@
+{# Published theme packages point at their typed variant; never favorite a second identity. #}
+{% if item.kind == 'theme' %}
+    {% if themeTarget|default(null) %}{% include 'favorites/_button.html.twig' with {kind: 'theme', item: themeTarget} %}<span class="badge badge-sm badge-outline">{{ themeTarget.document.colorScheme|capitalize }}</span>{% endif %}
+{% else %}
+    {% include 'favorites/_button.html.twig' with {kind: 'catalogue'} %}
+{% endif %}

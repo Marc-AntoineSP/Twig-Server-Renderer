@@ -4,7 +4,7 @@ umask 077
 specs=("$@")
 if ((${#specs[@]} == 0)); then specs=(tests/Browser/appearance.spec.js); fi
 for spec in "${specs[@]}"; do
-    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/theme_components.spec.js|tests/Browser/preview.spec.js|tests/Browser/authentication.spec.js|tests/Browser/composition.spec.js|tests/Browser/compose_mcp.spec.js|tests/Browser/profile.spec.js) ;; *) echo 'Choose an appearance, preview, authentication, composition, profile or theme-component acceptance spec.' >&2; exit 1;; esac
+    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/theme_components.spec.js|tests/Browser/preview.spec.js|tests/Browser/authentication.spec.js|tests/Browser/composition.spec.js|tests/Browser/compose_mcp.spec.js|tests/Browser/profile.spec.js|tests/Browser/favorites.spec.js) ;; *) echo 'Choose an appearance, preview, authentication, composition, profile, favorites or theme-component acceptance spec.' >&2; exit 1;; esac
 done
 fixture_name="appearance-$(date -u +%Y%m%d%H%M%S)-${RANDOM}"
 fixture_dir="var/${fixture_name}"
@@ -16,6 +16,8 @@ if ((mcp_check)); then
     printf '\nMCP_COMPOSE_ENABLED=1\nMCP_PUBLIC_HOST=localhost\nMCP_PUBLIC_BASE_URL=http://localhost:%s\n' "${APPEARANCE_PRODUCTION_PORT:-8125}" >> "$fixture_dir/compose.env"
 fi
 dc=(docker compose --env-file "$fixture_dir/compose.env" -f compose.production.yaml)
+# Optional local build/network trust configuration; never alters the deployed project.
+if [[ -n "${APPEARANCE_COMPOSE_OVERRIDE:-}" ]]; then dc+=(-f "$APPEARANCE_COMPOSE_OVERRIDE"); fi
 app_started=0
 cleanup() {
     local status=$?

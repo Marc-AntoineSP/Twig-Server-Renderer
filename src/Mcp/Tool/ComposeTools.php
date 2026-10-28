@@ -21,7 +21,7 @@ final readonly class ComposeTools
     #[Schema(definition:ComposeSchemas::INPUT['capabilities'])]
     public function capabilities(RequestContext $context):CallToolResult{return $this->call('capabilities',$context);}
 
-    #[McpTool(name:'compose_search_catalogue', description:'Search accessible catalogue items with paginated exact released versions. An unpublished draft is not insertable; creation differs from reference insertion.', annotations:new ToolAnnotations(readOnlyHint:true, destructiveHint:false, idempotentHint:true, openWorldHint:false), outputSchema:ComposeSchemas::RESULT)]
+    #[McpTool(name:'compose_search_catalogue', description:'Search accessible catalogue items with paginated exact released versions and personal favorite status. Set favoritesOnly to filter before pagination. An unpublished draft is not insertable; creation differs from reference insertion.', annotations:new ToolAnnotations(readOnlyHint:true, destructiveHint:false, idempotentHint:true, openWorldHint:false), outputSchema:ComposeSchemas::RESULT)]
     #[Schema(definition:ComposeSchemas::INPUT['search_catalogue'])]
     public function search_catalogue(RequestContext $context):CallToolResult{return $this->call('search_catalogue',$context);}
 

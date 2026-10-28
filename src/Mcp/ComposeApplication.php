@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /** Per-call application adapter. No selected composition, actor or credential is cached. */
 final readonly class ComposeApplication
 {
-    public function __construct(private CompositionWorkspace $workspace,private CompositionTree $trees,private CompositionCompiler $compiler,private CatalogueWriter $writer,private EntityManagerInterface $em,private ComposeOperations $operations,private TokenStorageInterface $security,private AuthorizationCheckerInterface $auth,private UrlGeneratorInterface $urls,private PreviewJobs $previews,private PreviewStorage $storage,private PreviewLifecycle $lifecycle,#[Autowire('%env(MCP_PUBLIC_BASE_URL)%')]private string $publicBase){}
+    public function __construct(private CompositionWorkspace $workspace,private CompositionTree $trees,private CompositionCompiler $compiler,private CatalogueWriter $writer,private EntityManagerInterface $em,private ComposeOperations $operations,private TokenStorageInterface $security,private AuthorizationCheckerInterface $auth,private UrlGeneratorInterface $urls,private PreviewJobs $previews,private PreviewStorage $storage,private PreviewLifecycle $lifecycle,#[Autowire('%env(MCP_PUBLIC_BASE_URL)%')]private string $publicBase, private \App\Favorites\Favorites $favorites){}
 
     public function actor():User
     {
@@ -70,13 +70,14 @@ final readonly class ComposeApplication
         $builder=$this->em->getRepository(CatalogueItem::class)->createQueryBuilder('i')->where('i.kind IN (:kinds)')->setParameter('kinds',['component','block','layout'])->orderBy('i.namespace','ASC')->addOrderBy('i.slug','ASC');
         if($query!=='')$builder->andWhere('LOWER(CONCAT(i.namespace, :slash, i.slug, :space, i.title)) LIKE :q')->setParameter('slash','/')->setParameter('space',' ')->setParameter('q','%'.strtolower(str_replace(['%','_'],['\\%','\\_'],$query)).'%');
         if($kind)$builder->andWhere('i.kind = :kind')->setParameter('kind',$kind);
+        if($input['favoritesOnly']??false)$builder->andWhere('EXISTS (SELECT f.id FROM App\\Entity\\Favorite f WHERE f.catalogueItem=i AND f.owner=:favoriteOwner)')->setParameter('favoriteOwner',$this->actor());
         $accessible=[];
         foreach($builder->getQuery()->toIterable() as $item){if(!$this->auth->isGranted('COMPOSE_READ',$item))continue;$accessible[]=$item;if(count($accessible)>$offset+$limit)break;}
         $results=[];
         foreach(array_slice($accessible,$offset,$limit) as $item){
             $draft=$this->writer->draft($item);$versions=[];
             foreach($this->em->getRepository(Release::class)->findBy(['item'=>$item],['createdAt'=>'DESC'],10) as $release)$versions[]=['releaseId'=>$release->getId(),'version'=>$release->getVersion()];
-            $results[]=['id'=>$item->getId(),'name'=>$item->getName(),'kind'=>$item->getKind(),'title'=>$item->getTitle(),'summary'=>mb_substr($item->getDescription(),0,300),'revision'=>$draft->getRevision(),'editor'=>isset($draft->getSourceMap()->{'meta/composition.json'})?'composition':'source','editableInComposer'=>isset($draft->getSourceMap()->{'meta/composition.json'}),'releases'=>$versions,'insertable'=>count($versions)>0];
+            $results[]=['id'=>$item->getId(),'favorite'=>$this->favorites->contains($item),'name'=>$item->getName(),'kind'=>$item->getKind(),'title'=>$item->getTitle(),'summary'=>mb_substr($item->getDescription(),0,300),'revision'=>$draft->getRevision(),'editor'=>isset($draft->getSourceMap()->{'meta/composition.json'})?'composition':'source','editableInComposer'=>isset($draft->getSourceMap()->{'meta/composition.json'}),'releases'=>$versions,'insertable'=>count($versions)>0];
         }
         return $this->envelope(null,'Accessible catalogue results. Draft creation and release insertion are different operations.',['items'=>$results,'offset'=>$offset,'nextOffset'=>count($accessible)>$offset+$limit?$offset+$limit:null]);
     }

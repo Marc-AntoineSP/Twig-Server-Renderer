@@ -1,0 +1,6 @@
+<div class="rounded-box bg-base-100 p-6" role="status">
+    {% if query.favorites and not hasFavorites %}<p>No favorites yet. Use the star beside a {{ type }} to save it here.</p>
+    {% elseif query.favorites %}<p>You have favorites, but none match the current search and filters.</p>
+    {% else %}<p>No {{ type }}s match this search.</p>{% endif %}
+    {% if query.favorites %}<a class="link mt-3 inline-block" href="{{ path(route, filters|merge({favorites: 0, page: 1})) }}">Browse all {{ type }}s</a>{% endif %}
+</div>

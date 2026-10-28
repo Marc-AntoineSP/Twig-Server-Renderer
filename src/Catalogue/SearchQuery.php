@@ -15,6 +15,7 @@ final readonly class SearchQuery
         public string $sort = 'updated',
         #[Assert\Range(min: 1, max: 100000)]
         public int $page = 1,
+        public bool $favorites = false,
     ) {
     }
 }

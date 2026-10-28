@@ -127,4 +127,24 @@ final class ComposeMcpTest extends DatabaseTestCase
         $other=$this->account();[, $otherPlain]=self::getContainer()->get(ComposeTokens::class)->issue($other,'Other preview actor',ComposeTokens::SCOPES,['mcp-tests/*']);$this->connect($client,$otherPlain);$error=$this->call($client,'get_preview',['jobId'=>$queued['jobId']]);self::assertTrue($error['isError']);self::assertSame('NOT_FOUND',$error['structuredContent']['code']);
     }
 
+    public function testPersonalFavoritesSearchRespectsOwnerScopesAndPagination():void
+    {
+        $client=self::createClient();$owner=$this->account();$other=$this->account();
+        $writer=self::getContainer()->get(CatalogueWriter::class);$em=self::getContainer()->get(EntityManagerInterface::class);
+        $prefix='favorites-'.strtolower((string)new Ulid());$ids=[];
+        foreach(['a','b','c'] as $suffix){$item=$writer->create(new CreateItemInput('mcp-tests/'.$prefix.'-'.$suffix,'component','MCP favorite'),$owner)->getItem();$ids[]=$item->getId();$em->persist(new \App\Entity\Favorite($owner,$item));}
+        $hidden=$writer->create(new CreateItemInput('hidden-tests/'.$prefix,'block','Private to a different credential scope'),$owner)->getItem();$em->persist(new \App\Entity\Favorite($owner,$hidden));
+        $otherItem=$writer->create(new CreateItemInput('mcp-tests/'.$prefix.'-other','layout','Other user favorite'),$other)->getItem();$em->persist(new \App\Entity\Favorite($other,$otherItem));$em->flush();
+        [, $plain]=self::getContainer()->get(ComposeTokens::class)->issue($owner,'Favorite search',['compose:read'],['mcp-tests/*']);$this->connect($client,$plain);
+        $first=$this->success($client,'search_catalogue',['query'=>$prefix,'favoritesOnly'=>true,'limit'=>2]);
+        self::assertSame(array_slice($ids,0,2),array_column($first['items'],'id'));self::assertSame(2,$first['nextOffset']);
+        foreach($first['items'] as $item){self::assertTrue($item['favorite']);self::assertFalse($item['insertable']);}
+        $second=$this->success($client,'search_catalogue',['query'=>$prefix,'favoritesOnly'=>true,'offset'=>2,'limit'=>2]);self::assertSame([$ids[2]],array_column($second['items'],'id'));self::assertNull($second['nextOffset']);
+        $all=$this->success($client,'search_catalogue',['query'=>$prefix]);self::assertCount(4,$all['items']);self::assertFalse($all['items'][3]['favorite']);
+        $kind=$this->success($client,'search_catalogue',['query'=>$prefix,'favoritesOnly'=>true,'kind'=>'layout']);self::assertSame([],$kind['items']);
+        $em=self::getContainer()->get(EntityManagerInterface::class);$other=$em->find(\App\Entity\User::class,$other->getId());
+        [, $plain]=self::getContainer()->get(ComposeTokens::class)->issue($other,'Other favorites',['compose:read'],['mcp-tests/*']);$this->connect($client,$plain);
+        $own=$this->success($client,'search_catalogue',['query'=>$prefix,'favoritesOnly'=>true]);self::assertSame([$otherItem->getId()],array_column($own['items'],'id'));
+    }
+
 }

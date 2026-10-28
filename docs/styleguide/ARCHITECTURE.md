@@ -1,5 +1,18 @@
 # Architecture and decisions
 
+## Personal favorites
+
+The Favorites service resolves the authenticated account and stores stable Theme or
+CatalogueItem references in personal_favorite. Unique owner/target indexes, an
+exclusive-target CHECK and cascading foreign keys provide idempotency and cleanup.
+Theme package cards resolve to the typed variant identity. Request-local batched
+status maps avoid per-card favorite queries. SQL filtering precedes list pagination;
+MCP retains namespace authorization before accessible pagination. Twig stars reuse
+AssetMapper Stimulus with explicit CSRF-protected PUT/DELETE and read reconciliation.
+Composer filtering only narrows immutable reference choices; shared commands still
+validate actual edits. Appearance, draft/release data and the sandbox stay separate.
+See FAVORITES.md for routes, migration, UI behavior and verification.
+
 ## Application shape
 
 A Symfony modular monolith owns accounts, catalogue state, editing, themes, releases,

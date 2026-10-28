@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}Catalogue · Styleguide Studio{% endblock %}
 {% block body %}
+    {% set filters = {q: query.q, kind: query.kind, sort: query.sort, favorites: query.favorites ? 1 : 0} %}
     <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div><p class="text-sm text-primary">Your private library</p><h1 class="text-3xl font-bold">Catalogue</h1></div>
         {% if is_granted('ROLE_EDITOR') %}<a class="btn btn-outline" href="{{ path('package_import') }}">Import package</a><a class="btn btn-primary" href="{{ path('catalogue_new') }}">New item</a>{% endif %}
@@ -9,6 +10,7 @@
         <label>Search<input type="search" name="q" value="{{ query.q }}" placeholder="Name, title, tag or description"></label>
         <label>Kind<select name="kind"><option value="">All kinds</option>{% for kind in ['component', 'block', 'layout', 'theme'] %}<option value="{{ kind }}" {{ query.kind == kind ? 'selected' : '' }}>{{ kind|capitalize }}</option>{% endfor %}</select></label>
         <label>Sort<select name="sort"><option value="updated" {{ query.sort == 'updated' ? 'selected' : '' }}>Recently updated</option><option value="name" {{ query.sort == 'name' ? 'selected' : '' }}>Name</option></select></label>
+        {% include 'favorites/_filter.html.twig' with {route: 'catalogue_index'} %}
         <button type="submit" class="btn btn-neutral self-end">Find items</button>
     </form>
     <p class="mb-4 text-sm" role="status">{{ total }} {{ total == 1 ? 'item' : 'items' }} · Page {{ page }} of {{ pages }}</p>
@@ -18,19 +20,14 @@
                 {% if summaries[item.id].thumbnail %}<div class="h-32 overflow-hidden border-b border-base-300" aria-hidden="true"><iframe title="Release thumbnail {{ item.name }}" tabindex="-1" sandbox="" loading="lazy" class="pointer-events-none" style="width:768px;height:320px;transform:scale(.4);transform-origin:top left;border:0" srcdoc="{{ summaries[item.id].thumbnail|e('html_attr') }}"></iframe></div>{% endif %}
                 <div class="card-body">
                     <div class="flex gap-2"><span class="badge badge-outline">{{ item.kind }}</span><span class="badge badge-ghost">Draft r{{ summaries[item.id].revision }}</span>{% if summaries[item.id].release_version %}<span class="badge badge-success">{{ summaries[item.id].release_version }}</span>{% endif %}</div>
-                    <h2 class="card-title"><a class="link-hover" href="{{ path('catalogue_show', {id: item.id}) }}">{{ item.title }}</a></h2>
+                    <div class="flex items-start justify-between gap-2"><h2 class="card-title min-w-0 break-words"><a class="link-hover" href="{{ path('catalogue_show', {id: item.id, returnTo: app.request.requestUri}) }}">{{ item.title }}</a></h2>{% include 'favorites/_catalogue_button.html.twig' with {themeTarget: themeTargets[item.name]|default(null)} %}</div>
                     <p class="font-mono text-xs">{{ item.name }}</p><p>{{ item.description }}</p>
                     <div class="flex flex-wrap gap-2">{% for tag in item.tags %}<span class="badge badge-soft">{{ tag }}</span>{% endfor %}</div>
                     <p class="text-xs">{{ summaries[item.id].dependency_count }} exact dependencies</p><p class="mt-3 text-xs opacity-70">Updated {{ item.updatedAt|date('Y-m-d H:i', 'UTC') }} UTC</p>
-                    <div class="card-actions mt-2"><a class="btn btn-sm btn-ghost" href="{{ path('catalogue_show', {id: item.id}) }}">Open</a></div>
+                    <div class="card-actions mt-2"><a class="btn btn-sm btn-ghost" href="{{ path('catalogue_show', {id: item.id, returnTo: app.request.requestUri}) }}">Open</a></div>
                 </div>
             </article>
-        {% else %}<p class="rounded-box bg-base-100 p-6">No items match this search.</p>{% endfor %}
+        {% else %}{% include 'favorites/_empty.html.twig' with {type: 'item', route: 'catalogue_index'} %}{% endfor %}
     </div>
-    {% if pages > 1 %}
-        <nav class="mt-8 flex gap-4" aria-label="Catalogue pages">
-            {% if page > 1 %}<a class="btn" rel="prev" href="{{ path('catalogue_index', {q: query.q, kind: query.kind, sort: query.sort, page: page - 1}) }}">Previous</a>{% endif %}
-            {% if page < pages %}<a class="btn" rel="next" href="{{ path('catalogue_index', {q: query.q, kind: query.kind, sort: query.sort, page: page + 1}) }}">Next</a>{% endif %}
-        </nav>
-    {% endif %}
+    {% include 'favorites/_pagination.html.twig' with {route: 'catalogue_index', label: 'Catalogue'} %}
 {% endblock %}

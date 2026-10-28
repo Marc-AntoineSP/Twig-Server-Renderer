@@ -29,9 +29,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class CatalogueController extends AbstractController
 {
     #[Route('/catalogue', name: 'catalogue_index', methods: ['GET'])]
-    public function index(CatalogueRepository $catalogue, \App\Rendering\ReleaseThumbnails $thumbnails, #[MapQueryString(validationFailedStatusCode: 400)] SearchQuery $query = new SearchQuery()): Response
+    public function index(CatalogueRepository $catalogue, \App\Rendering\ReleaseThumbnails $thumbnails, \App\Favorites\Favorites $favorites, #[MapQueryString(validationFailedStatusCode: 400)] SearchQuery $query = new SearchQuery()): Response
     {
-        $result=$catalogue->search($query);foreach($result['summaries'] as &$summary)$summary['thumbnail']=$thumbnails->read($summary['archive_hash']);unset($summary);
+        $result=$catalogue->search($query, $favorites->owner());
+        $result['hasFavorites'] = $favorites->hasCatalogueFavorites();
+        foreach($result['summaries'] as &$summary)$summary['thumbnail']=$thumbnails->read($summary['archive_hash']);unset($summary);
         return $this->render('catalogue/index.html.twig', $result);
     }
 
@@ -61,6 +63,7 @@ final class CatalogueController extends AbstractController
     public function show(#[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $entityManager): Response
     {
         return $this->render('catalogue/show.html.twig', [
+            'themeTarget' => $item->getKind() === 'theme' ? $entityManager->getRepository(Theme::class)->findOneBy(['name' => $item->getName()]) : null,
             'item' => $item, 'draft' => $writer->draft($item), 'sourceFiles' => (array) $writer->draft($item)->getSourceMap(),
             'releases' => $entityManager->getRepository(Release::class)->findBy(['item' => $item], ['createdAt' => 'DESC']),
             'exportThemes' => $entityManager->getRepository(ThemeRelease::class)->findBy([], ['createdAt' => 'DESC'], 100),
@@ -77,7 +80,7 @@ final class CatalogueController extends AbstractController
             return $this->redirectToRoute('theme_edit', ['id' => $theme->getId()]);
         }
         if (isset($draft->getSourceMap()->{'meta/composition.json'})) {
-            return $this->redirectToRoute('composition_edit', ['id' => $item->getId()]);
+            return $this->redirectToRoute('composition_edit', ['id' => $item->getId(), 'returnTo' => $request->query->get('returnTo', '')]);
         }
         $jsonOptions = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR;
         $form = $this->createForm(DraftType::class, [
@@ -92,7 +95,7 @@ final class CatalogueController extends AbstractController
                 $writer->save($item, (int) $data['revision'], $input->draft($data), $this->getUser());
                 $this->addFlash('success', 'Draft saved.');
 
-                return $this->redirectToRoute('catalogue_edit', ['id' => $item->getId()], 303);
+                return $this->redirectToRoute('catalogue_edit', ['id' => $item->getId(), ...($request->query->has('returnTo') ? ['returnTo' => $request->query->get('returnTo')] : [])], 303);
             } catch (CatalogueException $error) {
                 $status = $error->getStatusCode();
                 $this->errors($form, $error);

@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block title %}Edit {{ item.title }} · Styleguide Studio{% endblock %}
 {% block body %}
-    <a class="link" href="{{ path('catalogue_show', {id: item.id}) }}">← {{ item.name }}</a>
-    <div class="mt-4 flex flex-wrap items-center gap-4"><h1 class="text-3xl font-bold">Edit draft</h1><span class="badge badge-ghost">{{ item.kind }}</span></div>
+    <a class="link" href="{{ path('catalogue_show', {id: item.id, returnTo: listing_return('catalogue_index')}) }}">← {{ item.name }}</a>
+    <div class="mt-4 flex flex-wrap items-center gap-4"><h1 class="text-3xl font-bold">Edit draft</h1>{% include 'favorites/_button.html.twig' with {kind: 'catalogue'} %}<span class="badge badge-ghost">{{ item.kind }}</span></div>
     <p class="mt-2">Saved revision <span data-saved-revision>{{ draft.revision }}</span> · {{ item.name }}</p>
     <div class="mt-6" data-controller="editor preview"
          data-editor-saved-value="{{ {manifestData: draft.manifestData, sourceMap: draft.sourceMap, title: item.title, description: item.description, tags: item.tags}|json_encode|e('html_attr') }}"

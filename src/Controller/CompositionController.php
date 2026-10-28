@@ -27,15 +27,21 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 final class CompositionController extends AbstractController
 {
     #[Route('/catalogue/{id}/compose', name: 'composition_edit', methods: ['GET'])]
-    public function edit(#[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $em, RendererPresets $presets, FontLibrary $fonts, CompositionWorkspace $workspace): Response
+    public function edit(#[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $em, RendererPresets $presets, FontLibrary $fonts, CompositionWorkspace $workspace, \App\Favorites\Favorites $favorites): Response
     {
         $draft = $workspace->require($item); $source = $draft->getSourceMap()->{'meta/composition.json'} ?? null;
         if (null === $source) throw new CatalogueException(409, 'This item uses source ownership; the composition builder is disabled.');
         $choices = [];
-        foreach ($em->getRepository(Release::class)->findBy([], ['createdAt' => 'DESC'], 200) as $release) {
-            if ('theme' === $release->getItem()->getKind()) continue;
+        $releases = $em->getRepository(Release::class)->findBy([], ['createdAt' => 'DESC'], 200);
+        // Preferred references remain findable even beyond the recent-release window.
+        $favoriteIds = array_keys($favorites->states()['catalogue']);
+        if ($favoriteIds) $releases = [...$releases, ...$em->getRepository(Release::class)->findBy(['item' => $favoriteIds], ['createdAt' => 'DESC'])];
+        $seen = [];
+        foreach ($releases as $release) {
+            if (isset($seen[$release->getId()]) || 'theme' === $release->getItem()->getKind() || $release->getItem()->getId() === $item->getId()) continue;
+            $seen[$release->getId()] = true;
             $m = $release->getManifestData();
-            $choices[] = ['name' => $m->name, 'version' => $m->version, 'label' => $m->name.'@'.$m->version, 'props' => $m->defaults];
+            $choices[] = ['name' => $m->name, 'version' => $m->version, 'label' => $m->name.'@'.$m->version, 'props' => $m->defaults, 'itemId' => $release->getItem()->getId(), 'kind' => $release->getItem()->getKind(), 'favorite' => $favorites->contains($release->getItem())];
         }
         $rendererSettings = $presets->read($item, $this->getUser());
         $themeChoices = [];

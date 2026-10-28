@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
-    static targets = ['rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'reference', 'props', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs', 'bodyFont', 'headingFont', 'codeFont', 'theme', 'presetStatus', 'externalNotice', 'externalMessage'];
+    static targets = ['favoritesOnly', 'insertReference', 'pickerStatus', 'rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'reference', 'props', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs', 'bodyFont', 'headingFont', 'codeFont', 'theme', 'presetStatus', 'externalNotice', 'externalMessage'];
     static values = { tree: Object, choices: Array, revision: Number, item: String, url: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, settings: Object, themes: Object, presetUrl: String, commandsUrl: String, readUrl: String };
     connect() {
         this.model = structuredClone(this.treeValue); this.path = []; this.epoch = 0;
@@ -8,6 +8,7 @@ export default class extends Controller {
         this.themeTarget.value = this.settingsValue.themeReleaseId || '';
         this.disableJsTarget.checked = this.settingsValue.scripts === false;
         this.frameTarget.style.width = `${this.settingsValue.width || 768}px`;
+        this.favoritesOnlyTarget.checked = new URL(window.location.href).searchParams.get('favorites') === '1';
         this.render();
         this.unload = event => { if (this.dirty) { event.preventDefault(); event.returnValue = ''; } };
         this.message = event => {
@@ -42,10 +43,42 @@ export default class extends Controller {
         };
         walk(this.model.root, []);
         const node = this.node();
+        this.renderChoices();
         this.containerFieldsTarget.hidden = node.type !== 'container'; this.textFieldsTarget.hidden = node.type !== 'text'; this.referenceFieldsTarget.hidden = node.type !== 'reference';
         if (node.type === 'container') { this.tagTarget.value = node.tag; this.classesTarget.value = node.classes.join(' '); }
         if (node.type === 'text') this.textTarget.value = node.value;
-        if (node.type === 'reference') { this.referenceTarget.value = this.choicesValue.findIndex(c => c.name === node.name && c.version === node.version); this.propsTarget.value = JSON.stringify(node.props, null, 2); }
+        if (node.type === 'reference') this.propsTarget.value = JSON.stringify(node.props, null, 2);
+    }
+    filterChoices() {
+        const url = new URL(window.location.href);
+        if (this.favoritesOnlyTarget.checked) url.searchParams.set('favorites', '1');
+        else url.searchParams.delete('favorites');
+        history.replaceState(history.state, '', url);
+        this.renderChoices();
+    }
+    favoriteChanged({detail}) {
+        if (detail.kind !== 'catalogue') return;
+        this.choicesValue = this.choicesValue.map(choice => choice.itemId === detail.id ? {...choice, favorite: detail.favorite} : choice);
+        this.renderChoices();
+    }
+    renderChoices() {
+        const only = this.favoritesOnlyTarget.checked;
+        const current = this.node();
+        const selected = this.insertReferenceTarget.value;
+        const choices = this.choicesValue.map((choice, index) => ({choice, index})).filter(({choice}) => !only || choice.favorite);
+        const option = ({choice, index}, suffix = '', detailed = false) => new Option(detailed ? `${choice.favorite ? '★ ' : ''}${choice.label} · ${choice.kind}${suffix}` : choice.label + suffix, String(index));
+        this.insertReferenceTarget.replaceChildren(...choices.map(c => option(c, '', true)));
+        if (!choices.length) this.insertReferenceTarget.add(new Option('No eligible references', ''));
+        else if (choices.some(c => String(c.index) === selected)) this.insertReferenceTarget.value = selected;
+        this.insertReferenceTarget.disabled = !choices.length;
+        this.pickerStatusTarget.textContent = !choices.length ? (only ? 'No favorite published references match. Clear Favorites only to browse all eligible items.' : 'Publish a component, block or layout before inserting a reference.') : `${choices.length} eligible released references${only ? ' from favorites' : ''}`;
+        this.referenceTarget.replaceChildren(...choices.map(c => option(c)));
+        if (current.type === 'reference') {
+            const index = this.choicesValue.findIndex(c => c.name === current.name && c.version === current.version);
+            if (index >= 0 && !choices.some(c => c.index === index)) this.referenceTarget.add(option({choice: this.choicesValue[index], index}, ' (current, outside favorites)'));
+            if (index < 0) this.referenceTarget.add(new Option(`${current.name}@${current.version} (current)`, ''));
+            this.referenceTarget.value = index >= 0 ? String(index) : '';
+        }
     }
     key(event, path) {
         const i = this.visible.findIndex(row => JSON.stringify(row.path) === JSON.stringify(path));
@@ -69,10 +102,10 @@ export default class extends Controller {
             this.visible.forEach(row => { if (JSON.stringify(row.path) === JSON.stringify(this.path)) row.button.textContent = node.type === 'text' ? `Text: ${node.value.slice(0,80)}` : node.type === 'container' ? `<${node.tag}> ${node.classes.join(' ')}` : `${node.name}@${node.version}`; });
         } catch (error) { this.invalid = true; this.metadata(); clearTimeout(this.timer); this.epoch++; this.statusTarget.textContent = `Stale preview — ${error.message}`; }
     }
-    referenceChanged() {const c=this.choicesValue[Number(this.referenceTarget.value)];if(c)this.command({type:'update_node',nodeId:this.node().id,changes:{name:c.name,version:c.version,props:structuredClone(c.props)}});}
+    referenceChanged() {if(this.referenceTarget.value==='')return;const c=this.choicesValue[Number(this.referenceTarget.value)];if(c)this.command({type:'update_node',nodeId:this.node().id,changes:{name:c.name,version:c.version,props:structuredClone(c.props)}});}
     addContainer() {return this.command({type:'add_container',selectedId:this.node().id});}
     addText() {return this.command({type:'add_text',selectedId:this.node().id});}
-    addReference() {const c=this.choicesValue[0];if(!c){this.statusTarget.textContent='Publish a component or block before adding a reference.';return;}return this.command({type:'add_reference',selectedId:this.node().id,name:c.name,version:c.version,props:structuredClone(c.props)});}
+    addReference() {const c=this.insertReferenceTarget.value===''?null:this.choicesValue[Number(this.insertReferenceTarget.value)];if(!c){this.pickerStatusTarget.textContent='No eligible references. Clear Favorites only or publish a component, block or layout first.';return;}return this.command({type:'add_reference',selectedId:this.node().id,name:c.name,version:c.version,props:structuredClone(c.props)});}
     up() {if(this.path.length&&this.path.at(-1)>0)return this.command({type:'move_up',nodeId:this.node().id});}
     down() {if(this.path.length&&this.path.at(-1)<this.siblings().length-1)return this.command({type:'move_down',nodeId:this.node().id});}
     indent() {if(this.path.length&&this.path.at(-1)>0&&this.siblings()[this.path.at(-1)-1].type==='container')return this.command({type:'indent_node',nodeId:this.node().id});}

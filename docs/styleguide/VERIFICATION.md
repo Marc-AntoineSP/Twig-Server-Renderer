@@ -733,3 +733,84 @@ belongs to the user's client computer; Studio does not modify local client files
 publish a tunnel. Server enablement/origin/proxy/HTTPS policy stays deployment-controlled.
 The existing dev-only PHPUnit advisory remains unchanged; no new dependency was added.
 No external deployment/publication, branch push or real catalogue deletion occurred.
+
+## M15 — Personal favorites (2026-10-28)
+
+Final gates completed against the actual existing application; source and result details
+are in FAVORITES.md. No new dependencies or external client credentials were required.
+
+- Audited User, Theme/ThemeFamily, CatalogueItem/Draft/Release, reader/editor access,
+  catalogue SQL and theme gallery filters, studio Twig/icons/Stimulus, composition choices
+  and scoped MCP search. Preserved the pre-existing untracked .codex/config.toml.
+- Migration Version20261028072749 adds only personal_favorite: exactly one target FK,
+  unique user/target indexes and cascading target/account deletion. Ran
+  `docker compose exec -T app php bin/console doctrine:migrations:migrate --no-interaction`
+  and test/isolated-production migrations. Schema/mapping validation passes. Existing
+  production on8096 was not deployed or migrated.
+- `make assets`, `make check`, `doctrine:schema:validate`, `git diff --check`: pass.
+  Composer strict/container,33YAML/41Twig valid. Production scans all extracted/reused
+  templates and AssetMapper loads the actual favorite/composition controllers.
+- Final `make test`: **146 tests /1,375assertions**, exit0,1m24s. Covers authenticated
+  reader/editor favorites, anonymous/CSRF rejection, durable state in a new session,
+  user isolation, repeated PUT/DELETE, all target types, unchanged application preference,
+  source/theme revisions, deleted item cleanup, disabled account rejection, combined
+  search/tag/kind/mode/sort filtering before pagination, safe return links including edit
+  and save, and MCP owner/namespace restrictions and accessible pagination.
+- `make browser`: full58-flow run finished55pass/3fail in9.9m. All4new favorites flows
+  passed. The release compiler exceeded its existing execution budget during concurrent
+  production rendering; the native dialog scenario exceeded its30s test budget. The
+  existing sidebar workflow expected a bare edit URL; its assertion now permits the
+  intended query parameter preserving the listing. Focused rerun of exactly those3flows
+  passed3/3in43.5s with unchanged compiler/test limits. Thus every one of the58flows was
+  actually verified; the full run was not a single all-green invocation.
+- Favorites browser coverage: actual cross-device login, isolation and saving as a reader,
+  card stars without navigation/reload, filter URLs/back links and combined kind search,
+  clearing filters, theme light/dark identity, independent Apply and star actions,
+  pending/keyboard activation and an actual committed PUT with deliberately lost response
+  reconciled through GET, published component/block/layout choices, unpublished exclusion,
+  retained current nonfavorite reference and unchanged composition revision. Desktop1280
+  and mobile390layouts were checked in light/dark; screenshot overflow assertions pass.
+  Development and production screenshots were visually inspected.
+- Final production command:
+  `APPEARANCE_COMPOSE_OVERRIDE=var/favorites-verification/build-trust.yaml make favorites-production`.
+  **7/7browser flows /54.2s**, exit0: all4favorites flows, login/logout, complete manual
+  builder and concurrent manual/MCP editing/preview. Official SDK HTTP smoke also passed
+  (26tools, preview revision8/restoration9). New items/themes/favorites were created after
+  the production build with read-only assets. Fixture:var/appearance-20261028075717-30570;
+  immutable local image:local-20261028075717-5f95203c. Earlier verified production run also
+  passed7/7in2.4m (var/appearance-20261028074406-28376).
+- Production manifest before=after, read-only:
+  `d3d982375e35556ab9bcdb00574a644326cd7a9621c0d76f90b420c4a8633927`.
+  Production fixture fonts3families/12faces/511,916bytes/errors=[]. Full development
+  registry42families/208faces/6,713,012font bytes/errors=[].
+- Final original-row preservation check: **changedOriginalRows=[]**. Original7users,
+  534themes/284families/513items/513drafts/115catalogue releases/100theme releases/
+  1renderer preset/375snapshots/1appearance preference/7MCPcredentials/4OAuth clients
+  retain complete baseline hashes. This includes the user's existing Codex composition.
+  Only new fixture records were added during UI tests. Temporary development actors and
+  credential files were removed; new OAuth fixture client disabled. Production actors
+  disabled and task-owned containers stopped. Existing8095/8096/8110 services preserved.
+
+Failure/environment record: the first production build could not validate the local
+intercepting certificate chain for pinned jsDelivr imports (and Packagist metadata).
+The acceptance driver now accepts an optional compose override. An ignored task-local
+Dockerfile mounts a copy of the host's trusted CA bundle as a BuildKit secret only during
+Composer/importmap downloads, with COMPOSER_CAFILE and PHP curl/openssl cafile settings.
+TLS verification remains enabled and the CA is not copied into the runtime image. An
+initial outside-context secret mount was rejected by Buildx; staging that public CA
+bundle inside the task directory resolved it. No lockfile, repository Dockerfile, system
+trust store, original deployment or client configuration changed. Failed build evidence
+is retained in production.log; the final verified run is production-final.log.
+
+Initial focused tests also caught an invalid generated test slug and unsupported positional
+Choice syntax (fixed to the supported named argument), Turbo navigation timing assumptions,
+implicit select-label matching, and an unreal BrowserKit GET parameter/URI mismatch when
+submitting a form. These were corrected before the final146/1375gate. No safety budget was
+relaxed. Detailed logs, original failed browser traces, six screenshots per environment,
+font report and preservation evidence are retained under var/favorites-verification.
+
+Remaining behavior: after unfavoriting a card in a filtered list the confirmed empty star
+appears immediately; the card leaves that list on the next search/refresh. Picker filters
+never rewrite current references. There is no favorite-mutation MCP tool (search filtering
+and status are supported). Existing installed production requires its normal authorized
+code/asset update and migration; it was not redeployed. No required local M15 gate remains.

@@ -28,7 +28,7 @@ for key in ['indent_node','outdent_node','move_up','move_down','duplicate_node',
  nodecmds[key]=obj(p,['type','nodeId'])
 inputs={
 'capabilities':obj({}),
-'search_catalogue':obj({'query':{'type':'string','maxLength':120},'kind':{'type':'string','enum':['component','block','layout']},**page},[]),
+'search_catalogue':obj({'favoritesOnly':{'type':'boolean','description':'Only the authenticated user’s personal favorites; catalogue permissions and release eligibility still apply.'},'query':{'type':'string','maxLength':120},'kind':{'type':'string','enum':['component','block','layout']},**page},[]),
 'list_preview_themes':obj(page,[]),
 'get_reference':obj({'name':name,'version':version}),
 'get':obj({'compositionId':item}),
@@ -67,7 +67,7 @@ result={'type':'object','properties':{'ok':{'type':'boolean'},'compositionId':{'
 Path('src/Mcp/Tool/ComposeSchemas.php').write_text('<?php\nnamespace App\\Mcp\\Tool;\n/** Explicit bounded schemas; maintained by tools/mcp/generate-tool-schemas.py. */\nfinal class ComposeSchemas\n{\n    public const INPUT = '+schema_php(inputs,1)+';\n    public const RESULT = '+schema_php(result,1)+';\n}\n')
 desc={
 'capabilities':'Read composer node types, limits, save/retry rules and supported actions. Source-code authoring and publishing are excluded.',
-'search_catalogue':'Search accessible catalogue items with paginated exact released versions. An unpublished draft is not insertable; creation differs from reference insertion.',
+'search_catalogue':'Search accessible catalogue items with paginated exact released versions and personal favorite status. Set favoritesOnly to filter before pagination. An unpublished draft is not insertable; creation differs from reference insertion.',
 'get_reference':'Read the editable props JSON schema and defaults of one accessible immutable release, including transitive permission checks.',
 'get':'Read a saved composition tree, stable node IDs, authoritative revision, reference pins and editing permissions.',
 'get_node':'Read a bounded subtree with parent/position, legal actions and exact instance property schema.',

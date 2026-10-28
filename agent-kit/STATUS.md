@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-10-28. Scope: M00–M08, font/theme library and M10–M14 complete, including local immutable production verification; no remote deployment or push.
+Last updated: 2026-10-28. Scope: M00–M08, font/theme library and M10–M15 complete, including local immutable production verification; no remote deployment or push.
 
 Earlier sections retain historical checkpoints. The final handoff below supersedes their in-progress notes.
 
@@ -21,6 +21,7 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | M12 Inline detail layout | Complete |123PHPUnit/752assertions;20production flows; all50 development flows verified across full/focused runs;24existing-theme responsive renders |
 | M13 Composer MCP | Complete |135PHPUnit/1138assertions; officialSDK + actualCodex round trips; concurrent writes;3production browser flows; ChatGPT account setup documented |
 | M14 Profile and browser setup | Complete |141PHPUnit/1245assertions;3development +6production browser flows; live PAT/OAuth checks; original account/data hashes preserved |
+| M15 Personal favorites | Complete |146PHPUnit/1375assertions;58development flows verified across full/focused runs;7production flows; stable variant/item identity and unchanged original data |
 
 ## Repository audit and preservation
 
@@ -1409,3 +1410,70 @@ task files. Command: python3 /tmp/styleguide-compose-20261028-client.py. Check e
 Exact next step: open the authenticated composer and captured preview:
 http://127.0.0.1:8095/catalogue/01M60K5SG4JFE87J100G61ZMV1/compose
 http://127.0.0.1:8095/catalogue/composition-previews/01M60KGVD6WYPBJJ09YH7HMY2A
+
+## M15 final handoff — Personal favorites (2026-10-28)
+
+Completed personal theme-variant/component/block/layout favorites on the existing shared
+reader catalogue. Stable Theme/CatalogueItem FKs preserve favorites across edits/releases;
+unique owner/target indexes, exclusive-target CHECK and cascades provide database integrity.
+Explicit authenticated CSRF PUT/DELETE are idempotent. Batched request-local status maps
+avoid per-card favorite queries. Published theme package cards reuse their typed variant.
+
+Shared Twig/SVG stars and AssetMapper Stimulus cover listings/details/editors/composer,
+pressed labels, keyboard focus, pending requests, real server-state reconciliation after
+failures and duplicate-button synchronization. Catalogue/theme URL filters compose with
+existing search/tags/kind/mode/sort before12-item pagination; list context survives detail,
+edit and save. Clear-filter and distinct empty states are integrated. Theme search is now
+server-side instead of hiding an entire unpaginated gallery in JavaScript. Apply remains
+independent. Composer favorites narrow published immutable choices, include older preferred
+releases, preserve current nonfavorite references and cannot bypass shared tree validation.
+MCP search supports favoritesOnly plus favorite status under its existing actor/scope rules.
+
+Final measured gates:
+- `make assets`, `make check`, schema/mapping and diff checks pass;33YAML/41Twig valid.
+- `make test`:146tests/1375assertions, exit0,83.988s, including persistence/isolation,
+  repeated operations/removal, CSRF/reader/anonymous/deletion/disabled account, revision
+  identity, combined filters/pagination/return links and authenticated MCP restrictions.
+- All58development browser flows verified: full run55pass/3fail, then3/3focused rerun
+  in43.5s. Original failures: concurrent compiler budget, dialog test timeout and old
+  exact-URL assertion that did not allow the preserved-filter query. No budget changes.
+  All4new favorites flows pass, including lost committed response, mobile/light/dark,
+  multiple sessions, all reference kinds, Apply independence and sandbox preservation.
+- Final immutable production7/7browser flows in54.2s plus real official SDK HTTP smoke,
+  using new post-build data with no asset redeployment. Fixture:
+  var/appearance-20261028075717-30570, image:local-20261028075717-5f95203c.
+  Manifest is read-only/unchanged:d3d982375e35556ab9bcdb00574a644326cd7a9621c0d76f90b420c4a8633927.
+- Original7accounts/534themes/284families/513items/513drafts/115releases/100theme releases/
+  1renderer preset/375snapshots/1preference/7MCPcredentials/4OAuth clients retain complete
+  row hashes (changedOriginalRows=[]), including the pre-existing Codex composition.
+  Fonts42families/208faces/6,713,012bytes/errors=[]. Browser test actors removed, new test
+  OAuth client disabled; isolated production actors disabled/containers stopped. Existing
+  development8095, production8096 and consumer8110 remain available.
+
+Migration Version20261028072749 applied in development/test/isolated production. Other
+installations: normal authorized code update, then doctrine:migrations:migrate. Exact
+commands, full changed-file list, APIs, behavior and limitations:docs/styleguide/FAVORITES.md.
+Measured evidence/failure history:VERIFICATION.md and var/favorites-verification. Files
+include Favorite/Favorites/API/Twig extension/migration, search DTOs/services/controllers,
+shared stars/filter/pagination partials, listing/detail/editor/composer integration,
+MCP application/generated schemas and generator, functional/browser tests, acceptance
+Make target/driver and architecture/milestone/verification/status docs. No dependencies,
+lockfiles, original templates in the catalogue, fonts or imported themes were rewritten.
+Stack remains PHP8.5.12/Symfony8.1.9/FrankenPHP1.13.4/Trixie/Tailwind4.3.3/daisyUI5.7.50/
+Stimulus3.2.2. The untracked .codex/config.toml was preserved.
+
+Environment failure resolved for verification: jsDelivr/Packagist certificate trust in
+this local build environment required the host public CA bundle, staged in the ignored
+verification directory and mounted as a BuildKit build secret with TLS verification on.
+Acceptance driver supports APPEARANCE_COMPOSE_OVERRIDE for that local overlay. No system
+trust-store/repository Dockerfile or running original deployment change. See verification
+failure record for the initial rejected outside-context mount and earlier failed build.
+
+Remaining behavior: filtered cards leave the list on search/refresh after their stars
+update; current references remain visible outside picker filters. No MCP favorite mutation
+tool was requested. Existing production8096 was not redeployed. No required local M15
+implementation or acceptance gate remains. No publication, branch push or external deploy.
+
+Exact next step: open http://localhost:8095/catalogue or /themes, use a title's star, then
+check Favorites only and Find items/Find themes. In a composition, use Favorites only above
+the reference insertion picker. Development already has the migration and rebuilt CSS.

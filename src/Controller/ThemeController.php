@@ -29,9 +29,9 @@ use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 final class ThemeController extends AbstractController
 {
     #[Route('/themes', name: 'theme_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(\App\Theme\ThemeCatalogue $catalogue, #[\Symfony\Component\HttpKernel\Attribute\MapQueryString(validationFailedStatusCode: 400)] \App\Theme\ThemeSearchQuery $query = new \App\Theme\ThemeSearchQuery()): Response
     {
-        return $this->render('theme/index.html.twig', ['themes' => $entityManager->getRepository(Theme::class)->findBy([], ['updatedAt' => 'DESC'])]);
+        return $this->render('theme/index.html.twig', $catalogue->search($query));
     }
 
     #[Route('/themes/import', name: 'theme_import', methods: ['GET'])]

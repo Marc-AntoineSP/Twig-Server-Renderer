@@ -192,3 +192,25 @@ M14 completed2026-10-27:141PHPUnit/1245assertions,3development and6immutable-pro
 browser flows, actual PAT/OAuth MCP checks from/profile and unchanged asset/content hashes.
 External ChatGPT account linking remains explicitly outside local verification. See
 PROFILE.md, VERIFICATION.md and STATUS.md.
+
+## M15 — Personal catalogue favorites
+
+Persist per-user stars on stable theme variant and component/block/layout IDs.
+Integrate accessible asynchronous controls, server-filtered lists with preserved
+queries/pagination, eligible composition references and scoped MCP search. Reuse
+current authentication/CSRF, shared catalogue access, Twig/Stimulus/icon conventions,
+theme appearance and rendering isolation. Preserve existing data and manual actions.
+
+### Completion gate
+
+Real persistence, isolation, repeated add/remove, CSRF, deletion/disabled access,
+revision preservation, combined filters/pagination and MCP namespace restrictions.
+Browser checks for keyboard/pending/failure, multiple sessions, theme modes, responsive
+list/detail/pickers and Apply independence; existing authentication/manual composer
+regressions. Verify new data with immutable production assets and record original
+data hashes, changed files, migration and measured results. See FAVORITES.md.
+
+M15 completed2026-10-28:146PHPUnit/1375assertions; all58development flows verified
+across the full run and3focused reruns;7/7immutable-production browser flows/54.2s,
+official SDK smoke, unchanged original row hashes and font registry. Migration applied
+in development/test/isolated production; existing production was not redeployed.

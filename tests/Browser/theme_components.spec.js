@@ -131,7 +131,7 @@ test('sidebar downloads, immutable release package, edit, duplicate and create k
     await sidebar.getByRole('button',{name:'Apply to showcase',exact:true}).click();await expect(page).toHaveURL(/\/catalogue\/[0-9A-Z]{26}\/edit$/);
     await expect(page.getByLabel('Published theme',{exact:true})).toHaveValue(release.id);await expect(page.locator('iframe[title="Component preview"]')).toHaveAttribute('sandbox','allow-scripts');expect(await state(page)).toEqual(before);
     await open(page,t.id);
-    await sidebar.getByRole('link',{name:'Edit theme',exact:true}).click();await expect(page).toHaveURL(`/themes/${t.id}/edit`);
+    await sidebar.getByRole('link',{name:'Edit theme',exact:true}).click();await expect(page).toHaveURL(new RegExp(`/themes/${t.id}/edit(?:\\?|$)`));
     await expect(page.locator('#main')).toHaveClass(/max-w-6xl/);await expect(page.locator('iframe[title="Edited theme preview"]')).toHaveAttribute('sandbox','allow-scripts');
     await page.goto('/themes/new');await expect(page.locator('#main')).toHaveClass(/max-w-6xl/);await expect(page.locator('iframe[title="Edited theme preview"]')).toHaveAttribute('sandbox','allow-scripts');
     await open(page,t.id);await page.getByRole('button',{name:'Duplicate/Edit',exact:true}).click();await expect(page).toHaveURL(/\/themes\/[0-9A-Z]{26}\/edit$/);expect(page.url()).not.toContain(t.id);

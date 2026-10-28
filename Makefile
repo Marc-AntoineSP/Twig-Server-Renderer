@@ -116,3 +116,7 @@ compose-mcp-production:
 .PHONY: profile-production
 profile-production:
 	bash tests/AppearanceProduction/run.sh tests/Browser/profile.spec.js tests/Browser/authentication.spec.js tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js
+
+.PHONY: favorites-production
+favorites-production:
+	bash tests/AppearanceProduction/run.sh tests/Browser/favorites.spec.js tests/Browser/authentication.spec.js tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js
