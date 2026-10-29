@@ -325,3 +325,18 @@ trusted shared renderer markup. The same Contrast service supplies saved ratios 
 300 ms draft diagnostics, with bounded editor/CSRF endpoints and no persistence. Draft
 results, saved baselines, stale responses and invalid opaque-hex values are explicit.
 See FONT_PAIRING_AND_CONTRAST.md for usage, guidance scope and fallback limits.
+
+
+## Catalogue read measurements (improvement prompt 10)
+
+Catalogue ID pagination now uses a bounded bulk hydration with explicit ID-order
+restoration. Existing card/favorite batching remains shared; theme gallery family
+metadata is one scalar projection after pagination. MCP keeps authorization before
+accessible slicing, then enriches only the selected page with scalar draft fields and
+ten releases per item. Visibility-sensitive candidate traversal is retained.
+Initial appearance HTML contains its current family; the existing private endpoint
+loads the other choices when opened. Unpaired themes use a transient read fallback.
+Explicit writers and the bounded/restartable styleguide:themes:backfill-families command
+perform attachment; GET lookups never flush missing-family repair. No schema, index,
+cache or package format changes are introduced. See CATALOGUE_READ_PERFORMANCE.md for
+actual five-run before/after data, plans, deployment order and isolated reproduction.

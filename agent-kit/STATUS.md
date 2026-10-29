@@ -3293,3 +3293,206 @@ tests/Browser/font_pairing_contrast.spec.js
 tests/ContrastTest.php
 tests/Functional/FontPairingContrastTest.php
 ```
+
+
+## Improvement prompt 10 — Catalogue read performance (2026-10-29)
+
+Requested scope: prompts/10-catalogue-read-performance.md and its matching nested
+prompt pack. The pack's three SHA256 checks and embedded PROMPT.md byte comparison
+passed. Branch feature/m24-catalogue-read-performance started from 0f92f2b (prompt09).
+The twelve staged user prompts remain byte-for-byte unchanged and are excluded from
+the implementation commit. No later prompt starts automatically.
+
+Completed implementation: catalogue count/ID selection retains all filters and stable
+sorts, then one bounded bulk fetch restores ID order and omits a concurrently deleted
+row without refilling. Existing card/release/favorite batching remains shared. Splitting
+the favorite OR/LEFT JOIN into two EXISTS predicates removes the measured repeated
+owner-favorite scan without an index or cache. Gallery family metadata is a single
+bounded scalar projection after pagination; no collection fetch join is introduced.
+MCP keeps its voter before accessible slicing and batches only selected IDs' draft
+revision/editor flag and latest ten immutable release identities/versions. Source maps
+and release manifests are no longer hydrated for enrichment. Release timestamp ties
+now use descending release ID; result fields, limits, scope and stable IDs are retained.
+
+Initial appearance HTML carries the current family/variant; opening its existing menu
+loads other choices through the private endpoint. Scalar choices preserve anonymous
+Studio-default-only access. Closing/disconnecting cancels obsolete loads, current and
+newer keyboard selections survive responses, and failed loads can retry on reopen.
+No picker replacement or new cache/search/queue/dependency is introduced.
+
+Legacy family GET lookup no longer attaches or flushes. A transient single-variant
+fallback keeps old themes visible in gallery/detail/API/choices, using the stable theme
+ID as a temporary family ID. Explicit writes resolve a real family. The new bounded
+styleguide:themes:backfill-families --limit=100 command is optional operator maintenance,
+not an HTTP/deployment hook. It commits per attachment, rechecks under the existing
+advisory lock, resumes through the remaining-orphan predicate, preserves existing
+attachments, pairs only known managed provenance, and separates occupied same-mode
+variants. Deploy the fallback before optional backfill; repeat to remaining=0. See
+CATALOGUE_READ_PERFORMANCE.md for commands and fallback ID transition. No new migration,
+configuration, index or package-format change is required. Existing first-install
+default initialization, snapshot materialization and deleted-preference recovery remain
+separate, unchanged paths. No backfill or fixture mutation ran on the working catalogue.
+
+Before modification, the verified owned run browser-9a0fdb92ce8553730122ee18 received
+read-performance-v1: 1040 added items/drafts, 1536 actual archive-backed releases (128
+items x12 versions), 334 actor catalogue favorites, 128 families/193 themes including
+one explicit orphan. Total main counts were identical before/after: 1126 items/drafts,
+2030 releases, 431 favorites, 197 themes and 131 families. Enabled editor; compose:read
+PAT restricted to read-bench/*, with forty benchmark candidates outside that scope.
+The validated fixture archives test reads and do not simulate publication workers.
+
+Actual baseline and after each contain one excluded warmup plus five samples per case,
+warm DB/OS caches and fresh request entity managers. Instrumented KernelBrowser
+(dev/debug=true) uses only in-memory DBAL middleware and leaves persisted MCP/OAuth
+profiling disabled. Separate real HTTP series uses the serving FrankenPHP app
+(dev/debug=false) over the internal Docker network, without SQL profiling. Reports
+retain SQL, elapsed/DB/connect/TTFB time, response sizes, all ranges, plans and runtime.
+All nine canonical JSON/MCP or normalized card fingerprints match; all main reads
+have zero writes. SQL counts: catalogue 25→12, theme gallery 26→13, appearance endpoint
+3→3, MCP 1/20/50 results 6/44/104→6/6/6, favorites MCP 104→6. Instrumented request median
+favorites 250.339→56.247 ms, MCP50 117.007→50.100 ms. Real HTTP median favorites
+229.676→45.039 ms, MCP50 98.220→47.931 ms. Ordinary catalogue-name HTTP median is
+44.453→45.285 ms; appearance endpoint 19.011→22.001 ms. There is no blanket speed claim.
+Initial catalogue-name HTML minimum is 74085→63108 bytes; MCP50 remains 45122 bytes.
+The orphan GET previously inserts one family (130→131); now it returns the light
+variant with zero SQL writes (130→130).
+
+Actual EXPLAIN ANALYZE/BUFFERS on observed favorite count/page SQL shows the old join
+removes 377735 rows by its join filter and touches 6668 shared buffers. The split query
+hashes owner-favorite identities once; measured diagnostic count uses 36 buffers /
+1.408 ms and name page uses the existing catalogue-name index, 16 buffers /0.405 ms.
+Ordinary substring scans and small release sorts do not justify new indexes here.
+CPU: x86_64 WSL2 Linux 6.18.54.1, Core i5-12500H, Docker reports 10 logical CPUs,
+PHP limit 256 MiB. These local warm-run observations do not predict cold caches,
+large offsets, production load or arbitrary datasets. MCP candidate traversal remains
+visibility/offset sensitive. Appearance enumeration had no measured query-count growth
+before; the change avoids hydration and repeated SSR options, while legacy fallback
+adds a small measured endpoint cost.
+
+Verification: Docker app/browser builds compile CSS/preview JS with
+existing locks; strict Composer, container, all34 YAML and all56 Twig lints pass.
+Focused new regressions pass 6 tests /118 assertions with debug SQL collection forced
+on. Fresh complete backend run passes 180 tests /2071 assertions, including actual
+role/PAT/OAuth restrictions, isolation, dependencies, immutable archives, reader flows,
+sorting/counts/favorites, accessible offsets, top-ten releases, missing drafts, orphan
+read-only behavior and bounded/restartable backfill. No wall-time threshold tests exist.
+Browser verification passes 72/72 selected scenarios in one final invocation
+(64 Chromium, 4 Firefox, 4 WebKit), including five new lazy-selector cases and existing
+appearance/discovery/favorites/MCP/reference-picker/theme-action/critical flows. Four
+new development axe reports have zero violations; production has four more. These are
+the requested relevant suites, not a new full-suite or visual-baseline claim.
+
+Immutable-production command:
+
+```sh
+bash tests/AppearanceProduction/run.sh tests/Browser/read_performance.spec.js tests/Browser/appearance.spec.js tests/Browser/compose_mcp.spec.js
+```
+
+passes 18/18 cases, actual SDK smoke, schema/font checks, read-only and unchanged compiled
+AssetMapper manifest. Four new production axe reports have zero violations; one
+incomplete per report remains for manual review. Four 390/1440 light/dark screenshots
+were viewed, with native select/Tab/Enter and current-only HTML verified.
+
+Exact owned backend/browser invocation is retained in
+var/browser-verification/read-performance-check4.py/.log. It verifies resources,
+builds app/browser, clears owned dev cache, recreates app/consumer, resets only its
+browser_test DB, runs focused new tests, resets that owned test DB again, calls
+Run.check() (strict lint/create/migrate/full PHPUnit), then Run.test() with
+read_performance.spec.js, appearance.spec.js, discovery.spec.js, favorites.spec.js,
+compose_mcp.spec.js, reference_picker.spec.js, theme_actions.spec.js and critical.spec.js.
+The SQL and HTTP baseline/after commands and logs are retained as
+read-performance-baseline.py (successful baseline6.log), read-performance-after.py/.log,
+read-performance-http-before.py and read-performance-http-after.py/.log; the successful
+corrected HTTP baseline log is read-performance-http-before2.log.
+Legacy probes are separately guarded and restore only their own fixture in finally.
+
+The committed reproducible driver was exercised from scratch on separate owned run
+browser-765e5ef4ed3dfbc1ac0cd5fa: Run.start(), then
+python3 tests/ReadPerformance/run.py seed --run-id <exact run> and measure --label sample.
+It seeded successfully, produced all nine SQL/HTTP cases with the same counts/query
+bounds, proved zero-write legacy GET, and cleaned in finally. This smoke series ran
+alongside verification and is not used for latency comparisons. The large benchmark
+runner takes exact ownership receipts, never accepts a working-app target and refuses
+existing fixture/evidence overwrite. Private PAT/cookies/ownership are excluded from
+outputs and removed during cleanup.
+
+Failed checks and corrections: initial seeding obtained an inlined private ComposeTokens
+service after rows had committed; constructor-based use of the same service fixed it,
+and the fully verified first fixture was completed without reseeding. The fresh second
+run proves the corrected seeder. Profiler attempts could not instrument MCP because
+its credential protection disables persisted profiles; instrumentation now exposes only
+in-memory DBAL data in a test/CLI kernel. Initial HTTP MCP measurement omitted initialize;
+real initialize/session/protocol negotiation fixed it, and deprecated curl_close was
+removed for PHP8.5. All baseline captures succeeded before application edits.
+The first backend run failed a counter running with inherited debug=false and an
+incomplete managed-provenance fixture affecting a later ShellTest. Forced test-only
+debug collection and complete display metadata fixed these; an intermediate run was
+stopped while correcting its remaining fixture field. The following complete run
+isolated fixture INSERTs included in a first-request counter; resetting the collector
+after setup fixed that assertion. Final focused and complete backend runs pass.
+An initial production shell invocation encountered accidentally introduced CRLF; the
+existing LF contract was restored before the successful 18-case run. No application
+code changed after the measured implementation except closing the selector's busy
+indicator on cancellation; production and final browser checks cover that detail.
+
+Optional host check_kit.py also encounters unrelated ignored runtime JSON, and a copy
+of the current tracked working files exposes existing CRLF bytes differing from kit
+inventory hashes. A temporary canonical Git snapshot (core.autocrlf=false), overlaid
+with current tracked task edits, passes 77 JSON documents /3 package schemas /18 payload
+hashes plus graph/path/prompt/document checks. No unrelated kit fixture or line-ending
+rule was changed. Real Docker validators/tests above use the actual application source.
+
+Evidence: main owned artifacts read-before/read-after, http-before/http-after,
+legacy-before/legacy-after and comparison.json; new browser invocation artifacts;
+var/appearance-20261029213808-30419/browser-results and production2.log; fresh runner
+artifacts under browser-765e5ef4ed3dfbc1ac0cd5fa. Both browser runs have CLEANED receipts. Production cleanup removed its private
+accounts/ownership/secrets and all runtime resources, then its exact owned worker tags.
+The final read-performance-resource-audit.json verifies zero containers (including
+stopped), volumes, networks, private files and owned worker tags for all three projects.
+Reusable app/browser build caches are retained. The comparison was captured with intact
+fingerprints before browser sanitation. A final driver guard now refuses sanitized
+hashes or changed runtime/client conditions rather than claiming equality; the real
+sanitized retained run was explicitly rejected as expected before teardown.
+
+Remaining limits: no cold-cache/high-concurrency/large-offset throughput measurement,
+human screen-reader assessment or whole-page accessibility certification. Canonical
+kit checks require normalized fixture bytes and exclusion of runtime artifacts as
+explained above. No push, remote publication, deployment or working-content mutation
+occurred. Exact next step: review this completed prompt10 implementation and the
+optional backfill procedure; select another numbered prompt explicitly when ready.
+
+Changed files (31 task paths; staged user prompts excluded):
+
+```text
+agent-kit/STATUS.md
+assets/controllers/appearance_controller.js
+docs/styleguide/ARCHITECTURE.md
+docs/styleguide/BROWSER_TESTS.md
+docs/styleguide/CATALOGUE_READ_PERFORMANCE.md
+docs/styleguide/CONTRACTS.md
+docs/styleguide/MILESTONES.md
+docs/styleguide/SECURITY.md
+src/Appearance/AppearanceManager.php
+src/Appearance/ThemeFamilies.php
+src/Appearance/ThemeFamilyWriter.php
+src/Command/BackfillThemeFamiliesCommand.php
+src/Controller/AppearanceController.php
+src/Controller/ThemeApiController.php
+src/Entity/ThemeFamily.php
+src/Mcp/ComposeApplication.php
+src/Repository/CatalogueRepository.php
+src/Theme/ThemeCatalogue.php
+src/Theme/ThemeWriter.php
+src/Twig/AppearanceRuntime.php
+templates/theme/index.html.twig
+tests/AppearanceProduction/run.sh
+tests/Browser/read_performance.spec.js
+tests/Functional/ReadPerformanceTest.php
+tests/ReadPerformance/MeasuredKernel.php
+tests/ReadPerformance/http.php
+tests/ReadPerformance/legacy-probe.php
+tests/ReadPerformance/legacy.php
+tests/ReadPerformance/measure.php
+tests/ReadPerformance/run.py
+tests/ReadPerformance/seed.php
+```

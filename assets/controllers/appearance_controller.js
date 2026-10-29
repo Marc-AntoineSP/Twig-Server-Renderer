@@ -7,7 +7,7 @@ export default class extends Controller {
     connect() {
         this.confirmed = structuredClone(this.stateValue); this.current = this.confirmed; this.serverState = this.confirmed;
         this.clientId = [...crypto.getRandomValues(new Uint8Array(16))].map(v=>v.toString(16).padStart(2,'0')).join('');
-        this.sequence = 0; this.commitTail = Promise.resolve();
+        this.sequence = 0; this.familySequence = 0; this.commitTail = Promise.resolve();
         this.system = matchMedia('(prefers-color-scheme: dark)');
         this.osChanged = () => {if (this.current.mode === 'system') this.render(this.current);};
         this.beforeCache = () => this.revertTrial(true);
@@ -25,7 +25,7 @@ export default class extends Controller {
     }
 
     disconnect() {
-        this.sequence++; this.pending?.abort();
+        this.sequence++; this.pending?.abort(); this.familySequence++; this.familyPending?.abort();
         if (this.trialActive && this.element.isConnected) window.StyleguideAppearance.render(this.confirmed);
         this.system.removeEventListener('change', this.osChanged);
         document.removeEventListener('turbo:before-cache', this.beforeCache);
@@ -44,6 +44,7 @@ export default class extends Controller {
         this.nameTarget.textContent = state.familyName;
         this.nameTarget.title = state.familyName;
         this.modeTarget.textContent = `${mode} · ${state.mode === 'system' ? 'system' : 'explicit preference'}`;
+        this.keepFamily(state.familyId, state.familyName, Object.keys(state.variants));
         this.familyTarget.value = state.familyId;
         this.unavailableTarget.hidden = available;
         this.unavailableTarget.textContent = available ? '' : `Only ${mode} is available in this ${state.trial ? 'trial' : 'applied snapshot'}. Your ${state.mode} preference is kept.`;
@@ -159,9 +160,26 @@ export default class extends Controller {
     reset(event) {event.preventDefault();return this.restoreDefault();}
     applyTheme(event) {return this.select({kind:'family',themeId:event.currentTarget.dataset.themeId,themeRevision:Number(event.currentTarget.dataset.themeRevision)});}
     applyFamily() {return this.select({kind:'family',familyId:this.familyTarget.value});}
+    keepFamily(id, label, modes) {
+        if (![...this.familyTarget.options].some(option=>option.value===id)) this.familyTarget.add(new Option(`${label}${modes.length===1?' · '+modes[0]+' only':''}`,id));
+    }
     async refreshFamilies() {
-        if(!this.menuTarget.open)return;
-        try {const data=await this.json(this.familiesUrlValue);const selected=this.familyTarget.value;this.familyTarget.replaceChildren(...data.families.map(f=>new Option(`${f.label}${f.modes.length===1?' · '+f.modes[0]+' only':''}`,f.id)));this.familyTarget.value=selected;}catch(error){this.message(error.message,true);}
+        const sequence=++this.familySequence;this.familyPending?.abort();
+        if(!this.menuTarget.open){this.familyTarget.removeAttribute('aria-busy');return;}
+        const controller=this.familyPending=new AbortController();
+        this.familyTarget.setAttribute('aria-busy','true');
+        try {
+            const data=await this.json(this.familiesUrlValue,{signal:controller.signal});
+            if(sequence!==this.familySequence||!this.menuTarget.open)return;
+            // Read the selection at completion, so an in-flight response cannot
+            // overwrite a newer keyboard choice or newly applied family.
+            const selected=this.familyTarget.selectedOptions[0]?.cloneNode(true);
+            this.familyTarget.replaceChildren(...data.families.map(f=>new Option(`${f.label}${f.modes.length===1?' · '+f.modes[0]+' only':''}`,f.id)));
+            if(selected&&!data.families.some(f=>f.id===selected.value))this.familyTarget.add(selected);
+            this.keepFamily(this.current.familyId,this.current.familyName,Object.keys(this.current.variants));
+            this.familyTarget.value=selected?.value??this.current.familyId;
+        }catch(error){if(error.name!=='AbortError'&&sequence===this.familySequence)this.message(error.message,true);}
+        finally{if(sequence===this.familySequence)this.familyTarget.removeAttribute('aria-busy');}
     }
     async reconcile() {
         const {sequence,signal}=this.fresh();

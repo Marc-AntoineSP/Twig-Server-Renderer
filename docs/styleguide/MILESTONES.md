@@ -414,3 +414,33 @@ additions remain unchanged. Usage is in FONT_PAIRING_AND_CONTRAST.md; STATUS rec
 29 changed paths, commands, versions, corrected failures, exact-source verification,
 evidence and remaining limits. No push/deployment/remote publication occurred. Select
 another numbered prompt explicitly; prompt10 is not started automatically.
+
+
+## Improvement prompt 10 — Measured catalogue read paths
+
+Completed 2026-10-29 on feature/m24-catalogue-read-performance. A deterministic owned
+fixture and five-sample SQL/in-process/HTTP series precede implementation. Catalogue
+bulk hydration preserves paginated ID order; separate favorite predicates remove a
+measured repeated scan; theme cards use bounded scalar family summaries. MCP keeps
+authorization before accessible pagination and enriches only the selected page without
+source maps/manifests. Current appearance remains in SSR; other choices load on demand.
+Missing-family GET repair is replaced by a read fallback and explicit idempotent,
+bounded/restartable backfill with deployment order documented.
+
+Identical main counts and nine result fingerprints are retained. Catalogue SQL falls
+25→12, theme gallery26→13, MCP1/20/50 results6/44/104→6/6/6. Appearance choices already
+had constant query count3; no query-count or endpoint latency gain is claimed there.
+Favorites HTTP median229.676→45.039 ms; MCP50 98.220→47.931 ms on this local fixture.
+Ordinary listing timing is largely unchanged. Full ranges, payloads, actual plans,
+conditions and limitations are in CATALOGUE_READ_PERFORMANCE.md; no index/cache is added.
+
+Docker build/lint, 180 PHPUnit tests /2071 assertions, 72 selected browser scenarios
+(64 Chromium,4 Firefox,4 WebKit) and18 immutable-production scenarios pass. Four new
+browser and four production axe reports have zero violations; human assessment and
+axe incompletes remain manual. A second clean run proves the reproducible seed/measure
+workflow. Both browser runs and the production fixture are cleaned; the final audit
+reports zero owned containers/volumes/networks/private files/worker tags. STATUS records
+commands, corrected fixture/instrumentation failures, the unrelated kit CRLF/runtime
+artifact limitation, actual versions and changed files. No migration, dependency,
+configuration, working-content change, push or deployment is needed/performed. Optional
+backfill is operator-selected maintenance. Select another numbered prompt explicitly.

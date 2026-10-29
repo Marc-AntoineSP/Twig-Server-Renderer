@@ -57,8 +57,12 @@ final readonly class AppearanceManager
         if (isset($input['themeId'])) {
             $theme = $this->findTheme($input['themeId']);
             if (isset($input['themeRevision']) && $theme->getRevision() !== $input['themeRevision']) throw new CatalogueException(412, 'Theme changed. Refresh before applying the saved revision.');
-            $family = $this->families->forTheme($theme);
-        } else $family = $this->findFamily($input['familyId'] ?? null);
+            $family = $this->families->ensureForTheme($theme);
+        } else {
+            $id = $input['familyId'] ?? null;
+            if (!is_string($id) || !\Symfony\Component\Uid\Ulid::isValid($id)) throw new CatalogueException(422, 'Choose a valid family ID.');
+            $family = $this->em->find(ThemeFamily::class, $id) ?? $this->families->ensureForTheme($this->findTheme($id));
+        }
         return $this->familyState($family, $mode, $user, $current['revision']);
     }
 

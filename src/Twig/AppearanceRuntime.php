@@ -26,6 +26,7 @@ final class AppearanceRuntime implements RuntimeExtensionInterface
     }
     public function choices(): array
     {
-        return array_values(array_filter($this->families->choices(), fn ($family) => $family['default'] || $this->security->isGranted('ROLE_READER')));
+        $state = $this->appearance();
+        return [['id' => $state['familyId'], 'label' => $state['familyName'], 'modes' => array_keys($state['variants']), 'default' => $state['default']]];
     }
 }

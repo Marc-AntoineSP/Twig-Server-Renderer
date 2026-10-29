@@ -281,3 +281,15 @@ and 390/1440 px light/dark keyboard/axe checks. It is also accepted by the immut
 production harness. See FONT_PAIRING_AND_CONTRAST.md and the measured STATUS handoff.
 When rebuilding an existing disposable run, clear its dev cache before recreating the
 app/consumer: that topology intentionally uses APP_DEBUG=0 and retains its runtime volume.
+
+
+Prompt 10 adds read_performance.spec.js for initial current-only appearance options,
+on-demand loading, preserved selections, failed-load reopen/retry, cancellation and
+390/1440 light/dark native keyboard/axe checks. The immutable-production driver accepts
+this spec. Functional ReadPerformanceTest checks real query bounds, sorting/counts,
+MCP scope-before-pagination, draft/editor/favorite/top-ten-release semantics, empty
+results and explicit bounded/restartable legacy-family backfill. Query instrumentation
+is enabled only in its test kernel; MCP persisted profiling stays disabled. Use
+python3 tests/ReadPerformance/run.py with an exact owned run for deterministic large
+read fixtures and separate in-process/HTTP measurements. See CATALOGUE_READ_PERFORMANCE.md
+for safe commands and actual results; no elapsed-time threshold is part of a test.

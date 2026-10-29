@@ -304,3 +304,14 @@ parsed opaque #RRGGBB values; unsupported alpha/context-dependent inputs never b
 or guessed ratios. Example markup is application-owned and sample text is escaped. Its
 focus message accepts only the parent source and fixed existing example IDs. No imported
 JavaScript, remote font requests or same-origin iframe permission is introduced.
+
+
+Read-performance verification retains the MCP/OAuth profiling prohibition. The owned
+CLI benchmark uses in-memory SQL counts/durations and never persists MCP profiles or
+authorization headers. Exported SQL omits bound parameter arrays; diagnostic plans are
+limited to fixture catalogue/favorite/release/choice queries. Seed/probe/HTTP entry points require
+the BrowserRunGuard database/blob proof; private PAT/cookie/ownership data is removed
+at exact-run teardown. MCP enrichment receives only IDs selected after the existing
+actor voter. Appearance choices keep anonymous default-only visibility and private,
+no-store responses. Legacy-family attachment happens in explicit authorized write or
+operator backfill paths; ordinary family reads cannot flush unrelated pending changes.

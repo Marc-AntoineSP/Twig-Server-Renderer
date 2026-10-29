@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /** Per-call application adapter. No selected composition, actor or credential is cached. */
 final readonly class ComposeApplication
 {
-    public function __construct(private \App\Composition\CompositionHistory $historyService,private CompositionWorkspace $workspace,private CompositionTree $trees,private CompositionCompiler $compiler,private CatalogueWriter $writer,private EntityManagerInterface $em,private ComposeOperations $operations,private TokenStorageInterface $security,private AuthorizationCheckerInterface $auth,private UrlGeneratorInterface $urls,private PreviewJobs $previews,private PreviewStorage $storage,private PreviewLifecycle $lifecycle,#[Autowire('%env(MCP_PUBLIC_BASE_URL)%')]private string $publicBase, private \App\Favorites\Favorites $favorites){}
+    public function __construct(private \App\Composition\CompositionHistory $historyService,private CompositionWorkspace $workspace,private CompositionTree $trees,private CompositionCompiler $compiler,private CatalogueWriter $writer,private EntityManagerInterface $em,private ComposeOperations $operations,private TokenStorageInterface $security,private AuthorizationCheckerInterface $auth,private UrlGeneratorInterface $urls,private PreviewJobs $previews,private PreviewStorage $storage,private PreviewLifecycle $lifecycle,#[Autowire('%env(MCP_PUBLIC_BASE_URL)%')]private string $publicBase, private \App\Favorites\Favorites $favorites, private \App\Repository\CatalogueRepository $catalogue){}
 
     public function actor():User
     {
@@ -73,11 +73,13 @@ final readonly class ComposeApplication
         if($input['favoritesOnly']??false)$builder->andWhere('EXISTS (SELECT f.id FROM App\\Entity\\Favorite f WHERE f.catalogueItem=i AND f.owner=:favoriteOwner)')->setParameter('favoriteOwner',$this->actor());
         $accessible=[];
         foreach($builder->getQuery()->toIterable() as $item){if(!$this->auth->isGranted('COMPOSE_READ',$item))continue;$accessible[]=$item;if(count($accessible)>$offset+$limit)break;}
+        $page=array_slice($accessible,$offset,$limit);
+        $summaries=$this->catalogue->composerSummaries(array_map(static fn(CatalogueItem $item)=>$item->getId(),$page));
         $results=[];
-        foreach(array_slice($accessible,$offset,$limit) as $item){
-            $draft=$this->writer->draft($item);$versions=[];
-            foreach($this->em->getRepository(Release::class)->findBy(['item'=>$item],['createdAt'=>'DESC'],10) as $release)$versions[]=['releaseId'=>$release->getId(),'version'=>$release->getVersion()];
-            $results[]=['id'=>$item->getId(),'favorite'=>$this->favorites->contains($item),'name'=>$item->getName(),'kind'=>$item->getKind(),'title'=>$item->getTitle(),'summary'=>mb_substr($item->getDescription(),0,300),'revision'=>$draft->getRevision(),'editor'=>isset($draft->getSourceMap()->{'meta/composition.json'})?'composition':'source','editableInComposer'=>isset($draft->getSourceMap()->{'meta/composition.json'}),'releases'=>$versions,'insertable'=>count($versions)>0];
+        foreach($page as $item){
+            $summary=$summaries[$item->getId()]??throw new CatalogueException(404,'Draft not found.');
+            $versions=$summary['releases'];
+            $results[]=['id'=>$item->getId(),'favorite'=>$this->favorites->contains($item),'name'=>$item->getName(),'kind'=>$item->getKind(),'title'=>$item->getTitle(),'summary'=>mb_substr($item->getDescription(),0,300),'revision'=>$summary['revision'],'editor'=>$summary['composition']?'composition':'source','editableInComposer'=>$summary['composition'],'releases'=>$versions,'insertable'=>count($versions)>0];
         }
         return $this->envelope(null,'Accessible catalogue results. Draft creation and release insertion are different operations.',['items'=>$results,'offset'=>$offset,'nextOffset'=>count($accessible)>$offset+$limit?$offset+$limit:null]);
     }

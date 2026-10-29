@@ -315,3 +315,21 @@ not persisted. It introduces no document format changes. Draft contrast shares s
 the same opaque six-digit hex interpretation; alpha and context-dependent CSS colours
 remain unsupported and receive no invented ratio. Guidance compares unrounded ratios.
 Diagnostic requests cannot publish, save or apply an appearance.
+
+
+## Catalogue read projections and legacy family fallback
+
+Catalogue filtering/counting precedes the twelve-ID page and bulk hydration restores
+its exact order. A row deleted between statements is omitted, with no page refill;
+counts are the earlier snapshot. MCP authorization still precedes accessible offset
+and limit, and only selected IDs receive enrichment. Existing response keys/types,
+favorite owner scope and ten-release bound remain unchanged; equal release timestamps
+use descending release ID as a stable tie breaker.
+
+The appearance selector initially contains the current applied family/variant. The
+private choices endpoint returns the same id/label/modes/default shape on demand. An
+unpaired legacy theme remains visible as a single-variant choice whose temporary
+family ID equals its theme ID. Explicit Apply/Save/backfill resolves a persisted family
+and returns its real ID. Existing family IDs and immutable releases are preserved.
+No GET attaches legacy families. The explicit command accepts --limit=1..1000 and can
+be repeated to remaining=0. See CATALOGUE_READ_PERFORMANCE.md for deployment order.

@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class ThemeCatalogue
 {
-    public function __construct(private EntityManagerInterface $em, private Favorites $favorites, private \App\Repository\ThemeReleaseRepository $releases) {}
+    public function __construct(private EntityManagerInterface $em, private Favorites $favorites, private \App\Repository\ThemeReleaseRepository $releases, private \App\Appearance\ThemeFamilies $families) {}
 
     public function search(ThemeSearchQuery $query): array
     {
@@ -33,6 +33,6 @@ final readonly class ThemeCatalogue
         if ($ids) {
             foreach ($this->em->getRepository(Theme::class)->findBy(['id' => $ids]) as $theme) $themes[$theme->getId()] = $theme;
         }
-        return ['themes' => array_map(fn ($id) => $themes[$id], $ids), 'publishedReleases' => $this->releases->latestForThemes(array_values($themes)), 'total' => $total, 'pages' => $pages, 'page' => $page, 'query' => $query, 'hasFavorites' => (bool) $this->favorites->states()['theme']];
+        return ['familySummaries' => $this->families->describeMany(array_values($themes)), 'themes' => array_values(array_filter(array_map(fn ($id) => $themes[$id] ?? null, $ids))), 'publishedReleases' => $this->releases->latestForThemes(array_values($themes)), 'total' => $total, 'pages' => $pages, 'page' => $page, 'query' => $query, 'hasFavorites' => (bool) $this->favorites->states()['theme']];
     }
 }

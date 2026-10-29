@@ -26,6 +26,14 @@ class ThemeFamily
         #[ORM\Column] private bool $builtIn = false,
     ) { $this->id = (string) new Ulid(); }
 
+    /** Transient read fallback. Never persist this object; explicit writes resolve a real family. */
+    public static function legacy(Theme $theme): self
+    {
+        $family = new self($theme->getName(), $theme->getName());
+        $family->id = $theme->getId(); $family->attach($theme);
+        return $family;
+    }
+
     public function getId(): string { return $this->id; }
     public function getKey(): string { return $this->key; }
     public function getLabel(): string { return $this->label; }

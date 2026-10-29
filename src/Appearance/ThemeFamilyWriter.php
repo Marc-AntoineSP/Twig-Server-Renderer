@@ -19,7 +19,7 @@ final readonly class ThemeFamilyWriter
         if (!in_array($variants, ['single', 'pair'], true)) throw new CatalogueException(422, 'Choose a single variant or the complete light/dark starting pair.');
         $label = $this->label(null === $label || '' === trim($label) ? $document->name : $label);
         return $this->em->wrapInTransaction(function () use ($document, $variants, $label): Theme {
-            $theme = $this->writer->create($document); $family = $this->families->forTheme($theme); $family->rename($label);
+            $theme = $this->writer->create($document); $family = $this->families->ensureForTheme($theme); $family->rename($label);
             if ('pair' === $variants) $this->otherVariant($theme, $family);
             return $theme;
         });
@@ -27,7 +27,7 @@ final readonly class ThemeFamilyWriter
 
     public function duplicate(Theme $theme): Theme
     {
-        $original = $this->families->forTheme($theme);
+        $original = $this->families->ensureForTheme($theme);
         return $this->em->wrapInTransaction(function () use ($theme, $original): Theme {
             $suffix = strtolower(substr((string) new Ulid(), -10));
             $family = null; $selected = null;
@@ -36,7 +36,7 @@ final readonly class ThemeFamilyWriter
                 $slug = 'copy-'.substr(explode('/', $source->getName())[1], 0, 40).'-'.$suffix.'-'.$mode;
                 $document->name = 'studio/'.$slug; $document->cssName = $slug; $document->version = '1.0.0'; $document->default = false; $document->prefersDark = false;
                 if (isset($document->provenance)) $document->provenance->managed = false;
-                $copy = $this->writer->create($document, $family); $family ??= $this->families->forTheme($copy);
+                $copy = $this->writer->create($document, $family); $family ??= $this->families->ensureForTheme($copy);
                 if ($source->getId() === $theme->getId()) $selected = $copy;
             }
             $family->rename(mb_substr($original->getLabel().' (copy)', 0, 120));
@@ -46,7 +46,7 @@ final readonly class ThemeFamilyWriter
 
     public function addVariant(Theme $theme): Theme
     {
-        $family = $this->families->forTheme($theme);
+        $family = $this->families->ensureForTheme($theme);
         if ($family->isBuiltIn() || ($theme->getDocument()->provenance->managed ?? false)) throw new CatalogueException(409, 'Duplicate this read-only family before adding a variant.');
         return $this->em->wrapInTransaction(function () use ($theme, $family): Theme {
             $this->em->lock($family, LockMode::PESSIMISTIC_WRITE); $this->em->refresh($family);

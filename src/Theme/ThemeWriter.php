@@ -36,7 +36,7 @@ final readonly class ThemeWriter
 
     public function save(Theme $theme, int $revision, \stdClass $document, bool $managedImport = false): Theme
     {
-        if ($this->families->forTheme($theme)->isBuiltIn()) throw new CatalogueException(409, 'Duplicate the built-in family to customize it.');
+        if ($this->families->ensureForTheme($theme)->isBuiltIn()) throw new CatalogueException(409, 'Duplicate the built-in family to customize it.');
         if (($theme->getDocument()->provenance->managed ?? false) && !$managedImport) throw new CatalogueException(409, 'This is a managed website preset. Use Duplicate/Edit to create your own theme.');
         $this->validator->validate($document);
         $this->fontAssets->files($document);

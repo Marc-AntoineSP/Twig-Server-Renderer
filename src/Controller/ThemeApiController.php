@@ -78,7 +78,7 @@ final class ThemeApiController extends AbstractController
     public function save(#[MapEntity(id: 'id')] Theme $theme, #[MapRequestPayload(acceptFormat: 'json', serializationContext: [JsonDecode::ASSOCIATIVE => false, JsonDecode::RECURSION_DEPTH => 24, AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false])] ThemeUpdateInput $input, ThemeWriter $writer, ThemeFamilies $families, ThemeFamilyWriter $familyWriter, EntityManagerInterface $em): JsonResponse
     {
         if (!$input->expectedRevision) { throw new CatalogueException(428, 'Theme revision is required.'); }
-        $family = $families->forTheme($theme);
+        $family = $families->ensureForTheme($theme);
         if (null !== $input->familyLabel && $input->familyLabel !== $family->getLabel() && null !== $input->expectedFamilyRevision && $input->expectedFamilyRevision !== $family->getRevision()) throw new CatalogueException(412, 'Family name changed. Reload before renaming it.');
         $familyWriter->rename($family, $input->familyLabel, $input->expectedFamilyRevision);
         $writer->save($theme, $input->expectedRevision, $input->document);

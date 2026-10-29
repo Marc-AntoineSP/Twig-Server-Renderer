@@ -42,8 +42,7 @@ final class AppearanceController extends AbstractController
     #[Route('/api/v1/appearance/families', name: 'appearance_families', methods: ['GET'], format: 'json')]
     public function families(ThemeFamilies $families): JsonResponse
     {
-        $rows = $families->choices();
-        return $this->jsonPrivate(['families' => $this->account() ? $rows : array_values(array_filter($rows, static fn ($family) => $family['default']))]);
+        return $this->jsonPrivate(['families' => $families->choices(defaultOnly: !$this->account())]);
     }
 
     #[Route('/api/v1/appearance/prepare', name: 'appearance_prepare', methods: ['POST'], format: 'json')]
