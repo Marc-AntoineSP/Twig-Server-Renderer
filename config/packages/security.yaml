@@ -49,7 +49,7 @@ security:
         - { path: ^/appearance/reset$, roles: PUBLIC_ACCESS }
         - { path: ^/(?:api/v1/appearance(?:/|$)|appearance/assets/), roles: PUBLIC_ACCESS }
         - { path: ^/api/v1/items, roles: ROLE_EDITOR, methods: [POST, PUT, PATCH, DELETE] }
-        - { path: ^/api/v1/preview-jobs, roles: ROLE_EDITOR }
+        - { path: ^/api/v1/preview-jobs, roles: ROLE_READER }
         - { path: ^/api/v1/themes, roles: ROLE_EDITOR, methods: [POST, PUT, DELETE] }
         - { path: ^/, roles: ROLE_READER }
 

@@ -56,15 +56,10 @@ export default class extends Controller {
         this.request = new AbortController();
         const signal = this.request.signal;
         const channel = this.randomChannel();
-        this.setStatus('pending', this.lastDocument ? 'Rendering and building… Previous preview is stale.' : 'Rendering and building…');
+        this.setStatus('pending', this.lastDocument ? 'Queued — previous preview is stale.' : 'Queued for preview…');
         try {
             const preset = this.settings();
-            const body = {
-                itemId: this.itemIdValue, sequence, channel, preset,
-                manifestData: JSON.parse(document.getElementById('draft_manifestJson').value),
-                sourceMap: JSON.parse(document.getElementById('draft_sourceMapJson').value),
-                props: JSON.parse(this.propsTarget.value),
-            };
+            const body = this.previewBody(sequence, channel, preset);
             // Always collect a created ID so an obsolete creation can be cancelled server-side.
             const created = await this.json(this.createUrlValue, { method: 'POST', body: JSON.stringify(body) });
             if (sequence !== this.sequence) { this.cancelJob(created.id); return; }
@@ -74,14 +69,16 @@ export default class extends Controller {
                 if (sequence !== this.sequence) return;
                 if (job.status === 'succeeded') {
                     const document = await this.json(this.documentUrlValue.replace('__JOB__', created.id), { signal });
-                    if (sequence !== this.sequence || document.sequence !== sequence) return;
+                    if (sequence !== this.sequence || document.sequence !== sequence || !this.acceptDocument(document, body)) return;
                     this.channel = channel;
                     this.lastDocument = document.html;
                     this.frameTarget.setAttribute('sandbox', this.disableJsTarget.checked ? '' : 'allow-scripts');
                     this.frameTarget.srcdoc = document.html;
                     this.setStatus('current', 'Preview current');
+                    this.documentLoaded(document, body);
                     return;
                 }
+                this.setStatus('pending', `${job.status === 'running' ? 'Rendering and building…' : 'Queued for preview…'}${this.lastDocument ? ' Previous preview is stale.' : ''}`);
                 if (['failed', 'cancelled', 'expired'].includes(job.status)) {
                     const error = job.error;
                     throw new Error(error ? `${error.template || ''}${error.line > 0 ? ':'+error.line : ''} ${error.message}`.trim() : `Preview ${job.status}.`);
@@ -93,6 +90,18 @@ export default class extends Controller {
             this.setStatus('error', `${this.lastDocument ? 'Stale preview — ' : ''}${error.message}`);
         }
     }
+
+    previewBody(sequence, channel, preset) {
+        return {
+            itemId: this.itemIdValue, sequence, channel, preset,
+            manifestData: JSON.parse(document.getElementById('draft_manifestJson').value),
+            sourceMap: JSON.parse(document.getElementById('draft_sourceMapJson').value),
+            props: JSON.parse(this.propsTarget.value),
+        };
+    }
+
+    acceptDocument() { return true; }
+    documentLoaded() {}
 
     async cancelJob(id) {
         if (!id) return;
@@ -178,10 +187,10 @@ export default class extends Controller {
             if(key!==this.propSchemaKey){
                 this.propSchemaKey=key;this.propFormTarget.replaceChildren();this.propFields=[];
                 for(const [name,rule] of Object.entries(schema.properties||{}).slice(0,30)){
-                    const id=`preview-property-${this.propFields.length}`;const wrap=document.createElement('div');const label=document.createElement('label');label.htmlFor=id;label.textContent=rule.title||name;
+                    const id=`${this.identifier}-property-${this.propFields.length}`;const wrap=document.createElement('div');const label=document.createElement('label');label.htmlFor=id;label.textContent=rule.title||name;
                     let input;if(Array.isArray(rule.enum)&&rule.enum.length<=30){input=document.createElement('select');for(const option of rule.enum)input.add(new Option(String(option),JSON.stringify(option)));}
                     else{input=document.createElement(['array','object'].includes(rule.type)?'textarea':'input');if(input.tagName==='INPUT')input.type=rule.type==='boolean'?'checkbox':['integer','number'].includes(rule.type)?'number':'text';if(rule.type==='integer')input.step='1';if(typeof rule.minimum==='number')input.min=rule.minimum;if(typeof rule.maximum==='number')input.max=rule.maximum;if(typeof rule.maxLength==='number')input.maxLength=rule.maxLength;}
-                    input.id=id;input.dataset.propName=name;input.dataset.propType=rule.type;input.dataset.propEnum=String(Array.isArray(rule.enum));input.dataset.action='input->preview#propsFieldChanged';input.className=rule.type==='boolean'?'checkbox':'input input-bordered w-full';wrap.append(label,input);this.propFormTarget.append(wrap);this.propFields.push(input);
+                    input.id=id;input.dataset.propName=name;input.dataset.propType=rule.type;input.dataset.propEnum=String(Array.isArray(rule.enum));input.dataset.action=`input->${this.identifier}#propsFieldChanged`;input.className=rule.type==='boolean'?'checkbox':'input input-bordered w-full';wrap.append(label,input);this.propFormTarget.append(wrap);this.propFields.push(input);
                 }
             }
             const props=JSON.parse(this.propsTarget.value);
@@ -214,10 +223,16 @@ export default class extends Controller {
         this.frameTarget.setAttribute('aria-busy', String(state === 'pending'));
     }
 
-    receive(event) {
+    validResize(event) {
         const data = event.data;
-        if (event.source !== this.frameTarget.contentWindow || !data || typeof data !== 'object' || Array.isArray(data) || data.channel !== this.channel) return;
-        if (Object.keys(data).sort().join(',') !== 'channel,height,type' || data.type !== 'resize' || !Number.isInteger(data.height) || data.height < 100 || data.height > 4000) return;
+        if (event.source !== this.frameTarget.contentWindow || !data || typeof data !== 'object' || Array.isArray(data) || data.channel !== this.channel) return false;
+        if (Object.keys(data).sort().join(',') !== 'channel,height,type' || data.type !== 'resize' || !Number.isInteger(data.height) || data.height < 100 || data.height > 4000) return false;
+        return true;
+    }
+
+    receive(event) {
+        if (!this.validResize(event)) return;
+        const data = event.data;
         this.frameTarget.style.height = `${data.height}px`;
         this.applyViewport();
     }

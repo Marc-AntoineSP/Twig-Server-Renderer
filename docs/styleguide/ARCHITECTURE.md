@@ -277,3 +277,12 @@ Turbo Frames; filtering precedes pagination. Abort signals and bounded request r
 reject obsolete results. Confirmed favorite events trigger complete result reconciliation
 and explicit PUT Undo through the existing Favorites API. No new store/search engine or
 composer picker is added; see DISCOVERY.md.
+
+
+Catalogue detail now captures an exact release/archive or editor-only saved draft revision
+through CataloguePreviews and reuses PreviewJobs, its workers and owner-scoped lifecycle.
+Reader input cannot supply source or save presets. Successful unexpired body/CSS/JS can
+be reused for the same actor and complete input hash, then assembled with a fresh frame
+channel/nonce. Explicit loading and a bounded scroll region keep detail rendering finite;
+listing cards fetch only a requested cached, script-disabled release document. Arbitrary
+catalogue source remains confined to the opaque frame. See CATALOGUE_PREVIEWS.md.

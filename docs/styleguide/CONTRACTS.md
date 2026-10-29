@@ -250,3 +250,21 @@ Frame and direct requests reuse the same authorized SSR representation, private/
 and Vary Cookie/Turbo-Frame. A validated X-Discovery-Request receipt (1–64 alphanumeric or
 hyphen characters) is echoed for client ordering only; it conveys no permission. Favorites
 remain authenticated-owner GET/PUT/DELETE; Undo uses explicit PUT and current filters.
+
+
+## Catalogue detail preview selection
+
+`POST /api/v1/catalogue-previews/{itemId}` requires a reader session and API CSRF.
+CataloguePreviewInput selects one immutable release belonging to that item or an
+editor-only expected draftRevision, example index -1 (defaults) or 0..19, transient
+props, bounded RendererSettings, sequence and random channel. No manifest/sourceMap/
+themeData is accepted. Published sources are integrity-checked from that exact archive;
+draft revision mismatches return412. It does not save renderer presets or content.
+The shared owner-only job/document routes expose the captured selection with the result;
+unrestricted `/api/v1/preview-jobs` creation still requires an editor. Response caches
+are private/no-store. Cached rendering inputs include owner, actual release/archive or
+draft revision, example, props, dependency bytes, theme, preset and policy/toolchain;
+only channel/sequence vary on reuse. Cache retention remains the existing job TTL/quota.
+`GET /api/v1/release-thumbnails/{releaseId}` requires a reader and returns only an existing
+bounded cached document; it never compiles or queues. Cards mount it only on request,
+scripts disabled. No package schema, migration or immutable release bytes change.

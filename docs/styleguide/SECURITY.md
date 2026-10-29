@@ -251,3 +251,16 @@ bounded echoed discovery receipt is an ordering hint, not a credential or author
 input. Active chips use escaped Twig values, and Undo messages use textContent. Undo
 calls the existing CSRF-protected explicit PUT, including current target/access checks;
 no removed target is reconstructed and no client card is inserted to simulate success.
+
+
+Catalogue readers may create bounded previews only from an accessible immutable release.
+Draft capture requires an editor and exact saved revision. The dedicated input DTO accepts
+no imported source/manifest/theme code, and creation requires session CSRF. Job status,
+document and cancellation authorize the owner before storage/cache access. Output reuse
+queries the same owner and full input hash, accepts only successful unexpired artifacts,
+and assembles a new nonce/channel. No shared public private-output cache is introduced.
+Reader preview visits/settings never save presets, source or appearance. Listing thumbnail
+GETs are reader-protected/private and read only an existing bounded artifact. Detail and
+thumbnail documents remain opaque sandboxed frames with unchanged CSP/worker limits;
+thumbnail scripts are disabled. Strict current-frame/channel/schema resize validation and
+a bounded outer scroll region prevent page growth from untrusted resize messages.

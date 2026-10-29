@@ -11,6 +11,12 @@ final readonly class ReleaseThumbnails
         try{$path=$this->directory.'/'.$hash.'.html';if(is_file($path))return;$size=0;foreach(glob($this->directory.'/*.html')?:[] as $file)$size+=filesize($file);if($size+strlen($html)>52428800)return;$temporary=tempnam($this->directory,'.stage-');try{if(file_put_contents($temporary,$html)===strlen($html))rename($temporary,$path);}finally{if(is_file($temporary))unlink($temporary);}}
         finally{flock($lock,LOCK_UN);fclose($lock);}
     }
+    public function available(?string $hash): bool
+    {
+        if (!$hash || !preg_match('/^[a-f0-9]{64}$/D', $hash)) return false;
+        $path = $this->directory.'/'.$hash.'.html';
+        return is_file($path) && !is_link($path) && filesize($path) <= 262144;
+    }
     public function read(?string $hash):?string
     {
         if(!$hash||!preg_match('/^[a-f0-9]{64}$/D',$hash))return null;$path=$this->directory.'/'.$hash.'.html';return is_file($path)&&!is_link($path)&&filesize($path)<=262144?file_get_contents($path):null;

@@ -1,0 +1,52 @@
+{% if item.kind == 'theme' %}
+    <div class="rounded-box border border-base-300 bg-base-100 p-6"><h2 class="text-xl font-semibold">Theme preview</h2>{% if themeTarget %}<a class="btn btn-primary mt-4" href="{{ path('theme_show', {id: themeTarget.id}) }}#component-showcase">Browse theme components</a>{% else %}<p class="mt-3">No typed theme preview is available.</p>{% endif %}</div>
+{% elseif not snapshot %}
+    <div class="rounded-box border border-base-300 bg-base-100 p-6"><h2 class="text-xl font-semibold">No published preview</h2><p class="mt-3">This item has no accessible published example. An editor can inspect the saved draft and publish a validated release.</p></div>
+{% else %}
+<div class="min-w-0 rounded-box border border-base-300 bg-base-100" data-controller="catalogue-preview"
+     data-catalogue-preview-item-id-value="{{ item.id }}" data-catalogue-preview-csrf-value="{{ csrf_token('api') }}"
+     data-catalogue-preview-create-url-value="{{ path('catalogue_preview_create', {id: item.id}) }}"
+     data-catalogue-preview-status-url-value="{{ path('preview_status', {id: '__JOB__'}) }}"
+     data-catalogue-preview-document-url-value="{{ path('preview_document', {id: '__JOB__'}) }}"
+     data-catalogue-preview-settings-value="{{ rendererSettings|json_encode|e('html_attr') }}"
+     data-catalogue-preview-default-props-value="{{ snapshot.manifest.defaults|json_encode|e('html_attr') }}"
+     data-catalogue-preview-selection-value="{{ snapshot.identity|json_encode|e('html_attr') }}"
+     data-catalogue-preview-examples-value="{{ snapshot.examples|json_encode|e('html_attr') }}"
+     data-catalogue-preview-schema-value="{{ snapshot.schema|json_encode|e('html_attr') }}"
+     data-catalogue-preview-label-value="{{ snapshot.label }}" data-catalogue-preview-example-index-value="{{ selectedExample }}">
+    <div class="border-b border-base-300 p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3"><div class="min-w-0"><h2 class="text-xl font-semibold">Preview</h2><p class="mt-1 break-words text-sm" data-catalogue-preview-target="identity">{{ snapshot.label }}</p></div><button class="btn btn-primary btn-sm" type="button" data-action="catalogue-preview#run">Load preview</button></div>
+        <form method="get" action="{{ path('catalogue_show', {id: item.id}) }}" class="mt-3" data-catalogue-preview-target="selectionForm" autocomplete="off">
+            {% if app.request.query.has('returnTo') %}<input type="hidden" name="returnTo" value="{{ listing_return('catalogue_index') }}">{% endif %}
+            <label for="preview-release" class="text-sm">Source version</label><div class="flex items-center gap-2"><select id="preview-release" name="release" class="select min-w-0 flex-1" data-action="change->catalogue-preview#releaseChanged">{% for release in releases %}<option value="{{ release.id }}" {{ selectedRelease == release.id ? 'selected' : '' }}>Published {{ release.version }}</option>{% endfor %}{% if is_granted('ROLE_EDITOR') %}<option value="draft" {{ selectedRelease == 'draft' ? 'selected' : '' }}>Saved draft r{{ draft.revision }}</option>{% endif %}</select><button class="btn btn-outline btn-sm" type="submit">View version</button></div>
+            <div class="grid grid-cols-2 gap-3">
+                <div><label for="detail-example" class="text-sm">Example</label><select id="detail-example" name="example" class="select w-full" data-catalogue-preview-target="example" data-action="change->catalogue-preview#chooseExample"><option value="-1">Package defaults</option>{% for example in snapshot.examples %}<option value="{{ loop.index0 }}" {{ selectedExample == loop.index0 ? 'selected' : '' }}>{{ example.name }}</option>{% endfor %}</select></div>
+                <div><label for="detail-theme" class="text-sm">Published theme</label><select id="detail-theme" name="theme" class="select w-full" data-catalogue-preview-target="theme" data-action="change->catalogue-preview#themeChanged"><option value="">Package default</option>{% for theme in exportThemes %}<option value="{{ theme.id }}" {{ rendererSettings.themeReleaseId == theme.id ? 'selected' : '' }}>{{ theme.theme.name }}@{{ theme.version }}</option>{% endfor %}</select></div>
+            </div>
+        </form>
+        {% if not snapshot.examples %}<p class="mt-2 text-sm">No named examples. Package defaults are available.{% if is_granted('ROLE_EDITOR') %} Add examples in <a class="link" href="{{ path('catalogue_edit', {id: item.id}) }}">Edit draft</a>.{% endif %}</p>{% endif %}
+    </div>
+    <div class="p-4">
+
+        <p role="status" class="mb-3 text-sm" data-catalogue-preview-target="status">Ready to load. Demo interactions stay inside the isolated frame.</p>
+        <div class="max-w-full overflow-auto rounded-box border border-base-300 bg-base-200" style="height:560px" data-catalogue-preview-target="viewport" tabindex="0" role="region" aria-label="Scrollable preview"><div data-catalogue-preview-target="stage"><iframe title="Catalogue item preview" sandbox="allow-scripts" style="height:250px;border:0" data-catalogue-preview-target="frame"></iframe></div></div>
+        <div class="my-3 flex flex-wrap items-center gap-2">{% for width in [375, 768, 1280] %}<button type="button" class="btn btn-ghost btn-sm" data-width="{{ width }}" data-action="catalogue-preview#widthPreset">{{ width }} px</button>{% endfor %}<button class="btn btn-ghost btn-sm" type="button" data-action="catalogue-preview#fit">Fit width</button><label class="text-sm" for="detail-height">Preview height</label><select class="select select-sm w-auto" id="detail-height" data-catalogue-preview-target="height" data-action="change->catalogue-preview#heightChanged"><option value="320">320 px</option><option value="560" selected>560 px</option><option value="800">800 px</option></select></div>
+        <div class="mt-3 flex flex-wrap items-center gap-3"><button class="btn btn-ghost btn-sm" type="button" data-action="catalogue-preview#reset">Reset preview</button><label class="flex items-center gap-2 text-sm"><input type="checkbox" class="checkbox checkbox-sm" data-catalogue-preview-target="disableJs" data-action="catalogue-preview#toggleScripts">Disable preview scripts</label></div>
+        <noscript><p class="mt-3">JavaScript is needed to load the sandboxed preview. Source and immutable downloads remain available below.</p></noscript>
+        <details class="mt-5 rounded-box border border-base-300 p-3"><summary class="cursor-pointer font-semibold">Properties & renderer settings</summary>
+            <div class="mt-3 grid gap-3 sm:grid-cols-2" data-catalogue-preview-target="propForm" role="group" aria-label="Preview property fields"></div>
+            <label for="detail-props" class="mt-3 block text-sm">Preview props (JSON)</label><textarea id="detail-props" rows="4" class="textarea w-full font-mono text-sm" data-catalogue-preview-target="props" data-action="input->catalogue-preview#schedule">{{ rendererSettings.props|json_encode }}</textarea>
+            <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                <label class="text-sm">Viewport width<input class="input w-full" type="number" min="320" max="1920" data-catalogue-preview-target="width" data-action="input->catalogue-preview#viewportChanged"></label>
+                <div><label for="detail-zoom" class="text-sm">Zoom</label><select id="detail-zoom" class="select w-full" data-catalogue-preview-target="zoom" data-action="change->catalogue-preview#viewportChanged">{% for zoom in [50,75,100] %}<option value="{{ zoom }}">{{ zoom }}%</option>{% endfor %}</select></div>
+                <label class="text-sm">Root font size<input class="input w-full" type="number" min="12" max="24" data-catalogue-preview-target="rootSize" data-action="input->catalogue-preview#typographyChanged"></label>
+                <div><label for="detail-text" class="text-sm">Default text size</label><select id="detail-text" class="select w-full" data-catalogue-preview-target="textClass" data-action="change->catalogue-preview#typographyChanged">{% for size in ['text-xs','text-sm','text-base','text-lg','text-xl'] %}<option value="{{ size }}">{{ size }}</option>{% endfor %}</select></div>
+                <div><label for="detail-scheme" class="text-sm">Colour scheme</label><select id="detail-scheme" class="select w-full" data-catalogue-preview-target="colorScheme" data-action="change->catalogue-preview#typographyChanged"><option value="theme">Theme default</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
+                <div><label for="detail-surface" class="text-sm">Preview surface</label><select id="detail-surface" class="select w-full" data-catalogue-preview-target="surface" data-action="change->catalogue-preview#typographyChanged"><option value="base-100">Base 100</option><option value="base-200">Base 200</option><option value="transparent">Transparent</option></select></div>
+                {% for key, label in {bodyFont:'Body font', headingFont:'Heading font', codeFont:'Code font'} %}<div><label for="detail-{{ key }}" class="text-sm">{{ label }}</label><select id="detail-{{ key }}" class="select w-full" data-catalogue-preview-target="{{ key }}" data-action="change->catalogue-preview#typographyChanged"><option value="theme">Theme default</option><option value="system-sans">System sans</option><option value="system-serif">System serif</option><option value="system-mono">System monospace</option></select></div>{% endfor %}
+                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="checkbox" data-catalogue-preview-target="deviceFrame" data-action="change->catalogue-preview#viewportChanged">Device frame</label>
+            </div><p class="mt-3 text-sm">These controls are temporary. Viewing does not save renderer presets or source.</p>
+        </details>
+    </div>
+</div>
+{% endif %}

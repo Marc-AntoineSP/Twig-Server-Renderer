@@ -35,13 +35,14 @@ final readonly class PreviewJobs
         private ThemeValidator $themes,
         private \App\Composition\CompositionCompiler $compositions,
         private Connection $connection,
+        private \Styleguide\Contracts\CanonicalJson $json,
         #[Autowire('%kernel.project_dir%')] private string $projectDirectory,
     ) {
         // PostgreSQL advisory locks work across the web and consumer containers.
         $this->locks = new LockFactory(new DoctrineDbalPostgreSqlStore($connection));
     }
 
-    public function create(PreviewInput $input, User $user): PreviewJob
+    public function create(PreviewInput $input, User $user, ?array $selection = null): PreviewJob
     {
         $violations = $this->validator->validate($input);
         if (count($violations)) {
@@ -88,9 +89,12 @@ final readonly class PreviewJobs
                 $this->themes->validate($theme);
             }
             $closure['safelist'] = array_values(array_unique([...$closure['safelist'], $preset->textClass]));
-            $payload = (object) [...$closure, 'props' => $props, 'channel' => $input->channel, 'preset' => $preset->toArray(), 'theme' => $theme];
-            $policyDigest = hash_file('sha256', $this->projectDirectory.'/workers/render/composer.lock').hash_file('sha256', $this->projectDirectory.'/workers/build/package-lock.json').'sandbox-v2-local-fragments';
-            $hash = hash('sha256', json_encode($payload, JSON_THROW_ON_ERROR).$policyDigest);
+            $payload = (object) [...$closure, 'props' => $props, 'channel' => $input->channel, 'preset' => $preset->toArray(), 'theme' => $theme, 'selection' => $selection];
+            $policyDigest = hash_file('sha256', $this->projectDirectory.'/workers/render/composer.lock').hash_file('sha256', $this->projectDirectory.'/workers/build/package-lock.json').hash_file('sha256', __DIR__.'/DocumentAssembler.php').hash_file('sha256', __DIR__.'/PreviewRenderer.php').'sandbox-v3-owned-output-cache';
+            // The channel is per frame, not a rendering input. Cached bytes remain owner-scoped.
+            $cachePayload = clone $payload;
+            unset($cachePayload->channel);
+            $hash = hash('sha256', $user->getId().$this->json->encode($cachePayload).$policyDigest);
             // Keep the latest 60 jobs, retiring terminal history rather than blocking live editing.
             $this->connection->executeStatement("UPDATE preview_job SET expires_at = CURRENT_TIMESTAMP WHERE id IN (SELECT id FROM preview_job WHERE owner_id = :owner AND status NOT IN ('queued','running') AND expires_at > CURRENT_TIMESTAMP ORDER BY created_at ASC,id ASC LIMIT GREATEST(0,(SELECT COUNT(*) FROM preview_job WHERE owner_id = :owner AND expires_at > CURRENT_TIMESTAMP)-59))",['owner'=>$user->getId()]);
             $job = new PreviewJob($user, $input->sequence, $hash, $payload);

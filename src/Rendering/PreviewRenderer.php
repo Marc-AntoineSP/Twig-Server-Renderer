@@ -29,6 +29,11 @@ final readonly class PreviewRenderer
             return $build;
         }
 
-        return ['ok' => true, 'html' => $this->documents->assemble($render['html'], $build['css'], $build['js'], $payload['channel'], $payload['preset'] ?? [], isset($payload['theme']) ? (array) $payload['theme'] : null, $payload['fontFiles'] ?? []), 'css' => $build['css'], 'js' => $build['js']];
+        return $this->assemble(['ok' => true, 'body' => $render['html'], 'css' => $build['css'], 'js' => $build['js']], $payload);
+    }
+    public function assemble(array $result, array $payload): array
+    {
+        $result['html'] = $this->documents->assemble($result['body'], $result['css'], $result['js'], $payload['channel'], $payload['preset'] ?? [], isset($payload['theme']) ? (array) $payload['theme'] : null, $payload['fontFiles'] ?? []);
+        return $result;
     }
 }

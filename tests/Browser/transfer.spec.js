@@ -6,7 +6,7 @@ function entry(zip,wanted){let offset=0;while(zip.readUInt32LE(offset)===0x04034
 test('reviewed package import and static download use real immutable bytes and work offline',async({page})=>{
     test.setTimeout(90000);await login(page);const {item}=await createAlert(page);const csrf=(await(await page.request.get('/api/v1/csrf')).json()).token;
     const published=await page.request.post(`/api/v1/items/${item.id}/releases`,{headers:{'X-CSRF-Token':csrf},data:{version:'1.0.0',expectedRevision:2}});expect(published.status()).toBe(201);const release=await published.json();
-    await page.goto(`/catalogue/${item.id}`);await page.getByLabel('Export format for 1.0.0',{exact:true}).selectOption('static');await page.getByRole('button',{name:'Build export 1.0.0',exact:true}).click();
+    await page.goto(`/catalogue/${item.id}`);await page.locator("#releases > summary").click();await page.getByLabel('Export format for 1.0.0',{exact:true}).selectOption('static');await page.getByRole('button',{name:'Build export 1.0.0',exact:true}).click();
     const link=page.getByRole('link',{name:'Download ready export',exact:true});await expect(link).toBeVisible({timeout:20000});const download=await page.request.get(await link.getAttribute('href'));expect(download.status()).toBe(200);const bytes=await download.body();const html=entry(bytes,'index.html');
     const random=randomBytes(6).toString('hex');const offline=`var/browser/offline-${random}.html`;const source=`var/browser/source-${random}.zip`;
     try{

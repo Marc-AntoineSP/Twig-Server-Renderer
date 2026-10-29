@@ -87,9 +87,10 @@ whole run directory or retained secrets to CI artifacts.
 
 The digest-pinned Playwright 1.64.1 Noble image supplies Chromium, Firefox and WebKit;
 engines are not downloaded during a run. Chromium retains the complete existing
-suite. Firefox and WebKit run the three `critical.spec.js` flows: navigation and
+suite. Firefox and WebKit run the four `critical.spec.js` flows: navigation and
 personal favorites/reader denial, immutable reference/property persistence and unsaved
-navigation, and mobile theme disclosure/showcase dialog focus. `studio.test` is a
+navigation, mobile theme disclosure/showcase dialog focus, and read-only published
+catalogue previewing. `studio.test` is a
 per-project network alias: WebKit rejects the single-label host's session cookies.
 
 The focused flows run locked `@axe-core/playwright` 4.14.0 with WCAG 2 A/AA and 2.1 A/AA
@@ -225,3 +226,12 @@ check: transparent controls remain in native tab order, while hidden/disabled co
 stay excluded. Test styling is restored before capture. This regression rejects the
 previous opacity-based focus filter; normal focus wrapping and Escape restoration
 are still asserted in all three engines.
+
+
+Catalogue detail coverage is in `catalogue_preview.spec.js`, including twelve retained
+screenshots/axe reports (component, wide block, tall layout at390/1440 in light/dark),
+actual isolated publications/draft failures, reader-only previewing, sample/theme URLs,
+obsolete document rejection and explicitly requested cached thumbnails. The critical
+suite additionally checks the reader preview in Chromium/Firefox/WebKit. Status-order
+transport fixtures are labelled separately from real worker checks. See
+CATALOGUE_PREVIEWS.md and the prompt06 STATUS entry for commands and measured outcomes.

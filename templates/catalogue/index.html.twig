@@ -17,7 +17,11 @@
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {% for item in items %}
             <article class="card min-w-0 border border-base-300 bg-base-100 shadow-sm">
-                {% if summaries[item.id].thumbnail %}<div class="h-32 overflow-hidden border-b border-base-300" aria-hidden="true"><iframe title="Release thumbnail {{ item.name }}" tabindex="-1" sandbox="" loading="lazy" class="pointer-events-none" style="width:768px;height:320px;transform:scale(.4);transform-origin:top left;border:0" srcdoc="{{ summaries[item.id].thumbnail|e('html_attr') }}"></iframe></div>{% endif %}
+                <div class="relative flex aspect-video items-center justify-center overflow-hidden border-b border-base-300 bg-base-200 p-3" {% if summaries[item.id].hasThumbnail %}data-controller="release-thumbnail" data-release-thumbnail-url-value="{{ path('release_thumbnail', {id: summaries[item.id].release_id}) }}" data-release-thumbnail-title-value="{{ item.name }}"{% endif %}>
+                    {% if summaries[item.id].hasThumbnail %}<div class="text-center"><button type="button" class="btn btn-ghost btn-sm" data-release-thumbnail-target="button" data-action="release-thumbnail#load">Show published preview</button><p class="text-xs" role="status" data-release-thumbnail-target="status">Published {{ summaries[item.id].release_version }}</p></div>
+                    {% elseif summaries[item.id].release_version %}<p class="text-center text-sm">No cached preview · <a class="link" href="{{ path('catalogue_show', {id: item.id, release: summaries[item.id].release_id}) }}">Preview {{ summaries[item.id].release_version }}</a></p>
+                    {% else %}<p class="text-sm">No published preview</p>{% endif %}
+                </div>
                 <div class="card-body">
                     <div class="flex gap-2"><span class="badge badge-outline">{{ item.kind }}</span><span class="badge badge-ghost">Draft r{{ summaries[item.id].revision }}</span>{% if summaries[item.id].release_version %}<span class="badge badge-success">{{ summaries[item.id].release_version }}</span>{% endif %}</div>
                     <div class="flex items-start justify-between gap-2"><h2 class="card-title min-w-0 break-words"><a class="link-hover" href="{{ path('catalogue_show', {id: item.id, returnTo: app.request.requestUri}) }}">{{ item.title }}</a></h2>{% include 'favorites/_catalogue_button.html.twig' with {themeTarget: themeTargets[item.name]|default(null)} %}</div>

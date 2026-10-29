@@ -33,7 +33,7 @@ final class CatalogueController extends AbstractController
     {
         $result=$catalogue->search($query, $favorites->owner());
         $result['hasFavorites'] = $favorites->hasCatalogueFavorites();
-        foreach($result['summaries'] as &$summary)$summary['thumbnail']=$thumbnails->read($summary['archive_hash']);unset($summary);
+        foreach($result['summaries'] as &$summary)$summary['hasThumbnail']=$thumbnails->available($summary['archive_hash']);unset($summary);
         return $listing->render('catalogue_index', 'catalogue/index.html.twig', $result);
     }
 
@@ -60,14 +60,30 @@ final class CatalogueController extends AbstractController
     }
 
     #[Route('/catalogue/{id}', name: 'catalogue_show', methods: ['GET'])]
-    public function show(#[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $entityManager): Response
+    public function show(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $entityManager, \App\Rendering\CataloguePreviews $previews): Response
     {
+        $draft = $writer->draft($item);
+        $releases = $entityManager->getRepository(Release::class)->findBy(['item' => $item], ['createdAt' => 'DESC', 'id' => 'DESC']);
+        $selected = $request->query->getString('release', isset($releases[0]) ? $releases[0]->getId() : 'draft');
+        if ('draft' === $selected && $request->query->has('release') && !$this->isGranted('ROLE_EDITOR')) throw new CatalogueException(403, 'Draft previews require editor access.');
+        $snapshot = null;
+        if ('theme' !== $item->getKind() && ('draft' !== $selected || $this->isGranted('ROLE_EDITOR'))) {
+            $snapshot = $previews->snapshot($item, 'draft' === $selected ? null : $selected, 'draft' === $selected ? $draft->getRevision() : null, $this->isGranted('ROLE_EDITOR'));
+        }
+        $example = $request->query->getInt('example', -1);
+        if ($example < -1 || ($example >= 0 && !isset($snapshot['examples'][$example]))) throw new CatalogueException(422, 'Choose an example from this exact source version.');
+        $themeId = $request->query->getString('theme');
+        $theme = '' !== $themeId ? $entityManager->find(ThemeRelease::class, $themeId) : null;
+        if ('' !== $themeId && !$theme) throw new CatalogueException(404, 'Theme release not found.');
+        $settings = new \App\Rendering\RendererSettings(width: 768, bodyFont: 'theme', headingFont: 'theme', props: $snapshot ? ($example >= 0 ? $snapshot['examples'][$example]->props : $snapshot['manifest']->defaults) : null, themeReleaseId: $theme?->getId());
+        $themeChoices = $entityManager->getRepository(ThemeRelease::class)->findBy([], ['createdAt' => 'DESC'], 100);
+        if ($theme && !in_array($theme, $themeChoices, true)) $themeChoices[] = $theme;
         return $this->render('catalogue/show.html.twig', [
             'themeTarget' => $item->getKind() === 'theme' ? $entityManager->getRepository(Theme::class)->findOneBy(['name' => $item->getName()]) : null,
-            'item' => $item, 'draft' => $writer->draft($item), 'sourceFiles' => (array) $writer->draft($item)->getSourceMap(),
-            'releases' => $entityManager->getRepository(Release::class)->findBy(['item' => $item], ['createdAt' => 'DESC']),
-            'exportThemes' => $entityManager->getRepository(ThemeRelease::class)->findBy([], ['createdAt' => 'DESC'], 100),
-        ]);
+            'item' => $item, 'draft' => $draft, 'sourceFiles' => (array) ($snapshot['sources'] ?? $draft->getSourceMap()),
+            'releases' => $releases, 'exportThemes' => $themeChoices, 'snapshot' => $snapshot,
+            'selectedRelease' => $selected, 'selectedExample' => $example, 'rendererSettings' => $settings,
+        ], new Response(headers: ['Cache-Control' => 'private, no-store']));
     }
 
     #[Route('/catalogue/{id}/edit', name: 'catalogue_edit', methods: ['GET', 'POST'])]

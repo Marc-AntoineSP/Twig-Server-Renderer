@@ -19,11 +19,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-#[IsGranted('ROLE_EDITOR')]
+#[IsGranted('ROLE_READER')]
 final class PreviewController extends AbstractController
 {
     #[Route('/api/v1/preview-jobs', name: 'preview_create', methods: ['POST'], format: 'json')]
     #[IsCsrfTokenValid('api', tokenKey: 'X-CSRF-Token', tokenSource: IsCsrfTokenValid::SOURCE_HEADER)]
+    #[IsGranted('ROLE_EDITOR')]
     public function create(#[MapRequestPayload(acceptFormat: 'json', serializationContext: [JsonDecode::ASSOCIATIVE => false, JsonDecode::RECURSION_DEPTH => 32, AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false])] PreviewInput $input, PreviewJobs $jobs): JsonResponse
     {
         $job = $jobs->create($input, $this->getUser());
@@ -47,7 +48,7 @@ final class PreviewController extends AbstractController
             throw new CatalogueException(409, 'A current successful preview document is required.');
         }
 
-        return new JsonResponse(['html' => $storage->read($job->getId(),$job->getRunToken())['html'], 'sequence' => $job->getRequestSequence()], headers: ['Cache-Control' => 'private, no-store']);
+        return new JsonResponse(['html' => $storage->read($job->getId(),$job->getRunToken())['html'], 'sequence' => $job->getRequestSequence(), 'selection' => $job->getPayload()['selection'] ?? null], headers: ['Cache-Control' => 'private, no-store']);
     }
 
     #[Route('/api/v1/preview-jobs/{id}', name: 'preview_cancel', methods: ['DELETE'], format: 'json')]

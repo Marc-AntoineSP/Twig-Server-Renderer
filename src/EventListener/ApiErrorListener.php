@@ -31,6 +31,7 @@ final readonly class ApiErrorListener
         if ($error instanceof AccessDeniedException || $error instanceof AuthenticationException) {
             $status = $this->tokens->getToken()?->getUser() ? 403 : 401;
         }
+        if ($error instanceof \Symfony\Component\Serializer\Exception\ExtraAttributesException) $status = 422;
         $fields = $error instanceof CatalogueException ? $error->fieldErrors : [];
         for ($cause = $error; null !== $cause; $cause = $cause->getPrevious()) {
             if ($cause instanceof ValidationFailedException) {

@@ -2448,3 +2448,183 @@ prompts remain excluded from the implementation commit with staged-diff SHA-256
 `d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.
 Only this scoped implementation/test/documentation change is committed; no branch
 push, remote publication, deployment or mutation of real user data occurred.
+
+## Improvement prompt 06 — Catalogue detail previews (2026-10-29)
+
+Selected `prompts/06-catalogue-detail-previews.md` and its nested prompt pack on
+`m20-catalog-detail-previews`, starting from36248f3. Pack SHA256SUMS passes. The twelve
+already staged numbered prompts remain separate. Fresh baseline in owned run
+`browser-e71fdbfb959f24a325745f3e` confirms headings Item/Releases/Saved source files,
+zero preview frames, no reader edit link and403 from unrestricted preview creation.
+The historical review observation still applied; no working catalogue was used.
+
+Implemented: preview-first component/block/layout details with explicit Load, exact
+published release or editor-only saved draft revision, real examples/defaults,
+immutable theme/query selection, transient schema/JSON properties and renderer
+settings. Width/fit and320/560/800px outer height controls keep mobile/wide/tall content
+bounded; strict current-frame/channel/schema resize validation remains capped4000px.
+Source, downloads, exports, installation, publication and duplication remain reachable
+in secondary disclosures, stacked below on mobile. The source pane reads the selected
+archive/draft and escapes all text. Draft-only readers receive No published preview.
+Missing examples use actual defaults; real invalid Twig reports its worker diagnostic.
+
+CataloguePreviews reads integrity-checked immutable sources or captures an expected
+saved revision. Its reader/session/CSRF endpoint accepts no source/manifest/theme code;
+reader draft requests fail403 and stale draft captures412. It never saves renderer
+presets, source or appearance. Existing editor creation still requires ROLE_EDITOR;
+status/document/cancel require the job owner. Shared PreviewJobs/polling/cancellation,
+finite dependency loader, isolated workers, fixed compiler and opaque iframe/CSP remain.
+The assembler is unchanged. Cached successful body/CSS/JS reuse is owner/full-input
+scoped, revision/release/example/theme specific, unexpired and reassembled with fresh
+channel/nonce. Existing job/history/storage quotas apply. Extra source attributes are
+rejected422 instead of an unhandled serializer500. Listing cards reserve16:9 regions,
+mount no preview documents initially, and load only a requested cached, script-disabled
+release document. No thumbnail-generation fleet, migration or dependency update.
+
+Verification:
+
+- Docker strict Composer/container,34 YAML and51 Twig lints; **166 PHPUnit tests /
+  1791 assertions** pass (119.173s), including three new contract/permission/cache-key
+  flows. Evidence: catalogue-preview-final-focused.log. The overall initial focused
+  invocation later failed one new browser test callback; its PHP/lint gates passed.
+- Final focused browser/visual review passes **15/15** (1.2m): eleven detail scenarios
+  plus twelve visual comparisons in four cases. Four listing baselines deliberately
+  updated and reviewed; all eight composer/theme source PNGs stay byte-identical to
+  HEAD and were restored to the owned baseline directory before this normal comparison.
+  Evidence: catalogue-preview-final-review.log.
+- Immutable production passes **16/16** detail and existing preview cases (1.3m),
+  schema sync, real fonts and unchanged read-only AssetMapper manifest. Command:
+  `bash tests/AppearanceProduction/run.sh tests/Browser/catalogue_preview.spec.js tests/Browser/preview.spec.js`.
+  Evidence: catalogue-preview-production-final.log; owned project
+  appearance-20261029113540-23822 automatically cleaned.
+- A real cold exact-release/theme preview followed by worker outage succeeds only for
+  identical owner/inputs with a new channel; changed props and another owner fail
+  through unavailable workers. Both workers restart in finally. First proof:
+  catalogue-preview-cache-proof.log. The reusable guarded command is now
+  `python3 tests/BrowserHarness/preview-cache.py --run-id <exact-owned-run-id>`.
+- All twelve component/block/layout screenshots at390/1440 in light/dark were reviewed.
+  Twelve browser and twelve production application-control axe reports have zero
+  violations; color-contrast incompletes remain for manual assessment. Previews are
+  excluded from these application-control audits. The added critical reader preview
+  passes Chromium/Firefox/WebKit. No human screen-reader assessment is claimed.
+
+Corrected verification failures: the first serializer-extra-field regression returned
+500 and now422. Initial responsive checks found the mobile frame at849px and a missing
+property-group role; the toolbar was shortened/reordered and the group labelled with
+its role. The scroll region gained keyboard focus. A source-string CSP assertion was
+corrected to inspect the decoded meta policy. Strict sandboxing blocks native form
+submission before its submit handler; the demo fixture now uses local button actions
+and separately proves a real submit attempt makes no application request. A Playwright
+locator.evaluate callback mistakenly treated its element as the channel; corrected
+without changing message assertions. The first production test assumed seeded theme
+releases (15 pass/1 fail); it now creates/publishes its own theme and checks its actual
+iframe data-theme. The first full browser suite had139 pass/4 reader workspace failures:
+its old bare-URL assertion conflicts with intentionally pinned release/example queries.
+All four reader cases now require the correct path plus exact shaped selection state;
+editor destinations stay exact. No application change or retry-policy change was used
+for those last test corrections.
+
+Final full rerun passes **143/143 browser tests (9.3m)**:135 Chromium,4 Firefox,
+4 WebKit, including all eleven new detail cases, three new critical-engine executions,
+all four corrected reader workspace URL cases and twelve visual comparisons against
+the four reviewed listing updates/eight preserved original baselines. No application
+code changed after the successful166/1791 PHP gate. Evidence:
+`var/browser-verification/catalogue-preview-full-verified.log`; passing invocation:
+`browser-a6893a916562e176eb3ddd66/artifacts/invocation-160be80f/`.
+
+The reusable cache proof also passes against that final run, with a unique cold props
+value, exact release/theme and real workers. Same-owner reuse with a fresh channel
+succeeds while both workers are stopped; changed props/another account fail specifically
+with worker_unavailable. Both workers restart in finally. Command:
+`python3 tests/BrowserHarness/preview-cache.py --run-id browser-a6893a916562e176eb3ddd66`.
+Evidence: catalogue-preview-cache-final.log. Python compilation and git diff --check pass.
+
+Actual final runtime: FrankenPHP1.13.4 / PHP8.5.12 / Caddy2.11.7, Symfony8.1.9,
+Node24.22.1, Chromium156.0.8078.4, Firefox157.0, WebKit27.2; PHPUnit13.4.3 from the full
+PHP gate. Current locks retain Playwright1.64.1, Tailwind4.3.3, daisyUI5.7.50,
+Stimulus3.2.2 and Turbo8.0.23. No dependency locks, base-image pins, Docker topology,
+operator environment settings or database schema were changed. The existing
+security.yaml access rule now permits owner-authorized reader job lifecycle access;
+unrestricted source-preview creation remains explicitly editor-only.
+
+All three owned browser runs and both production fixtures are cleaned: zero containers
+(including stopped), volumes, networks and private credential files. Browser CLEANED
+receipts exist and exact owned worker image tags are removed. Reusable application/
+browser/production build caches remain. Cleanup/version evidence:
+catalogue-preview-final-cleanup.log; final resource audit:
+catalogue-preview-resource-audit.json. No working catalogue data was mutated.
+No push, remote publication or deployment occurred.
+
+Exact final browser orchestration, under the verified run's lifecycle lock:
+
+```python
+r.compose('--profile', 'tools', 'build', 'browser')
+r.test(['tests/Browser/catalogue_preview.spec.js', 'tests/Browser/visual.spec.js', '--project=chromium'])
+# After updating the four reader workspace assertions, rebuild the test snapshot:
+r.compose('--profile', 'tools', 'build', 'browser')
+r.test([])
+```
+
+Initial backend gates were run by:
+`python3 tests/BrowserHarness/run.py run --with-checks --keep -- tests/Browser/catalogue_preview.spec.js tests/Browser/release.spec.js tests/Browser/transfer.spec.js tests/Browser/critical.spec.js`.
+Its browser callback failure is recorded above, superseded by the final passing full
+run. Final version capture uses r.app('frankenphp','version'),
+r.app('php','bin/console','--version') and a Docker Node process launching each bundled
+engine; r.cleanup() runs in finally under the same verified lifecycle lock.
+
+Remaining limits: preview loading requires JavaScript; there is no new automatic
+thumbnail fleet, no full browser-process containment guarantee and no human
+screen-reader/contrast certification. The existing sandbox keeps native forms/network/
+parent access blocked; local demonstration buttons are tested separately. Color-contrast
+incompletes require manual assessment. Package schemas, immutable release bytes,
+source/composer editing ownership and personal appearance/presets remain independent.
+Exact next step: review the completed prompt06 workflow or explicitly select another
+numbered prompt; no further prompt is started automatically.
+
+Changed files (39):
+
+```text
+agent-kit/STATUS.md
+assets/controllers/catalogue_preview_controller.js
+assets/controllers/preview_controller.js
+assets/controllers/release_thumbnail_controller.js
+config/packages/security.yaml
+docs/styleguide/ARCHITECTURE.md
+docs/styleguide/BROWSER_TESTS.md
+docs/styleguide/CATALOGUE_PREVIEWS.md
+docs/styleguide/CONTRACTS.md
+docs/styleguide/MILESTONES.md
+docs/styleguide/PRODUCT.md
+docs/styleguide/SECURITY.md
+src/Controller/CatalogueController.php
+src/Controller/CataloguePreviewController.php
+src/Controller/PreviewController.php
+src/EventListener/ApiErrorListener.php
+src/MessageHandler/RenderPreviewHandler.php
+src/Rendering/CataloguePreviewInput.php
+src/Rendering/CataloguePreviews.php
+src/Rendering/PreviewJobs.php
+src/Rendering/PreviewRenderer.php
+src/Rendering/ReleaseThumbnails.php
+src/Repository/CatalogueRepository.php
+templates/catalogue/_preview.html.twig
+templates/catalogue/_releases.html.twig
+templates/catalogue/index.html.twig
+templates/catalogue/show.html.twig
+tests/AppearanceProduction/run.sh
+tests/Browser/baselines/chromium/listing-1440-dark.png
+tests/Browser/baselines/chromium/listing-1440-light.png
+tests/Browser/baselines/chromium/listing-390-dark.png
+tests/Browser/baselines/chromium/listing-390-light.png
+tests/Browser/catalogue_preview.spec.js
+tests/Browser/critical.spec.js
+tests/Browser/release.spec.js
+tests/Browser/transfer.spec.js
+tests/Browser/workspace.spec.js
+tests/BrowserHarness/preview-cache.py
+tests/Functional/CataloguePreviewTest.php
+```
+
+Final Git checks: git diff --check passes; all twelve originally staged prompts retain
+staged-diff SHA256 d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1.
+The scoped local implementation commit excludes them. No push is performed.

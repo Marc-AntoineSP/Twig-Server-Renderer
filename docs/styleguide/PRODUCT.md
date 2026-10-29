@@ -19,7 +19,7 @@ three unrelated rendering systems. All three have names, drafts and immutable re
 
 - One private catalogue initially, accessible by authenticated people.
 - Editor roles: ROLE_EDITOR creates/edits/previews/publishes content; ROLE_ADMIN also
-  manages accounts and read tokens. ROLE_READER can browse/download releases.
+  manages accounts and read tokens. ROLE_READER can browse, evaluate sandboxed published examples and download releases.
 - Start with a keyboard-accessible tree builder; drag and drop can be added later.
 - Explicit Save creates a persisted draft revision; preview updates are transient.
 - Source ZIP/YAML imports are supported. Arbitrary URLs and complete foreign websites

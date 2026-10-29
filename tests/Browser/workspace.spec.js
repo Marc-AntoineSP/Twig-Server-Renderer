@@ -58,7 +58,8 @@ for (const width of [390, 1440]) for (const mode of ['light', 'dark']) for (cons
             await expect(shortcut).toBeFocused();
             expect(await shortcut.evaluate(el => getComputedStyle(el).outlineStyle)).not.toBe('none');
             await page.keyboard.press('Enter');
-            await expect(page).toHaveURL(new RegExp(`/catalogue/${fixtures.component.id}${role === 'editor' ? '/edit' : ''}$`));
+            await expect(page).toHaveURL(url => url.pathname === `/catalogue/${fixtures.component.id}${role === 'editor' ? '/edit' : ''}`
+                && (role === 'editor' ? url.search === '' : /^[0-9A-Z]{26}$/.test(url.searchParams.get('release') || '') && url.searchParams.get('example') === '-1'));
         } finally {
             for (let index = 0; index < previous.length; index++) {
                 if (!previous[index]) expect((await page.request.delete(targets[index], {headers})).status()).toBe(200);

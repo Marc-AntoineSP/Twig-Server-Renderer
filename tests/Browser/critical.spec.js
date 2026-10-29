@@ -124,3 +124,22 @@ test('critical: theme detail, disclosure and showcase keyboard dialog', async ({
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden(); await expect(opener).toBeFocused();
 });
+
+test('critical: a reader evaluates an immutable catalogue preview without editor access', async ({page}, testInfo) => {
+    await page.setViewportSize({width:390,height:1000});
+    await login(page,'reader');
+    await page.goto('/catalogue/'+fixtures().component.id);
+    const section=page.locator('[data-controller="catalogue-preview"]');
+    await expect(section).toHaveAttribute('data-preview-state','idle');
+    await expect(page.getByRole('link',{name:'Edit draft',exact:true})).toHaveCount(0);
+    await page.getByRole('button',{name:'Load preview',exact:true}).focus();await page.keyboard.press('Enter');
+    await expect(section).toHaveAttribute('data-preview-state','current',{timeout:30000});
+    await expect(page.frameLocator('iframe[title="Catalogue item preview"]').getByRole('heading',{name:'Your component is ready.',exact:true})).toBeVisible();
+    await expect(page.locator('[data-catalogue-preview-target="identity"]')).toHaveText('Published release 1.0.0');
+    await expect(page).toHaveURL(/release=[0-9A-Z]{26}/);
+    await page.getByRole('button',{name:'375 px',exact:true}).focus();await page.keyboard.press('Enter');
+    await expect(page.locator('iframe[title="Catalogue item preview"]')).toHaveCSS('width','375px');
+    await page.getByRole('button',{name:'Fit width',exact:true}).click();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+    await audit(page,testInfo);
+});

@@ -25,7 +25,16 @@ final readonly class RenderPreviewHandler
         }
         $started=microtime(true);$errorCode='none';
         try {
-            $result = $this->renderer->render($job->getPayload());
+            $result = null;
+            // Reuse only this actor's successful, unexpired, identical rendering inputs.
+            $cached = $this->entityManager->getRepository(PreviewJob::class)->findOneBy(['owner' => $job->getOwner(), 'inputHash' => $job->getInputHash(), 'status' => 'succeeded'], ['createdAt' => 'DESC']);
+            if ($cached && 'succeeded' === $cached->getStatus()) {
+                try {
+                    $stored = $this->storage->read($cached->getId(), $cached->getRunToken());
+                    if (isset($stored['body'], $stored['css'], $stored['js'])) $result = $this->renderer->assemble($stored, $job->getPayload());
+                } catch (\Styleguide\Contracts\CatalogueException) { /* Missing/expired cache: run the same bounded workers. */ }
+            }
+            $result ??= $this->renderer->render($job->getPayload());
             if ($result['ok']) {
                 $this->storage->write($job->getId(), $result, $token);
                 $this->lifecycle->finish($job->getId(), $token, 'succeeded');

@@ -309,3 +309,22 @@ an old-shell failure plus nine passing cross-engine repetitions. Twelve final di
 axe scans have zero violations; gradient contrast and human screen-reader checks remain
 for manual assessment. No migration, dependency update or operator setting is needed.
 Usage is in DISCOVERY.md/FAVORITES.md; STATUS.md records commands, failures and cleanup.
+
+
+## Improvement prompt 06 — Catalogue detail previews
+
+Make exact published releases and saved draft revisions visually inspectable from the
+detail page, with reader-safe explicit loading, actual examples/themes/properties,
+bounded viewports and secondary source/download/release disclosures. Reuse the existing
+owner-only job lifecycle, workers and opaque iframe; cache complete inputs per owner.
+Keep listing thumbnails consistent and explicitly requested, with honest empty states.
+Completed 2026-10-29: Docker build/lint, **166 PHPUnit tests /1791 assertions**,
+**143 browser tests** across three engines, twelve visual comparisons (four reviewed
+listing updates) and **16 immutable-production scenarios** pass. Twelve responsive
+component/block/layout screenshots were reviewed. Twelve browser and twelve production
+application-control axe reports have zero violations; contrast incompletes and human
+screen-reader checks remain for manual review. A real worker-outage test proves private
+cache reuse, changed-input misses and owner isolation. All three browser runs and both
+production fixtures are cleaned. No migration, dependency update or operator setting is
+needed. See CATALOGUE_PREVIEWS.md for usage and STATUS.md for commands, corrected failures,
+versions, changed files and remaining limitations.
