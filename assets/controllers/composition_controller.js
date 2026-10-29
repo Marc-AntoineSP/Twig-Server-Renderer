@@ -1,8 +1,9 @@
 import { Controller } from '@hotwired/stimulus';
 import {canonical, EditingGuard, confirmEditing} from '../editing_guard.js';
 export default class extends Controller {
-    static targets = ['referenceIdentity', 'referenceStatus', 'referencePreview', 'rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'props', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs', 'bodyFont', 'headingFont', 'codeFont', 'theme', 'presetStatus', 'externalNotice', 'externalMessage', 'historyDialog', 'historyList', 'historyStatus', 'historyDetail', 'historyPrevious', 'historyNext', 'historyRestore', 'historyLoad'];
+    static targets = ['saveButton', 'referenceIdentity', 'referenceStatus', 'referencePreview', 'rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs', 'bodyFont', 'headingFont', 'codeFont', 'theme', 'presetStatus', 'externalNotice', 'externalMessage', 'historyDialog', 'historyList', 'historyStatus', 'historyDetail', 'historyPrevious', 'historyNext', 'historyRestore', 'historyLoad'];
     static values = { tree: Object, referenceReadUrl: String, revision: Number, item: String, url: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, settings: Object, themes: Object, presetUrl: String, commandsUrl: String, readUrl: String, historyUrl: String, restoreUrl: String };
+    get propertyEditor() {return this.application.getControllerForElementAndIdentifier(this.element, 'instance-props');}
     connect() {
         this.model = structuredClone(this.treeValue); this.path = []; this.epoch = 0;
         for (const key of ['bodyFont', 'headingFont', 'codeFont']) this[`${key}Target`].value = this.settingsValue[key];
@@ -46,7 +47,7 @@ export default class extends Controller {
         this.containerFieldsTarget.hidden = node.type !== 'container'; this.textFieldsTarget.hidden = node.type !== 'text'; this.referenceFieldsTarget.hidden = node.type !== 'reference';
         if (node.type === 'container') { this.tagTarget.value = node.tag; this.classesTarget.value = node.classes.join(' '); }
         if (node.type === 'text') this.textTarget.value = node.value;
-        if (node.type === 'reference') this.propsTarget.value = JSON.stringify(node.props, null, 2);
+        this.dispatch('selection', {detail:{node}});
     }
     async inspectReference(node, force = false) {
         const key = node.type === 'reference' ? `${node.id}:${node.name}@${node.version}` : null;
@@ -64,8 +65,10 @@ export default class extends Controller {
             if (epoch !== this.referenceEpoch || !this.element.isConnected) return;
             this.referenceStatusTarget.textContent = `${detail.kind} · Published immutable source accessible. Instance props are kept.`;
             this.referencePreviewTarget.href = detail.previewUrl;this.referencePreviewTarget.hidden = false;
+            this.dispatch('reference', {detail:{nodeId:node.id, identity:`${node.name}@${node.version}`, reference:detail}});
         } catch (error) {
             if (epoch !== this.referenceEpoch || error.name === 'AbortError') return;
+            this.dispatch('reference', {detail:{nodeId:node.id, identity:`${node.name}@${node.version}`}});
             this.referenceStatusTarget.textContent = 'Reference unavailable or access changed. Your instance props are kept. Recheck or choose a replacement.';
         }
     }
@@ -83,6 +86,11 @@ export default class extends Controller {
         if (useDefaults) changes.props = structuredClone(reference.props);
         return this.command({type:'update_node', nodeId:this.node().id, changes});
     }
+    findNode(id) {let found;const walk=node=>{if(node.id===id)found=node;for(const child of node.children||[])walk(child);};walk(this.model.root);return found;}
+    selectNode(id) {if(this.findNode(id)){this.path=this.pathForId(id);this.render(true);}}
+    navigate(event) {event.preventDefault();this.navigateTo(event.currentTarget.getAttribute('href').slice(1));}
+    navigateTo(id) {const heading=this.element.querySelector('#'+id);heading?.scrollIntoView({block:'start'});heading?.focus({preventScroll:true});}
+    invalidProperties(message) {clearTimeout(this.timer);this.epoch++;this.cancel(this.job);this.statusTarget.textContent='Stale preview — '+message;this.metadata();}
     focusSelected() {this.visible.find(row => JSON.stringify(row.path) === JSON.stringify(this.path))?.button.focus();}
     key(event, path) {
         const i = this.visible.findIndex(row => JSON.stringify(row.path) === JSON.stringify(path));
@@ -99,14 +107,13 @@ export default class extends Controller {
         this.element.dataset.editingState = this.saving ? 'saving' : this.dirty ? 'dirty' : 'clean';
         this.saveStatusTarget.textContent = this.saving ? 'Saving…; newer changes remain unsaved' : this.dirty ? 'Unsaved changes' : `Saved revision ${this.revisionValue}`;
     }
-    changed() { this.invalid = false; this.metadata(); this.render(); this.schedule(); }
+    changed() { this.invalid = this.propertyEditor?.invalidText() || false; this.metadata(); this.render(); this.schedule(); }
     fields() {
         const node = this.node();
         try {
             if (node.type === 'container') { node.tag = this.tagTarget.value; node.classes = this.classesTarget.value.trim().split(/\s+/).filter(Boolean); }
             if (node.type === 'text') node.value = this.textTarget.value;
-            if (node.type === 'reference') { const props = JSON.parse(this.propsTarget.value); if (!props || Array.isArray(props) || typeof props !== 'object') throw Error('Props must be an object.'); node.props = props; }
-            this.invalid = false; this.metadata(); this.schedule();
+            this.invalid = this.propertyEditor?.invalidText() || false; this.metadata(); this.schedule();
             // Preserve the current caret while updating row labels.
             this.visible.forEach(row => { if (JSON.stringify(row.path) === JSON.stringify(this.path)) row.button.textContent = node.type === 'text' ? `Text: ${node.value.slice(0,80)}` : node.type === 'container' ? `<${node.tag}> ${node.classes.join(' ')}` : `${node.name}@${node.version}`; });
         } catch (error) { this.invalid = true; this.metadata(); clearTimeout(this.timer); this.epoch++; this.statusTarget.textContent = `Stale preview — ${error.message}`; }
@@ -128,7 +135,7 @@ export default class extends Controller {
         try {const result=await this.json(this.commandsUrlValue,{method:'POST',body:JSON.stringify({document:this.model,expectedRevision:this.revisionValue,commands:[command]})});
             this.model=result.document;this.path=this.pathForId(result.selectedNodeId);this.changed();this.render(true);return true;
         }catch(error){this.failure(error);return false;}
-        finally{this.commandPending=false;controls.forEach(([el,disabled])=>{if(el.isConnected)el.disabled=disabled;});}
+        finally{this.commandPending=false;controls.forEach(([el,disabled])=>{if(el.isConnected)el.disabled=disabled;});this.propertyEditor?.validity();}
     }
     async pollRevision() {
         if(document.hidden||this.saving||this.commandPending||this.polling)return;this.polling=true;
@@ -148,11 +155,11 @@ export default class extends Controller {
     }
     disableControls() {
         const fields=[...this.element.querySelectorAll('input,select,textarea,button')].filter(el=>!el.closest('[data-appearance-recovery]')).map(el=>[el,el.disabled]);
-        fields.forEach(([el])=>el.disabled=true);return ()=>fields.forEach(([el,disabled])=>{if(el.isConnected)el.disabled=disabled;});
+        fields.forEach(([el])=>el.disabled=true);return ()=>{fields.forEach(([el,disabled])=>{if(el.isConnected)el.disabled=disabled;});this.propertyEditor?.validity();};
     }
     acceptSaved(data) {
         this.epoch++;this.cancel(this.job);this.job=null;this.channel=null;this.frameTarget.srcdoc='';
-        this.model=data.document;this.revisionValue=data.revision;this.titleTarget.value=data.title;this.path=[];this.invalid=false;
+        this.propertyEditor?.reset();this.model=data.document;this.revisionValue=data.revision;this.titleTarget.value=data.title;this.path=[];this.invalid=false;
         this.savedSnapshot=canonical(this.snapshot());this.dirty=false;this.element.dataset.editingState='saved';this.externalNoticeTarget.hidden=true;
         if(data.generatedTwig)this.generatedTarget.value=data.generatedTwig;
         this.render(true);
@@ -216,22 +223,23 @@ export default class extends Controller {
     }
     async json(url, options = {}) {
         const response = await fetch(url, { ...options, credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': this.csrfValue } });
-        const data = await response.json(); if (!response.ok) throw Object.assign(Error(data.message || 'Composition request failed.'), {status: response.status}); return data;
+        const data = await response.json(); if (!response.ok) throw Object.assign(Error(data.message || 'Composition request failed.'), {status: response.status, fieldErrors:data.fieldErrors || {}}); return data;
     }
     input() { if (this.invalid) throw Error('Correct the current JSON before saving or previewing.'); return { document: this.model, expectedRevision: this.revisionValue, title: this.titleTarget.value }; }
     async save() {
         if(this.saving||this.commandPending)return;
-        let saved=false;
+        if(this.invalid || this.propertyEditor?.serverErrors()){this.propertyEditor?.firstInvalid();return;}
+        let saved=false, captured;
         try {
-            const captured = structuredClone(this.input()); const snapshot = JSON.stringify(captured);
+            captured = structuredClone(this.input()); const snapshot = JSON.stringify(captured);
             this.saving=true;this.element.dataset.editingState='saving';this.saveStatusTarget.textContent='Saving…';clearTimeout(this.timer);this.epoch++;this.cancel(this.job);this.job=null;this.statusTarget.textContent='Stale preview — saving composition';
             const result = await this.json(this.urlValue, { method: 'PUT', body: snapshot });
             if(!this.element.isConnected)return;
             this.savedSnapshot=canonical({document:result.document,title:captured.title});
             this.revisionValue=result.revision;this.dirty=Boolean(this.invalid)||canonical(this.snapshot())!==this.savedSnapshot;this.element.dataset.editingState=this.dirty?'dirty':'saved';saved=true;
             this.saveStatusTarget.textContent = `Saved revision ${result.revision}${this.dirty ? '; newer changes remain unsaved' : ''}`;
-        } catch (error) { this.failure(error); }
-        finally{this.saving=false;if(saved)this.schedule();}
+        } catch (error) { this.failure(error);if(captured && canonical(this.model)===canonical(captured.document))this.dispatch('validation',{detail:{fieldErrors:error.fieldErrors}}); }
+        finally{this.saving=false;this.propertyEditor?.validity();if(saved)this.schedule();}
     }
     schedule() { clearTimeout(this.timer); this.epoch++; this.statusTarget.textContent = 'Stale preview — changes pending'; this.timer = setTimeout(() => this.preview(), 300); }
     settings() {
@@ -261,6 +269,7 @@ export default class extends Controller {
         try {
             const prepared = await this.json(this.urlValue, { method: 'POST', body: JSON.stringify(this.input()) });
             if (epoch !== this.epoch) return;
+            this.dispatch('validation',{detail:{fieldErrors:{}}});
             this.generatedTarget.value = prepared.sourceMap[prepared.manifestData.entry];
             const channel = [...crypto.getRandomValues(new Uint8Array(16))].map(v=>v.toString(16).padStart(2,'0')).join('');
             const created = await this.json(this.createUrlValue, { method: 'POST', body: JSON.stringify({ itemId: this.itemValue, sequence: epoch, channel, manifestData: prepared.manifestData, sourceMap: prepared.sourceMap, preset: this.settings() }) });
@@ -269,7 +278,7 @@ export default class extends Controller {
             do { state = await this.json(this.statusUrlValue.replace('__JOB__',created.id)); if (epoch !== this.epoch) return; if (['failed','cancelled','expired'].includes(state.status)) throw Error(state.error?.message || state.status); if (state.status !== 'succeeded') await new Promise(r=>setTimeout(r,100)); } while (state.status !== 'succeeded');
             const document = await this.json(this.documentUrlValue.replace('__JOB__',created.id)); if (epoch !== this.epoch || document.sequence !== epoch) return;
             this.channel = channel; this.frameTarget.setAttribute('sandbox', this.disableJsTarget.checked ? '' : 'allow-scripts'); this.frameTarget.srcdoc = document.html; this.statusTarget.textContent = 'Composition preview current';
-        } catch (error) { if (epoch === this.epoch) this.statusTarget.textContent = `Stale preview — ${error.message}`; }
+        } catch (error) { if (epoch === this.epoch) {this.statusTarget.textContent = `Stale preview — ${error.message}`;if(error.status===422)this.dispatch('validation',{detail:{fieldErrors:error.fieldErrors}});} }
     }
     width(event) { const width = Number(event.currentTarget.dataset.width); this.settingsValue = { ...this.settingsValue, width }; this.frameTarget.style.width = `${width}px`; }
     reset() { clearTimeout(this.timer); this.epoch++; this.cancel(this.job); this.job = null; this.channel = null; this.frameTarget.srcdoc = ''; this.statusTarget.textContent = 'Preview reset. Build preview to resume.'; }

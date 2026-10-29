@@ -282,3 +282,16 @@ requires session CSRF. Preview HTML/JS never enters the studio DOM. Existing opa
 iframe/CSP/worker isolation remains unchanged. Load fixtures and measurement tools require
 a test database or verified disposable database/blob ownership; no production fixture
 command or unauthenticated test API is added.
+
+
+## Instance property metadata and controls
+
+The inspector reuses the authorized exact reference read and shared server validation;
+schema metadata grants no new access. Labels, descriptions, values and validation paths
+are created with textContent/native inputs, never trusted HTML. Controls clone the
+complete props object, use own-key checks and explicit property definition for keys such
+as __proto__, and never interpret property names as selectors or executable code.
+Invalid raw text stays in editor memory until corrected or explicitly discarded. Node
+identity plus metadata/preview epochs prevent late replies changing another instance.
+The opaque iframe, worker limits, source isolation, CSRF, revision and MCP policies are
+unchanged. See INSTANCE_PROPERTIES.md.

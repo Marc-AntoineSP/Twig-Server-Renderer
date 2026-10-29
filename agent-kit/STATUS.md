@@ -2877,3 +2877,233 @@ tests/Functional/ReferenceDiscoveryTest.php
 tests/ReferencePicker/measure.php
 tests/ReferencePicker/seed.php
 ```
+
+## Improvement prompt 08 — Composition property inspector (2026-10-29)
+
+Selected input: prompts/08-composition-property-inspector.md and its nested prompt pack
+08-composition-property-inspector/08-composition-property-inspector. Pack checksums and
+PROMPT equality passed. Started from ddbfcae on the new local branch
+feature/m21-composition-property-inspector. The twelve pre-staged prompt additions are
+preserved; their original staged diff fingerprint is
+`d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.
+
+Observed starting behavior: the composer offered only Instance props (JSON), selection
+re-rendered that textarea, and source preview owned a separate small inline schema form.
+Defaults were copied when inserting a reference, not merged into every rendered instance.
+PropsValidator already bounded draft2020-12 and validated full values through Opis.
+
+Implemented:
+
+- Extract shared schema field descriptions/DOM controls for source, catalogue and
+  composition previews. Multiline strings, scalar enums/const, booleans, integer/number,
+  simple local refs, labels/descriptions, required/default hints and structured JSON
+  fallback use the existing dialect; server validation remains authoritative.
+- Keep node.props canonical. Include/omit, explicit null, false/zero/empty, nested and
+  unknown allowed keys survive form/Advanced JSON round trips. Defaults are annotations
+  until deliberate per-field inclusion/default or whole-release reset. No default merge.
+- Preserve invalid raw/structured/numeric drafts per stable node ID, retain the last
+  valid object, block invalid saves/view switches and use the existing unsaved guard.
+  Deliberate discard restores valid props. Field and summary errors identify the actual
+  reference node, including repeated uses of the same release.
+- Keep existing shared commands, atomic compatible replacement, explicit new-default
+  replacement and immutable pins. Metadata/validation/preview epochs protect selection
+  and newer work. Debounced field changes remain unsaved until explicit Save.
+- Add keyboard Tree/Properties/Preview links, a wide three-column layout with sticky
+  preview, stacked smaller layouts and a labelled keyboard-scrollable preview region.
+  Update usage, architecture, contracts, security and regression coverage.
+
+Executed verification (one verified disposable browser database/blob/runtime only,
+`browser-d1c0f8bf6cb5728f56953714`; no working catalogue mutations):
+
+```text
+python3 tests/BrowserHarness/run.py start --keep
+python3 -m var.browser-verification.property-inspector-focused
+python3 -m var.browser-verification.property-inspector-gates
+python3 -m var.browser-verification.property-inspector-history
+python3 -m var.browser-verification.property-inspector-suite
+python3 -m var.browser-verification.property-inspector-corrected-fields
+python3 -m var.browser-verification.property-inspector-stable-viewport
+python3 -m var.browser-verification.property-inspector-stable-suite
+python3 -m var.browser-verification.property-inspector-clock
+bash tests/AppearanceProduction/run.sh tests/Browser/instance_properties.spec.js tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js tests/Browser/catalogue_preview.spec.js tests/Browser/preview.spec.js
+```
+
+The owned Python wrappers use Run.verify_resources plus its lifecycle lock, Docker
+Compose tools builds, recreate app/consumer, cache:clear, and real Docker commands:
+composer validate --strict; lint:container; lint:yaml config; lint:twig templates;
+doctrine:database:create/migrations:migrate --env=test; php bin/phpunit; npm run
+test:browser. Before the full PHP suite only the owned browser_test database was dropped
+and recreated, avoiding stale fixtures from previous test invocations. Run.test uses
+actual browser/job APIs. No host PHP or replacement test framework was introduced.
+
+Results: Docker builds and strict Composer/container/34 YAML/54 Twig checks pass;
+**170 PHPUnit tests /1883 assertions** pass. The added functional manual/MCP parity
+check passes **26 assertions**, including persisted exact values, omission, node-scoped
+errors, unchanged failed-write revision and unchanged referenced release defaults.
+The focused run passes **38 browser cases** across Chromium, Firefox and WebKit;
+the final viewport/property follow-up passes **13 cases**. The last complete run passes
+**167/168 browser cases**, including all visual and cross-engine critical cases. The
+remaining source-editor case fails before its debounce assertion because the pause
+target mixes host and emulated time. After fixing only that test clock, its complete
+editor spec passes **18 cases** in three repetitions. All 168 distinct scenarios are
+verified across the full run and focused repetitions; no single all-green full
+invocation is claimed. The latest immutable-production run passes **31 scenarios**,
+official MCP SDK smoke, schema/font verification and unchanged read-only AssetMapper
+manifest checks.
+
+Visual verification: reviewed four updated composer baselines, preserving all eight
+unrelated listing/theme images byte-for-byte. Reviewed eight fresh inspector/preview screenshots at 390/1440 px in both modes. New narrow/wide
+light/dark scenarios test heading focus, actual iframe output, wide sticky visibility,
+no document overflow, plain-text malicious schema descriptions and axe controls.
+Four final focused inspector axe reports and sixteen reports in each production run
+have zero violations. Color-contrast incompletes and human screen-reader assessment remain
+manual; no claim is made about iframe-content accessibility or full JSON Schema UI.
+
+Corrected failures and audit trail:
+
+- The initial edge fixture was outside the browser image COPY boundary; it now lives
+  under tests/Browser/fixtures and is shared with the functional test.
+- An existing JSON helper inspected the prior node's view while Duplicate was pending;
+  it now waits for command controls before choosing Advanced JSON. A real axe failure
+  identified the preview overflow region needing keyboard access; the region is fixed.
+- The initial MCP error assertion compared encoded slashes; it now checks the actual
+  parsed structured field key. No server behavior was changed to satisfy the assertion.
+- A focused 37/38 run and a 2/3 WebKit repetition missed the second Back confirmation.
+  The critical test now waits for the first dialog to be removed before a second
+  traversal. Temporary event diagnostics produced three passing WebKit repetitions and
+  were removed; no guard/product/history behavior was weakened. Both complete runs and the final 38-case focused run pass all twelve critical
+  cases. Earlier intermittent WebKit misses are retained as timing observations to
+  monitor; the editing guard itself was not changed.
+- A final display correction refreshes inline errors when valid JSON replaces an
+  incomplete preview field, and clears the previous node's summary before schema reads
+  finish. The dedicated property suite is rerun after these small changes.
+- The first complete browser sweep passed 167/168: an 874-pixel composer difference
+  exposed a real 2 px iframe border/content height feedback drift. The composer now uses
+  content viewport sizing, and responsive tests verify that 375 px really means 375 px
+  inside the frame. Composer baselines were deliberately regenerated; unrelated eight
+  originals remain untouched. The thirteen property checks and twelve repeated visual cases (36 image comparisons)
+  pass after that correction.
+- The final full run also passed 167/168, with all visual comparisons now passing;
+  the single failure was editor.spec.js clock.pauseAt rejecting a host-derived date
+  behind its emulated clock. Only that test clock is fixed at two explicit times,
+  following [Playwright clock documentation](https://playwright.dev/docs/api/class-clock#clock-pause-at). The 299 ms/1 ms debounce and stale-good-frame
+  assertions remain intact. The entire editor spec passes 18 cases across three repetitions.
+- One exploratory full run was deliberately stopped (exit 143) before completion to add
+  multiline string coverage; it is not reported as a passing suite. The final string
+  control prevents native text-input newline stripping and verifies Save/reload.
+
+Evidence remains ignored under var/browser-verification/property-inspector-*.log and
+var/browser-runs/browser-d1c0f8bf6cb5728f56953714/artifacts. Immutable production runs:
+var/appearance-20261029183933-5960, var/appearance-20261029184931-16280,
+var/appearance-20261029185630-30753 and var/appearance-20261029191056-19062, including
+MCP SDK smoke JSON, browser results, asset hashes and cleanup evidence.
+
+Observed versions: FrankenPHP 1.13.4 / PHP 8.5.12 / Symfony 8.1.9 / Caddy 2.11.7,
+PHPUnit 13.4.3, PostgreSQL 17.11 and Node 24.22.1. Installed Playwright metadata lists
+Chromium 156.0.8078.4, Firefox 157.0 and WebKit 27.2. Unchanged locks/importmap record Playwright 1.64.1,
+axe 4.14.0, Tailwind 4.3.3, daisyUI 5.7.50, Stimulus 3.2.2 and Turbo 8.0.23.
+No migration, dependency update, schema version or operator configuration is required.
+Workers, opaque sandbox, immutable package bytes and manual/MCP persistence semantics
+are retained. Schema/read failures keep local JSON available; unsupported constructs
+remain explicit JSON fallback rather than a claim of complete schema-generated forms.
+
+The browser run has a CLEANED receipt. Exact owned-resource audits report zero
+containers (including stopped), volumes, networks, private files and owned worker tags
+for that run and all four production fixtures. Reusable app/browser image caches remain.
+Evidence: property-inspector-browser-cleanup.log, property-inspector-production-cleanup.json
+and property-inspector-resource-audit.json under var/browser-verification. No push, remote publication, deployment or real-content edit
+occurred. Exact next step: review this completed prompt08 change or explicitly select
+another numbered prompt. Prompt09 is not started automatically.
+
+Changed files (31):
+
+```text
+agent-kit/STATUS.md
+assets/controllers/catalogue_preview_controller.js
+assets/controllers/composition_controller.js
+assets/controllers/instance_props_controller.js
+assets/controllers/preview_controller.js
+assets/property_fields.js
+docs/styleguide/ARCHITECTURE.md
+docs/styleguide/BROWSER_TESTS.md
+docs/styleguide/CONTRACTS.md
+docs/styleguide/EDITING.md
+docs/styleguide/INSTANCE_PROPERTIES.md
+docs/styleguide/MILESTONES.md
+docs/styleguide/PRODUCT.md
+docs/styleguide/REFERENCE_PICKER.md
+docs/styleguide/SECURITY.md
+packages/catalogue-contracts/src/CompositionTemplate.php
+templates/composition/_instance_props.html.twig
+templates/composition/edit.html.twig
+tests/AppearanceProduction/run.sh
+tests/Browser/baselines/chromium/composer-1440-dark.png
+tests/Browser/baselines/chromium/composer-1440-light.png
+tests/Browser/baselines/chromium/composer-390-dark.png
+tests/Browser/baselines/chromium/composer-390-light.png
+tests/Browser/composition.spec.js
+tests/Browser/critical.spec.js
+tests/Browser/editor.spec.js
+tests/Browser/fixtures/instance-properties.json
+tests/Browser/helpers.js
+tests/Browser/instance_properties.spec.js
+tests/Browser/reference_picker.spec.js
+tests/Functional/ComposeMcpTest.php
+```
+
+
+## Prompt 08 re-applied and freshly verified on M22 (2026-10-29)
+
+The selected branch feature/m22-composition-property-inspector started at ddbfcae,
+without prompt08. Local commit 54933c3 retained the complete prior implementation.
+Recovered only its 31 implementation paths into the current worktree, after confirming
+the same parent and no unstaged changes. Normalized file hashes matched all 31 source blobs.
+The twelve staged prompt additions remain untouched, with their original fingerprint
+`d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.
+Pack checksums and PROMPT equality were rechecked. No later prompt was selected.
+
+Starting behavior was again JSON-only composition props, with schema controls inline
+in source preview. The restored change shares those controls, keeps node.props canonical
+and omission/null/falsy/structured/unknown values distinct, preserves invalid text per
+node, maps server errors by stable node ID, and keeps explicit Save, immutable references,
+MCP parity and existing sandbox/job isolation. Usage and full 31-file inventory are in
+INSTANCE_PROPERTIES.md and the earlier prompt08 handoff above.
+
+Fresh commands:
+
+```text
+python3 tests/BrowserHarness/run.py start --keep
+python3 -m var.browser-verification.property-inspector-m22-verify
+bash tests/AppearanceProduction/run.sh tests/Browser/instance_properties.spec.js tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js tests/Browser/catalogue_preview.spec.js tests/Browser/preview.spec.js
+```
+
+The verification wrapper locks exact owned run browser-114820819060097bb17d7584, calls
+Run.verify_resources, Run.check (strict Composer/container/YAML/Twig + full PHPUnit),
+prints runtime versions, and Run.test([]) for the complete browser suite. Only disposable
+database/blob/runtime resources were used; no working catalogue was mutated.
+
+Fresh results: builds, strict Composer/container/34 YAML/54 Twig checks pass;
+**170 PHPUnit tests /1883 assertions** pass. **168/168 browser tests pass in one complete invocation** (160 Chromium, 4 Firefox,
+4 WebKit), including all 13 new property cases, the fixed source-clock test and all twelve
+visual comparisons. No baseline updates were needed for this fresh run.
+The fresh immutable-production run passes **31 scenarios**, SDK smoke, schema/font
+checks and unchanged read-only AssetMapper checks. Its16 axe reports have zero
+violations. Four fresh inspector axe reports also have zero violations; the 390/1440 px light/dark
+production viewport screenshots were viewed during this run. No migration, dependency or operator setting change.
+Observed runtime versions remain FrankenPHP 1.13.4, PHP 8.5.12, Symfony 8.1.9, Caddy 2.11.7
+and PostgreSQL 17.11; dependency locks are unchanged.
+
+Evidence: var/browser-verification/property-inspector-m22-*.log; browser artifacts in
+var/browser-runs/browser-114820819060097bb17d7584/artifacts; production evidence in
+var/appearance-20261029194401-28844. The browser run has a CLEANED receipt. The exact fresh-resource audit reports zero
+containers (including stopped), volumes, networks, private files and owned worker tags
+for both environments. App/browser image caches remain. Cleanup evidence is under
+var/browser-verification/property-inspector-m22-{browser-cleanup.log,production-cleanup.json,resource-audit.json}.
+
+Earlier failed checks and corrections remain recorded in the historical handoff above.
+This fresh run uses the fixed source-test clock and content-sized composer iframe.
+Manual contrast incompletes and human screen-reader assessment remain unexecuted; no
+claim is made about complete schema-generated forms or iframe-content accessibility.
+No push, deployment, remote publication or working-content mutation occurred.
+Exact next step: review the current branch's prompt08 commit, or explicitly select
+another numbered prompt. Prompt09 is not started automatically.

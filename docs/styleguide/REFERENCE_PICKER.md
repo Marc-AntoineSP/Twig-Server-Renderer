@@ -53,3 +53,10 @@ application time. Search does not execute or compile imported code.
 No migration, dependency installation or operator configuration is required. Automated
 browser audits cover application controls at narrow/wide widths and both modes;
 manual screen-reader assessment and contrast incompletes remain separate checks.
+
+
+The accepted exact reference also supplies the composition property inspector's shared
+schema controls. A compatible replacement retains the complete current props object;
+an incompatible replacement leaves the old reference and values intact. The explicit
+release-default checkbox replaces the whole object. There is no coercion or partial
+dropping. See INSTANCE_PROPERTIES.md for form/Advanced JSON and error recovery.

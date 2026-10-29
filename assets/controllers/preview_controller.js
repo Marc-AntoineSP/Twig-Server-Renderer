@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import {PropertyFields, propsObject} from '../property_fields.js';
 
 export default class extends Controller {
     static targets = ['frame', 'stage', 'status', 'props', 'disableJs', 'width', 'zoom', 'rootSize', 'bodyFont', 'headingFont', 'codeFont', 'textClass', 'presetStatus', 'example', 'theme', 'colorScheme', 'surface', 'deviceFrame', 'propForm'];
@@ -27,7 +28,14 @@ export default class extends Controller {
         return [...crypto.getRandomValues(new Uint8Array(16))].map(value => value.toString(16).padStart(2, '0')).join('');
     }
 
-    schedule() {
+    clearPropertyDrafts(event) {
+        if (event?.target === this.propsTarget) {
+            try {propsObject(this.propsTarget.value);this.propertyFields?.drafts.clear();} catch {}
+        }
+    }
+
+    schedule(event) {
+        this.clearPropertyDrafts(event);
         clearTimeout(this.timer);
         this.sequence++;
         this.request?.abort();
@@ -58,6 +66,7 @@ export default class extends Controller {
         const channel = this.randomChannel();
         this.setStatus('pending', this.lastDocument ? 'Queued — previous preview is stale.' : 'Queued for preview…');
         try {
+            if (this.propertyFields?.drafts.size) throw Error('Correct the highlighted property text before building a preview.');
             const preset = this.settings();
             const body = this.previewBody(sequence, channel, preset);
             // Always collect a created ID so an obsolete creation can be cancelled server-side.
@@ -182,37 +191,26 @@ export default class extends Controller {
 
     refreshPropsForm(sources,manifest) {
         if(!this.hasPropFormTarget)return;
-        try{
-            const schema=JSON.parse(sources[manifest.propsSchema]);const key=JSON.stringify(schema);
+        try {
+            const schema=JSON.parse(sources[manifest.propsSchema]), key=JSON.stringify([schema,manifest.defaults]);
+            const props=propsObject(this.propsTarget.value);
             if(key!==this.propSchemaKey){
-                this.propSchemaKey=key;this.propFormTarget.replaceChildren();this.propFields=[];
-                for(const [name,rule] of Object.entries(schema.properties||{}).slice(0,30)){
-                    const id=`${this.identifier}-property-${this.propFields.length}`;const wrap=document.createElement('div');const label=document.createElement('label');label.htmlFor=id;label.textContent=rule.title||name;
-                    let input;if(Array.isArray(rule.enum)&&rule.enum.length<=30){input=document.createElement('select');for(const option of rule.enum)input.add(new Option(String(option),JSON.stringify(option)));}
-                    else{input=document.createElement(['array','object'].includes(rule.type)?'textarea':'input');if(input.tagName==='INPUT')input.type=rule.type==='boolean'?'checkbox':['integer','number'].includes(rule.type)?'number':'text';if(rule.type==='integer')input.step='1';if(typeof rule.minimum==='number')input.min=rule.minimum;if(typeof rule.maximum==='number')input.max=rule.maximum;if(typeof rule.maxLength==='number')input.maxLength=rule.maxLength;}
-                    input.id=id;input.dataset.propName=name;input.dataset.propType=rule.type;input.dataset.propEnum=String(Array.isArray(rule.enum));input.dataset.action=`input->${this.identifier}#propsFieldChanged`;input.className=rule.type==='boolean'?'checkbox':'input input-bordered w-full';wrap.append(label,input);this.propFormTarget.append(wrap);this.propFields.push(input);
-                }
-            }
-            const props=JSON.parse(this.propsTarget.value);
-            for(const input of this.propFields){if(document.activeElement===input)continue;const value=props[input.dataset.propName];if(input.type==='checkbox')input.checked=value===true;else input.value=input.dataset.propEnum==='true'||['array','object'].includes(input.dataset.propType)?JSON.stringify(value??null):value??'';}
-        }catch{}
-    }
-
-    propsFieldChanged(event) {
-        try{
-            const input=event.target;const props=JSON.parse(this.propsTarget.value);let value=input.type==='checkbox'?input.checked:input.value;
-            if(input.dataset.propEnum==='true'||['array','object'].includes(input.dataset.propType))value=JSON.parse(value);
-            else if(['integer','number'].includes(input.dataset.propType)){value=Number(value);if(!Number.isFinite(value)||input.value==='')throw Error('Enter a finite property number.');}
-            Object.defineProperty(props,input.dataset.propName,{value,enumerable:true,writable:true,configurable:true});this.propsTarget.value=JSON.stringify(props,null,2);this.schedule();
-        }catch(error){this.invalid({detail:{message:error.message}});}
+                this.propSchemaKey=key;
+                this.propertyFields=new PropertyFields(this.propFormTarget,{schema,defaults:manifest.defaults || this.defaultPropsValue,prefix:this.identifier+'-property',value:props,
+                    onChange:next=>{try{propsObject(this.propsTarget.value);}catch(error){this.invalid({detail:{message:'Correct the preview JSON before editing fields. '+error.message}});return false;}this.propsTarget.value=JSON.stringify(next,null,2);this.schedule();return true;},
+                    onInvalid:(_name,message)=>this.invalid({detail:{message}}),
+                });
+            } else this.propertyFields.update(props);
+        } catch {}
     }
 
     chooseExample() {
         const example = this.examples[Number(this.exampleTarget.value)];
-        if (this.exampleTarget.value !== '' && example) { this.propsTarget.value = JSON.stringify(example.props, null, 2); this.schedule(); }
+        if (this.exampleTarget.value !== '' && example) { this.propertyFields?.drafts.clear();this.propsTarget.value = JSON.stringify(example.props, null, 2); this.schedule(); }
     }
 
     resetSettings() {
+        this.propertyFields?.drafts.clear();
         this.applySettings({ width: 768, zoom: 100, rootSize: 16, bodyFont: 'system-sans', headingFont: 'system-sans', textClass: 'text-base', scripts: true, props: this.defaultPropsValue });
         this.schedule();
     }
@@ -253,7 +251,7 @@ export default class extends Controller {
         try {
             const manifest = JSON.parse(document.getElementById('draft_manifestJson').value);
             const example = this.hasExampleTarget && this.exampleTarget.value !== '' ? this.examples[Number(this.exampleTarget.value)] : null;
-            this.propsTarget.value = JSON.stringify(example?.props || manifest.defaults, null, 2);
+            this.propertyFields?.drafts.clear();this.propsTarget.value = JSON.stringify(example?.props || manifest.defaults, null, 2);
             this.schedule();
         } catch (error) { this.setStatus('error', error.message); }
     }

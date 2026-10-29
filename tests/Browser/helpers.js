@@ -69,3 +69,10 @@ export async function pickReference(page, name, version, {replace = false, useDe
     await expect(dialog).not.toBeVisible();
     await expect(page.getByRole('treeitem', {name: `${name}@${version}`, exact: true}).last()).toBeVisible();
 }
+
+export async function editInstanceJSON(page, value) {
+    await expect(page.getByRole('button',{name:'Add reference',exact:true})).toBeEnabled();
+    const input=page.getByLabel('Instance props (JSON)',{exact:true});
+    if (!await input.isVisible()) await page.getByRole('button',{name:'Advanced JSON',exact:true}).click();
+    await input.fill(value);
+}

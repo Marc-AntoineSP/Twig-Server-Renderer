@@ -85,6 +85,10 @@ favorites, kind and explicit immutable versions. A native search dialog preserve
 focus and unsaved work; exact pinned identities remain visible outside active filters.
 Previews are explicit and isolated. Replacement preserves props unless resetting to the
 selected release's defaults is deliberate. See REFERENCE_PICKER.md.
+Instance properties use labeled schema controls plus Advanced JSON. Omitted keys, null
+and explicit values remain distinct; defaults require an explicit edit. Invalid text
+is retained per node and blocks saving. Tree/Properties/Preview links preserve edits.
+See INSTANCE_PROPERTIES.md for supported fields, errors and reset behavior.
 Containers offer a bounded tag and literal utility classes. References target exact
 published component, block or layout versions and supply props. Text nodes contain escaped text.
 The preview uses the same renderer as standalone components.

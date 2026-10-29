@@ -39,6 +39,41 @@ final class ComposeMcpTest extends DatabaseTestCase
     {
         $r=$this->call($client,$name,$arguments);self::assertFalse($r['isError']??false,json_encode($r));return $r['structuredContent'];
     }
+    public function testInstancePropertyParityPreservesOmissionFalsyStructuredValuesAndNodeScopedErrors():void
+    {
+        $client=self::createClient();$owner=$this->account();$this->signIn($client,$owner);
+        $writer=self::getContainer()->get(CatalogueWriter::class);
+        $component=$writer->create(new CreateItemInput('mcp-tests/props-'.strtolower((string)new Ulid()),'component','Instance property schema'),$owner);
+        $m=$component->getManifestData();$sources=$component->getSourceMap();
+        $fixture=json_decode(file_get_contents(dirname(__DIR__).'/Browser/fixtures/instance-properties.json'));
+        $schema=(object)['type'=>'object','$defs'=>$fixture->{'$defs'},'properties'=>$fixture->properties,'required'=>['message',...$fixture->required],'additionalProperties'=>true];
+        $m->defaults=(object)array_merge((array)$m->defaults,(array)$fixture->defaults);
+        $sources->{'meta/props.schema.json'}=json_encode($schema,JSON_THROW_ON_ERROR);
+        $sources->{'meta/examples.json'}=json_encode([(object)['name'=>'Edge values','props'=>$m->defaults]],JSON_THROW_ON_ERROR);
+        $writer->save($component->getItem(),1,new \App\Catalogue\DraftInput($m,$sources,'Instance property schema'),$owner);
+        $release=self::getContainer()->get(\App\Packaging\ReleasePublisher::class)->publish($component->getItem(),new \App\Packaging\PublishInput('1.0.0',2));
+        $layout=$writer->create(new CreateItemInput('mcp-tests/manual-props-'.strtolower((string)new Ulid()),'layout','Manual props'),$owner);
+        $workspace=self::getContainer()->get(\App\Composition\CompositionWorkspace::class);$tree=$workspace->document($layout);
+        $props=clone $m->defaults;unset($props->releaseGuide);$props->message='Only this instance';$props->count=0;$props->ratio=0;$props->nullable=null;$props->empty='';$props->unknown=(object)['flag'=>false,'nil'=>null,'zero'=>0,'nested'=>[(object)['value'=>'']]];
+        $client->request('GET','/api/v1/csrf');$csrf=json_decode($client->getResponse()->getContent())->token;
+        $url='/api/v1/items/'.$layout->getItem()->getId().'/composition';
+        $client->jsonRequest('POST',$url.'/commands',['document'=>$tree,'expectedRevision'=>1,'commands'=>[(object)['type'=>'add_reference','selectedId'=>$tree->root->id,'name'=>$component->getItem()->getName(),'version'=>'1.0.0','props'=>$props]]],['HTTP_X_CSRF_TOKEN'=>$csrf]);
+        self::assertResponseIsSuccessful($client->getResponse()->getContent());$manual=json_decode($client->getResponse()->getContent())->document;
+        $client->jsonRequest('PUT',$url,['document'=>$manual,'expectedRevision'=>1],['HTTP_X_CSRF_TOKEN'=>$csrf]);self::assertResponseIsSuccessful();
+        $client->request('GET',$url);$persisted=json_decode($client->getResponse()->getContent())->document->root->children[0]->props;
+        $json=new \Styleguide\Contracts\CanonicalJson();self::assertSame($json->encode($props),$json->encode($persisted));self::assertFalse(property_exists($persisted,'optionalGuide'));self::assertFalse(property_exists($persisted,'releaseGuide'));self::assertNull($persisted->nullable);self::assertFalse($persisted->unknown->flag);self::assertSame(0,$persisted->count);
+        $invalid=json_decode(json_encode($manual));$invalid->root->children[0]->props->count=11;
+        $client->jsonRequest('POST',$url,['document'=>$invalid,'expectedRevision'=>2],['HTTP_X_CSRF_TOKEN'=>$csrf]);self::assertResponseStatusCodeSame(422);
+        $errors=json_decode($client->getResponse()->getContent(),true)['fieldErrors'];self::assertArrayHasKey('nodes.'.$manual->root->children[0]->id.'.props/count',$errors);
+        $em=self::getContainer()->get(EntityManagerInterface::class);$owner=$em->find(\App\Entity\User::class,$owner->getId());[, $plain]=self::getContainer()->get(ComposeTokens::class)->issue($owner,'Property parity',ComposeTokens::SCOPES,['mcp-tests/*']);$this->connect($client,$plain);
+        $created=$this->success($client,'create_draft',['name'=>'mcp-tests/mcp-props-'.strtolower((string)new Ulid()),'kind'=>'layout','title'=>'MCP props','operationId'=>'props-create']);
+        $added=$this->success($client,'add_reference',['compositionId'=>$created['compositionId'],'expectedRevision'=>1,'operationId'=>'props-add','parentId'=>$created['document']['root']['id'],'position'=>0,'name'=>$component->getItem()->getName(),'version'=>'1.0.0','props'=>$props]);
+        $actual=$this->success($client,'get',['compositionId'=>$created['compositionId']]);self::assertSame($json->encode($props),$json->encode(json_decode(json_encode($actual['document']['root']['children'][0]['props']))));
+        $bad=clone $props;$bad->count=11;$error=$this->call($client,'update_node',['compositionId'=>$created['compositionId'],'expectedRevision'=>2,'operationId'=>'props-bad','nodeId'=>$added['selectedNodeId'],'changes'=>(object)['props'=>$bad]]);self::assertTrue($error['isError']);self::assertArrayHasKey('nodes.'.$added['selectedNodeId'].'.props/count',$error['structuredContent']['details']);
+        self::assertSame(2,$this->success($client,'get',['compositionId'=>$created['compositionId']])['revision']);
+        self::assertSame('Your component is ready.',$em->find(\App\Entity\Release::class,$release->getId())->getManifestData()->defaults->message);
+    }
+
     public function testDiscoveryAndRealCommandsBatchesRetriesHistoryAndManualConflicts():void
     {
         $client=self::createClient();$owner=$this->account();[$token,$plain]=self::getContainer()->get(ComposeTokens::class)->issue($owner,'MCP test',ComposeTokens::SCOPES,['mcp-tests/*']);

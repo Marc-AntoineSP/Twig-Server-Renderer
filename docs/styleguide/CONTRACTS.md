@@ -294,3 +294,16 @@ All three routes are private/no-store and require an enabled session editor; sco
 principals use their existing discovery instead. Mutation still goes through the existing
 typed composition commands and authoritative domain validation. Search does not change
 dirty/revision state; replacement omits props to preserve them unless reset is explicit.
+
+
+## Instance property editing and diagnostics
+
+The browser form and Advanced JSON project the same node.props object. Omitted keys
+are deleted, not replaced with null or auto-filled defaults; the renderer includes
+exactly the submitted object. Default guidance and explicit reset do not change package
+semantics. Unknown allowed keys, structured values and falsy primitives survive edits.
+Reference validation diagnostics use `nodes.<n_32hex>.props` plus the Opis path (usually
+`/property`); repeated instances of one release have distinct error keys. Legacy nodes
+without IDs retain `reference.<name@version>`. Manual/MCP validation and immutable source
+bytes are otherwise unchanged. This adds no schema version or API operation. See
+INSTANCE_PROPERTIES.md for supported controls and atomic reference replacement.

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { randomBytes } from 'node:crypto';
-import { login, createAlert, pickReference } from './helpers.js';
+import { editInstanceJSON, login, createAlert, pickReference } from './helpers.js';
 
 async function newComposition(page, kind) {
     await page.goto('/catalogue/new');
@@ -21,9 +21,9 @@ test('compose distinct instances, keyboard reorder/nest, save, publish block and
     expect((await page.request.post(`/api/v1/items/${item.id}/releases`, { headers: { 'X-CSRF-Token': token }, data: { version: '1.0.0', expectedRevision: 2 } })).status()).toBe(201);
     const block = await newComposition(page, 'block');
     await pickReference(page, item.name, '1.0.0');
-    await page.getByLabel('Instance props (JSON)', { exact: true }).fill(JSON.stringify({ ...manifest.defaults, message: 'First instance' }));
+    await editInstanceJSON(page,JSON.stringify({ ...manifest.defaults, message: 'First instance' }));
     await page.getByRole('button', { name: 'Duplicate node', exact: true }).click();
-    await page.getByLabel('Instance props (JSON)', { exact: true }).fill(JSON.stringify({ ...manifest.defaults, message: 'Second instance' }));
+    await editInstanceJSON(page,JSON.stringify({ ...manifest.defaults, message: 'Second instance' }));
     await page.getByRole('button', { name: 'Move up', exact: true }).focus();
     await page.keyboard.press('Enter');
     const current = page.locator('[data-composition-target="status"]');

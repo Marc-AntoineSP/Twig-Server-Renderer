@@ -353,3 +353,30 @@ three production fixtures are cleaned. No migration, dependency or operator sett
 change is required. REFERENCE_PICKER.md documents usage; STATUS.md records actual
 commands, corrected failures, the unrelated intermittent theme-import check, versions,
 changed files and remaining limits. No later prompt starts automatically.
+
+
+## Improvement prompt 08 — Composition property inspector
+
+Reuse shared schema controls for common instance properties, preserve Advanced JSON,
+omission/null/falsy/nested values and invalid drafts, and keep exact immutable references
+and manual/MCP validation. Stable node identity scopes schema reads and field errors;
+existing preview epochs/debounce and explicit Save semantics remain authoritative.
+Tree/Properties/Preview navigation supports keyboard and stacked/wide layouts.
+
+Completed and freshly verified 2026-10-29 on feature/m22-composition-property-inspector:
+Docker build/lint, **170 PHPUnit tests /1883 assertions**, **168/168 browser tests in
+one full invocation** (160 Chromium, 4 Firefox, 4 WebKit), twelve visual comparisons and
+**31 immutable-production scenarios** pass. Thirteen property cases cover persisted
+multiline/enum/boolean/numeric/structured values, omission/defaults, invalid text, delayed
+responses, replacement schemas, shared previews and 390/1440 px light/dark keyboard/axe.
+Four inspector axe reports and sixteen production reports have zero violations;
+contrast incompletes and human screen-reader review remain manual.
+
+This branch started from prompt07; the 31 paths from local commit 54933c3 were applied
+without changing the twelve staged prompts. Source hashes matched before adding this
+fresh handoff. The fixed source-test clock and content-sized iframe pass the complete
+suite, including earlier failure cases. No baselines needed regeneration in this run.
+The fresh browser run and production fixture are cleaned, with zero owned resources,
+private files and worker tags. No migration, dependency or operator setting is needed.
+See INSTANCE_PROPERTIES.md for usage and STATUS.md for commands, versions, earlier
+failures and cleanup evidence. No later prompt starts automatically.

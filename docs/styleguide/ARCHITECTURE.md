@@ -303,3 +303,16 @@ item/draft search has a different contract and remains separate. The picker neve
 MCP transport. Native modal lifecycle, request cancellation and response receipts preserve
 unsaved work and focus. Preview links pin release IDs; thumbnails reuse the existing
 explicit, cached, script-disabled iframe. See REFERENCE_PICKER.md.
+
+
+## Composition property controls
+
+`assets/property_fields.js` extracts the source preview's schema interpretation into a
+shared control description/renderer for source, catalogue and composition previews. It
+describes the existing bounded subset; PropsValidator remains authoritative. The focused
+instance-props controller edits only the canonical selected node.props, with memory-only
+invalid raw text/drafts/errors keyed by stable node ID and exact reference identity.
+CompositionController retains commands, saves, debounce/epochs and sandboxed jobs.
+Server errors use node IDs so repeated references remain distinguishable. Reference
+replacement is atomic: keep all current values if valid, otherwise retain the old node
+until an explicit correction or default reset. See INSTANCE_PROPERTIES.md.

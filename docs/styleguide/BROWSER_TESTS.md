@@ -250,3 +250,22 @@ uses the same verified disposable ownership guard and seeds load data through a
 maintenance-only read-only mount; its private fixture metadata is removed at teardown.
 `tests/ReferencePicker/measure.php` measures real authenticated HTML/JSON bytes and SQL
 counts with the profiler only inside a verified owned run. It is not a production route.
+
+
+## Composition property inspector
+
+`instance_properties.spec.js` creates actual alert releases and compositions only after
+harness ownership verification. Its edge schema is shared with a functional manual/MCP
+parity check. Coverage includes exact persisted primitive/structured/unknown values,
+omitted defaults, invalid text across selection/modes/Turbo navigation, node-specific
+server errors, held preview responses, replacement schemas and source/catalogue control
+reuse. Four keyboard/axe scenarios retain fresh 390/1440 light/dark screenshots.
+The critical composer flow edits its message through the form in all three engines;
+existing JSON command tests deliberately open Advanced JSON. The production runner
+accepts this spec and executes it against immutable AssetMapper output. Use the existing
+owned harness and cleanup workflow above; no working catalogue fixtures are permitted.
+
+The source debounce check installs its clock before navigation at a fixed initial
+time, then pauses at a fixed later virtual time. It never compares the emulated clock
+to host Date.now; the 299ms/1ms assertions remain intact. This follows the installed
+[Playwright clock workflow](https://playwright.dev/docs/api/class-clock#clock-pause-at).

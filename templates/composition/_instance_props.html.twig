@@ -1,0 +1,17 @@
+<div class="my-3 flex flex-wrap gap-2" role="group" aria-label="Instance property view">
+    <button type="button" class="btn btn-outline btn-sm" aria-pressed="true" data-instance-props-target="formButton" data-action="instance-props#form">Properties form</button>
+    <button type="button" class="btn btn-outline btn-sm" aria-pressed="false" data-instance-props-target="jsonButton" data-action="instance-props#advanced">Advanced JSON</button>
+</div>
+<p class="my-3 text-sm" role="status" data-instance-props-target="status"></p>
+<div class="my-3 rounded border border-error p-3 text-sm" hidden tabindex="-1" role="status" aria-label="Instance property errors" data-instance-props-target="errors"></div>
+<div data-instance-props-target="formPanel"><div class="space-y-3" role="group" aria-label="Instance property fields" data-instance-props-target="fields"></div></div>
+<div hidden data-instance-props-target="jsonPanel">
+    <p class="my-3 text-sm">The complete object includes nested and additional properties. Omission, null, false, zero and empty strings are distinct. Unsupported schemas remain editable here; the server validates on preview and Save.</p>
+    <label for="node-props">Instance props (JSON)</label>
+    <textarea id="node-props" class="textarea w-full font-mono text-sm" rows="10" spellcheck="false" aria-describedby="instance-json-help" data-instance-props-target="json" data-action="input->instance-props#jsonChanged"></textarea>
+    <p id="instance-json-help" class="text-xs">Invalid text is kept on this node. Correct it or explicitly discard it before switching views or saving.</p>
+</div>
+<div class="my-3 flex flex-wrap gap-2">
+    <button type="button" class="btn btn-ghost btn-sm h-auto whitespace-normal py-2" hidden data-instance-props-target="discard" data-action="instance-props#discard">Discard invalid property text</button>
+    <button type="button" class="btn btn-outline btn-sm h-auto whitespace-normal py-2" disabled data-instance-props-target="defaults" data-action="instance-props#defaults">Use release defaults for this instance</button>
+</div>

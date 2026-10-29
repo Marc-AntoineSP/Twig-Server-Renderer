@@ -1,0 +1,19 @@
+{
+  "$defs": {"caption": {"type": "string", "maxLength": 80}},
+  "properties": {
+    "message": {"type": "string", "title": "Message", "description": "Plain text <img src=x onerror=alert(1)> stays text.", "minLength": 1, "maxLength": 500},
+    "count": {"type": "integer", "title": "Count", "minimum": 0, "maximum": 10},
+    "ratio": {"type": "number", "title": "Ratio", "minimum": 0, "maximum": 10},
+    "nullable": {"type": ["string", "null"], "title": "Nullable note"},
+    "empty": {"type": "string", "title": "Empty string"},
+    "optionalGuide": {"type": "string", "title": "Optional guide", "default": "Schema guidance"},
+    "releaseGuide": {"type": "string", "title": "Release guide"},
+    "records": {"type": "array", "title": "Records", "maxItems": 3, "items": {"type": "object", "properties": {"label": {"type": "string"}}, "required": ["label"], "additionalProperties": false}},
+    "nested": {"type": "object", "title": "Nested settings", "properties": {"flag": {"type": "boolean"}}, "required": ["flag"], "additionalProperties": true},
+    "local": {"$ref": "#/$defs/caption", "title": "Local caption"},
+    "mixed": {"type": ["string", "integer"], "title": "Mixed value"},
+    "locked": {"type": "string", "const": "fixed", "title": "Fixed value"}
+  },
+  "required": ["count", "ratio", "nullable", "empty", "records", "nested", "local", "locked"],
+  "defaults": {"count": 2, "ratio": 1.5, "nullable": null, "empty": "", "releaseGuide": "Release guidance", "records": [{"label": "First"}], "nested": {"flag": false}, "local": "Local definition", "mixed": 0, "locked": "fixed"}
+}

@@ -124,14 +124,14 @@ test('source tabs support keyboard navigation and reset stays usable', async ({ 
 });
 
 test('rapid edits are debounced and invalid Stimulus source keeps the good frame', async ({ page }) => {
-    await page.clock.install();
+    await page.clock.install({time: new Date('2026-10-29T08:00:00Z')});
     await login(page);
     await createAlert(page);
     await preview(page);
     let requests = 0;
     page.on('request', request => { if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/v1/preview-jobs') requests++; });
-    // Bound the input interval independently of Docker build/host scheduling latency.
-    await page.clock.pauseAt(new Date(Date.now()+1000));
+    // Install before navigation, then pause at a fixed later virtual time; never mix host and page clocks.
+    await page.clock.pauseAt(new Date('2026-10-29T09:00:00Z'));
     const source = page.getByLabel('Twig source', { exact: true });
     await source.fill('<div id="debounced">First</div>');
     await source.fill('<div id="debounced">Second</div>');

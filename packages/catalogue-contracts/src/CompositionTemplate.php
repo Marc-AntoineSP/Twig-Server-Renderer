@@ -15,7 +15,7 @@ final readonly class CompositionTemplate
             $targets[$key]??=$lookup($node->name,$node->version);
             [$manifest,$files]=$targets[$key];
             if('theme'===$manifest->kind) throw new CatalogueException(422,'Themes cannot be composition references.');
-            $this->props->validateValue($node->props,StrictJson::decode($files->{$manifest->propsSchema},65536,24),'reference.'.$key);
+            $this->props->validateValue($node->props,StrictJson::decode($files->{$manifest->propsSchema},65536,24),isset($node->id) ? 'nodes.'.$node->id.'.props' : 'reference.'.$key);
             $dependencies[$node->name]=(object)['name'=>$node->name,'version'=>$node->version];
             return '{% include '.TwigLiteral::encode(substr($manifest->entry,10)).' with '.TwigLiteral::encode($node->props).' only %}';
         };

@@ -37,7 +37,8 @@ export default class extends PreviewController {
 
     documentLoaded() { this.identityTarget.textContent = this.labelValue; }
     run() { this.loaded = true; return super.run(); }
-    schedule() {
+    schedule(event) {
+        this.clearPropertyDrafts(event);
         this.refreshExamples();
         if (this.loaded) super.schedule();
     }
@@ -49,6 +50,7 @@ export default class extends PreviewController {
 
     chooseExample() {
         const index = Number(this.exampleTarget.value);
+        this.propertyFields?.drafts.clear();
         this.propsTarget.value = JSON.stringify(index < 0 ? this.defaultPropsValue : this.examplesValue[index].props, null, 2);
         this.updateURL();
         this.schedule();

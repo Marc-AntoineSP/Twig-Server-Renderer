@@ -69,7 +69,7 @@ test('critical: keyboard navigation, appearance disclosure, personal favorites a
     await expect(page.getByRole('heading', {level: 1})).toContainText('My profile');
 });
 
-test('critical: immutable reference selection, JSON property editing and unsaved navigation', async ({page}, testInfo) => {
+test('critical: immutable reference selection, form property editing and unsaved navigation', async ({page}, testInfo) => {
     await login(page);
     const csrf = (await (await page.request.get('/api/v1/csrf')).json()).token;
     const created = await page.request.post('/api/v1/items', {headers: {'X-CSRF-Token': csrf}, data: {
@@ -89,15 +89,15 @@ test('critical: immutable reference selection, JSON property editing and unsaved
     await expect(picker).not.toBeVisible();
     await expect(page.getByRole('treeitem', {name: 'browser/seed-component@1.0.0', exact: true})).toBeVisible();
     const props = page.getByLabel('Instance props (JSON)', {exact: true});
-    const value = JSON.parse(await props.inputValue());
     // The existing source factory's bounded schema controls which properties are editable.
-    await props.fill(JSON.stringify({...value, message: 'Keyboard edited property'}));
+    await page.getByRole('group',{name:'Instance property fields',exact:true}).getByLabel('message',{exact:true}).fill('Keyboard edited property');
     await expect(page.locator('[data-composition-target="saveStatus"]')).toHaveText('Unsaved changes');
     await audit(page, testInfo);
     await page.getByRole('link', {name: 'Catalogue', exact: true}).click();
     await expect(page).toHaveURL(new RegExp(`/catalogue/${item.id}/compose`));
     await expect(page.getByRole('dialog', {name: 'Unsaved work', exact: true})).toBeVisible();
     await page.getByRole('button', {name: 'Keep editing', exact: true}).press('Enter');
+    await expect(page.getByRole('dialog', {name: 'Unsaved work', exact: true})).toHaveCount(0);
     expect(JSON.parse(await props.inputValue()).message).toBe('Keyboard edited property');
     const editorUrl = page.url(), historyLength = await page.evaluate(() => history.length);
     await page.evaluate(() => history.back());

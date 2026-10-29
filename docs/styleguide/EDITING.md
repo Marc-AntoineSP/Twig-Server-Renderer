@@ -68,3 +68,11 @@ durable operation receipts, current authorization checks and idempotent replay. 
 restores use expectedRevision; a retry after a lost success response may conflict and
 requires deliberate reconciliation instead of creating another head silently. There is
 no second snapshot table, schema migration or new dependency.
+
+
+The composition inspector's form and Advanced JSON share node.props. Invalid JSON or
+incomplete numeric/structured text is kept per stable node ID, makes the editor dirty
+and blocks Save and view switching. Selecting another node retains that text. Use
+**Go to invalid properties** to return, then correct it or explicitly **Discard invalid
+property text** to recover the last valid object. Default/reset actions are separate,
+deliberate edits. See INSTANCE_PROPERTIES.md for omission/null and schema behavior.
