@@ -22,7 +22,8 @@ This is M13, following the completed inline theme reference.
 | Reset preview | reset | Clear local iframe, cancel owned job; no draft mutation |
 | Duplicate and convert to source | separate protected POST | Different source editor; excluded from MCP, manual action preserved |
 
-The browser keeps unsaved work until Save. There is no existing undo/history. Composition
+The browser keeps unsaved work until Save. Saved history and restore are available in
+the manual builder; full in-memory Undo/Redo is separate follow-up work. Composition
 nodes are container/reference/text; containers accept only children (no named slots).
 References pin name + exact release version; instance properties do not change that
 release. Only **block/layout** creation produces a composition. A component is created in
@@ -76,6 +77,10 @@ Restoring an available revision revalidates its dependencies and saves a **new**
 using current `expectedRevision` and `operationId`. History starts at the first new save
 for old drafts; earlier unpublished revisions cannot be reconstructed. Receipts/history
 are durable recovery data, with no automatic destructive retention policy in this release.
+The manual Saved history panel and MCP share CompositionHistory/CompositionWorkspace;
+the browser does not call the MCP HTTP endpoint. Bounded comparisons and current-reference
+validation apply to both interfaces. See [EDITING.md](EDITING.md) for recovery, conflicts
+and navigation protection.
 
 The browser polls the saved revision every five seconds while visible. A notice offers
 Load saved revision, preserves unsaved work, and explicitly confirms discarding it.

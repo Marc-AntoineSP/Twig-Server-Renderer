@@ -55,11 +55,13 @@ test('a stale second tab keeps its unsaved text and cannot overwrite the first',
     await page.getByRole('button', { name: 'Save draft' }).click();
     await expect(page.locator('[data-flash]')).toContainText('Draft saved.');
     await second.getByLabel('Title', { exact: true }).fill('Second tab unsaved');
-    const response = second.waitForResponse(r => r.request().method() === 'POST' && r.url() === url);
+    const saveUrl = new URL(await second.locator('[data-editor-url-value]').getAttribute('data-editor-url-value'), url).href;
+    const response = second.waitForResponse(r => r.request().method() === 'PUT' && r.url() === saveUrl);
     await second.getByRole('button', { name: 'Save draft' }).click();
     expect((await response).status()).toBe(412);
     await expect(second.getByLabel('Title', { exact: true })).toHaveValue('Second tab unsaved');
-    await expect(second.locator('[data-form-errors]')).toContainText('Your changes were not saved');
+    await expect(second.locator('[data-editor-target="notice"]')).toContainText('Your changes were not saved');
+    await expect(second.locator('[data-controller~="editor"]')).toHaveAttribute('data-editing-state', 'conflict');
     await page.reload();
     await expect(page.getByLabel('Title', { exact: true })).toHaveValue('First tab saved');
 });

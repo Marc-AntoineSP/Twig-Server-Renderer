@@ -1,0 +1,18 @@
+<dialog class="modal" aria-labelledby="composition-history-title" data-composition-target="historyDialog">
+    <div class="modal-box max-w-4xl">
+        <div class="flex items-center justify-between gap-3"><h2 id="composition-history-title" class="text-xl font-semibold">Saved composition history</h2><button type="button" class="btn btn-outline btn-sm" autofocus data-action="composition#closeHistory">Close history</button></div>
+        <p class="my-3 text-sm">Only explicit saves are recorded. Opening history does not change your working tree. Restoring revalidates references and creates a new revision; existing snapshots stay unchanged.</p>
+        <p role="status" class="my-3" data-composition-target="historyStatus"></p>
+        <div class="grid gap-4 md:grid-cols-2">
+            <section class="min-w-0" aria-label="Recoverable revisions">
+                <ul class="max-h-96 space-y-3 overflow-y-auto" data-composition-target="historyList"></ul>
+                <div class="my-3 flex gap-3"><button type="button" class="btn btn-outline btn-sm" data-composition-target="historyPrevious" data-action="composition#historyBack">Newer revisions</button><button type="button" class="btn btn-outline btn-sm" data-composition-target="historyNext" data-action="composition#historyForward">Older revisions</button></div>
+            </section>
+            <section class="min-w-0" aria-label="Selected revision differences">
+                <div class="max-h-96 overflow-y-auto" data-composition-target="historyDetail"></div>
+                <button type="button" class="btn btn-primary my-3 h-auto whitespace-normal py-2" disabled data-composition-target="historyRestore" data-action="composition#restoreHistory">Restore as new revision</button>
+                <button type="button" class="btn btn-outline h-auto whitespace-normal py-2" hidden data-composition-target="historyLoad" data-action="composition#loadSaved">Load latest saved revision</button>
+            </section>
+        </div>
+    </div>
+</dialog>

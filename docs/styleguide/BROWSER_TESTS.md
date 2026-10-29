@@ -196,3 +196,15 @@ that separate follow-up and were not rerun here. CI now runs the owned PHP/brows
 lifecycle and immutable profile/composer/authentication checks instead of those unsafe
 legacy targets. The existing PHPUnit installer/portable-contract coverage is retained;
 this is not a fresh claim about complete consumer installation or restore acceptance.
+
+
+`editing_protection.spec.js` covers source/composition/theme dirty header and Back/Forward
+navigation, native reload/close cancellation, explicit discard, failed and delayed saves,
+invalid JSON entered during a pending source save, external conflicts, theme family labels
+and inactive variants. The critical suite also checks canceled Back in all three engines.
+`composition_history.spec.js` checks four 390/1440 light/dark history panels with keyboard,
+focus, axe and review screenshots, explicit local discard, restore persistence/preview,
+external-write conflict/reconciliation, empty history and paging beyond twenty records.
+The standalone production driver explicitly accepts these two specs and retains its
+owned-resource checks. Native confirmation behavior is browser-controlled; automated
+checks are not human screen-reader or browser-UI certification. See EDITING.md/STATUS.md.

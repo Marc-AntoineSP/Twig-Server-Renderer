@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('appearance_reset') }}" data-turbo="false" data-action="submit->appearance#reset">
+<form method="post" action="{{ path('appearance_reset') }}" data-turbo="false" data-editing-stay data-action="submit->appearance#reset">
     <input type="hidden" name="_appearance_token" value="{{ csrf_token('appearance-reset') }}">
     <button type="submit">Restore default appearance</button>
 </form>

@@ -5,6 +5,7 @@
     <div class="mt-4 flex flex-wrap items-center gap-4"><h1 class="text-3xl font-bold">Edit draft</h1>{% include 'favorites/_button.html.twig' with {kind: 'catalogue'} %}<span class="badge badge-ghost">{{ item.kind }}</span></div>
     <p class="mt-2">Saved revision <span data-saved-revision>{{ draft.revision }}</span> · {{ item.name }}</p>
     <div class="mt-6" data-controller="editor preview"
+         data-editor-url-value="{{ path('api_item_save', {id: item.id}) }}" data-editor-revision-value="{{ draft.revision }}" data-editor-csrf-value="{{ csrf_token('api') }}"
          data-editor-saved-value="{{ {manifestData: draft.manifestData, sourceMap: draft.sourceMap, title: item.title, description: item.description, tags: item.tags}|json_encode|e('html_attr') }}"
          data-preview-item-id-value="{{ item.id }}" data-preview-csrf-value="{{ csrf_token('api') }}"
          data-preview-create-url-value="{{ path('preview_create') }}"
@@ -17,7 +18,7 @@
          data-action="editor:changed->preview#schedule editor:invalid->preview#invalid">
         <div class="grid gap-6 xl:grid-cols-2">
             <section class="min-w-0 rounded-box border border-base-300 bg-base-100 p-5">
-                {{ form_start(form, {attr: {'data-turbo': 'false', 'data-action': 'submit->editor#submitting'}}) }}
+                {{ form_start(form, {attr: {'data-turbo': 'false', 'data-editing-save': '', 'data-action': 'submit->editor#submitting'}}) }}
                     <div role="alert" data-form-errors>{{ form_errors(form) }}</div>
                     <div class="flex items-center justify-between"><h2 class="text-xl font-semibold">Source</h2><span class="badge badge-success" data-editor-target="unsaved">Saved</span></div>
                     {{ form_row(form.title, {attr: {'data-action': 'input->editor#changed'}}) }}

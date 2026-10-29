@@ -184,6 +184,15 @@ must never be pasted into tool data/config/logs. Replayed results require curren
 including references in older result snapshots. Row locks plus optimistic revisions
 prevent lost writes; advisory locks serialize duplicate operation keys before first save.
 
+The manual composer history API requires the normal editor role and composition voter.
+Snapshot listing is bounded; selected differences and restore revalidate historical
+reference closures under current permissions. Restore requires expectedRevision and
+normal API CSRF, and uses the same workspace transaction as MCP. No inaccessible reference
+is accepted to make recovery succeed. Responses are private/no-store; the UI renders
+abbreviated differences with textContent, never historical HTML/JavaScript. Browser
+editing guards keep temporary snapshots only in memory and remove their listeners on
+disconnect. No browser persistence, authentication bypass or second history store is added.
+
 Only typed bounded composition commands are allowed. Imported text remains escaped data,
 never PHP/Twig instructions or a tool-policy override. Source conversion, publishing,
 registry/package writes and theme/font administration remain outside MCP. Existing finite

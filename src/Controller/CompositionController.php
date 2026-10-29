@@ -79,6 +79,26 @@ final class CompositionController extends AbstractController
         return new JsonResponse($workspace->commands($item,$input->expectedRevision,$input->document,$input->commands),headers:['Cache-Control'=>'private, no-store']);
     }
 
+    #[Route('/api/v1/items/{id}/composition/history', name: 'composition_history', methods: ['GET'], format: 'json')]
+    public function history(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, \App\Composition\CompositionHistory $history): JsonResponse
+    {
+        return new JsonResponse($history->page($item, $request->query->getInt('offset', 0), $request->query->getInt('limit', 20)), headers: ['Cache-Control' => 'private, no-store']);
+    }
+
+    #[Route('/api/v1/items/{id}/composition/history/{revision}', name: 'composition_history_revision', requirements: ['revision' => '[1-9][0-9]{0,8}'], methods: ['GET'], format: 'json')]
+    public function historyRevision(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, int $revision, \App\Composition\CompositionHistory $history): JsonResponse
+    {
+        return new JsonResponse($history->inspect($item, $revision, $request->query->getInt('expectedRevision', 0)), headers: ['Cache-Control' => 'private, no-store']);
+    }
+
+    #[Route('/api/v1/items/{id}/composition/restore', name: 'composition_restore', methods: ['POST'], format: 'json')]
+    #[IsCsrfTokenValid('api', tokenKey: 'X-CSRF-Token', tokenSource: IsCsrfTokenValid::SOURCE_HEADER)]
+    public function restore(#[MapEntity(id: 'id')] CatalogueItem $item, #[MapRequestPayload(acceptFormat: 'json', serializationContext: [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false])] \App\Composition\CompositionRestoreInput $input, \App\Composition\CompositionHistory $history, CompositionWorkspace $workspace): JsonResponse
+    {
+        $draft = $history->restore($item, $input->expectedRevision, $input->restoreRevision, $this->getUser());
+        return new JsonResponse(['revision' => $draft->getRevision(), 'document' => $workspace->document($draft), 'title' => $item->getTitle(), 'description' => $item->getDescription(), 'restoredFrom' => $input->restoreRevision, 'generatedTwig' => $draft->getSourceMap()->{$draft->getManifestData()->entry}], headers: ['Cache-Control' => 'private, no-store']);
+    }
+
     #[Route('/catalogue/{id}/convert-source', name: 'composition_convert', methods: ['POST'])]
     #[IsCsrfTokenValid('convert-source', tokenKey: '_token')]
     public function convert(Request $request, #[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer): Response

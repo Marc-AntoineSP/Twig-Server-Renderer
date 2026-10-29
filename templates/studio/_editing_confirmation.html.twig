@@ -1,0 +1,12 @@
+<template id="editing-confirmation-template">
+    <dialog class="modal" aria-labelledby="editing-confirmation-title" aria-describedby="editing-confirmation-message" data-editing-confirmation>
+        <div class="modal-box">
+            <h2 id="editing-confirmation-title" class="text-xl font-semibold">Unsaved work</h2>
+            <p id="editing-confirmation-message" class="my-4" data-confirm-message>Leave this editor and discard unsaved changes? Saved revisions will remain available.</p>
+            <div class="modal-action flex-wrap">
+                <button class="btn btn-primary" type="button" autofocus data-confirm-keep>Keep editing</button>
+                <button class="btn btn-outline h-auto whitespace-normal py-2" type="button" data-confirm-discard>Discard changes and leave</button>
+            </div>
+        </div>
+    </dialog>
+</template>

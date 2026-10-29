@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import {canonical, EditingGuard} from '../editing_guard.js';
 
 export default class extends Controller {
     static targets = ['frame', 'status', 'compare', 'component', 'publishStatus', 'disableJs', 'fontDetails', 'fontSearch', 'fontCategory', 'form', 'variant', 'title', 'saveError', 'saveStatus', 'tryButton', 'retryApply', 'exports'];
@@ -15,11 +16,13 @@ export default class extends Controller {
         this.updateFonts();
         this.message = event => this.receive(event);
         window.addEventListener('message', this.message);
-        this.unsaved = event => {if(this.hasUnsaved()){event.preventDefault();event.returnValue='';}};
-        this.beforeVisit = event => {if(this.hasUnsaved()&&!window.confirm('Leave this editor and discard unsaved theme changes?'))event.preventDefault();};
+        this.savedModel = structuredClone(this.model);
+        this.savedFamilyLabel = this.familyLabel();
+        this.savedVariants = this.startingVariants();
+        this.guard = new EditingGuard(() => this.hasUnsaved(), () => this.saving, this.element);
+        this.element.dataset.editingState = 'clean';
         this.trialEnded = () => {this.tryEnabled=false;clearTimeout(this.trialTimer);this.tryButtonTarget.setAttribute('aria-pressed','false');};
         this.saveTrial = () => this.saveAndApply();
-        window.addEventListener('beforeunload',this.unsaved);document.addEventListener('turbo:before-visit',this.beforeVisit);
         window.addEventListener('appearance:trial-ended',this.trialEnded);window.addEventListener('appearance:save-trial',this.saveTrial);
         this.timer = setTimeout(() => this.run(), 0);
     }
@@ -29,7 +32,7 @@ export default class extends Controller {
         clearTimeout(this.timer);
         this.jobs.forEach(id => this.cancel(id));
         window.removeEventListener('message', this.message);
-        clearTimeout(this.trialTimer);window.removeEventListener('beforeunload',this.unsaved);document.removeEventListener('turbo:before-visit',this.beforeVisit);
+        clearTimeout(this.trialTimer);this.guard.disconnect();
         window.removeEventListener('appearance:trial-ended',this.trialEnded);window.removeEventListener('appearance:save-trial',this.saveTrial);
     }
 
@@ -43,7 +46,7 @@ export default class extends Controller {
     changed(event) {
         if (event.target.dataset.themePath) this.readField(event.target);
         this.updateFonts();
-        this.dirty = true;
+        this.refreshDirty();
         this.schedule();
         if(this.tryEnabled)this.scheduleTrial();
     }
@@ -100,7 +103,7 @@ export default class extends Controller {
         const data = await response.json();
         if (!response.ok) {
             const fields = Object.entries(data.fieldErrors || {}).map(([key, errors]) => `${key}: ${errors.join(', ')}`).join('; ');
-            throw new Error(`${data.message || 'Theme request failed.'}${fields ? ' '+fields.slice(0, 1000) : ''}`);
+            throw Object.assign(new Error(`${data.message || 'Theme request failed.'}${fields ? ' '+fields.slice(0, 1000) : ''}`), {status: response.status});
         }
         return data;
     }
@@ -172,14 +175,23 @@ export default class extends Controller {
         } catch (error) { this.publishStatusTarget.textContent = error.message; }
     }
 
-    hasUnsaved() {return this.dirty||[...this.variantEdits.values()].some(entry=>entry.dirty);}
-    stashVariant() {if(this.themeIdValue)this.variantEdits.set(this.themeIdValue,{model:structuredClone(this.model),original:structuredClone(this.documentValue),revision:this.revisionValue,dirty:this.dirty});}
+    familyLabel() {return this.formTarget.querySelector('[name$="[familyLabel]"]').value.trim();}
+    startingVariants() {return this.formTarget.querySelector('[name$="[startingVariants]"]')?.value || 'single';}
+    refreshDirty() {
+        this.dirty = canonical(this.model) !== canonical(this.savedModel) || this.familyLabel() !== this.savedFamilyLabel || this.startingVariants() !== this.savedVariants;
+        this.element.dataset.editingState = this.saving ? 'saving' : this.hasUnsaved() ? 'dirty' : 'clean';
+    }
+    hasUnsaved() {return this.dirty || [...this.variantEdits.entries()].some(([id,entry])=>id!==this.themeIdValue && canonical(entry.model)!==canonical(entry.savedModel));}
+    stashVariant() {if(this.themeIdValue)this.variantEdits.set(this.themeIdValue,{model:structuredClone(this.model),original:structuredClone(this.documentValue),savedModel:structuredClone(this.savedModel),revision:this.revisionValue,dirty:this.dirty});}
     async switchVariant() {
+        if(this.saving){this.variantTarget.value=this.themeIdValue;return;}
         this.stashVariant();const selected=this.variantTarget.value;
+        const epoch=this.variantEpoch=(this.variantEpoch||0)+1;this.switching=true;
         try {
-            let entry=this.variantEdits.get(selected);
-            if(!entry){const data=await this.json(this.themeUrlValue.replace('__THEME__',selected));entry={model:data.document,original:structuredClone(data.document),revision:data.revision,dirty:false};}
-            this.themeIdValue=selected;this.model=structuredClone(entry.model);this.documentValue=entry.original;this.revisionValue=entry.revision;this.dirty=entry.dirty;
+            let entry=this.variantEdits.get(selected);const fresh=!entry;
+            if(!entry){const data=await this.json(this.themeUrlValue.replace('__THEME__',selected));entry={model:data.document,original:structuredClone(data.document),savedModel:structuredClone(data.document),revision:data.revision,dirty:false};}
+            if(epoch!==this.variantEpoch||!this.element.isConnected)return;
+            this.themeIdValue=selected;this.model=structuredClone(entry.model);this.documentValue=entry.original;this.savedModel=entry.savedModel;this.revisionValue=entry.revision;
             this.model.typography={codeFontId:'system-mono',bodyWeight:400,headingWeight:700,codeWeight:400,bodyStyle:'normal',headingStyle:'normal',codeStyle:'normal',...this.model.typography};
             for(const select of this.element.querySelectorAll('select[data-theme-path$="FontId"]'))for(const font of this.model.fonts)if(![...select.options].some(option=>option.value===font.id))select.add(new Option(font.family,font.id));
             if(this.hasExportsTarget)this.exportsTarget.href=this.detailUrlValue.replace('__THEME__',selected);
@@ -187,24 +199,29 @@ export default class extends Controller {
                 const value=input.dataset.themePath.split('.').reduce((parent,key)=>parent?.[key],this.model);
                 if(input.dataset.themeType==='boolean')input.checked=Boolean(value);else input.value=value??'';
             }
-            this.updateFonts();this.titleTarget.textContent=`Edit ${this.familyValue.label} · ${this.model.colorScheme}`;
+            this.updateFonts();if(fresh)this.savedModel=structuredClone(this.model);this.refreshDirty();this.titleTarget.textContent=`Edit ${this.familyValue.label} · ${this.model.colorScheme}`;
             this.formTarget.querySelector('[name$="[revision]"]').value=this.revisionValue;
             this.schedule();if(this.tryEnabled)this.scheduleTrial();
-        }catch(error){this.saveErrorTarget.hidden=false;this.saveErrorTarget.textContent=error.message;this.variantTarget.value=this.themeIdValue;}
+        }catch(error){if(epoch===this.variantEpoch){this.saveErrorTarget.hidden=false;this.saveErrorTarget.textContent=error.message;this.variantTarget.value=this.themeIdValue;}}
+        finally{if(epoch===this.variantEpoch)this.switching=false;}
     }
 
     async save(event, apply = false) {
         event?.preventDefault();if(this.saving)return;
+        if(this.switching){this.saveStatusTarget.textContent='Wait for the selected variant to finish loading.';return;}
         if(!this.formTarget.reportValidity())return;
-        this.saving=true;this.saveErrorTarget.hidden=true;this.saveStatusTarget.textContent='Saving theme…';
+        this.saving=true;this.element.dataset.editingState='saving';if(this.hasVariantTarget)this.variantTarget.disabled=true;this.saveErrorTarget.hidden=true;this.saveStatusTarget.textContent='Saving theme…';
         const captured=JSON.stringify(this.model),creating=this.creatingValue;
         const familyLabel=this.formTarget.querySelector('[name$="[familyLabel]"]').value.trim()||null;
-        const variants=this.formTarget.querySelector('[name$="[startingVariants]"]')?.value||'single';
+        const variants=this.startingVariants();
         try {
             const result=await this.json(creating?this.newUrlValue:this.saveUrlValue.replace('__THEME__',this.themeIdValue),{method:creating?'POST':'PUT',body:JSON.stringify({document:JSON.parse(captured),expectedRevision:creating?null:this.revisionValue,familyLabel,variants,expectedFamilyRevision:this.familyValue.revision||null})});
+            if(!this.element.isConnected)return;
             this.themeIdValue=result.id;this.revisionValue=result.revision;this.familyValue=result.family;this.documentValue=result.document;this.creatingValue=false;
-            this.dirty=JSON.stringify(this.model)!==captured;
-            if(!this.dirty)this.model=structuredClone(result.document);
+            if(JSON.stringify(this.model)===captured)this.model=structuredClone(result.document);
+            this.savedModel=structuredClone(result.document);this.savedVariants=variants;
+            if(this.familyLabel()===(familyLabel||''))this.formTarget.querySelector('[name$="[familyLabel]"]').value=result.family.label;
+            this.savedFamilyLabel=result.family.label;this.refreshDirty();
             this.stashVariant();this.formTarget.querySelector('[name$="[revision]"]').value=result.revision;
             this.tryEnabled=false;clearTimeout(this.trialTimer);this.tryButtonTarget.setAttribute('aria-pressed','false');window.applicationAppearance.revertTrial(true);
             this.flash(creating?'Theme created.':'Theme saved.');this.saveStatusTarget.textContent='Theme saved. Your applied snapshot is unchanged.';
@@ -217,8 +234,8 @@ export default class extends Controller {
             if(this.dirty)this.saveStatusTarget.textContent+=' Newer edits remain unsaved.';
             if(creating&&!this.dirty){this.variantEdits.clear();this.dirty=false;location.assign(this.editUrlValue.replace('__THEME__',result.id)+(applyFailed?'?appearanceApplyFailed=1':''));}
             else if(creating){this.formTarget.querySelector('button[type="submit"]').textContent='Save theme';this.titleTarget.textContent='Edit '+result.family.label;for(const key of ['name','colorScheme'])this.formTarget.querySelector(`[data-theme-path="${key}"]`).disabled=true;}
-        }catch(error){this.saveErrorTarget.hidden=false;this.saveErrorTarget.textContent=error.message;this.saveStatusTarget.textContent='Theme was not saved. Your entered values are kept.';}
-        finally{this.saving=false;}
+        }catch(error){if(!this.element.isConnected)return;this.saveErrorTarget.hidden=false;this.saveErrorTarget.textContent=error.message;this.saveStatusTarget.textContent='Theme was not saved. Your entered values are kept.';this.element.dataset.editingState=error.status===412?'conflict':'failed';}
+        finally{this.saving=false;if(this.hasVariantTarget)this.variantTarget.disabled=false;if(this.element.dataset.editingState==='saving')this.element.dataset.editingState=this.hasUnsaved()?'dirty':'saved';}
     }
     saveAndApply() {return this.save(null,true);}
     async retryApplication() {

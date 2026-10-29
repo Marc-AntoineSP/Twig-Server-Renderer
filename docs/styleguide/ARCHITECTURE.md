@@ -52,8 +52,11 @@ interface; S3 is an optional later adapter, not a version-one infrastructure dep
 | PreviewJob | id, owner, requestSequence, inputHash, status, expiry, resultKey/error |
 | ApiToken | hashed token, owner, scopes, expiry/revocation; plaintext shown once |
 
-Draft revision increments on each successful save using compare-and-swap. Undo/history
-can be added later; a revision number is concurrency control, not an audit-log claim.
+Draft revision increments on each successful save using compare-and-swap. Composer
+saves additionally capture typed snapshots in the existing CompositionRevision store.
+CompositionHistory supplies bounded summaries/differences and restore through the same
+authorized CompositionWorkspace path for browser and MCP; restoration creates a new head.
+Source/theme revision numbers remain concurrency control, and no full Undo/Redo is added.
 Store dependency references in release manifests; optionally index them in a small
 ReleaseDependency table for reverse lookups. Release deletion is blocked while referenced.
 Do not add workspace/tenant concepts until there is an actual requirement.

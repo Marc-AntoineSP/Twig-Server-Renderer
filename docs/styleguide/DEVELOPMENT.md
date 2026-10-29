@@ -552,3 +552,9 @@ Stimulus 3.2.2 dependency, with verified copy hashes, when preparing the consume
 consumer runs on an internal network with no host port; its browser rejects external
 requests. The test compiles production assets, checks real decoded fonts and controls,
 repeats after restart and retains artifacts in `var/library-verification`.
+
+
+Editing protection and the manual composer's Saved history panel are documented in
+[EDITING.md](EDITING.md). All three editors retain dirty work on canceled navigation;
+source saves enhance the existing If-Match API. History uses the existing snapshots and
+shared restore transaction, with current permissions/revisions and no new migration.

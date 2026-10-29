@@ -16,6 +16,7 @@
         {% block javascripts %}{{ importmap('app') }}{% endblock %}
     </head>
     <body class="min-h-screen bg-base-200 text-base-content" data-controller="appearance shell" data-appearance-state-value="{{ appearance|json_encode|e('html_attr') }}" data-appearance-csrf-value="{{ csrf_token('api') }}" data-appearance-read-url-value="{{ path('appearance_read') }}" data-appearance-prepare-url-value="{{ path('appearance_prepare') }}" data-appearance-commit-url-value="{{ path('appearance_commit') }}" data-appearance-trial-url-value="{{ path('appearance_trial') }}" data-appearance-families-url-value="{{ path('appearance_families') }}" data-appearance-theme-edit-url-value="{{ path('theme_edit', {id:'__THEME__'}) }}">
+        {% include 'studio/_editing_confirmation.html.twig' %}
         <a href="#main" class="shell-skip" data-turbo="false">Skip to content</a>
         <a href="#appearance-recovery" class="shell-skip" data-turbo="false">Skip to appearance recovery</a>
         <header class="studio-header border-b border-base-300 bg-base-100">

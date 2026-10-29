@@ -3,7 +3,7 @@ namespace App\Mcp;
 
 use App\Catalogue\{CatalogueWriter,CreateItemInput};
 use App\Composition\{CompositionCompiler,CompositionTree,CompositionWorkspace};
-use App\Entity\{CatalogueItem,CompositionPreview,CompositionRevision,Release,ThemeRelease,User};
+use App\Entity\{CatalogueItem,CompositionPreview,Release,ThemeRelease,User};
 use App\Mcp\Security\ComposeIdentity;
 use App\Rendering\{PreviewInput,PreviewJobs,PreviewLifecycle,PreviewStorage,RendererSettings};
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /** Per-call application adapter. No selected composition, actor or credential is cached. */
 final readonly class ComposeApplication
 {
-    public function __construct(private CompositionWorkspace $workspace,private CompositionTree $trees,private CompositionCompiler $compiler,private CatalogueWriter $writer,private EntityManagerInterface $em,private ComposeOperations $operations,private TokenStorageInterface $security,private AuthorizationCheckerInterface $auth,private UrlGeneratorInterface $urls,private PreviewJobs $previews,private PreviewStorage $storage,private PreviewLifecycle $lifecycle,#[Autowire('%env(MCP_PUBLIC_BASE_URL)%')]private string $publicBase, private \App\Favorites\Favorites $favorites){}
+    public function __construct(private \App\Composition\CompositionHistory $historyService,private CompositionWorkspace $workspace,private CompositionTree $trees,private CompositionCompiler $compiler,private CatalogueWriter $writer,private EntityManagerInterface $em,private ComposeOperations $operations,private TokenStorageInterface $security,private AuthorizationCheckerInterface $auth,private UrlGeneratorInterface $urls,private PreviewJobs $previews,private PreviewStorage $storage,private PreviewLifecycle $lifecycle,#[Autowire('%env(MCP_PUBLIC_BASE_URL)%')]private string $publicBase, private \App\Favorites\Favorites $favorites){}
 
     public function actor():User
     {
@@ -163,16 +163,14 @@ final readonly class ComposeApplication
     }
     private function history(array $input):array
     {
-        $item=$this->item($input['compositionId']);$draft=$this->writer->draft($item);$this->workspace->prepare($item,$draft->getRevision(),$this->workspace->document($draft));
-        $offset=$input['offset']??0;$limit=$input['limit']??20;$records=$this->em->getRepository(CompositionRevision::class)->findBy(['item'=>$item],['revision'=>'DESC'],$limit+1,$offset);
-        return $this->envelope($item,'Recoverable saved composition revisions.',['history'=>array_map(static fn($r)=>$r->describe(),array_slice($records,0,$limit)),'nextOffset'=>count($records)>$limit?$offset+$limit:null,'warnings'=>count($records)?[]:['History starts with the first save after MCP integration; earlier unpublished revisions cannot be reconstructed.']]);
+        $item=$this->item($input['compositionId']);
+        return $this->envelope($item,'Recoverable saved composition revisions.',$this->historyService->page($item,$input['offset']??0,$input['limit']??20));
     }
     private function restore(array $input):array
     {
         $item=$this->item($input['compositionId']);
         return $this->operations->run($this->actor(),'restore_revision',$item->getId(),$input['operationId'],$input,fn()=>$this->authorizeWrite($item),function()use($input,$item):array{
-            $snapshot=$this->em->getRepository(CompositionRevision::class)->findOneBy(['item'=>$item,'revision'=>$input['restoreRevision']])??throw new CatalogueException(404,'Recoverable revision not found.',[],'NOT_FOUND');
-            $saved=$this->workspace->save($item,$input['expectedRevision'],$snapshot->getDocument(),$this->actor(),$snapshot->getTitle(),$snapshot->getDescription(),'Restored revision '.$input['restoreRevision']);
+            $saved=$this->historyService->restore($item,$input['expectedRevision'],$input['restoreRevision'],$this->actor());
             return $this->envelope($item,'Restored revision '.$input['restoreRevision'].' as new revision '.$saved->getRevision().'.',['document'=>$this->workspace->document($saved),'restoredFrom'=>$input['restoreRevision']]);
         },fn($result)=>$this->authorizeReplay($item,$result));
     }

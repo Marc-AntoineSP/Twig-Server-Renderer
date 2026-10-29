@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-10-28. Scope: M00–M08, font/theme library and M10–M15 complete, including local immutable production verification; no remote deployment or push.
+Last updated: 2026-10-29. Scope: M00–M08, font/theme library and M10–M15 complete, including local immutable production verification; no remote deployment or push.
 
 Earlier sections retain historical checkpoints. The final handoff below supersedes their in-progress notes.
 
@@ -26,6 +26,7 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | Improvement prompt 01 | Complete for requested scope |151PHPUnit/1446assertions;79browser tests;8 additional empty-workspace UI checks;bounded personal projections;role/ordering/deletion gates |
 | Improvement prompt 02 | Complete for requested scope |154PHPUnit/1502assertions;89browser tests;6immutable-production flows;111px mobile shell including safe recovery;12updated/reviewed visual baselines |
 | Improvement prompt 03 | Complete for requested scope |157PHPUnit/1568assertions;96browser tests across three engines;20immutable-production flows;read-only draft browsing and exact published-release selection;4reviewed theme-detail baselines |
+| Improvement prompt 04 | Complete for requested scope |160PHPUnit/1676assertions;110browser tests across three engines;14final immutable-production flows;shared editing protection and saved-history restoration;4reviewed composer baselines |
 
 ## Repository audit and preservation
 
@@ -2015,3 +2016,165 @@ PHPUnit 13.4.3, Node 24.22.1; Chromium 156.0.8078.4, Firefox 157.0, WebKit 27.2.
 Existing locked Playwright 1.64.1, Tailwind 4.3.3, daisyUI 5.7.50 and Stimulus 3.2.2
 remain unchanged. Final cleanup/version command exited 0. The only remaining staged
 user changes are the twelve numbered prompts, excluded from the implementation commit.
+
+
+## Improvement prompt 04 — Editing protection and composition history (2026-10-29)
+
+Scope: selected prompt04 and matching pack; all three packaged checksum entries pass.
+Fresh owned baseline `browser-d544eb808ccd93b93acd000a` reproduces source header
+navigation discarding dirty content without a prompt. Composer/theme header navigation
+prompts correctly, but browser Back bypasses both prompts and leaves the editor. Evidence:
+`var/browser-verification/editing-baseline.log`. Normal browser unload protection already
+existed; it is preserved. Turbo 8.0.23's versioned History source and official events
+reference confirm restoration visits bypass before-visit. No historical screenshot is
+claimed as a fresh test. All tests use verified owned database/blob/runtime resources.
+
+Implemented shared lifecycle guard + native modal confirmation, browser unload and
+pinned Turbo restoration traversal handling without browser storage/history pushes.
+Source saves now enhance the existing revision/CSRF-protected API; no-JS SSR form stays.
+All editors compare document/metadata snapshots, retain newer changes during pending
+saves and expose dirty/saving/saved/failure/conflict state. Theme family labels and
+inactive variants are included. Composer now has bounded saved-history/difference pages
+and restore-as-new-head via CompositionHistory shared with MCP, retaining current
+reference permissions, row locks, revision checks and MCP replay receipts. No second
+history store or migration is introduced. Completed verification is recorded below.
+
+Initial Docker build/container/34 YAML/48 Twig checks passed. The first PHP run had
+3 failures (157 tests/1552 assertions): composer pages attempted to generate an invalid
+numeric history route with a symbolic __REVISION__ placeholder. The client now appends
+the numeric revision to the real history base URL; the route remains strictly numeric.
+No browser test ran after that failed gate. Updated fixtures use the accessible Keep
+editing/discard dialog for in-app confirmation; native unload tests remain native.
+
+
+The first two new-flow runs each passed 10/13 and exposed the same three editor Back →
+canceled reload failures. Capturing popstate alone did not precede Turbo's existing
+Window target listener, so Turbo could queue a restoration before the confirmation.
+The bounded field-preservation helper alone was insufficient. The final guard registers
+before the pinned Turbo 8.0.23 history callback by removing/readding that same callback;
+it neither replaces Turbo's implementation nor pushes history entries. The retained
+trace `editing-back-reload-probe-final.log` established the ordering defect. The corrected
+run passes **22/22 focused browser checks**, followed by **3/3 explicit canceled-Back
+checks in Chromium, Firefox and WebKit**. Revisit, forward, native reload/close dismissal,
+failed saves, real delayed-save responses and later conflicts are exercised.
+
+A separate broader gate passes **160 PHPUnit tests / 1676 assertions (137s)** and
+**29/29 browser tests (3.0m)**. The final independent build passes strict Composer,
+container, **34 YAML / 48 Twig** checks and **160 PHPUnit tests / 1676 assertions
+(102.9s)**. Its first full browser attempt passed 109/110: an older catalogue stale-tab
+assertion still awaited the SSR POST after source saves moved to the existing PUT API.
+The test now awaits the real PUT response, checks HTTP 412, retained text and conflict
+state; its focused **3/3** catalogue run passes. The complete browser rerun passes **110/110 (7.3m)**: 104 Chromium, 3 Firefox and
+3 WebKit, including all twelve visual comparisons. No application code changed for
+that test correction.
+
+The final immutable-production gate passes **14/14 new editing/history flows (56.2s)**
+against fixture `appearance-20261029081533-9769`, including a save response arriving after
+new invalid defaults or advanced source JSON. Its read-only AssetMapper manifest remains
+unchanged; schema and font verification pass. The earlier production gate passed
+**16/16 flows (1.4m)** including existing composition, MCP and authentication coverage,
+with the official MCP SDK smoke enabled. Both fixture projects are cleaned. These are
+local disposable production images, not a remote deployment or publication.
+
+Visual review deliberately updates only the four composer baselines for the Saved
+history action (390/1440, light/dark). All four updated PNGs and all four history panel
+captures were inspected. Unrelated listing/theme baseline source bytes remain unchanged;
+the review gate passes 4/4 visual tests. Four new history axe reports contain zero
+violations; final color-contrast incompletes remain (2 nodes at 390px light, 5 per
+wide report; none at 390px dark). Human screen-reader checks and manual contrast
+assessment remain unrun.
+Evidence: `var/browser-verification/editing-history-accessibility-audit.json` and the
+per-invocation `history-accessibility.json`/PNG files. No masks, looser thresholds or
+accessibility-rule exclusions were introduced.
+
+Exact principal commands (repository root unless noted):
+
+```sh
+# In "prompt pack/04-editing-protection-and-history/04-editing-protection-and-history":
+sha256sum --check SHA256SUMS
+python3 tests/BrowserHarness/run.py start --keep
+python3 tests/BrowserHarness/run.py run --with-checks --keep -- tests/Browser/editor.spec.js tests/Browser/composition.spec.js tests/Browser/critical.spec.js tests/Browser/appearance.spec.js tests/Browser/compose_mcp.spec.js
+python3 tests/BrowserHarness/run.py run --keep -- tests/Browser/editing_protection.spec.js tests/Browser/composition_history.spec.js tests/Browser/critical.spec.js
+bash tests/AppearanceProduction/run.sh tests/Browser/editing_protection.spec.js tests/Browser/composition_history.spec.js tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js tests/Browser/authentication.spec.js
+bash tests/AppearanceProduction/run.sh tests/Browser/editing_protection.spec.js tests/Browser/composition_history.spec.js
+python3 tests/BrowserHarness/run.py run --with-checks --keep
+make browser-cleanup RUN=browser-d544eb808ccd93b93acd000a
+make browser-cleanup RUN=browser-3ad52b20f9534e1b80c946a3
+make browser-cleanup RUN=browser-7ff43a3cd7614736b1c8d1ac
+make browser-cleanup RUN=browser-1eb521c43c73986f7aa3a930
+make browser-cleanup RUN=browser-a30a564ff9d67295d7a19726
+make browser-cleanup RUN=browser-ae50c3a8ba51a2800a23ea8a
+```
+
+Retained review operations use Run with its lifecycle lock held and ownership verified:
+
+```python
+r = Run('browser-ae50c3a8ba51a2800a23ea8a')
+r.compose('--profile', 'tools', 'build', 'browser')
+r.test(['tests/Browser/critical.spec.js', '--grep', 'immutable reference selection'])
+r.test(['tests/Browser/visual.spec.js', '--project=chromium'], update_baselines=True)
+# Final test correction and complete browser rerun, with unchanged application image:
+r = Run('browser-b123139347445232fe62ab49')
+r.compose('--profile', 'tools', 'build', 'browser')
+r.test(['tests/Browser/catalogue.spec.js', '--project=chromium'])
+r.test([])
+```
+
+Logs: `var/browser-verification/editing-{baseline,initial,focused,new-flows,
+protection-rerun,guard-final,review,production,production-final,final,
+final-browser-rerun}.log`; sanitized artifacts are under the corresponding
+`var/browser-runs/{runId}/artifacts/invocation-*/` directories. The final browser run is
+`browser-b123139347445232fe62ab49`. Earlier failed runs are retained as evidence rather
+than reported as passing. All mutations/cleanup target verified owned resources; the
+working catalogue and unrelated Docker projects are untouched.
+
+Changed files (35): shared `assets/editing_guard.js`, three editor controllers,
+confirmation/history Twig partials and their base/editor forms, appearance reset's
+in-place exemption, CompositionHistory/CompositionRestoreInput, CompositionController
+and the shared MCP adapter. Verification changes: CompositionHistoryTest, two new
+browser specs, catalogue/critical/compose_mcp assertions, production spec allowlist and
+four composer PNGs. Documentation: EDITING, ARCHITECTURE, CONTRACTS, SECURITY, COMPOSE_MCP,
+DEVELOPMENT, BROWSER_TESTS, MILESTONES and this status. No migration, dependency/lockfile
+change or operator environment setting is needed. Rebuild the application image for
+the PHP/Twig/AssetMapper changes.
+
+Remaining implementation limits: native unload prompts follow browser policy; the
+restoration guard is coupled to pinned Turbo 8.0.23 and must be checked on upgrade.
+Only captured historical saves are recoverable. Current reference permissions and
+availability apply to inspection/restoration; missing/pruned history is explained,
+not reconstructed. Browser lost-response retries may conflict and require deliberate
+reconciliation; existing MCP durable retry receipts are preserved. Full Undo/Redo,
+shortcuts and persistent browser recovery are outside this task. Exact next step:
+review the editing/history flows or explicitly select the next numbered prompt.
+
+
+Final cleanup/version capture uses the verified, locked final Run helper:
+
+```python
+r.app('frankenphp', 'version')
+r.app('php', 'bin/console', '--version')
+version_query = "import {chromium,firefox,webkit} from 'playwright'; console.log('Node '+process.version); for (const [name,type] of Object.entries({chromium,firefox,webkit})) {const browser=await type.launch(); console.log(name+' '+browser.version()); await browser.close();}"
+r.compose('run', '--rm', '--no-deps', 'browser', 'node', '--input-type=module', '-e', version_query)
+# Always in finally:
+r.cleanup()
+```
+
+This command exited 0; exact log:
+`var/browser-verification/editing-final-cleanup.log`. Measured runtime: FrankenPHP
+1.13.4 / PHP 8.5.12 / Caddy 2.11.7, Symfony 8.1.9, Node 24.22.1, Chromium 156.0.8078.4,
+Firefox 157.0 and WebKit 27.2; test runner is PHPUnit 13.4.3. Existing locks remain
+Playwright 1.64.1, Tailwind 4.3.3, daisyUI 5.7.50, Stimulus 3.2.2 and Turbo 8.0.23.
+
+Final owned-resource audit: **all seven browser runs and both production fixtures**
+have zero containers (including stopped), volumes, networks and private credential
+files. All seven CLEANED receipts exist; per-run browser worker image tags are removed.
+Reusable app/browser/production images and build cache remain. Evidence:
+`var/browser-verification/editing-resource-audit.json`. Final passing browser artifacts
+are `browser-b123139347445232fe62ab49/artifacts/invocation-a3205161/`; four new history
+axe reports contain zero violations. The only deliberately changed image baselines
+are the four composer PNGs. No migration, push, remote deployment, real-user content
+mutation or remote package publication occurred.
+
+Final Git checks: `git diff --check` passes. The twelve previously staged numbered
+prompts are excluded from the implementation commit and retain staged-diff SHA-256
+`d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.

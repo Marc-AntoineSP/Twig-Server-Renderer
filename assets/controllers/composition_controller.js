@@ -1,7 +1,8 @@
 import { Controller } from '@hotwired/stimulus';
+import {canonical, EditingGuard, confirmEditing} from '../editing_guard.js';
 export default class extends Controller {
-    static targets = ['favoritesOnly', 'insertReference', 'pickerStatus', 'rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'reference', 'props', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs', 'bodyFont', 'headingFont', 'codeFont', 'theme', 'presetStatus', 'externalNotice', 'externalMessage'];
-    static values = { tree: Object, choices: Array, revision: Number, item: String, url: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, settings: Object, themes: Object, presetUrl: String, commandsUrl: String, readUrl: String };
+    static targets = ['favoritesOnly', 'insertReference', 'pickerStatus', 'rows', 'containerFields', 'textFields', 'referenceFields', 'tag', 'classes', 'text', 'reference', 'props', 'title', 'saveStatus', 'status', 'frame', 'generated', 'disableJs', 'bodyFont', 'headingFont', 'codeFont', 'theme', 'presetStatus', 'externalNotice', 'externalMessage', 'historyDialog', 'historyList', 'historyStatus', 'historyDetail', 'historyPrevious', 'historyNext', 'historyRestore', 'historyLoad'];
+    static values = { tree: Object, choices: Array, revision: Number, item: String, url: String, csrf: String, createUrl: String, statusUrl: String, documentUrl: String, settings: Object, themes: Object, presetUrl: String, commandsUrl: String, readUrl: String, historyUrl: String, restoreUrl: String };
     connect() {
         this.model = structuredClone(this.treeValue); this.path = []; this.epoch = 0;
         for (const key of ['bodyFont', 'headingFont', 'codeFont']) this[`${key}Target`].value = this.settingsValue[key];
@@ -10,19 +11,18 @@ export default class extends Controller {
         this.frameTarget.style.width = `${this.settingsValue.width || 768}px`;
         this.favoritesOnlyTarget.checked = new URL(window.location.href).searchParams.get('favorites') === '1';
         this.render();
-        this.unload = event => { if (this.dirty) { event.preventDefault(); event.returnValue = ''; } };
+        this.savedSnapshot = canonical(this.snapshot()); this.dirty = false; this.element.dataset.editingState = 'clean';
+        this.guard = new EditingGuard(() => this.dirty, () => this.saving || this.commandPending, this.element);
         this.message = event => {
             const v = event.data;
             if (event.source !== this.frameTarget.contentWindow || !v || v.channel !== this.channel || Object.keys(v).sort().join(',') !== 'channel,height,type' || v.type !== 'resize' || !Number.isInteger(v.height) || v.height < 100 || v.height > 4000) return;
             this.frameTarget.style.height = `${v.height}px`;
         };
-        window.addEventListener('beforeunload', this.unload); window.addEventListener('message', this.message);
-        this.beforeVisit = event => {if(this.dirty&&!window.confirm('Leave this composition and discard unsaved changes?'))event.preventDefault();};
-        document.addEventListener('turbo:before-visit',this.beforeVisit);
+        window.addEventListener('message', this.message);
         this.pollTimer=setInterval(()=>this.pollRevision(),5000);
         this.timer = setTimeout(() => this.preview(), 0);
     }
-    disconnect() { clearInterval(this.pollTimer);document.removeEventListener('turbo:before-visit',this.beforeVisit);clearTimeout(this.timer); this.epoch++; this.cancel(this.job); window.removeEventListener('beforeunload', this.unload); window.removeEventListener('message', this.message); }
+    disconnect() { clearInterval(this.pollTimer);this.guard.disconnect();this.historyEpoch=(this.historyEpoch||0)+1;clearTimeout(this.timer); this.epoch++; this.cancel(this.job); window.removeEventListener('message', this.message); }
     node(path = this.path) { return path.reduce((node, index) => node.children[index], this.model.root); }
     siblings() { return this.node(this.path.slice(0, -1)).children; }
     render(focus = false) {
@@ -89,7 +89,12 @@ export default class extends Controller {
         if (event.key === 'ArrowRight' && this.node(path).children?.length) target = [...path, 0];
         if (target) { event.preventDefault(); this.path = target; this.render(true); }
     }
-    metadata() { this.dirty = true; this.saveStatusTarget.textContent = 'Unsaved changes'; }
+    snapshot() {return {document: this.model, title: this.titleTarget.value};}
+    metadata() {
+        this.dirty = Boolean(this.invalid) || canonical(this.snapshot()) !== this.savedSnapshot;
+        this.element.dataset.editingState = this.saving ? 'saving' : this.dirty ? 'dirty' : 'clean';
+        this.saveStatusTarget.textContent = this.saving ? 'Saving…; newer changes remain unsaved' : this.dirty ? 'Unsaved changes' : `Saved revision ${this.revisionValue}`;
+    }
     changed() { this.invalid = false; this.metadata(); this.render(); this.schedule(); }
     fields() {
         const node = this.node();
@@ -120,7 +125,7 @@ export default class extends Controller {
         const controls=[...this.element.querySelectorAll('button,input,select,textarea')].map(el=>[el,el.disabled]);controls.forEach(([el])=>el.disabled=true);
         try {const result=await this.json(this.commandsUrlValue,{method:'POST',body:JSON.stringify({document:this.model,expectedRevision:this.revisionValue,commands:[command]})});
             this.model=result.document;this.path=this.pathForId(result.selectedNodeId);this.changed();this.render(true);
-        }catch(error){this.saveStatusTarget.textContent=error.message;}
+        }catch(error){this.failure(error);}
         finally{this.commandPending=false;controls.forEach(([el,disabled])=>{if(el.isConnected)el.disabled=disabled;});}
     }
     async pollRevision() {
@@ -131,25 +136,99 @@ export default class extends Controller {
     }
     async loadSaved() {
         if(this.commandPending||this.saving)return;
-        if(this.dirty&&!window.confirm('Discard your unsaved tree and load the latest saved revision?'))return;
-        try{const latest=await this.json(this.readUrlValue);this.model=latest.document;this.revisionValue=latest.revision;this.titleTarget.value=latest.title;this.path=[];this.dirty=false;this.invalid=false;this.externalNoticeTarget.hidden=true;this.saveStatusTarget.textContent=`Saved revision ${latest.revision}`;this.render(true);this.schedule();}catch(error){this.saveStatusTarget.textContent=error.message;}
+        if(this.dirty&&!await confirmEditing({message:'Discard your unsaved tree and title and load the latest saved revision?',label:'Discard local edits and load saved revision'}))return;
+        this.saving=true;const release=this.disableControls();let loaded=false;
+        try {const latest=await this.json(this.readUrlValue);if(!this.element.isConnected)return;this.acceptSaved(latest);loaded=true;
+            this.saveStatusTarget.textContent=`Saved revision ${latest.revision}`;
+            if(this.historyDialogTarget.open){this.historyExpected=latest.revision;await this.loadHistory(0);}
+        }catch(error){this.failure(error);}
+        finally{this.saving=false;release();if(loaded)this.schedule();}
+    }
+    disableControls() {
+        const fields=[...this.element.querySelectorAll('input,select,textarea,button')].filter(el=>!el.closest('[data-appearance-recovery]')).map(el=>[el,el.disabled]);
+        fields.forEach(([el])=>el.disabled=true);return ()=>fields.forEach(([el,disabled])=>{if(el.isConnected)el.disabled=disabled;});
+    }
+    acceptSaved(data) {
+        this.epoch++;this.cancel(this.job);this.job=null;this.channel=null;this.frameTarget.srcdoc='';
+        this.model=data.document;this.revisionValue=data.revision;this.titleTarget.value=data.title;this.path=[];this.invalid=false;
+        this.savedSnapshot=canonical(this.snapshot());this.dirty=false;this.element.dataset.editingState='saved';this.externalNoticeTarget.hidden=true;
+        if(data.generatedTwig)this.generatedTarget.value=data.generatedTwig;
+        this.render(true);
+    }
+    failure(error) {
+        this.saveStatusTarget.textContent=error.message;this.element.dataset.editingState=error.status===412?'conflict':'failed';
+        if(error.status===412){this.externalNoticeTarget.hidden=false;this.externalMessageTarget.textContent='Revision conflict. Your local work is kept. Copy or merge it before deliberately loading the saved revision.';}
+    }
+    async openHistory() {
+        this.historyExpected=this.revisionValue;this.selectedHistory=null;this.historyRestoreTarget.disabled=true;this.historyLoadTarget.hidden=true;
+        this.historyDetailTarget.textContent='Select a saved revision to compare with the editor’s saved head. Unsaved local edits are not part of this comparison.';
+        this.historyDialogTarget.showModal();await this.loadHistory(0);
+    }
+    closeHistory() {this.historyEpoch=(this.historyEpoch||0)+1;this.historyDialogTarget.close();}
+    historyBack() {return this.loadHistory(Math.max(0,this.historyOffset-20));}
+    historyForward() {if(this.historyNextOffset!==null)return this.loadHistory(this.historyNextOffset);}
+    countsText(counts) {return Object.entries(counts).map(([key,count])=>`${count} ${key}`).join(' · ');}
+    async loadHistory(offset) {
+        const epoch=this.historyEpoch=(this.historyEpoch||0)+1;this.historyStatusTarget.textContent='Loading saved history…';
+        try {
+            const page=await this.json(this.historyUrlValue+'?offset='+offset+'&limit=20');if(epoch!==this.historyEpoch||!this.element.isConnected)return;
+            this.historyOffset=offset;this.historyNextOffset=page.nextOffset;this.historyPreviousTarget.disabled=offset===0;this.historyNextTarget.disabled=page.nextOffset===null;
+            this.historyListTarget.replaceChildren();
+            for(const entry of page.history){
+                const row=document.createElement('li');row.className='rounded border border-base-300 p-3';
+                const button=document.createElement('button');button.type='button';button.className='btn btn-outline btn-sm';button.textContent=`Revision ${entry.revision}`;button.addEventListener('click',()=>this.inspectHistory(entry.revision));
+                const summary=document.createElement('p');summary.className='my-2 text-sm';summary.textContent=`${entry.summary} · ${new Date(entry.createdAt).toLocaleString()}`;
+                const actor=document.createElement('p');actor.className='break-words text-xs';actor.textContent=entry.actorId?`Snapshot actor: ${entry.actorId}`:'Snapshot actor unavailable';
+                const changes=document.createElement('p');changes.className='text-sm';changes.textContent=entry.changes?`${this.countsText(entry.changes)} (vs recoverable revision ${entry.comparedWith})`:'First recoverable snapshot; no earlier comparison available.';
+                row.append(button,summary,actor,changes);this.historyListTarget.append(row);
+            }
+            this.historyStatusTarget.textContent=`${page.history.length?'Saved history page '+(offset/20+1)+'.':'No saved history yet.'} ${page.warnings.join(' ')}${page.revision!==this.revisionValue?' A newer saved head exists; your editor is unchanged.':''}`;
+        }catch(error){if(epoch===this.historyEpoch)this.historyStatusTarget.textContent=error.message;}
+    }
+    async inspectHistory(revision) {
+        const epoch=this.historyEpoch=(this.historyEpoch||0)+1;this.historyRestoreTarget.disabled=true;this.selectedHistory=null;
+        try {
+            const detail=await this.json(this.historyUrlValue+'/'+revision+'?expectedRevision='+this.revisionValue);
+            if(epoch!==this.historyEpoch||!this.element.isConnected)return;
+            this.selectedHistory=detail;this.historyExpected=detail.expectedRevision;this.historyDetailTarget.replaceChildren();
+            const heading=document.createElement('h3');heading.className='font-semibold';heading.textContent=`Restore revision ${revision} as a new revision`;heading.tabIndex=-1;
+            const summary=document.createElement('p');summary.className='my-3 break-words';summary.textContent=`Title: ${detail.title}. ${this.countsText(detail.counts)}. This compares saved revision ${detail.expectedRevision} with revision ${revision}; restoring also replaces the saved title and description.`;
+            const list=document.createElement('ul');list.className='list-disc space-y-2 pl-5';
+            for(const diff of [...detail.differences,...detail.metadata.map(field=>({...field,kind:'metadata'}))]){const line=document.createElement('li');line.className='break-words text-sm';line.textContent=`${diff.kind}: ${diff.label||diff.nodeId||diff.field}${diff.field?' · '+diff.field:''}${diff.before!==undefined?' · '+diff.before+' → '+diff.after:''}`;list.append(line);}
+            if(detail.truncated){const notice=document.createElement('p');notice.textContent='First 100 differences shown; the counts above include all changes.';this.historyDetailTarget.append(notice);}
+            this.historyDetailTarget.append(heading,summary,list);this.historyRestoreTarget.disabled=false;heading.focus();
+        }catch(error){if(epoch!==this.historyEpoch)return;this.historyStatusTarget.textContent=error.message;this.historyLoadTarget.hidden=error.status!==412;}
+    }
+    async restoreHistory() {
+        if(this.saving||this.commandPending||!this.selectedHistory)return;
+        const detail=this.selectedHistory;
+        if(this.revisionValue!==detail.expectedRevision){this.historyStatusTarget.textContent='The saved head changed. Select this revision again before restoring.';return;}
+        if(this.dirty&&!await confirmEditing({message:`Restore saved revision ${detail.revision} as a new head? This replaces your unsaved tree and title. ${this.countsText(detail.counts)}.`,label:'Discard local edits and restore'}))return;
+        this.saving=true;this.element.dataset.editingState='saving';const release=this.disableControls();let restored=false;
+        try {
+            const result=await this.json(this.restoreUrlValue,{method:'POST',body:JSON.stringify({expectedRevision:detail.expectedRevision,restoreRevision:detail.revision})});
+            if(!this.element.isConnected)return;this.acceptSaved(result);restored=true;
+            this.saveStatusTarget.textContent=`Restored revision ${result.restoredFrom} as new revision ${result.revision}`;this.historyDialogTarget.close();
+        }catch(error){this.failure(error);this.historyStatusTarget.textContent=error.message;this.historyLoadTarget.hidden=error.status!==412;}
+        finally{this.saving=false;release();if(restored)this.schedule();}
     }
     async json(url, options = {}) {
         const response = await fetch(url, { ...options, credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': this.csrfValue } });
-        const data = await response.json(); if (!response.ok) throw Error(data.message || 'Composition request failed.'); return data;
+        const data = await response.json(); if (!response.ok) throw Object.assign(Error(data.message || 'Composition request failed.'), {status: response.status}); return data;
     }
     input() { if (this.invalid) throw Error('Correct the current JSON before saving or previewing.'); return { document: this.model, expectedRevision: this.revisionValue, title: this.titleTarget.value }; }
     async save() {
         if(this.saving||this.commandPending)return;
         let saved=false;
         try {
-            const snapshot = JSON.stringify(this.input());
-            this.saving=true;clearTimeout(this.timer);this.epoch++;this.cancel(this.job);this.job=null;this.statusTarget.textContent='Stale preview — saving composition';
+            const captured = structuredClone(this.input()); const snapshot = JSON.stringify(captured);
+            this.saving=true;this.element.dataset.editingState='saving';this.saveStatusTarget.textContent='Saving…';clearTimeout(this.timer);this.epoch++;this.cancel(this.job);this.job=null;this.statusTarget.textContent='Stale preview — saving composition';
             const result = await this.json(this.urlValue, { method: 'PUT', body: snapshot });
-            this.dirty = JSON.stringify(this.input()) !== snapshot;
-            this.revisionValue = result.revision;saved=true;
+            if(!this.element.isConnected)return;
+            this.savedSnapshot=canonical({document:result.document,title:captured.title});
+            this.revisionValue=result.revision;this.dirty=Boolean(this.invalid)||canonical(this.snapshot())!==this.savedSnapshot;this.element.dataset.editingState=this.dirty?'dirty':'saved';saved=true;
             this.saveStatusTarget.textContent = `Saved revision ${result.revision}${this.dirty ? '; newer changes remain unsaved' : ''}`;
-        } catch (error) { this.saveStatusTarget.textContent = error.message; }
+        } catch (error) { this.failure(error); }
         finally{this.saving=false;if(saved)this.schedule();}
     }
     schedule() { clearTimeout(this.timer); this.epoch++; this.statusTarget.textContent = 'Stale preview — changes pending'; this.timer = setTimeout(() => this.preview(), 300); }

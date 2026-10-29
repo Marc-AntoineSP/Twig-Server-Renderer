@@ -18,7 +18,7 @@
 {% endif %}
 <p role="alert" class="alert alert-error my-3" {% if not app.request.query.getBoolean('appearanceApplyFailed') %}hidden{% endif %} data-theme-editor-target="saveError">{% if app.request.query.getBoolean('appearanceApplyFailed') %}Theme saved, but application appearance was not updated. Your confirmed appearance is kept. Retry Apply saved theme.{% endif %}</p>
 <p role="status" class="my-2" data-theme-editor-target="saveStatus"></p>
-{{ form_start(form, {attr: {'data-turbo': 'false', 'data-action': 'input->theme-editor#changed change->theme-editor#changed submit->theme-editor#save', 'data-theme-editor-target': 'form'}}) }}
+{{ form_start(form, {attr: {'data-turbo': 'false', 'data-editing-save': '', 'data-action': 'input->theme-editor#changed change->theme-editor#changed submit->theme-editor#save', 'data-theme-editor-target': 'form'}}) }}
 {% include 'theme/_fields.html.twig' with {preview: true} %}
 <div class="my-6 flex flex-wrap gap-3"><button class="btn btn-primary" type="submit">{{ creating ? 'Create theme' : 'Save theme' }}</button><button class="btn btn-secondary" type="button" data-action="theme-editor#saveAndApply">Save &amp; Apply</button><button class="btn btn-outline" type="button" aria-pressed="false" data-theme-editor-target="tryButton" data-action="theme-editor#tryApplication">Try on application</button><button class="btn btn-ghost" type="button" data-action="theme-editor#revertApplication">Revert trial</button><button {% if not app.request.query.getBoolean('appearanceApplyFailed') %}hidden{% endif %} class="btn btn-outline" type="button" data-theme-editor-target="retryApply" data-action="theme-editor#retryApplication">Retry Apply saved theme</button></div>
 {{ form_end(form) }}

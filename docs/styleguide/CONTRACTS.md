@@ -226,6 +226,15 @@ Batch aliases are local `$name` references to earlier adds/duplicates, max50 com
 one failed command aborts the whole batch. Restore creates a new revision, never rewinds
 version numbers. Manual working trees remain unsaved until their normal explicit Save.
 
+The manual composer uses the same CompositionHistory service as MCP: editor-only
+`GET /api/v1/items/{id}/composition/history?offset=0&limit=20` lists captured snapshots
+(limit1–50, offset0–10000). `GET .../history/{revision}?expectedRevision=N` returns
+bounded saved-head-to-target differences (first100 plus counts and abbreviated values),
+not raw historical trees. CSRF-protected `POST .../restore` accepts only expectedRevision
+and restoreRevision, revalidates current reference access and saves a new head. History
+reads and writes are private/no-store. Missing snapshots/references and stale revisions
+remain errors; no storage migration or retention policy is added. See EDITING.md.
+
 Previews capture an exact requested current saved revision and are actor-owned. Later
 saves cannot change their captured source payload. Status/HTML/URL identify previewRevision
 separately from the current draft revision, with visualInspectionAvailable=false.

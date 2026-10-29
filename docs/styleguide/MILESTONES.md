@@ -274,3 +274,20 @@ reports have no violations; contrast incompletes and human screen-reader checks 
 for manual review. No migration, dependency update or operator setting; rebuilt images
 now include Symfony's translated messages. The action map is in THEME_SHOWCASE.md;
 commands, cleanup audit and limitations are in STATUS.md.
+
+
+## Improvement prompt 04 — Editing protection and saved history
+
+Shared navigation/unload protection and authoritative saved snapshots across source,
+composition and theme editors. Expose the existing authorized composition history with
+bounded differences and restore as a new revision. Keep current conflict/reference
+validation and MCP receipts; do not add another history store or full Undo/Redo.
+Completed 2026-10-29: Docker builds/lints, **160 PHPUnit tests / 1676 assertions**,
+**110 browser tests** across Chromium/Firefox/WebKit, twelve visual comparisons
+(four reviewed updated composer baselines) and **14 final immutable-production flows**
+pass. Earlier production coverage also passes the official MCP SDK smoke and shared
+manual/MCP restore operations. Four history panel axe scans have no violations;
+contrast incompletes and human screen-reader checks remain for manual review.
+All seven owned browser runs and both production fixtures are cleaned. No migration,
+dependency update or operator setting is required. See EDITING.md for usage and
+STATUS.md for exact commands, resolved failures, runtime versions and remaining limits.
