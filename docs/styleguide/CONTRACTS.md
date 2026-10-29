@@ -268,3 +268,29 @@ only channel/sequence vary on reuse. Cache retention remains the existing job TT
 `GET /api/v1/release-thumbnails/{releaseId}` requires a reader and returns only an existing
 bounded cached document; it never compiles or queues. Cards mount it only on request,
 scripts disabled. No package schema, migration or immutable release bytes change.
+
+
+## Browser composer reference discovery
+
+`POST /api/v1/items/{id}/composition/references` is an editor-session, CSRF-protected,
+read-only query. Input is document, expectedRevision, selectedNodeId, mode
+(`insert`/`replace`) and query (`q` up to100 characters, kind empty/component/block/layout,
+favorites boolean, optional exact stable SemVer up to32 characters, page1..10000).
+No unknown input fields, imported sources or mutation commands are accepted.
+
+The response has items, page, pageSize20 and hasMore. Each item contains releaseId,
+itemId, name, kind, version, title (max120), summary (max300), favorite, previewUrl and
+nullable thumbnailUrl. It contains no sources, schema or defaults. Stable ordering is
+package name under C collation, descending numeric major/minor/patch, then release ID.
+Access/known eligibility precede pagination; favorite state is joined for the actor.
+Revision mismatches return412. Search never persists or compiles a document.
+
+`GET /api/v1/items/{id}/composition/reference?name=namespace/name&version=1.0.0`
+authorizes and integrity-checks one exact release and its closure, returning the existing
+reference details (including schema/defaults) and a pinned preview URL. An unavailable
+reference returns a generic404. No implicit latest version is supported.
+`GET /catalogue/{id}/references` uses the same query against saved tree context.
+All three routes are private/no-store and require an enabled session editor; scoped MCP
+principals use their existing discovery instead. Mutation still goes through the existing
+typed composition commands and authoritative domain validation. Search does not change
+dirty/revision state; replacement omits props to preserve them unless reset is explicit.

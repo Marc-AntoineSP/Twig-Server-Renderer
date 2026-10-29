@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test';
 import {randomBytes} from 'node:crypto';
 import {readFileSync, mkdirSync} from 'node:fs';
-import {login} from './helpers.js';
+import {pickReference,login} from './helpers.js';
 
 async function api(page, method, url, data) {
     const token = (await (await page.request.get('/api/v1/csrf')).json()).token;
@@ -114,21 +114,24 @@ test('composer favorites filter eligible immutable components, blocks and layout
     }
     const unpublished=await item(page,'block',prefix+'-unpublished'); await api(page,'PUT',`/api/v1/favorites/catalogue/${unpublished.id}`);
     const target=await item(page,'layout',prefix+'-target');
-    await page.goto(`/catalogue/${target.id}/compose`); await page.getByLabel('Favorites only',{exact:true}).check();
-    const picker=page.getByLabel('Component, block or layout to insert',{exact:true});
-    for(const i of references) await expect(picker.locator('option').filter({hasText:i.name+'@1.0.0'})).toHaveCount(1);
-    await expect(picker.locator('option').filter({hasText:unpublished.name})).toHaveCount(0);
+    await page.goto(`/catalogue/${target.id}/compose`);await page.getByRole('button',{name:'Add reference',exact:true}).click();
+    const picker=page.getByRole('dialog',{name:'Choose an immutable reference',exact:true});
+    await picker.getByLabel('Favorites only',{exact:true}).check();
+    await picker.getByRole('searchbox',{name:'Search references',exact:true}).fill(prefix);await picker.getByRole('button',{name:'Find references',exact:true}).click();
+    for(const i of references) await expect(picker.getByRole('radio',{name:i.name+'@1.0.0',exact:true})).toHaveCount(1);
+    await expect(picker.getByRole('radio',{name:unpublished.name+'@1.0.0',exact:true})).toHaveCount(0);
     await expect(page.locator('[data-composition-target="saveStatus"]')).toHaveText('Saved revision 1');
-    await picker.selectOption({label: (await picker.locator('option').filter({hasText:references[0].name+'@1.0.0'}).textContent())});
-    await page.getByRole('button',{name:'Add reference',exact:true}).click();
-    await expect(page.getByRole('treeitem',{name:references[0].name+'@1.0.0',exact:true})).toBeVisible();
-    await page.getByRole('button',{name:'Save composition',exact:true}).click(); await expect(page.locator('[data-composition-target="saveStatus"]')).toHaveText('Saved revision 2');
-    await page.reload(); await expect(page.getByLabel('Favorites only',{exact:true})).toBeChecked();
+    await pickReference(page,references[0].name,'1.0.0');
+    await page.getByRole('button',{name:'Save composition',exact:true}).click();await expect(page.locator('[data-composition-target="saveStatus"]')).toHaveText('Saved revision 2');
+    await page.reload();await expect(page.locator('[data-reference-picker-target="favorites"]')).toBeChecked();
+    await api(page,'DELETE',`/api/v1/favorites/catalogue/${references[0].id}`);await page.reload();
     await page.getByRole('treeitem',{name:references[0].name+'@1.0.0',exact:true}).click();
-    // An existing reference stays visible if it ceases to be a favorite; filtering cannot rewrite it.
-    await api(page,'DELETE',`/api/v1/favorites/catalogue/${references[0].id}`); await page.reload();
-    await page.getByRole('treeitem',{name:references[0].name+'@1.0.0',exact:true}).click();
-    await expect(page.getByLabel('Immutable reference',{exact:true}).locator('option:checked')).toContainText('(current, outside favorites)');
+    await expect(page.locator('[data-composition-target="referenceIdentity"]')).toHaveText(references[0].name+'@1.0.0');
+    await page.getByRole('button',{name:'Change immutable reference',exact:true}).click();
+    await expect(picker.locator('[data-reference-picker-target="current"]')).toContainText(references[0].name+'@1.0.0');
+    await picker.getByRole('searchbox',{name:'Search references',exact:true}).fill(references[0].name);await picker.getByRole('button',{name:'Find references',exact:true}).click();
+    await expect(picker.getByRole('radio',{name:references[0].name+'@1.0.0',exact:true})).toHaveCount(0);
+    await picker.getByRole('button',{name:'Close reference picker',exact:true}).click();
     await star(page,'catalogue',target.id).click(); await pressed(star(page,'catalogue',target.id),true);
     await expect(page.locator('[data-composition-target="saveStatus"]')).toHaveText('Saved revision 2');
     await page.setViewportSize({width:390,height:844}); await shot(page,'composer-mobile');

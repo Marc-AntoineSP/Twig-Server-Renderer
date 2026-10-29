@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Find references · {{ item.name }}{% endblock %}
+{% block body %}
+<a class="link" href="{{ path('composition_edit', {id:item.id}) }}">← Return to composer</a>
+<h1 class="mt-4 text-3xl font-bold">Find immutable references</h1>
+<p class="my-4">Eligible published releases for the saved composition. The enhanced picker in the composer also checks your unsaved tree. Adding or replacing a reference requires JavaScript.</p>
+<form method="get" class="rounded-box border border-base-300 bg-base-100 p-4" autocomplete="off">
+    <label for="reference-query">Search references</label><input id="reference-query" name="q" type="search" maxlength="100" value="{{ query.q }}">
+    <div class="grid gap-3 sm:grid-cols-3"><div><label for="reference-kind">Reference kind</label><select id="reference-kind" name="kind"><option value="">All eligible kinds</option>{% for kind in ['component','block','layout'] %}<option value="{{ kind }}" {{ query.kind == kind ? 'selected' : '' }}>{{ kind|capitalize }}</option>{% endfor %}</select></div><label for="reference-version">Exact version<input id="reference-version" name="version" maxlength="32" value="{{ query.version }}" placeholder="Any version"></label><label class="flex items-center gap-2"><input class="checkbox" type="checkbox" name="favorites" value="1" {{ query.favorites ? 'checked' : '' }}>Favorites only</label></div>
+    <button class="btn btn-outline" type="submit">Find references</button>
+</form>
+<p class="my-4" role="status">{{ items|length }} eligible releases on page {{ page }}.</p>
+<ul class="space-y-4" aria-label="Eligible immutable releases">{% for reference in items %}<li class="rounded-box border border-base-300 bg-base-100 p-4"><h2 class="text-lg font-semibold">{{ reference.title }}</h2><p class="break-all font-mono">{{ reference.name }}@{{ reference.version }}</p><p class="my-2">{{ reference.kind }}{{ reference.favorite ? ' · Favorite' : '' }} · {{ reference.summary }}</p><a class="link break-all" href="{{ reference.previewUrl }}" target="_blank" rel="noopener">Preview {{ reference.name }}@{{ reference.version }} (new tab)</a></li>{% else %}<li>No eligible releases match. Clear filters or publish a valid component, block or layout.</li>{% endfor %}</ul>
+<div class="my-5 flex gap-4">{% set filters = {q:query.q, kind:query.kind, favorites:query.favorites ? 1 : 0, version:query.version} %}{% if page > 1 %}<a class="btn btn-outline" href="{{ path('composition_reference_browse', {id:item.id, page:page-1}|merge(filters)) }}">Previous references</a>{% endif %}{% if hasMore %}<a class="btn btn-outline" href="{{ path('composition_reference_browse', {id:item.id, page:page+1}|merge(filters)) }}">Next references</a>{% endif %}</div>
+{% endblock %}

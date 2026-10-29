@@ -2628,3 +2628,252 @@ tests/Functional/CataloguePreviewTest.php
 Final Git checks: git diff --check passes; all twelve originally staged prompts retain
 staged-diff SHA256 d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1.
 The scoped local implementation commit excludes them. No push is performed.
+
+
+## 2026-10-29 — Improvement prompt 07: searchable composer references
+
+Selected prompts/07-searchable-composer-reference-picker.md and its nested prompt pack;
+README/PROMPT/SOURCE_REVIEW_POINT read and SHA256SUMS verified. Starting branch
+feature/m21-searchable-composer-reference-picker, HEAD2022685. The twelve staged prompt
+files are unrelated user input and remain outside this implementation commit. Their
+staged-diff SHA256 remains
+d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1.
+
+Current source confirmed the reported latest200 plus all favorite-item releases preload
+and two client-side select lists. A verified disposable fixture adds82 valid archive-backed
+items/491 releases/81 editor favorites, including250 versions of one item and an old
+nonfavorite. Its archives pass package/schema/inventory validation; this load fixture does
+not claim491 worker publications. Acceptance inserts and actually renders the old release,
+and publishes its own two-version source through real workers.
+
+ReferenceDiscovery now returns at most20 summaries from one recursive DBAL query. Text,
+kind, exact version, per-actor favorites, self-reference, missing/transitive dependencies,
+known graph depth/count/version/cycle compatibility all precede LIMIT. Stable sorting is
+package name/C collation, descending numeric SemVer, release ID. Structural insertion and
+replacement dry runs call the existing CompositionTree; apply/save still call the
+authoritative CompositionWorkspace and complete source/archive/props validation. No
+invented component-vs-block-vs-layout hierarchy was introduced. Session editors share
+the catalogue under the existing voter; disabled accounts/readers are rejected. The
+browser query explicitly rejects scoped MCP principals. MCP item/draft search has a
+different contract and remains separate; no UI request uses MCP transport.
+
+The composer initially embeds zero reference choices. The native search dialog shows
+plain bounded title/kind/summary/name/version/favorite data, deliberate exact-version
+selection and pinned previews. Cached thumbnails mount only on explicit request in the
+existing script-disabled opaque iframe; there is no result metadata fanout or compilation
+fleet. The selected-node inspector independently reads one authorized exact immutable
+release and preserves its pin and props outside filters. Replacement preserves props by
+default; replacing them with the chosen defaults requires an explicit checkbox. Invalid
+props fail without replacing the tree. No prompt08 property-form redesign was started.
+
+Search is debounced300ms with IME handling, AbortController and serial guards. Closing
+during the exact-release read cancels pending insertion; a queued native close event
+cannot clear a reopened dialog. Native modal keyboard order includes the appearance
+recovery form, Escape restores the opener, and successful insertion focuses the tree node
+after the shell's focus restoration. Search/page/preview requests preserve unsaved work,
+saved revision and dirty state. A GET fallback browses saved-context references without
+JavaScript; insertion retains the existing JavaScript requirement. Long100-character
+package names wrap in results, preview links and tree rows. Usage: REFERENCE_PICKER.md.
+Pattern source: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/.
+
+Representative authenticated dev-profiler measurements (real requests; no speed claim):
+
+| Surface | Before | After |
+| --- | ---: | ---: |
+| Composer HTML bytes |346743|96258|
+| Preloaded reference choices |491|0|
+| Actual embedded choices JSON bytes |107824|0|
+| Composer SQL queries |100|14|
+| Discovery JSON bytes / SQL / rows |not available|6617 /4 /20|
+
+The old nonfavorite was absent from the initial preload and is present in the new first
+query page. These are representative captures from the same retained load fixture, not
+a timing benchmark: intervening acceptance flows added other catalogue/theme fixtures.
+The functional test independently verifies adding all491 releases/81 favorites does not
+grow initial composer HTML (allowance256 bytes). Final measurement evidence:
+var/browser-verification/reference-picker-measure-final2.log; before evidence:
+reference-picker-baseline2.log. The measurement helper requires verified owned DB/blob
+sentinels and is neither a route nor a production command.
+
+Completed backend gates: strict Composer validation, container/YAML/Twig lint, CSS/
+AssetMapper and Docker builds, migrations and **169 PHPUnit tests /1857 assertions**.
+Final backend run: reference-picker-final2.log. Three new functional cases cover heavy
+favorites/old versions/summary bounds, graph conflicts/cycles/parent rejection, CSRF/query
+bounds/stale revisions/readers/missing versions and real post-login account revocation
+across query, exact read and mutation. Browser403 transport injection is labelled a
+client error-state test; actual revoked authentication is covered by the PHP session test.
+
+Corrected failures during verification: the standalone measurement helper initially
+lacked Dotenv initialization/DEFAULT_URI; the new Symfony8 Choice constraint needed named
+choices arguments. One assertion compared JSON slash escaping instead of decoded data.
+The initial picker used Stimulus's reserved context property, preventing opening; renamed
+searchContext. A real shell focus race after insertion was corrected by scheduled tree
+focus. A helper confused closing animation visibility with the native dialog open state;
+it now checks open. One scenario explicitly clears Favorites before choosing a known
+nonfavorite. The real API revocation response is401, not an HTML login redirect. Repeating
+a full suite on its retained _test database exposed earlier orphan/future-timestamp
+fixtures in unrelated catalogue/workspace tests; resetting only this owned _test database
+then rerunning the complete suite passed. No unrelated test framework or product behavior
+was changed to hide those failures. Screenshot review caught and fixed long preview-link
+clipping, with horizontal-overflow assertions added for dialog and inserted tree.
+
+Exact final Docker orchestration, under the verified owned lifecycle lock:
+
+```python
+r = Run('browser-7d0701d88a183de0ba5ff0bf')
+r.verify_resources()
+r.compose('--profile','tools','build','app','browser')
+r.compose('up','-d','--wait','app','preview-consumer')
+r.app('php','bin/console','cache:clear')
+r.app('php','bin/console','doctrine:database:drop','--env=test','--force','--if-exists')
+r.check()
+r.test(['tests/Browser/visual.spec.js','--project=chromium'], update_baselines=True)
+# Restore all eight unrelated listing/theme source AND run baseline bytes before comparison.
+r.test([])
+```
+
+Initial fresh automatic seed and checks were started with:
+`python3 tests/BrowserHarness/run.py run --with-checks --keep -- tests/Browser/reference_picker.spec.js tests/Browser/composition.spec.js tests/Browser/favorites.spec.js tests/Browser/critical.spec.js`.
+Its new session-revocation assertion failed as recorded above; the final clean full PHP
+run supersedes that result. The final orchestration is retained in ignored
+var/browser-verification/reference-picker-final.py and its final2.log. Four composer
+baselines were deliberately regenerated and reviewed at390/1440 in both modes; all
+eight unrelated baseline bytes match the original in both source and owned run.
+
+Production command:
+`bash tests/AppearanceProduction/run.sh tests/Browser/reference_picker.spec.js tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js`.
+It builds immutable APP_ENV=prod/debug0 images, verifies owned DB/blob sentinels, validates
+schema, exercises actual workers, native browser flows and the SDK MCP smoke check,
+then compares the compiled AssetMapper manifest and cleans its resources. The load-data
+seed is maintenance-only, mounted read-only; no production test API or imported scripts
+are added. The first production attempt had the Favorites test setup error (13/14 passed);
+the second passed14/14. The final wrapping/overflow run also passed14/14, including
+all four light/dark narrow/wide picker cases and the SDK smoke check (26 tools, real
+previewVerified=true). Its four axe reports have zero violations and color-contrast
+incompletes. Post-build new-family appearance checks passed, with the compiled
+AssetMapper manifest read-only and unchanged. Final production evidence:
+reference-picker-production-verified.log and
+var/appearance-20261029135815-22052/{browser-results,mcp-sdk-smoke.json}.
+
+Actual runtime captured in reference-picker-baseline-cleanup.log: FrankenPHP1.13.4,
+PHP8.5.12, Caddy2.11.7, Symfony8.1.9, Node24.22.1, Chromium156.0.8078.4, Firefox157.0,
+WebKit27.2. PHPUnit13.4.3 is recorded by the full suite. Existing locks retain
+Playwright1.64.1, Tailwind4.3.3, daisyUI5.7.50, Stimulus3.2.2 and Turbo8.0.23.
+No migration, dependency lock, image pin, Docker topology or operator setting changes.
+
+The first complete browser invocation passed154/155: all147 Chromium and4 WebKit
+flows, plus3 Firefox flows. The remaining Firefox catalogue audit observed Turbo's
+transient html aria-busy=true after an explicit search resubmission; matching cards were
+already present from automatic filtering, so they did not prove that submission had
+finished. The existing pre-audit not-busy assertion could race the next lifecycle step.
+The critical flow now waits for the exact turbo:submit-start/formSubmission and its
+matching turbo:submit-end, then listing ready, before running unchanged axe rules. No
+rule was disabled, DOM attribute removed or product behavior changed. All12 critical
+flows across three engines passed after that test synchronization change.
+
+The affected Firefox case also passed8 consecutive repetitions (57s). Exact follow-up
+commands under the same verified lifecycle lock:
+
+```python
+r.compose('--profile','tools','build','browser')
+r.test(['tests/Browser/critical.spec.js'])
+r.test(['tests/Browser/critical.spec.js','--project=firefox',
+        '--grep','critical: keyboard navigation','--repeat-each=8'])
+r.test([])
+```
+
+Evidence: var/browser-verification/reference-picker-critical.log and the corresponding
+owned-run invocation reports. The second full invocation passed154/155 with all
+Firefox/WebKit cases passing, but an unrelated existing theme export/import round-trip
+returned422 once. An initial three-repeat diagnostic passed2/3; a subsequent four-repeat
+diagnostic passed4/4. Read-only re-export/revalidation of the exact failed theme returned
+200 for both JSON and CSS. The initial standalone diagnostic's500 responses were caused
+by echoing output before later KernelBrowser session starts; buffered diagnostics resolve
+that tooling error. The original intermittent422 cause remains unproven. Temporary
+assertion-message instrumentation was reverted; no theme implementation/test semantics
+are changed by this prompt. See reference-picker-diagnostic-buffered.log and
+reference-picker-theme-diagnostic.log.
+
+A fresh final browser fixture was started with
+`python3 tests/BrowserHarness/run.py run --keep` (no duplicate PHP gate; backend source
+unchanged since the passing169-test run). It owns
+browser-0413ce91afaaa49fe7eb7c77, with source/run copies of the reviewed four composer
+baselines and unchanged eight other baselines. Evidence:
+var/browser-verification/reference-picker-clean-browser.log. Final full-suite result
+and resource audit follow.
+
+Final fresh full browser result: **155/155 pass** (147 Chromium,4 Firefox,4 WebKit),
+including all12 normal visual comparisons and all12 new reference-picker cases. Its four
+picker application-control axe reports have zero violations, with color-contrast
+incompletes retained. The four production picker reports also have zero violations.
+Four composer baselines and four final-production picker screenshots were visually
+reviewed at390/1440 light/dark, plus a narrow inserted100-character pin. The other eight
+source AND final-run baseline files match their original bytes exactly.
+
+Remaining limits: no human screen-reader or contrast certification; no-JavaScript
+discovery browses saved context while insertion still needs the existing JS composer.
+Offset pages are stable for an unchanged catalogue, not a concurrent-publication snapshot.
+Metadata graph hints cannot replace archive/source/props validation on apply. The earlier
+existing theme-import422 was not reproduced by four focused runs, read-only round-trip
+or the final fresh full suite; its cause remains unproven and no theme fix is claimed.
+The initial preload's separate theme choices remain outside this reference-discovery
+change. Package schemas, immutable bytes, workers, app/preview separation, MCP scope
+contracts, editing history/guard and renderer appearance remain intact.
+
+No push, remote publication or deployment occurred. No working catalogue data was
+mutated. Exact next step: review the completed prompt07 implementation or explicitly
+select another numbered prompt; prompt08 is not started automatically.
+
+
+All three owned browser runs and all three production fixtures are cleaned. The exact
+resource audit reports zero containers (including stopped), volumes, networks, private
+credential/fixture files and remaining owned worker image tags. Browser CLEANED receipts
+exist; reusable app/browser/production build caches remain. Cleanup commands were
+`python3 tests/BrowserHarness/run.py cleanup --run-id <exact-owned-id>`; production
+cleanup ran in each fixture's trap and exact owned worker tags were removed separately.
+Evidence: reference-picker-baseline-cleanup.log, reference-picker-second-cleanup.log,
+reference-picker-final-cleanup.log, reference-picker-production-cleanup.json and
+reference-picker-resource-audit.json under var/browser-verification.
+
+Final Git diff/check and scoped local commit exclude the twelve staged prompt files;
+their original fingerprint is retained. No schema, dependency or operator action remains.
+
+Changed files (35):
+
+```text
+agent-kit/STATUS.md
+assets/controllers/composition_controller.js
+assets/controllers/reference_picker_controller.js
+docs/styleguide/ARCHITECTURE.md
+docs/styleguide/BROWSER_TESTS.md
+docs/styleguide/CONTRACTS.md
+docs/styleguide/DISCOVERY.md
+docs/styleguide/FAVORITES.md
+docs/styleguide/MILESTONES.md
+docs/styleguide/PRODUCT.md
+docs/styleguide/REFERENCE_PICKER.md
+docs/styleguide/SECURITY.md
+src/Command/BrowserSeedCommand.php
+src/Composition/ReferenceDiscovery.php
+src/Composition/ReferenceQuery.php
+src/Composition/ReferenceSearchInput.php
+src/Controller/CompositionController.php
+src/Controller/ReferencePickerController.php
+templates/composition/_reference_picker.html.twig
+templates/composition/edit.html.twig
+templates/composition/references.html.twig
+tests/AppearanceProduction/run.sh
+tests/Browser/baselines/chromium/composer-1440-dark.png
+tests/Browser/baselines/chromium/composer-1440-light.png
+tests/Browser/baselines/chromium/composer-390-dark.png
+tests/Browser/baselines/chromium/composer-390-light.png
+tests/Browser/composition.spec.js
+tests/Browser/critical.spec.js
+tests/Browser/favorites.spec.js
+tests/Browser/helpers.js
+tests/Browser/reference_picker.spec.js
+tests/Fixtures/ReferenceCatalogue.php
+tests/Functional/ReferenceDiscoveryTest.php
+tests/ReferencePicker/measure.php
+tests/ReferencePicker/seed.php
+```

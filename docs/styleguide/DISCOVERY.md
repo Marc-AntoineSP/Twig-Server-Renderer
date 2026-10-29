@@ -70,7 +70,7 @@ operation=undo. Existing duplicate-button synchronization and pending events rem
 
 No new favorite model, migration, dependency or search engine is introduced. The
 authenticated actor always supplies favorite identity; URL owner/user parameters do not.
-The composer picker remains scoped to its separate prompt. Shared layout fields can be
+Composer immutable-release discovery is documented in REFERENCE_PICKER.md. Shared layout fields can be
 reused without making unrelated domains adopt the same filters. See FAVORITES.md and
 STATUS.md for persistence, commands, measured results and remaining manual checks.
 

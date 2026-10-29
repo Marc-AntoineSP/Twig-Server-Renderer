@@ -19,13 +19,11 @@ together; regular listings retain the card with its updated star. A brief Undo u
 explicit PUT and current filters. See [DISCOVERY.md](DISCOVERY.md) for URL/history,
 search, focus and failure behavior.
 
-In the composition builder, Favorites only narrows both the insertion picker and
-the selected node's immutable-reference picker. An existing nonfavorite reference
-remains visible as “current, outside favorites”; filtering cannot change the tree.
-Unpublished drafts stay unavailable. Choices include favorite releases beyond the
-existing 200-recent-release window and exclude the composition itself. Commands
-continue through CompositionWorkspace's existing permission, schema, dependency,
-cycle and parent validation. Changing favorites never marks the tree as dirty.
+In the composition builder, Favorites only filters the searchable insertion/replacement
+modal in bounded pages. Eligible older versions remain discoverable without preloading
+all releases of favorite items. The selected inspector pin remains visible outside those
+filters, with local props preserved. Search and previews do not change the tree;
+insertion or replacement requires an explicit action. See REFERENCE_PICKER.md.
 
 `compose_search_catalogue` accepts the optional boolean `favoritesOnly`; every
 result includes `favorite`. Its owner comes from the authenticated PAT/OAuth

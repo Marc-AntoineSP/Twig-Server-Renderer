@@ -55,3 +55,17 @@ export async function createShowcase(page,slug){
     if(['button','alert','progress','tabs','dialog'].includes(slug)){const path=`assets/controllers/catalogue/${name}_controller.js`;sources[path]=readFileSync(`fixtures/showcase/${slug}/controller.js`,'utf8');manifest.controllers=[{identifier,path}];}
     const saved=await page.request.put(`/api/v1/items/${item.id}/draft`,{headers:{'X-CSRF-Token':csrf,'If-Match':'"1"'},data:{title:definition.title,manifestData:manifest,sourceMap:sources}});expect(saved.status(),await saved.text()).toBe(200);await page.goto(`/catalogue/${item.id}/edit`);const state=page.locator('[data-controller~="preview"]');await expect(state).toHaveAttribute('data-preview-state',/^(current|error)$/,{timeout:20000});expect(await state.getAttribute('data-preview-state'),await page.locator('[data-preview-target="status"]').textContent()).toBe('current');return {item,manifest,sources};
 }
+
+export async function pickReference(page, name, version, {replace = false, useDefaults = false, favorites} = {}) {
+    const dialog = page.getByRole('dialog', {name: 'Choose an immutable reference', exact: true});
+    if (!await page.locator('[data-reference-picker-target="dialog"]').evaluate(d => d.open)) await page.getByRole('button', {name: replace ? 'Change immutable reference' : 'Add reference', exact: true}).click();
+    await dialog.getByRole('searchbox', {name: 'Search references', exact: true}).fill(name);
+    await dialog.getByLabel('Exact version', {exact: true}).fill(version);
+    if (favorites !== undefined) await dialog.getByLabel('Favorites only', {exact: true}).setChecked(favorites);
+    await dialog.getByRole('button', {name: 'Find references', exact: true}).click();
+    await dialog.getByRole('radio', {name: `${name}@${version}`, exact: true}).check();
+    if (useDefaults) await dialog.getByLabel("Replace instance props with this release's defaults", {exact: true}).check();
+    await dialog.getByRole('button', {name: replace ? 'Replace with selected reference' : 'Insert selected reference', exact: true}).click();
+    await expect(dialog).not.toBeVisible();
+    await expect(page.getByRole('treeitem', {name: `${name}@${version}`, exact: true}).last()).toBeVisible();
+}

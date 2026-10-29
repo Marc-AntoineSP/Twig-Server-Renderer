@@ -67,9 +67,12 @@ final class BrowserSeedCommand extends Command
         foreach (['component', 'block', 'layout', 'workspace'] as $key) {
             $this->em->getConnection()->executeStatement("UPDATE catalogue_item SET updated_at='2026-01-01 12:00:00' WHERE id=?", [$fixtures[$key]['id']]);
         }
+        $referenceFixture = \App\Tests\Fixtures\ReferenceCatalogue::create($this->em, $editor, 'picker-load');
+        $referencePath = BrowserRunGuard::DIRECTORY.'/reference-fixture.json';
+        file_put_contents($referencePath, json_encode($referenceFixture, JSON_THROW_ON_ERROR)); chmod($referencePath, 0600);
         file_put_contents($path, json_encode($fixtures, JSON_THROW_ON_ERROR));
         chmod($path, 0600);
-        $output->writeln('Seeded 4 catalogue items, 3 item releases, 2 theme releases, 1 light/dark family and private editor/visual favorites.');
+        $output->writeln('Seeded 4 core items, 3 core releases, 2 theme releases, 1 light/dark family, private favorites, plus 82 archive-backed reference items / 491 releases / 81 editor favorites.');
         return Command::SUCCESS;
     }
 }

@@ -7,7 +7,6 @@ use App\Composition\CompositionInput;
 use App\Composition\CompositionWorkspace;
 use App\Composition\CompositionCommandInput;
 use App\Entity\CatalogueItem;
-use App\Entity\Release;
 use App\Entity\ThemeRelease;
 use App\Font\FontLibrary;
 use App\Rendering\RendererPresets;
@@ -27,22 +26,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 final class CompositionController extends AbstractController
 {
     #[Route('/catalogue/{id}/compose', name: 'composition_edit', methods: ['GET'])]
-    public function edit(#[MapEntity(id: 'id')] CatalogueItem $item, CatalogueWriter $writer, EntityManagerInterface $em, RendererPresets $presets, FontLibrary $fonts, CompositionWorkspace $workspace, \App\Favorites\Favorites $favorites): Response
+    public function edit(#[MapEntity(id: 'id')] CatalogueItem $item, EntityManagerInterface $em, RendererPresets $presets, FontLibrary $fonts, CompositionWorkspace $workspace): Response
     {
         $draft = $workspace->require($item); $source = $draft->getSourceMap()->{'meta/composition.json'} ?? null;
         if (null === $source) throw new CatalogueException(409, 'This item uses source ownership; the composition builder is disabled.');
-        $choices = [];
-        $releases = $em->getRepository(Release::class)->findBy([], ['createdAt' => 'DESC'], 200);
-        // Preferred references remain findable even beyond the recent-release window.
-        $favoriteIds = array_keys($favorites->states()['catalogue']);
-        if ($favoriteIds) $releases = [...$releases, ...$em->getRepository(Release::class)->findBy(['item' => $favoriteIds], ['createdAt' => 'DESC'])];
-        $seen = [];
-        foreach ($releases as $release) {
-            if (isset($seen[$release->getId()]) || 'theme' === $release->getItem()->getKind() || $release->getItem()->getId() === $item->getId()) continue;
-            $seen[$release->getId()] = true;
-            $m = $release->getManifestData();
-            $choices[] = ['name' => $m->name, 'version' => $m->version, 'label' => $m->name.'@'.$m->version, 'props' => $m->defaults, 'itemId' => $release->getItem()->getId(), 'kind' => $release->getItem()->getKind(), 'favorite' => $favorites->contains($release->getItem())];
-        }
         $rendererSettings = $presets->read($item, $this->getUser());
         $themeChoices = [];
         foreach ($em->getRepository(ThemeRelease::class)->findBy([], ['createdAt' => 'DESC'], 200) as $release) {
@@ -53,7 +40,7 @@ final class CompositionController extends AbstractController
                 $themeChoices[$selected->getId()] = ['label' => $selected->getTheme()->getName().'@'.$selected->getVersion(), 'document' => $selected->getDocument()];
             }
         }
-        return $this->render('composition/edit.html.twig', ['item' => $item, 'draft' => $draft, 'document' => $workspace->document($draft), 'choices' => $choices, 'generatedTwig' => $draft->getSourceMap()->{$draft->getManifestData()->entry}, 'rendererSettings' => $rendererSettings, 'fontFamilies' => $fonts->catalogue(), 'themeChoices' => $themeChoices]);
+        return $this->render('composition/edit.html.twig', ['item' => $item, 'draft' => $draft, 'document' => $workspace->document($draft), 'generatedTwig' => $draft->getSourceMap()->{$draft->getManifestData()->entry}, 'rendererSettings' => $rendererSettings, 'fontFamilies' => $fonts->catalogue(), 'themeChoices' => $themeChoices]);
     }
     #[Route('/api/v1/items/{id}/composition', name: 'composition_save', methods: ['PUT', 'POST'], format: 'json')]
     #[IsCsrfTokenValid('api', tokenKey: 'X-CSRF-Token', tokenSource: IsCsrfTokenValid::SOURCE_HEADER)]

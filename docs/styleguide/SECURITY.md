@@ -264,3 +264,21 @@ GETs are reader-protected/private and read only an existing bounded artifact. De
 thumbnail documents remain opaque sandboxed frames with unchanged CSP/worker limits;
 thumbnail scripts are disabled. Strict current-frame/channel/schema resize validation and
 a bounded outer scroll region prevent page growth from untrusted resize messages.
+
+
+Browser reference discovery requires an enabled User editor/admin session and target
+COMPOSE_READ before SQL. Session editors share the catalogue under the existing voter;
+MCP ComposeIdentity is explicitly rejected by this browser service, so namespace-scoped
+MCP access cannot be widened by a global release query. Owner-scoped favorites join in
+the same SQL statement; no post-limit client authorization or metadata fanout is used.
+The finite tree/DTO/query bounds and parameterized SQL preserve literal wildcard searches.
+Published graph metadata filters known cycles/version conflicts before paging, while
+application/save revalidate every reference, archive, dependency and property.
+
+Search responses contain bounded plain metadata, rendered with textContent, and pinned
+application URLs. Exact-release failures expose no inaccessible metadata. Current pins
+and local props survive failures. Search and exact reads are private/no-store; POST search
+requires session CSRF. Preview HTML/JS never enters the studio DOM. Existing opaque
+iframe/CSP/worker isolation remains unchanged. Load fixtures and measurement tools require
+a test database or verified disposable database/blob ownership; no production fixture
+command or unauthenticated test API is added.

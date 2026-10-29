@@ -275,8 +275,8 @@ Discovery shares a small Twig layout, a focused Stimulus controller and ListingR
 for catalogue/theme/font SSR. The same authorized result set supplies full visits and
 Turbo Frames; filtering precedes pagination. Abort signals and bounded request receipts
 reject obsolete results. Confirmed favorite events trigger complete result reconciliation
-and explicit PUT Undo through the existing Favorites API. No new store/search engine or
-composer picker is added; see DISCOVERY.md.
+and explicit PUT Undo through the existing Favorites API. No new store or search engine
+is added; see DISCOVERY.md. Composer release discovery is described below.
 
 
 Catalogue detail now captures an exact release/archive or editor-only saved draft revision
@@ -286,3 +286,20 @@ be reused for the same actor and complete input hash, then assembled with a fres
 channel/nonce. Explicit loading and a bounded scroll region keep detail rendering finite;
 listing cards fetch only a requested cached, script-disabled release document. Arbitrary
 catalogue source remains confined to the opaque frame. See CATALOGUE_PREVIEWS.md.
+
+
+## Searchable immutable composer references
+
+ReferenceDiscovery serves bounded release summaries to the native search dialog and
+a server-rendered GET fallback. A single recursive PostgreSQL query applies kind,
+text, version, owner-scoped favorites, self-reference and known dependency graph
+compatibility before LIMIT. CompositionTree supplies the structural insertion/replacement
+dry run; CompositionWorkspace remains authoritative for application and save. Initial
+composer HTML contains no reference catalogue. Only the selected exact release gets
+a separate authorized schema/defaults read; result rows never fetch metadata in a loop.
+
+The browser query deliberately requires an enabled session editor. MCP's voter-scoped
+item/draft search has a different contract and remains separate. The picker never calls
+MCP transport. Native modal lifecycle, request cancellation and response receipts preserve
+unsaved work and focus. Preview links pin release IDs; thumbnails reuse the existing
+explicit, cached, script-disabled iframe. See REFERENCE_PICKER.md.

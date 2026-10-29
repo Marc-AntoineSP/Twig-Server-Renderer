@@ -6,7 +6,7 @@ unset STUDIO_PROJECT STUDIO_RELEASE STUDIO_SECRET_DIR STUDIO_PRODUCTION_PORT COM
 specs=("$@")
 if ((${#specs[@]} == 0)); then specs=(tests/Browser/appearance.spec.js); fi
 for spec in "${specs[@]}"; do
-    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/discovery.spec.js|tests/Browser/catalogue_preview.spec.js|tests/Browser/theme_components.spec.js|tests/Browser/editing_protection.spec.js|tests/Browser/composition_history.spec.js|tests/Browser/preview.spec.js|tests/Browser/authentication.spec.js|tests/Browser/composition.spec.js|tests/Browser/compose_mcp.spec.js|tests/Browser/profile.spec.js|tests/Browser/favorites.spec.js) ;; *) echo 'Choose an appearance, preview, authentication, composition, profile, favorites or theme-component acceptance spec.' >&2; exit 1;; esac
+    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/discovery.spec.js|tests/Browser/catalogue_preview.spec.js|tests/Browser/reference_picker.spec.js|tests/Browser/theme_components.spec.js|tests/Browser/editing_protection.spec.js|tests/Browser/composition_history.spec.js|tests/Browser/preview.spec.js|tests/Browser/authentication.spec.js|tests/Browser/composition.spec.js|tests/Browser/compose_mcp.spec.js|tests/Browser/profile.spec.js|tests/Browser/favorites.spec.js) ;; *) echo 'Choose an appearance, preview, authentication, composition, profile, favorites or theme-component acceptance spec.' >&2; exit 1;; esac
 done
 fixture_name="appearance-$(date -u +%Y%m%d%H%M%S)-${RANDOM}"
 fixture_dir="var/${fixture_name}"
@@ -40,7 +40,7 @@ cleanup() {
         if ((status == 0)); then status=1; fi
         return "$status"
     fi
-    rm -f "$fixture_dir/browser-private/accounts.json" "$fixture_dir/browser-private/ownership.json" "$fixture_dir/accounts.json" "$fixture_dir/"*.stdin
+    rm -f "$fixture_dir/browser-private/accounts.json" "$fixture_dir/browser-private/ownership.json" "$fixture_dir/browser-private/reference-fixture.json" "$fixture_dir/accounts.json" "$fixture_dir/"*.stdin
     python3 - "$fixture_dir" <<'PYTHON'
 from pathlib import Path
 import sys
@@ -103,6 +103,12 @@ YAML
 cp "$fixture_dir/accounts.json" "$fixture_dir/browser-private/accounts.json"
 "${dc[@]}" exec -T app sha256sum public/assets/manifest.json > "$fixture_dir/compiled-before.sha256"
 "${dc[@]}" exec -T app php bin/console doctrine:schema:validate
+for spec in "${specs[@]}"; do
+    if [[ "$spec" == tests/Browser/reference_picker.spec.js ]]; then
+        "${dc[@]}" run --rm --no-deps -v "$PWD/tests/Fixtures:/app/tests/Fixtures:ro" -v "$PWD/tests/ReferencePicker:/app/tests/ReferencePicker:ro" app php tests/ReferencePicker/seed.php
+        break
+    fi
+done
 "${dc[@]}" -f compose.appearance-test.yaml -f "$fixture_dir/browser.yaml" run --rm --no-deps browser bash -c 'mkdir -p var/library-staging; cp -r /app/font-fixtures/fonts var/library-staging/; exec npx playwright test "$@" --reporter=list' browser "${specs[@]}"
 "${dc[@]}" exec -T app sha256sum public/assets/manifest.json > "$fixture_dir/compiled-after.sha256"
 cmp "$fixture_dir/compiled-before.sha256" "$fixture_dir/compiled-after.sha256"

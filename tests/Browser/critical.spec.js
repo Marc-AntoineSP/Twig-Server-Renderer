@@ -31,7 +31,23 @@ test('critical: keyboard navigation, appearance disclosure, personal favorites a
     await expect(page).toHaveURL(/\/catalogue$/);
     await page.getByRole('searchbox').fill('browser/seed-');
     await page.getByLabel('Favorites only', {exact: true}).check();
+    // A prior filter response can already contain the same card. Wait for this
+    // explicit submission, including Turbo's promoted frame visit, before axe.
+    await page.evaluate(() => {
+        const form = document.querySelector('[data-discovery-target="form"]');
+        window.criticalSearchFinished = new Promise(resolve => {
+            form.addEventListener('turbo:submit-start', start => {
+                const finished = end => {
+                    if (end.detail.formSubmission !== start.detail.formSubmission) return;
+                    form.removeEventListener('turbo:submit-end', finished); resolve();
+                };
+                form.addEventListener('turbo:submit-end', finished);
+            }, {once: true});
+        });
+    });
     await page.getByRole('button', {name: 'Find items', exact: true}).click();
+    await page.evaluate(() => window.criticalSearchFinished);
+    await expect(page.locator('[data-controller~="discovery"]')).toHaveAttribute('data-discovery-state', 'ready');
     await expect(page.locator('article.card')).toHaveCount(1);
     await expect(page.locator('article.card')).toContainText('Seed Component');
     await audit(page, testInfo);
@@ -62,12 +78,15 @@ test('critical: immutable reference selection, JSON property editing and unsaved
     const item = await created.json();
     await page.goto('/catalogue');
     await page.evaluate(async url => {const {visit} = await import('@hotwired/turbo'); visit(url);}, `/catalogue/${item.id}/compose`);
-    const picker = page.getByLabel('Component, block or layout to insert', {exact: true});
-    const option = picker.locator('option').filter({hasText: 'browser/seed-component@1.0.0'});
-    await expect(option).toHaveCount(1);
-    await picker.selectOption(await option.getAttribute('value'));
     await page.getByRole('button', {name: 'Add reference', exact: true}).focus();
     await page.keyboard.press('Enter');
+    const picker = page.getByRole('dialog', {name: 'Choose an immutable reference', exact: true});
+    const search = picker.getByRole('searchbox', {name: 'Search references', exact: true});
+    await expect(search).toBeFocused();await search.fill('browser/seed-component');await search.press('Enter');
+    const candidate = picker.getByRole('radio', {name: 'browser/seed-component@1.0.0', exact: true});
+    await candidate.focus();await page.keyboard.press('Space');
+    await picker.getByRole('button', {name: 'Insert selected reference', exact: true}).focus();await page.keyboard.press('Enter');
+    await expect(picker).not.toBeVisible();
     await expect(page.getByRole('treeitem', {name: 'browser/seed-component@1.0.0', exact: true})).toBeVisible();
     const props = page.getByLabel('Instance props (JSON)', {exact: true});
     const value = JSON.parse(await props.inputValue());

@@ -51,10 +51,14 @@ cannot authorize mutations. `/health/browser-run` returns 404 outside verified t
 environments. Production retains its normal authentication and deployment policy.
 
 The bounded seed contains four users with random passwords (reader, editor, admin and
-a separate visual-test editor), four catalogue items,
-three immutable catalogue releases, a light/dark theme family with two immutable
+a separate visual-test editor), four core catalogue items,
+three core immutable catalogue releases, a light/dark theme family with two immutable
 theme releases, default appearance variants, two editor favorites and a separate
-visual editor favorite. The shared
+visual editor favorite. Reference-picker load data adds82 items/491 releases and81
+editor favorites (including one item with250 versions and an old nonfavorite), for86
+items/494 catalogue releases in total. These extra archives are schema/inventory validated,
+not claimed to have passed publication workers; acceptance also inserts/renders the old
+release and publishes its own two-version source through real workers. The shared
 catalogue is still visible to readers; favorites and captured previews are personal.
 Seed names, labels, palette and displayed timestamps are stable; generated IDs and
 credentials remain random. Five pinned real font families support the existing font
@@ -235,3 +239,14 @@ obsolete document rejection and explicitly requested cached thumbnails. The crit
 suite additionally checks the reader preview in Chromium/Firefox/WebKit. Status-order
 transport fixtures are labelled separately from real worker checks. See
 CATALOGUE_PREVIEWS.md and the prompt06 STATUS entry for commands and measured outcomes.
+
+
+`make browser BROWSER_ARGS='tests/Browser/reference_picker.spec.js tests/Browser/composition.spec.js tests/Browser/critical.spec.js'`
+checks bounded discovery, exact versions, stale responses/IME, unavailable metadata,
+unsaved props, native modal keyboard/focus and no-JavaScript browsing. The picker suite
+also captures390/1440 light/dark screenshots and axe reports.
+`bash tests/AppearanceProduction/run.sh tests/Browser/reference_picker.spec.js tests/Browser/composition.spec.js tests/Browser/compose_mcp.spec.js`
+uses the same verified disposable ownership guard and seeds load data through a
+maintenance-only read-only mount; its private fixture metadata is removed at teardown.
+`tests/ReferencePicker/measure.php` measures real authenticated HTML/JSON bytes and SQL
+counts with the profiler only inside a verified owned run. It is not a production route.

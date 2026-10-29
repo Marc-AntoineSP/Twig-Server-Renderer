@@ -328,3 +328,28 @@ cache reuse, changed-input misses and owner isolation. All three browser runs an
 production fixtures are cleaned. No migration, dependency update or operator setting is
 needed. See CATALOGUE_PREVIEWS.md for usage and STATUS.md for commands, corrected failures,
 versions, changed files and remaining limitations.
+
+
+## Improvement prompt 07 — Searchable composer reference picker
+
+Replace latest200 plus unbounded favorite-release preloading with authorized, eligible
+immutable-release search. Keep exact versions, current pins, unsaved props/revisions,
+parent/cycle validation and manual/MCP composition semantics.
+Completed 2026-10-29: Docker build/lint, **169 PHPUnit tests /1857 assertions**,
+**155 browser tests** (147 Chromium,4 Firefox,4 WebKit), twelve visual comparisons
+(four reviewed composer updates) and **14 immutable-production scenarios** pass.
+Twelve new picker cases cover old nonfavorites, many favorites/versions, deliberate
+replacement/defaults, stale responses/IME, failures, cancellation, native keyboard/focus,
+no-JavaScript browsing and100-character identifiers at390/1440 in both modes. Four final
+browser and four production picker axe audits have zero violations; color-contrast
+incompletes and human screen-reader checks remain manual. The existing cross-engine
+critical search audit now waits for its exact Turbo submission;12 critical cases and8
+consecutive Firefox repetitions pass.
+
+Representative composer payload changes346743 to96258 bytes,491 to0 embedded reference
+choices and100 to14 SQL queries. Search returns20 bounded summaries in6617 bytes/4 SQL
+queries. These are captured requests, not an elapsed-time claim. Three browser runs and
+three production fixtures are cleaned. No migration, dependency or operator setting
+change is required. REFERENCE_PICKER.md documents usage; STATUS.md records actual
+commands, corrected failures, the unrelated intermittent theme-import check, versions,
+changed files and remaining limits. No later prompt starts automatically.

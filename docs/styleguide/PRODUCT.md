@@ -80,8 +80,13 @@ certificate. Focus, keyboard and motion behaviour still need their own checks.
 ### Composition builder
 
 Tree rows support add, remove, duplicate, reorder, indent/outdent and selection.
+Reference insertion/replacement uses authorized server search with bounded pages, personal
+favorites, kind and explicit immutable versions. A native search dialog preserves keyboard
+focus and unsaved work; exact pinned identities remain visible outside active filters.
+Previews are explicit and isolated. Replacement preserves props unless resetting to the
+selected release's defaults is deliberate. See REFERENCE_PICKER.md.
 Containers offer a bounded tag and literal utility classes. References target exact
-published component/block versions and supply props. Text nodes contain escaped text.
+published component, block or layout versions and supply props. Text nodes contain escaped text.
 The preview uses the same renderer as standalone components.
 Use concrete props in v1; arbitrary expression binding is deferred.
 Composition mode owns composition.json and generated Twig. Generated Twig is read-only.

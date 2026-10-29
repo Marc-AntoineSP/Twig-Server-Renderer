@@ -1,0 +1,24 @@
+<dialog class="modal" aria-labelledby="reference-picker-title" aria-modal="true" data-reference-picker-target="dialog" data-action="close->reference-picker#closed">
+    <div class="modal-box max-w-4xl">
+        <div class="flex items-center justify-between gap-3"><h2 id="reference-picker-title" class="text-xl font-semibold">Choose an immutable reference</h2><button class="btn btn-outline btn-sm" type="button" data-action="reference-picker#close">Close reference picker</button></div>
+        <p class="my-3 break-all font-mono text-sm" data-reference-picker-target="current"></p>
+        <form method="get" action="{{ path('composition_reference_browse', {id:item.id}) }}" data-editing-stay data-action="submit->reference-picker#submit" autocomplete="off">
+            <label for="reference-query">Search references</label><input class="input w-full" id="reference-query" name="q" maxlength="100" type="search" autofocus data-reference-picker-target="query" data-action="input->reference-picker#schedule compositionstart->reference-picker#compositionStart compositionend->reference-picker#compositionEnd">
+            <div class="grid gap-3 sm:grid-cols-3">
+                <div><label for="reference-kind">Reference kind</label><select class="select w-full" id="reference-kind" name="kind" data-reference-picker-target="kind" data-action="change->reference-picker#filter"><option value="">All eligible kinds</option>{% for kind in ['component','block','layout'] %}<option value="{{ kind }}">{{ kind|capitalize }}</option>{% endfor %}</select></div>
+                <div><label for="reference-version">Exact version</label><input class="input w-full" id="reference-version" name="version" maxlength="32" placeholder="Any version, e.g. 1.0.0" data-reference-picker-target="version" data-action="input->reference-picker#schedule"></div>
+                <label class="flex items-center gap-2 self-end"><input class="checkbox checkbox-sm" type="checkbox" name="favorites" value="1" data-reference-picker-target="favorites" data-action="change->reference-picker#filter">Favorites only</label>
+            </div>
+            <button class="btn btn-outline btn-sm" type="submit">Find references</button><button class="btn btn-ghost btn-sm" type="button" data-action="reference-picker#clear">Clear reference filters</button>
+        </form>
+        <p class="my-3 text-sm" role="status" tabindex="-1" data-reference-picker-target="status"></p>
+        <ul class="space-y-3" aria-label="Eligible immutable releases" data-reference-picker-target="results"></ul>
+        <div class="my-4 flex flex-wrap gap-3"><button class="btn btn-outline btn-sm" type="button" data-reference-picker-target="previous" data-action="reference-picker#previous" disabled>Previous references</button><button class="btn btn-outline btn-sm" type="button" data-reference-picker-target="next" data-action="reference-picker#next" disabled>Next references</button><button class="btn btn-ghost btn-sm" type="button" data-action="reference-picker#retry">Retry search</button></div>
+        <div class="border-t border-base-300 pt-4">
+            <p class="break-all font-mono text-sm" data-reference-picker-target="selection">No candidate selected.</p>
+            <label class="my-3 flex items-center gap-2 text-sm" hidden data-reference-picker-target="defaultsLabel"><input type="checkbox" class="checkbox checkbox-sm" data-reference-picker-target="defaults">Replace instance props with this release's defaults</label>
+            <button type="button" class="btn btn-primary mt-3 h-auto whitespace-normal py-2" disabled data-reference-picker-target="apply" data-action="reference-picker#apply">Insert selected reference</button>
+            <p class="mt-3 text-sm">Search and previews keep your unsaved tree. Only this explicit action changes the tree; Save composition persists it. Previews open in a separate tab.</p>
+        </div>
+    </div>
+</dialog>

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { randomBytes } from 'node:crypto';
-import { login, createAlert } from './helpers.js';
+import { login, createAlert, pickReference } from './helpers.js';
 
 async function newComposition(page, kind) {
     await page.goto('/catalogue/new');
@@ -20,8 +20,7 @@ test('compose distinct instances, keyboard reorder/nest, save, publish block and
     const token = (await (await page.request.get('/api/v1/csrf')).json()).token;
     expect((await page.request.post(`/api/v1/items/${item.id}/releases`, { headers: { 'X-CSRF-Token': token }, data: { version: '1.0.0', expectedRevision: 2 } })).status()).toBe(201);
     const block = await newComposition(page, 'block');
-    await page.getByRole('button', { name: 'Add reference', exact: true }).click();
-    await page.getByLabel('Immutable reference', { exact: true }).selectOption({ label: `${item.name}@1.0.0` });
+    await pickReference(page, item.name, '1.0.0');
     await page.getByLabel('Instance props (JSON)', { exact: true }).fill(JSON.stringify({ ...manifest.defaults, message: 'First instance' }));
     await page.getByRole('button', { name: 'Duplicate node', exact: true }).click();
     await page.getByLabel('Instance props (JSON)', { exact: true }).fill(JSON.stringify({ ...manifest.defaults, message: 'Second instance' }));
@@ -50,8 +49,7 @@ test('compose distinct instances, keyboard reorder/nest, save, publish block and
     const publish = await page.request.post(`/api/v1/items/${block.id}/releases`, { headers: { 'X-CSRF-Token': token }, data: { version: '1.0.0', expectedRevision: 2 } });
     expect(publish.status(), await publish.text()).toBe(201);
     await newComposition(page, 'layout');
-    await page.getByRole('button', { name: 'Add reference', exact: true }).click();
-    await page.getByLabel('Immutable reference', { exact: true }).selectOption({ label: `${block.name}@1.0.0` });
+    await pickReference(page, block.name, '1.0.0');
     await expect(current).toHaveText('Composition preview current',{timeout:20000});
     let releasePreparation;let preparationStarted;const held=new Promise(resolve=>{releasePreparation=resolve;});const started=new Promise(resolve=>{preparationStarted=resolve;});let intercepted=false;
     await page.route('**/api/v1/items/*/composition',async route=>{if(route.request().method()==='POST'&&!intercepted){intercepted=true;preparationStarted();await held;}await route.continue();});
