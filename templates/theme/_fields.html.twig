@@ -10,7 +10,8 @@
     <p class="my-2 text-sm">Every colour has an explicit content colour. Hex values use six digits.</p>
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
     {% for field in form.colors %}
-        <div>{{ form_row(field) }}
+        <div>{{ form_row(field, {attr: field.vars.attr|merge({'aria-describedby': field.vars.id ~ '-contrast-error'})}) }}
+            <p id="{{ field.vars.id }}-contrast-error" class="text-sm" hidden>Cannot evaluate this colour. Use an opaque six-digit hex value, for example #123456.</p>
             {% if preview|default(false) %}<label class="text-sm" for="picker-{{ field.vars.id }}">Pick {{ field.vars.label }}</label><input id="picker-{{ field.vars.id }}" type="color" value="{{ field.vars.value }}" data-color-input="{{ field.vars.id }}" data-action="input->theme-editor#pick">{% endif %}
         </div>
     {% endfor %}
@@ -22,5 +23,5 @@
     <a class="link" href="{{ path('font_index') }}">Search families, read licences and preview editable French/English specimens</a>
     {% if preview|default(false) %}<div class="my-3 flex flex-wrap gap-4"><label>Filter font families <input type="search" data-theme-editor-target="fontSearch" data-action="input->theme-editor#filterFonts"></label><label>Font category <select data-theme-editor-target="fontCategory" data-action="change->theme-editor#filterFonts"><option value="">All categories</option><option value="sans">Sans-serif</option><option value="serif">Serif</option><option value="mono">Monospace</option><option value="display">Display</option></select></label></div>{% endif %}
     <div class="grid gap-3 sm:grid-cols-3">{% for field in form.typography %}{{ form_row(field) }}{% endfor %}</div>
-    {% if preview|default(false) %}<div class="mt-3 text-sm" data-theme-editor-target="fontDetails"></div>{% endif %}
+    {% if preview|default(false) %}<div class="mt-3 text-sm break-words" data-theme-editor-target="fontDetails"></div>{% endif %}
 </fieldset>

@@ -16,5 +16,6 @@
 </article>{% else %}<p class="rounded-box bg-base-100 p-6">No font families match this search and category.</p>{% endfor %}</div>
 {% endblock %}
 {% endembed %}
+<p class="my-4"><a class="link" href="{{ path('theme_new') }}#font-pairing">Pair body, heading and code fonts in a new theme</a>. Existing themes have the same proposal workspace in Edit theme.</p>
 {% include 'font/_specimen.html.twig' with {families: allFamilies} %}
 {% endblock %}

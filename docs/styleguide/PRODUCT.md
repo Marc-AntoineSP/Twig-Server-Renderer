@@ -120,3 +120,11 @@ Defer multiplayer editing, visual CSS painting, arbitrary third-party JS package
 custom PHP components, full Figma import, Composer-per-component publication, a public
 marketplace and automatic deployment. Do not replace required imports or installation
 with copy-to-clipboard as the final implementation.
+
+
+The theme editor offers a body/heading/code pairing proposal with realistic English/French
+samples, real face metadata, coverage/fallback diagnostics and explicit transfer into the
+existing draft fields. Unsaved semantic colour edits also update contrast guidance beside
+a saved baseline, with token/example links. The existing opaque-hex contract, explicit
+Save/Apply/trial distinction and limited scope of contrast guidance remain in force.
+Usage: FONT_PAIRING_AND_CONTRAST.md.

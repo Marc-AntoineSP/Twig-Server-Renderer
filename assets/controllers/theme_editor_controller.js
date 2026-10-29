@@ -25,6 +25,7 @@ export default class extends Controller {
         this.saveTrial = () => this.saveAndApply();
         window.addEventListener('appearance:trial-ended',this.trialEnded);window.addEventListener('appearance:save-trial',this.saveTrial);
         this.timer = setTimeout(() => this.run(), 0);
+        queueMicrotask(() => this.notifyDraft());
     }
 
     disconnect() {
@@ -47,8 +48,24 @@ export default class extends Controller {
         if (event.target.dataset.themePath) this.readField(event.target);
         this.updateFonts();
         this.refreshDirty();
+        this.notifyDraft();
         this.schedule();
         if(this.tryEnabled)this.scheduleTrial();
+    }
+
+    notifyDraft() {
+        this.dispatch('draft', {detail: {model: structuredClone(this.model), saved: structuredClone(this.savedModel), creating: this.creatingValue}});
+    }
+
+    acceptPairing(typography, fonts) {
+        this.model.fonts = structuredClone(fonts);
+        for (const role of ['body', 'heading', 'code']) for (const suffix of ['FontId', 'Weight', 'Style']) {
+            const key = role + suffix;
+            this.model.typography[key] = typography[key];
+            this.element.querySelector(`[data-theme-path="typography.${key}"]`).value = typography[key];
+        }
+        this.updateFonts(); this.refreshDirty(); this.notifyDraft(); this.schedule();
+        if (this.tryEnabled) this.scheduleTrial();
     }
 
     filterFonts() {
@@ -58,7 +75,7 @@ export default class extends Controller {
     }
 
     updateFonts() {
-        const definitions = new Map([...(this.fontsValue || []), ...this.documentValue.fonts].map(font => [font.id,font]));
+        const definitions = new Map([...(this.fontsValue || []), ...this.documentValue.fonts, ...this.model.fonts].map(font => [font.id,font]));
         for(const id of ['system-sans','system-serif','system-mono'])if(!definitions.has(id))definitions.set(id,{id,kind:'system',family:id});
         const selected = [...new Set(['body','heading','code'].map(role=>this.model.typography[role+'FontId']).filter(Boolean))];
         this.model.fonts = selected.map(id=>definitions.get(id)).filter(Boolean);
@@ -201,7 +218,7 @@ export default class extends Controller {
             }
             this.updateFonts();if(fresh)this.savedModel=structuredClone(this.model);this.refreshDirty();this.titleTarget.textContent=`Edit ${this.familyValue.label} · ${this.model.colorScheme}`;
             this.formTarget.querySelector('[name$="[revision]"]').value=this.revisionValue;
-            this.schedule();if(this.tryEnabled)this.scheduleTrial();
+            this.notifyDraft();this.schedule();if(this.tryEnabled)this.scheduleTrial();
         }catch(error){if(epoch===this.variantEpoch){this.saveErrorTarget.hidden=false;this.saveErrorTarget.textContent=error.message;this.variantTarget.value=this.themeIdValue;}}
         finally{if(epoch===this.variantEpoch)this.switching=false;}
     }
@@ -221,7 +238,7 @@ export default class extends Controller {
             if(JSON.stringify(this.model)===captured)this.model=structuredClone(result.document);
             this.savedModel=structuredClone(result.document);this.savedVariants=variants;
             if(this.familyLabel()===(familyLabel||''))this.formTarget.querySelector('[name$="[familyLabel]"]').value=result.family.label;
-            this.savedFamilyLabel=result.family.label;this.refreshDirty();
+            this.savedFamilyLabel=result.family.label;this.refreshDirty();this.notifyDraft();
             this.stashVariant();this.formTarget.querySelector('[name$="[revision]"]').value=result.revision;
             this.tryEnabled=false;clearTimeout(this.trialTimer);this.tryButtonTarget.setAttribute('aria-pressed','false');window.applicationAppearance.revertTrial(true);
             this.flash(creating?'Theme created.':'Theme saved.');this.saveStatusTarget.textContent='Theme saved. Your applied snapshot is unchanged.';

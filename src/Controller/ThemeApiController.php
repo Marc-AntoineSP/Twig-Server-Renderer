@@ -28,6 +28,18 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 #[IsGranted('ROLE_READER')]
 final class ThemeApiController extends AbstractController
 {
+    #[Route('/api/v1/themes/contrast', name: 'theme_contrast', methods: ['POST'], format: 'json')]
+    #[IsGranted('ROLE_EDITOR')]
+    #[IsCsrfTokenValid('api', tokenKey: 'X-CSRF-Token', tokenSource: IsCsrfTokenValid::SOURCE_HEADER)]
+    public function contrast(#[MapRequestPayload(acceptFormat: 'json', serializationContext: [\Symfony\Component\Serializer\Encoder\JsonDecode::ASSOCIATIVE => false, \Symfony\Component\Serializer\Encoder\JsonDecode::RECURSION_DEPTH => 12, AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false])] \App\Theme\ContrastInput $input, \App\Theme\Contrast $contrast, \App\Theme\ContrastPreview $preview): JsonResponse
+    {
+        $keys = \Styleguide\Contracts\ThemeValidator::COLORS;
+        if (count(get_object_vars($input->colors)) > count($keys)) throw new CatalogueException(422, 'Only semantic colour tokens are accepted.');
+        foreach ($input->colors as $key => $value) if (!in_array($key, $keys, true) || !is_string($value) || strlen($value) > 100) throw new CatalogueException(422, 'Colour drafts must be bounded semantic token strings.');
+        $results = $contrast->evaluate($input->colors);
+        return new JsonResponse(['results' => $results, 'html' => $preview->document($input->colors, $results)], headers: ['Cache-Control' => 'private, no-store']);
+    }
+
     #[Route('/api/v1/themes/import', name: 'theme_import_api', methods: ['POST'], format: 'json')]
     #[IsGranted('ROLE_EDITOR')]
     #[IsCsrfTokenValid('api', tokenKey: 'X-CSRF-Token', tokenSource: IsCsrfTokenValid::SOURCE_HEADER)]

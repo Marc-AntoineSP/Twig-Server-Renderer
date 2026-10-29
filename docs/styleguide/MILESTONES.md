@@ -380,3 +380,37 @@ The fresh browser run and production fixture are cleaned, with zero owned resour
 private files and worker tags. No migration, dependency or operator setting is needed.
 See INSTANCE_PROPERTIES.md for usage and STATUS.md for commands, versions, earlier
 failures and cleanup evidence. No later prompt starts automatically.
+
+
+## Improvement prompt 09 — Font pairing and draft contrast
+
+Completed 2026-10-29 on feature/m23-font-pairing-and-contrast. The existing theme editor
+now offers a separate body/heading/code proposal with requested real local faces/subsets,
+coverage/decoding/unavailable states and explicit transfer into existing role fields plus
+full registered family metadata. Other draft edits and explicit Save/Apply/trial semantics
+are preserved, including imported normal-only font definitions. Shared trusted samples,
+registry storage, package metadata and opaque previews remain authoritative.
+
+Draft contrast reuses saved semantic/content pairs and the PHP engine after a 300 ms
+pause, with full-precision thresholds, labelled saved baselines, token/example focus
+links and obsolete-response protection. The existing opaque #RRGGBB contract remains:
+alpha/context-dependent/incomplete input receives no invented ratio. Guidance does not
+rewrite colours, block low-contrast saves or certify whole-interface accessibility.
+The mobile results table is readable through a keyboard-scrollable region.
+
+Docker builds/lints and **174 PHPUnit tests /1953 assertions** pass. A full feature
+snapshot passes **176/176 browser scenarios** (168 Chromium, 4 Firefox, 4 WebKit) and all
+twelve existing visual comparisons without baseline edits. Final missing-asset/metadata
+fixes pass **22 focused browser cases** (9 new +13 existing) after that full invocation;
+no full 177-case single-run claim is made. The final mobile refinement passes **17/17
+immutable-production cases**, actual ArrowRight scrolling, schema/font checks and an
+unchanged read-only AssetMapper manifest. Four final feature and four final production
+axe reports have zero violations; human screen-reader review and axe incompletes remain
+manual. No migration, dependency or operator setting change is required.
+
+The browser environment and all five production fixtures are cleaned, with zero owned
+containers, volumes, networks, private files and worker tags. The twelve staged prompt
+additions remain unchanged. Usage is in FONT_PAIRING_AND_CONTRAST.md; STATUS records
+29 changed paths, commands, versions, corrected failures, exact-source verification,
+evidence and remaining limits. No push/deployment/remote publication occurred. Select
+another numbered prompt explicitly; prompt10 is not started automatically.

@@ -295,3 +295,12 @@ Invalid raw text stays in editor memory until corrected or explicitly discarded.
 identity plus metadata/preview epochs prevent late replies changing another instance.
 The opaque iframe, worker limits, source isolation, CSRF, revision and MCP policies are
 unchanged. See INSTANCE_PROPERTIES.md.
+
+
+Font pairing and draft contrast accept bounded editor-only CSRF-protected diagnostic
+requests without persistence. Pairing resolves installed metadata and embeds only requested
+real faces/sample subsets through the existing opaque assembler. Contrast uses strictly
+parsed opaque #RRGGBB values; unsupported alpha/context-dependent inputs never become CSS
+or guessed ratios. Example markup is application-owned and sample text is escaped. Its
+focus message accepts only the parent source and fixed existing example IDs. No imported
+JavaScript, remote font requests or same-origin iframe permission is introduced.

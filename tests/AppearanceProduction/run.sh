@@ -6,7 +6,7 @@ unset STUDIO_PROJECT STUDIO_RELEASE STUDIO_SECRET_DIR STUDIO_PRODUCTION_PORT COM
 specs=("$@")
 if ((${#specs[@]} == 0)); then specs=(tests/Browser/appearance.spec.js); fi
 for spec in "${specs[@]}"; do
-    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/discovery.spec.js|tests/Browser/catalogue_preview.spec.js|tests/Browser/reference_picker.spec.js|tests/Browser/instance_properties.spec.js|tests/Browser/theme_components.spec.js|tests/Browser/editing_protection.spec.js|tests/Browser/composition_history.spec.js|tests/Browser/preview.spec.js|tests/Browser/authentication.spec.js|tests/Browser/composition.spec.js|tests/Browser/compose_mcp.spec.js|tests/Browser/profile.spec.js|tests/Browser/favorites.spec.js) ;; *) echo 'Choose an appearance, preview, authentication, composition, profile, favorites or theme-component acceptance spec.' >&2; exit 1;; esac
+    case "$spec" in tests/Browser/appearance.spec.js|tests/Browser/discovery.spec.js|tests/Browser/catalogue_preview.spec.js|tests/Browser/reference_picker.spec.js|tests/Browser/font_pairing_contrast.spec.js|tests/Browser/instance_properties.spec.js|tests/Browser/theme_components.spec.js|tests/Browser/editing_protection.spec.js|tests/Browser/composition_history.spec.js|tests/Browser/preview.spec.js|tests/Browser/authentication.spec.js|tests/Browser/composition.spec.js|tests/Browser/compose_mcp.spec.js|tests/Browser/profile.spec.js|tests/Browser/favorites.spec.js) ;; *) echo 'Choose an appearance, preview, authentication, composition, profile, favorites or theme-component acceptance spec.' >&2; exit 1;; esac
 done
 fixture_name="appearance-$(date -u +%Y%m%d%H%M%S)-${RANDOM}"
 fixture_dir="var/${fixture_name}"

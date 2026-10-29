@@ -17,6 +17,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_READER')]
 final class FontController extends AbstractController
 {
+    #[Route('/api/v1/fonts/pairing', name: 'font_pairing', methods: ['POST'], format: 'json')]
+    #[IsGranted('ROLE_EDITOR')]
+    #[\Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid('api', tokenKey: 'X-CSRF-Token', tokenSource: \Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid::SOURCE_HEADER)]
+    public function pairing(#[\Symfony\Component\HttpKernel\Attribute\MapRequestPayload(acceptFormat: 'json', serializationContext: [\Symfony\Component\Serializer\Encoder\JsonDecode::ASSOCIATIVE => false, \Symfony\Component\Serializer\Encoder\JsonDecode::RECURSION_DEPTH => 12, \Symfony\Component\Serializer\Normalizer\AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false])] \App\Font\FontPairingInput $input, \App\Font\FontPairing $pairing): JsonResponse
+    {
+        $keys = [];
+        foreach (['body', 'heading', 'code'] as $role) foreach (['FontId', 'Weight', 'Style'] as $suffix) $keys[] = $role.$suffix;
+        if (array_diff(array_keys(get_object_vars($input->typography)), $keys)) throw new CatalogueException(422, 'Only body, heading and code family, weight and style are accepted.');
+        return new JsonResponse($pairing->preview($input), headers: ['Cache-Control' => 'private, no-store']);
+    }
+
     #[Route('/fonts', name: 'font_index', methods: ['GET'])]
     public function index(FontLibrary $fonts, \App\Discovery\ListingResponse $listing, #[\Symfony\Component\HttpKernel\Attribute\MapQueryString(validationFailedStatusCode: 400)] \App\Font\FontSearchQuery $query = new \App\Font\FontSearchQuery()): Response
     {

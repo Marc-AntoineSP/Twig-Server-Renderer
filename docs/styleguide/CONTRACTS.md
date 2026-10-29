@@ -307,3 +307,11 @@ Reference validation diagnostics use `nodes.<n_32hex>.props` plus the Opis path 
 without IDs retain `reference.<name@version>`. Manual/MCP validation and immutable source
 bytes are otherwise unchanged. This adds no schema version or API operation. See
 INSTANCE_PROPERTIES.md for supported controls and atomic reference replacement.
+
+
+Font pairing transfers only existing body/heading/code FontId, Weight and Style fields.
+Selected families retain their full registered definitions; preview subset pruning is
+not persisted. It introduces no document format changes. Draft contrast shares saved semantic pairs and
+the same opaque six-digit hex interpretation; alpha and context-dependent CSS colours
+remain unsupported and receive no invented ratio. Guidance compares unrounded ratios.
+Diagnostic requests cannot publish, save or apply an appearance.

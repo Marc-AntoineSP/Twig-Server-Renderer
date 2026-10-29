@@ -3107,3 +3107,189 @@ claim is made about complete schema-generated forms or iframe-content accessibil
 No push, deployment, remote publication or working-content mutation occurred.
 Exact next step: review the current branch's prompt08 commit, or explicitly select
 another numbered prompt. Prompt09 is not started automatically.
+
+
+## Prompt 09 — Font pairing and current draft contrast (2026-10-29)
+
+Selected prompt09 and its supplied pack on feature/m23-font-pairing-and-contrast,
+starting from c15f978. All three pack checksums pass and normalized PROMPT.md matches
+prompts/09-font-pairing-and-contrast.md. The twelve pre-existing staged prompt additions
+are preserved, with fingerprint d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1.
+Read repository instructions, current STATUS/milestone, architecture and relevant
+product/contracts/security sections. No later numbered prompt is selected.
+
+Starting evidence was verified in current source: one-family lazy specimens already
+supported local font metadata and opaque previews; the editor showed only saved solid
+contrast ratios. It had no three-role pairing proposal or current draft contrast view.
+Existing theme schema, fonts, exports, revision checks, dirty protection and separate
+Save, Save & Apply and explicit application trial actions were retained.
+
+Implemented:
+
+- A local body/heading/code proposal with search, actual weight/style/subset/licence
+  metadata, explicit copy from current editor, English/French reading/form/button/code
+  samples and optional escaped characters. Only Preview loads requested real faces and
+  intersecting sample Unicode subsets through FontLibrary/FontRegistry/ThemeFontAssets/
+  DocumentAssembler. TypographySample is shared with newly created renderer samples;
+  existing catalogue sources are never rewritten. No acquisition or third-party runtime
+  requests. System rendering, out-of-range coverage, unavailable faces/families/assets
+  and actual browser decoding fallback are explicit, with synthesis disabled.
+- Explicit transfer of the nine existing typography fields and their registered
+  family definitions preserves other edits
+  and uses the existing dirty state. Selection/preview/transfer does not save or apply.
+  Existing Save persists and exports the same role data; Save & Apply remains separate.
+  An already explicitly enabled application trial continues following editor changes.
+- The same PHP Contrast engine and eleven semantic/content pairs now supply debounced
+  (300 ms), sequence-protected draft diagnostics and a labelled saved baseline. Results
+  link to both editable tokens and keyboard-focusable opaque-frame examples. Pending,
+  unsupported, field and network errors do not masquerade as current measurements.
+- Existing opaque #RRGGBB validation remains authoritative. Invalid intermediate text,
+  alpha/RGBA, CSS variables and unsupported colour functions receive no ratio; no
+  compositing background is invented. Recommendations never rewrite values or block
+  an otherwise valid Save. Full-precision thresholds precede rounded display values.
+  W3C WCAG 2.2 text and non-text guidance was checked live; the UI explains ordinary
+  text 4.5:1, large text 3:1 and a meaningful content-colour icon on its paired surface,
+  while excluding adjacent control boundaries, states and whole-interface certification.
+- Bounded editor-only CSRF/private-no-store endpoints perform diagnostics without theme,
+  release or appearance writes. Styles contain strictly parsed solid hex only. Imported
+  JS/CSS never enters the studio DOM, and sandbox/CSP/worker privileges are unchanged.
+- Narrow selector bounds, font-source wrapping, focusable comparison scroll regions and
+  contrast-table header colour fix issues found by actual mobile/axe checks on this route.
+
+Verification uses only owned disposable database/blob/runtime resources. Browser run:
+browser-1efd3f0a5d85a12744761cca. Exact commands:
+
+```text
+python3 tests/BrowserHarness/run.py start --keep
+python3 -m var.browser-verification.font-contrast-resume
+python3 -m var.browser-verification.font-contrast-recheck
+python3 -m var.browser-verification.font-contrast-full
+python3 -m var.browser-verification.font-contrast-final
+python3 -m var.browser-verification.font-contrast-existing-flows
+bash tests/AppearanceProduction/run.sh tests/Browser/font_pairing_contrast.spec.js tests/Browser/theme_components.spec.js
+python3 tests/BrowserHarness/run.py cleanup --run-id browser-1efd3f0a5d85a12744761cca
+python3 var/browser-verification/font-contrast-production-cleanup.py appearance-20261029202446-230
+python3 var/browser-verification/font-contrast-production-cleanup.py appearance-20261029202844-30756
+python3 var/browser-verification/font-contrast-production-cleanup.py appearance-20261029203511-17395
+python3 var/browser-verification/font-contrast-production-cleanup.py appearance-20261029203953-31789
+python3 var/browser-verification/font-contrast-production-cleanup.py appearance-20261029205329-23517
+python3 var/browser-verification/font-contrast-resource-audit.py
+```
+
+The ignored wrappers lock the exact run and verify ownership. They build app/browser,
+clear the retained APP_DEBUG=0 dev cache before recreation, run strict Composer,
+container/34 YAML/56 Twig checks, create/migrate only browser_test and run PHPUnit.
+Before a repeated full backend invocation they drop only that verified disposable
+browser_test database. Full browser verification invokes Run.test([]); the final focused invocation used
+font_pairing_contrast.spec.js, followed by the existing-flows wrapper for fonts, theme
+and theme actions. The final wrapper file now lists all four for a single repeat;
+the measured final 22 cases ran as 9 + 13 without repeating already passing cases. See the retained wrapper files
+for the literal Docker invocations. The production command ran in five separately
+owned immutable fixtures; no working catalogue was used.
+
+Final results: Docker CSS/JS/app builds, strict Composer, container, 34 YAML and 56
+Twig checks pass. **174 PHPUnit tests /1953 assertions** pass on final PHP code.
+One complete browser invocation passes **176/176** (168 Chromium, 4 Firefox, 4 WebKit),
+including twelve unchanged visual comparisons. That full invocation preceded the final
+missing-asset and captured-font metadata fixes. After those fixes, **22 focused cases**
+pass on the updated application (9 pairing/contrast +13 existing font/theme/action flows,
+in separate 9 +13 invocations). No claim is made of a single full 177-case run after
+adding the normal-only-font regression.
+
+The final mobile table minimum width and native ArrowRight scrolling were then verified
+in the final immutable-production run: **17/17 scenarios**, schema/font checks and an
+unchanged read-only AssetMapper manifest pass. Earlier successful production invocations
+passed 16 and 17 cases as logged; the last exact-source fixture is
+appearance-20261029205329-23517. Four final feature axe reports and four final production
+reports have zero violations; six final existing-flow reports also have zero violations.
+The earlier complete browser run has 72 axe reports with zero violations. Screenshots
+were viewed at 390/1440 px in light/dark, including the final readable horizontal table.
+No visual baseline, migration, dependency or operator configuration was changed.
+
+Observed runtime versions: FrankenPHP 1.13.4 / PHP 8.5.12 / Symfony 8.1.9 / Caddy 2.11.7 /
+PostgreSQL 17.11. Existing dependency locks remain unchanged (Tailwind 4.3.3, daisyUI
+5.7.50, Stimulus 3.2.2, Turbo 8.0.23, Playwright 1.64.1 and axe 4.14.0). No migration,
+new package or operator setting is required. Code deployment is outside this task. Restart a development
+preview consumer after deploying changed application code as usual; existing samples
+and immutable exports are retained.
+
+Failed checks and corrections: the initial Docker build rejected positional Choice
+options under Symfony 8; use named choices. The first backend run found missing JSON
+object-decoding context and a wrong fixture path; both were corrected. Importing that
+fixture into the seeded registry correctly rejected an immutable metadata collision,
+so the functional test now uses its own temporary real font library. The first browser
+batch was stopped after those backend errors. Two focused runs passed 17/21 with the
+same wrapped-select-label issue; one also served stale cached Twig from APP_DEBUG=0.
+Explicit label association and owned cache clearing resolved that. A subsequent 19/21
+run isolated the long existing component selector at 390 px; bounding it resolved the
+remaining overflow. The first production run passed 12/16 and exposed the same mobile
+issue plus contrast-table header and comparison scroll-focus findings; fixed without
+masking axe rules or relaxing thresholds. All old failures remain in retained logs. A final visual review improved mobile
+contrast readability with a real minimum-width table inside the focusable horizontal
+scroll region; the final production run additionally verifies ArrowRight scrolling.
+A final review also corrected an inherited missing-asset message that claimed a last
+good pairing preview; the pairing service now truthfully reports no preview loaded,
+with a real missing temporary blob regression. Full backend and focused browser checks
+were rerun for this final error-path change. The same review identified captured normal-only font
+definitions overriding a successfully previewed installed italic face. Transfer now
+retains the full trusted registered definitions alongside role fields; it does not
+persist preview subset pruning or change the document format. A real browser fixture
+with an existing normal-only theme verifies italic transfer, Save and export. The final
+backend, focused theme/font browser and immutable-production checks cover this change.
+
+Evidence: var/browser-verification/font-contrast-*.log; browser artifacts below
+var/browser-runs/browser-1efd3f0a5d85a12744761cca/artifacts; production evidence in the
+five appearance-* directories above. Pack checksums, requested embedded byte hashes,
+Unicode/real-face states, ratios, invalid alpha, request races, saved data equality,
+keyboard focus, 390/1440 px light/dark screenshots and axe reports are retained.
+The browser run has a CLEANED receipt. All five production fixtures were brought down
+by their cleanup traps, and their exact owned worker image tags were removed only after
+zero containers, volumes, networks and private files were verified. The final audit
+font-contrast-resource-audit.json reports zero containers (including stopped), volumes,
+networks, private files and owned worker tags for all six projects. Reusable app/browser
+image caches remain. A first audit attempted before browser cleanup finished refused
+the missing CLEANED receipt; the completed audit above passed after cleanup finished.
+
+Remaining limitations: the canonical colour contract still excludes alpha and other
+CSS colour formats; these are explicit cannot-evaluate states. Local Unicode ranges
+identify definite coverage gaps, but do not prove every glyph outside the catalogue's
+verified English/French set. System fonts depend on the device. Token guidance does
+not assess full rendered layouts, focus/hover/adjacent boundaries, gradients or whole
+accessibility; human screen-reader assessment remains unexecuted. Automated axe
+incompletes remain available for manual review. No push, deployment, remote publication
+or working-content mutation occurred. Exact next step: review this prompt09 change;
+select another numbered prompt explicitly when ready.
+
+Changed files (29 implementation/documentation paths; staged user prompts excluded):
+
+```text
+agent-kit/STATUS.md
+assets/controllers/font_pairing_controller.js
+assets/controllers/theme_contrast_controller.js
+assets/controllers/theme_editor_controller.js
+docs/styleguide/ARCHITECTURE.md
+docs/styleguide/BROWSER_TESTS.md
+docs/styleguide/CONTRACTS.md
+docs/styleguide/FONT_PAIRING_AND_CONTRAST.md
+docs/styleguide/MILESTONES.md
+docs/styleguide/PRODUCT.md
+docs/styleguide/SECURITY.md
+src/Controller/FontController.php
+src/Controller/ThemeApiController.php
+src/Font/FontPairing.php
+src/Font/FontPairingInput.php
+src/Theme/Contrast.php
+src/Theme/ContrastInput.php
+src/Theme/ContrastPreview.php
+src/Theme/ThemeSample.php
+src/Theme/TypographySample.php
+templates/font/_pairing.html.twig
+templates/font/index.html.twig
+templates/theme/_contrast.html.twig
+templates/theme/_fields.html.twig
+templates/theme/edit.html.twig
+tests/AppearanceProduction/run.sh
+tests/Browser/font_pairing_contrast.spec.js
+tests/ContrastTest.php
+tests/Functional/FontPairingContrastTest.php
+```

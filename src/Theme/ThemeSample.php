@@ -11,7 +11,7 @@ use App\Repository\CatalogueRepository;
 
 final readonly class ThemeSample
 {
-    public const TWIG = <<<'TWIG'
+    public const TWIG = TypographySample::HTML.<<<'TWIG'
 <section class="rounded-box bg-base-100 p-6 text-base-content">
     <h1 class="font-heading text-2xl font-bold">Theme workshop</h1>
     <p class="my-4">A portable palette, geometry and typography.</p>

@@ -269,3 +269,15 @@ The source debounce check installs its clock before navigation at a fixed initia
 time, then pauses at a fixed later virtual time. It never compares the emulated clock
 to host Date.now; the 299ms/1ms assertions remain intact. This follows the installed
 [Playwright clock workflow](https://playwright.dev/docs/api/class-clock#clock-pause-at).
+
+
+Prompt 09 adds `font_pairing_contrast.spec.js`: requested face/subset byte hashes,
+no eager/third-party pairing downloads, real family/weight/style rendering, unavailable
+faces, declared-coverage and decode fallbacks, draft-preserving explicit transfer
+including captured normal-only family definitions,
+save/export consistency, unchanged application appearance, unsaved/saved contrast,
+unsupported alpha/intermediate input, focusable token/example links, delayed responses
+and 390/1440 px light/dark keyboard/axe checks. It is also accepted by the immutable
+production harness. See FONT_PAIRING_AND_CONTRAST.md and the measured STATUS handoff.
+When rebuilding an existing disposable run, clear its dev cache before recreating the
+app/consumer: that topology intentionally uses APP_DEBUG=0 and retains its runtime volume.

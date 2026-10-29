@@ -1,0 +1,20 @@
+<section id="font-pairing" aria-labelledby="font-pairing-title" class="my-5 rounded-box border border-base-300 p-4" data-controller="font-pairing" data-font-pairing-url-value="{{ path('font_pairing') }}">
+    <h2 id="font-pairing-title" class="text-xl font-semibold">Font pairing proposal</h2>
+    <p class="my-2 text-sm">Compare body, heading and code roles together. Preview downloads only the requested local faces and sample subsets in an isolated frame. Proposal controls do not change your theme or application appearance.</p>
+    <div class="my-3 flex flex-wrap gap-3"><label>Search pairing families <input type="search" class="input max-w-full" data-font-pairing-target="search" data-action="input->font-pairing#filter"></label><button type="button" class="btn btn-outline" data-action="font-pairing#fromEditor">Copy current editor fonts into proposal</button></div>
+    <div class="grid gap-4 md:grid-cols-3">
+    {% for role in ['body', 'heading', 'code'] %}
+        <fieldset class="min-w-0"><legend class="font-semibold">{{ role|capitalize }} proposal</legend>
+            <label class="block" for="pairing-{{ role }}-family">Proposed {{ role }} font</label><select id="pairing-{{ role }}-family" class="select w-full" data-font-pairing-target="field" data-pairing-key="{{ role }}FontId" data-action="change->font-pairing#changed"><option value="system-sans">System sans</option><option value="system-serif">System serif</option><option value="system-mono">System monospace</option>{% for id,family in families %}<option value="{{ id }}">{{ family.family }}</option>{% endfor %}</select>
+            <label class="mt-2 block" for="pairing-{{ role }}-weight">Proposed {{ role }} weight</label><input id="pairing-{{ role }}-weight" class="input w-full" type="number" min="100" max="1000" step="1" required data-font-pairing-target="field" data-pairing-key="{{ role }}Weight" data-action="input->font-pairing#changed">
+            <label class="mt-2 block" for="pairing-{{ role }}-style">Proposed {{ role }} style</label><select id="pairing-{{ role }}-style" class="select w-full" data-font-pairing-target="field" data-pairing-key="{{ role }}Style" data-action="change->font-pairing#changed"><option value="normal">Normal</option><option value="italic">Italic (real face only)</option></select>
+            <p class="mt-2 text-sm break-words" data-font-pairing-target="details" data-role="{{ role }}"></p>
+        </fieldset>
+    {% endfor %}
+    </div>
+    <label class="mt-3 block">Additional sample characters <input class="input w-full" maxlength="100" data-font-pairing-target="text" data-action="input->font-pairing#changed"></label>
+    <label class="my-3 block" for="pairing-scheme">Pairing sample appearance</label><select id="pairing-scheme" class="select" data-font-pairing-target="scheme" data-action="change->font-pairing#changed"><option value="light">Light</option><option value="dark">Dark</option></select>
+    <div class="flex flex-wrap gap-3"><button type="button" class="btn btn-outline" data-action="font-pairing#preview">Preview pairing</button><button type="button" class="btn btn-primary" disabled data-font-pairing-target="transfer" data-action="font-pairing#transfer">Use pairing in theme fields</button></div>
+    <p role="status" class="my-3" data-font-pairing-target="status">No pairing font downloaded yet.</p>
+    <iframe title="Font pairing proposal" sandbox="allow-scripts" class="h-96 w-full border border-base-300" data-font-pairing-target="frame"></iframe>
+</section>

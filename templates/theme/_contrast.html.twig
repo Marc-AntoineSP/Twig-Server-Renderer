@@ -1,0 +1,15 @@
+<section id="theme-contrast" aria-labelledby="theme-contrast-title" class="my-6">
+    <h2 id="theme-contrast-title" class="text-xl font-semibold">Current draft contrast</h2>
+    <p class="my-2 text-sm">Uses unsaved colours after a short pause, without saving or publishing. Opaque six-digit hex only; alpha, CSS expressions and incomplete values cannot be evaluated. Each pair uses exactly its named foreground and background, with no assumed backdrop.</p>
+    <p class="my-2 text-sm">WCAG 2.2 guidance: ordinary text ≥4.5:1; large text ≥3:1 (24 px, or 18⅔ px bold). A meaningful content-colour icon on the paired surface also needs ≥3:1. Control boundaries, focus, hover states, adjacent surfaces and rendered layouts require separate checks. Ratios are rounded for display; guidance uses full precision. These results do not certify accessibility.</p>
+    <p class="text-sm"><a class="link" href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html">Text contrast guidance</a> · <a class="link" href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">Non-text contrast guidance</a></p>
+    <p class="my-2 text-sm">On smaller screens, scroll the results horizontally to compare the saved baseline and reach examples.</p>
+    <p role="status" class="my-3" data-theme-contrast-target="status">Waiting for draft colours…</p>
+    <div class="overflow-x-auto" role="region" aria-label="Draft contrast results" tabindex="0">
+    <table class="table min-w-[48rem]"><caption class="text-left">Current draft compared with saved baseline</caption><thead class="text-base-content"><tr><th scope="col">Editable pair</th><th scope="col">Current draft</th><th scope="col">Saved baseline</th><th scope="col">Example</th></tr></thead><tbody>
+    {% for background, foreground in constant('App\\Theme\\Contrast::PAIRS') %}
+        <tr data-theme-contrast-target="row" data-background="{{ background }}"><th scope="row"><a class="link" href="#{{ form.colors[background].vars.id }}" data-token="{{ background }}" data-action="theme-contrast#focusToken">{{ background }}</a> / <a class="link" href="#{{ form.colors[foreground].vars.id }}" data-token="{{ foreground }}" data-action="theme-contrast#focusToken">{{ foreground }}</a></th><td data-draft-result>Waiting…</td><td data-saved-result>{{ ratios[background] is defined ? ratios[background] ~ ':1' : 'Not saved yet' }}</td><td><button class="btn btn-sm btn-outline" type="button" data-example="example-{{ background }}" data-action="theme-contrast#showExample">Show {{ background }} example</button></td></tr>
+    {% endfor %}
+    </tbody></table></div>
+    <iframe title="Draft contrast examples" sandbox="allow-scripts" class="mt-4 h-96 w-full border border-base-300" data-theme-contrast-target="frame"></iframe>
+</section>

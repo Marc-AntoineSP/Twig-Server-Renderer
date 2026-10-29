@@ -316,3 +316,12 @@ CompositionController retains commands, saves, debounce/epochs and sandboxed job
 Server errors use node IDs so repeated references remain distinguishable. Reference
 replacement is atomic: keep all current values if valid, otherwise retain the old node
 until an explicit correction or default reset. See INSTANCE_PROPERTIES.md.
+
+
+The theme editor's font-pairing workspace proposes the existing nine role fields without
+mutating its draft until explicit transfer. FontPairing selects installed real faces and
+sample Unicode subsets through the existing registry/assembler; TypographySample is
+trusted shared renderer markup. The same Contrast service supplies saved ratios and
+300 ms draft diagnostics, with bounded editor/CSRF endpoints and no persistence. Draft
+results, saved baselines, stale responses and invalid opaque-hex values are explicit.
+See FONT_PAIRING_AND_CONTRAST.md for usage, guidance scope and fallback limits.
