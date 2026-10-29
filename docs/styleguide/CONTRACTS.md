@@ -238,3 +238,15 @@ remain errors; no storage migration or retention policy is added. See EDITING.md
 Previews capture an exact requested current saved revision and are actor-owned. Later
 saves cannot change their captured source payload. Status/HTML/URL identify previewRevision
 separately from the current draft revision, with visualInspectionAvailable=false.
+
+
+## Discovery listings
+
+Catalogue GET queries add `tags` (max240 characters), comma-separated exact case-insensitive
+AND tags alongside existing q/kind/sort/favorites/page. Font GET accepts q(max120), category
+(empty/sans/serif/mono/display) and page(1–100000). Filters apply before twelve-result
+pagination. Catalogue, themes and fonts redirect an unavailable page once to a valid page.
+Frame and direct requests reuse the same authorized SSR representation, private/no-store
+and Vary Cookie/Turbo-Frame. A validated X-Discovery-Request receipt (1–64 alphanumeric or
+hyphen characters) is echoed for client ordering only; it conveys no permission. Favorites
+remain authenticated-owner GET/PUT/DELETE; Undo uses explicit PUT and current filters.

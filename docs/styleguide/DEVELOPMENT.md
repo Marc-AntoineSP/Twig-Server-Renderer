@@ -558,3 +558,10 @@ Editing protection and the manual composer's Saved history panel are documented 
 [EDITING.md](EDITING.md). All three editors retain dirty work on canceled navigation;
 source saves enhance the existing If-Match API. History uses the existing snapshots and
 shared restore transaction, with current permissions/revisions and no new migration.
+
+
+Catalogue, theme and font discovery use the shared GET filter layout and server-rendered
+Turbo Frames. Catalogue adds exact comma-separated tags; fonts use validated URL search,
+category and pagination without eagerly loading font bytes. Favorites-only results refresh
+after confirmation and offer explicit Undo. See [DISCOVERY.md](DISCOVERY.md) for history,
+request ordering, no-JavaScript behavior and recovery.

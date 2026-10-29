@@ -40,6 +40,11 @@ final class CatalogueRepository extends ServiceEntityRepository
             $where[] = 'kind = :kind';
             $params['kind'] = $query->kind;
         }
+        $tags = array_values(array_unique(array_filter(array_map(static fn ($tag) => mb_strtolower(trim($tag)), explode(',', $query->tags)), static fn ($tag) => $tag !== '')));
+        if ($tags) {
+            $where[] = 'tags @> CAST(:tags AS jsonb)';
+            $params['tags'] = json_encode($tags, JSON_THROW_ON_ERROR);
+        }
         $where = implode(' AND ', $where);
         $total = (int) $connection->fetchOne('SELECT COUNT(*) FROM catalogue_item WHERE '.$where, $params);
         $pages = max(1, (int) ceil($total / 12));

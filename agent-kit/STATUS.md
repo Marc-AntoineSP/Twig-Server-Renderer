@@ -27,6 +27,7 @@ Earlier sections retain historical checkpoints. The final handoff below supersed
 | Improvement prompt 02 | Complete for requested scope |154PHPUnit/1502assertions;89browser tests;6immutable-production flows;111px mobile shell including safe recovery;12updated/reviewed visual baselines |
 | Improvement prompt 03 | Complete for requested scope |157PHPUnit/1568assertions;96browser tests across three engines;20immutable-production flows;read-only draft browsing and exact published-release selection;4reviewed theme-detail baselines |
 | Improvement prompt 04 | Complete for requested scope |160PHPUnit/1676assertions;110browser tests across three engines;14final immutable-production flows;shared editing protection and saved-history restoration;4reviewed composer baselines |
+| Improvement prompt 05 | Complete for requested scope |163PHPUnit/1739assertions;129browser tests across three engines;31final immutable-production flows;shared discovery GET/URL state, confirmed favorites refresh/Undo and fade-safe modal focus;4reviewed catalogue baselines |
 
 ## Repository audit and preservation
 
@@ -2178,3 +2179,272 @@ mutation or remote package publication occurred.
 Final Git checks: `git diff --check` passes. The twelve previously staged numbered
 prompts are excluded from the implementation commit and retain staged-diff SHA-256
 `d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.
+
+
+## Improvement prompt 05 — Discovery and favorites feedback (2026-10-29)
+
+Selected prompt05 and matching pack only; all three packaged checksums pass. Branch on
+arrival: feature/m19-discovery-and-favorites-feedback, based on completed prompt04.
+The twelve staged numbered prompt additions are preserved and excluded from this work.
+Fresh baseline uses verified owned run `browser-0c3621c3d37a97d71a84d48a`: after a real
+DELETE, favorites-only catalogue still shows one card/count1; `/fonts?q=lora&category=serif`
+loads empty controls/all five families, typing does not update that URL, and selecting a
+theme mode does not submit. Evidence: `discovery-baseline.log` and
+`discovery-baseline-final.log` in var/browser-verification. The first probe stopped on
+an overly strict selector for the old implicit Category label; the corrected probe
+completed successfully. No working catalogue or historical screenshot is used as fresh
+runtime evidence.
+
+Implementation: a small shared Twig listing layout, one lifecycle-scoped Stimulus
+controller and normal GET forms; Turbo Frames reuse the same authorized full SSR
+responses as direct visits. Fields remain outside the refreshed frame. Search uses a
+350ms debounce with IME composition handling; selections, chips and pagination submit
+promptly. Typing replaces history; explicit form/filter/page changes advance; confirmed
+favorite reconciliation replaces. Per-request aborts and bounded echoed request receipts
+reject obsolete responses and queued renders. Recoverable failures keep the previous
+list and offer actual Retry results. Canonical page clamping redirects once on the
+server. Shared controls include active chips/Clear all and counts. Catalogue adds an
+exact comma-separated AND-tags filter; font search/category/page are validated URL data
+and SSR-filter before twelve-family pagination. Font specimens stay independent/lazy,
+using the unchanged licensed local registry.
+
+Confirmed favorite removals retain existing persistence/API semantics. Favorites-only
+refreshes update cards/counts/pages together. One bounded 15-second Undo notice calls
+explicit PUT, reconciles interrupted writes via GET, and refreshes under current filters;
+it never blindly toggles or inserts a card locally. Focus follows removed results or the
+summary; focused Undo notices do not expire. Regular cards retain updated stars. No new
+favorite store, migration, dependency or composer-picker change.
+
+Initial build/strict Composer/container/YAML/Twig checks pass. Initial PHP run:
+160 tests /1667 assertions, two failures from old count selectors now pointing at the
+new empty live-status node; assertions now target the visible summary. A separate
+browser attempt passed12/16 and exposed chip accessible names missing the visible colon,
+a duplicate font search/form label, and an audit started during a WebKit promoted-frame
+visit. Chip names now include visible text, landmarks have distinct domain labels and
+critical audits await navigation completion. No axe rule or screenshot threshold is
+relaxed. New functional/browser gates are running; this milestone is not yet complete.
+
+
+Subsequent functional checks exposed assertion issues rather than mismatched result
+sets: randomized masked CSRF tokens prevent whole-HTML equality, select values require
+select assertions, and the framework adds cache directives beyond private/no-store.
+Tests now compare result identities and required cache semantics. Targeted revision run
+passes2/3 PHP tests (45 assertions), then9/10 selected browser checks (38s); its remaining
+no-JS Back failure is browser-native form restoration retaining an edited select even
+when the URL is restored. A controlled before/after probe proves autocomplete=off fixes
+that behavior. The shared GET form now applies it. Source controls, totals and URLs are
+restored without adding browser storage.
+
+The resulting full focused gate passes **163 PHPUnit tests /1739 assertions (101.4s)**
+and **39/39 browser tests (2.4m)**, including existing favorites/fonts/catalogue and all
+three critical engines. Initial immutable-production gate passes **24/24 flows (1.3m)**
+(new discovery + existing favorites/authentication); the latest receipt-only guard
+refinement passes a second **19/19** production discovery run. Both verify schema/fonts
+and unchanged read-only AssetMapper assets. These local projects are automatically
+cleaned, with no working catalogue or remote publication/deployment involved.
+
+Visual review caught excessive mobile toolbar height. The shared layout now uses two
+narrow columns, complete visible controls, tighter input spacing and full-width actions;
+desktop retains four columns. Long active chips wrap within the viewport. This compact
+revision is being checked in a fresh owned browser run and immutable-production image.
+Only four catalogue PNG baselines will change; the eight unrelated composer/theme source
+baselines are preserved byte for byte. Final independent full-suite evidence and cleanup
+follow below when finished. Earlier failed attempts are retained, not counted as passing.
+
+
+Final compact layout passes **28/28 browser tests (1.7m)** across three engines and
+**19/19 immutable-production discovery flows (1.0m)**. The baseline update gate passes
+4/4 tests (16.1s); all four final catalogue PNGs and all twelve discovery review captures
+were inspected. Mobile controls use two columns without hiding controls; the result
+summary and first card now appear earlier. The eight composer/theme baseline source
+files match HEAD byte for byte. No masks or relaxed visual thresholds were introduced.
+Twelve new discovery axe reports have zero violations. Their pre-annotation incompletes
+identify gradient-button contrast and an existing named generic theme-swatch div; the
+latter now has role=group and is undergoing a fresh final production audit. Manual
+contrast and human screen-reader assessment remain unrun.
+
+The independent final build passes **163 PHPUnit tests /1739 assertions (106.5s)**,
+strict Composer, container, 34 YAML and 49 Twig checks. Its full browser suite is running.
+This image was built just before the single role=group annotation on the existing theme
+swatches; the separate final production gate checks that annotation. PHP behavior,
+filtering, transport logic, test code and rendered layout are unchanged by it.
+
+Exact principal commands (repository root unless noted):
+
+```sh
+# In "prompt pack/05-discovery-and-favorites-feedback/05-discovery-and-favorites-feedback":
+sha256sum --check SHA256SUMS
+python3 tests/BrowserHarness/run.py start --keep
+python3 tests/BrowserHarness/run.py run --with-checks --keep -- tests/Browser/catalogue.spec.js tests/Browser/favorites.spec.js tests/Browser/fonts.spec.js tests/Browser/critical.spec.js
+python3 tests/BrowserHarness/run.py run --with-checks --keep -- tests/Browser/discovery.spec.js tests/Browser/catalogue.spec.js tests/Browser/favorites.spec.js tests/Browser/fonts.spec.js tests/Browser/critical.spec.js
+python3 tests/BrowserHarness/run.py run --keep -- tests/Browser/discovery.spec.js tests/Browser/critical.spec.js
+bash tests/AppearanceProduction/run.sh tests/Browser/discovery.spec.js tests/Browser/favorites.spec.js tests/Browser/authentication.spec.js
+bash tests/AppearanceProduction/run.sh tests/Browser/discovery.spec.js
+python3 tests/BrowserHarness/run.py run --with-checks --keep
+make browser-cleanup RUN=browser-0c3621c3d37a97d71a84d48a
+make browser-cleanup RUN=browser-19c56b7f75f8bcd5b3309116
+make browser-cleanup RUN=browser-70a2f7ae9f60f740d40242df
+make browser-cleanup RUN=browser-2f7c2dd4b23ace9f652ade64
+make browser-cleanup RUN=browser-e07d2288062dd0f9fd352936
+make browser-cleanup RUN=browser-62c7db8a365c2eff84436da3
+```
+
+Retained diagnostic/review operations run under the exact Run lifecycle lock with
+ownership verified. The targeted PHP gate creates/migrates that run's test database,
+then invokes `r.compose('run','--rm','--no-deps','-e','APP_ENV=test','app','php',
+'bin/phpunit','--filter','DiscoveryTest')`. The selected browser revision gate is
+`r.test(['tests/Browser/discovery.spec.js','--project=chromium','--grep',
+'1440px light|composition input|confirmed removal|regular cards|no-JavaScript'])`.
+The final baseline review uses `Run('browser-62c7db8a365c2eff84436da3')` and
+`r.test(['tests/Browser/visual.spec.js','--project=chromium'], update_baselines=True)`;
+eight unrelated original PNGs are retained even if a candidate differs.
+
+Logs are `var/browser-verification/discovery-{baseline-start,baseline,baseline-final,
+initial,browser-initial,focused,new-browser,revision-start,revision-checks,
+native-history-probe,focused-final,review,production,production-final,compact,
+production-compact,compact-review,final,production-accessibility}.log`.
+Sanitized browser artifacts remain under each owned run's artifacts/invocation-*/.
+The final full run is `browser-0adc5919f0416dba971be28a`. The first three production
+projects are appearance-20261029094624-8072, appearance-20261029094910-11502 and
+appearance-20261029095327-16288; each completed its automatic cleanup. Final cleanup
+and audit evidence follows below. No working catalogue or unrelated project is used.
+
+Changed files: shared discovery Twig layout/controller and favorite request helper;
+existing catalogue/theme/font listings and favorite button/filter/pagination/empty
+partials; removal of obsolete local font/theme filters; ListingResponse, FontSearchQuery,
+FontLibrary, SearchQuery and catalogue repository/three listing controllers; DiscoveryTest
+and discovery browser spec, relevant existing assertions/production allowlist and four
+catalogue PNGs. Documentation: DISCOVERY, FAVORITES, ARCHITECTURE, CONTRACTS, SECURITY,
+DEVELOPMENT, BROWSER_TESTS, MILESTONES and this status. No migration, dependency/lockfile
+update or operator setting is required. Rebuild the application image for Twig/PHP/
+AssetMapper changes. Full Undo/Redo, composer picker changes and catalogue performance
+work remain scoped to their separately selected prompts.
+
+
+Final production annotation gate also passes **19/19 (1.0m)** against
+`appearance-20261029100013-20261`, with immutable/read-only AssetMapper, schema and font
+checks passing. All twelve final discovery axe reports have zero violations; the named
+swatch group finding is resolved, leaving only gradient-button contrast incompletes.
+Evidence: `var/browser-verification/discovery-accessibility-audit.json`. This fourth
+production fixture completed automatic cleanup. No accessibility rules were disabled;
+manual contrast and human screen-reader checks remain explicitly unrun.
+
+
+The first independent full browser attempt passes **128/129 (8.4m)**, including all
+new discovery flows and twelve visual comparisons. One existing Chromium showcase
+keyboard check fails focus wrapping after a separately focused recovery button and
+page-level Tab. Nine isolated repetitions across Chromium/Firefox/WebKit pass (43.9s),
+so a deterministic product failure was not reproduced. The test now sends the real Tab
+through `recovery.press('Tab')`, keeping its origin and key action together; the same
+Cancel-dialog focus assertion remains. No retry count, timeout or rule was weakened.
+The retained final run rebuilds app/runner with the one-line swatch annotation and test
+correction, recreates only its owned app/consumer, clears its own cache, lints all Twig,
+then runs nine repetitions followed by the entire suite. Backend PHP is unchanged from
+the passing163/1739 gate. Evidence: discovery-critical-repeat.log and
+discovery-final-rerun.log. This replaces the earlier pre-annotation image for the final
+browser gate; no additional migration or storage change is involved.
+
+
+The atomic-key-action change alone is insufficient: the next repeated check still has
+one Chromium failure (8/9 pass). Instrumented native-dialog probes reproduce it without
+changing application behavior. During a failing keydown, the modal-box ancestor has
+opacity0 from its opening fade while display/visibility remain visible. All controls
+pass normal/CSS visibility but fail checkOpacity, so the shell's trap finds zero controls
+and Tab reaches BODY. Evidence: discovery-dialog-focus-probe.log and the concise
+discovery-dialog-visibility-probe.log. The shared shell now excludes hidden/disabled
+controls while ignoring opacity for keyboard order. The existing critical test freezes
+this real fade state for a deterministic regression and restores styling in finally;
+no screenshot is captured with the test fade applied. The same focus assertion remains.
+A fresh runner first proves the regression fails against the old shell, then rebuilds
+only the owned app/consumer for nine corrected repetitions and the full suite.
+The final production gate includes discovery plus the existing appearance workflows.
+
+
+The first fade regression merely requested opacity0 while allowing CSS to interpolate;
+it unexpectedly passed against the old shell and the verification driver stopped before
+claiming success. The deterministic version disables transition and pins opacity0 for
+its keyboard check, restoring both inline properties in finally. It **fails against the
+old shell as expected**, then the corrected shell passes **9/9 repetitions (44.5s)** in
+Chromium/Firefox/WebKit. The full suite is now running on the rebuilt final app. The
+post-fix production gate passes **31/31 flows** (new discovery + existing appearance),
+with unchanged read-only AssetMapper, schema and font checks. Its exact project is
+`appearance-20261029101620-19507`; automatic cleanup completed. The final verification
+log is `discovery-final-verified2.log`, and production is `discovery-production-verified.log`.
+These supersede the failed/incomplete reruns recorded above.
+
+
+Final rebuilt app/runner gate passes **129/129 browser tests (8.3m)**: 123 Chromium,
+3 Firefox, 3 WebKit, including all nineteen new discovery flows, deterministic modal
+fade regression and twelve visual comparisons. Final app contains the swatch group and
+shell focus fix. No application or test code changed afterward. The prior PHP gate
+passes **163 tests /1739 assertions**; final Twig lint passes49 templates. Backend PHP
+has not changed since that successful full PHP run. All gates for this requested scope
+are complete. The final full invocation and owned-resource audit are recorded below.
+
+Final command sequence, under the verified lifecycle lock for
+Run('browser-0adc5919f0416dba971be28a'):
+
+```python
+r.compose('--profile', 'tools', 'build', 'browser')
+# Negative regression on old shell: the pinned fade check must fail.
+r.test(['tests/Browser/critical.spec.js', '--project=chromium', '--grep', 'theme detail, disclosure'])
+# After confirming the expected failure:
+r.compose('--profile', 'tools', 'build', 'app')
+r.compose('up', '-d', '--wait', 'app', 'preview-consumer')
+r.app('php', 'bin/console', 'cache:clear')
+r.app('php', 'bin/console', 'lint:twig', 'templates')
+r.test(['tests/Browser/critical.spec.js', '--grep', 'theme detail, disclosure', '--repeat-each=3'])
+r.test([])
+```
+
+The final production command is:
+`bash tests/AppearanceProduction/run.sh tests/Browser/discovery.spec.js tests/Browser/appearance.spec.js`.
+It passes31 flows (1.6m); no production SDK smoke is claimed for this task. Final
+browser verification: `var/browser-verification/discovery-final-verified2.log`.
+A retained earlier negative proof and aborted verification driver are intentional
+failure evidence, not additional passing checks. No retry policy was enabled.
+
+Final changed files (43) include the shared shell's opacity-independent modal focus
+filter and its critical regression, in addition to the discovery files listed above.
+No migration, dependency/lockfile change, new operator setting or composer-picker change
+is required. Only the four catalogue/listing baselines changed; all eight unrelated
+source PNGs remain byte-identical to HEAD. All twelve discovery screenshots and four
+updated baselines were reviewed at390/1440 in light/dark. Final production axe scans
+have zero violations; gradient-button contrast incompletes and human screen-reader
+assessment remain for manual review. Full Undo/Redo and discovery performance are
+separate work. Exact next step: review the completed discovery/favorites workflow, or
+explicitly select the next numbered prompt. No push or remote deployment is authorized
+or performed; all mutations/publication fixtures remained inside verified owned stores.
+
+
+Final cleanup audit: **all seven browser runs and all five production fixtures** have
+zero containers (including stopped), volumes, networks and private credential files.
+All seven browser CLEANED receipts exist and per-run worker image tags are removed.
+Reusable app/browser/production images and build cache remain. The audit is
+`var/browser-verification/discovery-resource-audit.json`. The final passing browser
+invocation is `browser-0adc5919f0416dba971be28a/artifacts/invocation-271aa5d6/`; its twelve
+new discovery axe reports have zero violations, as do the twelve final production
+reports recorded in discovery-accessibility-audit.json.
+
+Final version capture and cleanup use the same verified, locked Run helper:
+
+```python
+r.app('frankenphp', 'version')
+r.app('php', 'bin/console', '--version')
+version_query = "import {chromium,firefox,webkit} from 'playwright'; console.log('Node '+process.version); for (const [name,type] of Object.entries({chromium,firefox,webkit})) {const browser=await type.launch(); console.log(name+' '+browser.version()); await browser.close();}"
+r.compose('run', '--rm', '--no-deps', 'browser', 'node', '--input-type=module', '-e', version_query)
+# In finally:
+r.cleanup()
+```
+
+This command exited0. Evidence: discovery-final-cleanup.log. Measured runtime:
+FrankenPHP1.13.4 / PHP8.5.12 / Caddy2.11.7, Symfony8.1.9, Node24.22.1,
+Chromium156.0.8078.4, Firefox157.0, WebKit27.2; PHPUnit13.4.3 from the full PHP gate.
+Existing locked Playwright1.64.1, Tailwind4.3.3, daisyUI5.7.50, Stimulus3.2.2 and
+Turbo8.0.23 remain unchanged. No new migration or environment setting is needed.
+
+Final Git checks: git diff --check passes. The twelve previously staged numbered
+prompts remain excluded from the implementation commit with staged-diff SHA-256
+`d7f37c445e44f29e12983531103fd1d80acbeab737b1c0aab86787c5e95429c1`.
+Only this scoped implementation/test/documentation change is committed; no branch
+push, remote publication, deployment or mutation of real user data occurred.

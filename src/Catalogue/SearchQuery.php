@@ -16,6 +16,8 @@ final readonly class SearchQuery
         #[Assert\Range(min: 1, max: 100000)]
         public int $page = 1,
         public bool $favorites = false,
+        #[Assert\Length(max: 240)]
+        public string $tags = '',
     ) {
     }
 }

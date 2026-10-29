@@ -6,15 +6,18 @@ builder title. An outlined star adds a favorite; a filled star removes it. These
 are personal database records, available in subsequent sessions and other devices.
 They never apply a theme, change a draft, publish a release or change permissions.
 
-Choose **Favorites only**, then **Find items** or **Find themes**. Clear favorite
+Choose **Favorites only** for an immediate enhanced refresh, or use **Find items** /
+**Find themes** with the normal GET form. Clear favorite
 filter keeps the other search controls. Catalogue search includes its existing
 name/title/description/tag search, kind and sort. Theme search includes names,
 reference titles/surfaces, family labels, mode and sort. Both filter in SQL before
 12-item pagination. URLs use `favorites=1` alongside `q`, `kind`/`mode`, `sort`,
 and `page`. Opening a detail page carries an application-relative `returnTo` for
 its back link; other origins and paths are rejected. Stars show their current
-state even when Favorites only is off. After removing a favorite, a filtered card
-stays visible with its updated star until the list is searched or refreshed.
+state even when Favorites only is off. After a confirmed removal, Favorites only refreshes results, total and pagination
+together; regular listings retain the card with its updated star. A brief Undo uses
+explicit PUT and current filters. See [DISCOVERY.md](DISCOVERY.md) for URL/history,
+search, focus and failure behavior.
 
 In the composition builder, Favorites only narrows both the insertion picker and
 the selected node's immutable-reference picker. An existing nonfavorite reference

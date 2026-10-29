@@ -25,6 +25,14 @@ final readonly class FontLibrary
         return $families;
     }
 
+    public function search(FontSearchQuery $query): array
+    {
+        $all = $this->catalogue(); $needle = mb_strtolower(trim($query->q));
+        $matches = array_filter($all, static fn ($family) => ($needle === '' || str_contains(mb_strtolower($family['family']), $needle)) && ($query->category === '' || $family['category'] === $query->category));
+        $total = count($matches); $pages = max(1, (int) ceil($total / 12)); $page = min($query->page, $pages);
+        return ['families' => array_slice($matches, ($page - 1) * 12, 12, true), 'allFamilies' => $all, 'total' => $total, 'pages' => $pages, 'page' => $page, 'query' => $query];
+    }
+
     public function definition(string $id): \stdClass
     {
         if (isset(FontRegistry::SYSTEM[$id])) return (object) ['id' => $id, 'kind' => 'system', 'family' => $id];

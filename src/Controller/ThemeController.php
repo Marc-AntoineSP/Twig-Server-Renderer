@@ -31,9 +31,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class ThemeController extends AbstractController
 {
     #[Route('/themes', name: 'theme_index', methods: ['GET'])]
-    public function index(\App\Theme\ThemeCatalogue $catalogue, #[\Symfony\Component\HttpKernel\Attribute\MapQueryString(validationFailedStatusCode: 400)] \App\Theme\ThemeSearchQuery $query = new \App\Theme\ThemeSearchQuery()): Response
+    public function index(\App\Theme\ThemeCatalogue $catalogue, \App\Discovery\ListingResponse $listing, #[\Symfony\Component\HttpKernel\Attribute\MapQueryString(validationFailedStatusCode: 400)] \App\Theme\ThemeSearchQuery $query = new \App\Theme\ThemeSearchQuery()): Response
     {
-        return $this->render('theme/index.html.twig', $catalogue->search($query));
+        return $listing->render('theme_index', 'theme/index.html.twig', $catalogue->search($query));
     }
 
     #[Route('/themes/import', name: 'theme_import', methods: ['GET'])]

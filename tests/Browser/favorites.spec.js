@@ -44,7 +44,7 @@ test('catalogue stars persist across devices, combine filters and return links, 
     const privateContext = await browser.newContext(); const differentUser = await privateContext.newPage(); await login(differentUser, 'reader');
     await differentUser.goto(`/catalogue/${items[0].id}`); await pressed(star(differentUser, 'catalogue', items[0].id), false);
     await star(differentUser, 'catalogue', items[0].id).click(); await pressed(star(differentUser, 'catalogue', items[0].id), true); await privateContext.close();
-    await star(page, 'catalogue', items[1].id).click(); await pressed(star(page, 'catalogue', items[1].id), false); await page.reload();
+    await star(page, 'catalogue', items[1].id).click(); await expect(page.locator('article.card')).toHaveCount(0); await page.reload();
     await expect(page.getByText('You have favorites, but none match the current search and filters.', {exact: true})).toBeVisible();
     await page.getByRole('link', {name: 'Clear favorite filter', exact: true}).click(); await expect(page.locator('article.card')).toHaveCount(1);
     for (const i of items) await api(page, 'DELETE', `/api/v1/favorites/catalogue/${i.id}`);

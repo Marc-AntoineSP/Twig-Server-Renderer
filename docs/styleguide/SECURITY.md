@@ -243,3 +243,11 @@ only exact project-owned worker image tags are removed after label checks. Logs 
 text artifacts redact credentials, and one-time fields are scrubbed before automatic
 failure screenshots. Traces that could capture credentials stay disabled. See
 BROWSER_TESTS.md for retained-run handling, accessibility scope and manual limits.
+
+
+Discovery frames and full-page listings share role checks, actor-scoped favorite queries
+and private/no-store responses. Query owner/user IDs never select another account. The
+bounded echoed discovery receipt is an ordering hint, not a credential or authorization
+input. Active chips use escaped Twig values, and Undo messages use textContent. Undo
+calls the existing CSRF-protected explicit PUT, including current target/access checks;
+no removed target is reconstructed and no client card is inserted to simulate success.

@@ -1,0 +1,27 @@
+{# Shared layout only. Each listing supplies its own fields and authorized SSR cards. #}
+<section data-controller="discovery" data-discovery-csrf-value="{{ csrf_token('api') }}"
+         data-action="input->discovery#input change->discovery#change compositionstart->discovery#compositionStart compositionend->discovery#compositionEnd submit->discovery#submit click->discovery#follow turbo:before-fetch-request->discovery#request turbo:before-fetch-response->discovery#response turbo:fetch-request-error->discovery#error turbo:before-frame-render->discovery#render turbo:frame-load->discovery#loaded turbo:frame-missing->discovery#missing favorite:changed@document->discovery#favorite turbo:before-visit@document->discovery#leaving">
+    <form method="get" autocomplete="off" action="{{ path(route) }}" role="search" aria-label="{{ label }} filters"
+          class="my-5 grid grid-cols-2 gap-3 rounded-box border border-base-300 bg-base-100 p-4 md:grid-cols-4"
+          data-discovery-target="form" data-turbo-frame="{{ frameId }}" data-turbo-action="advance">
+        <label class="col-span-2 min-w-0 md:col-span-1" for="{{ frameId }}-search">{{ searchLabel }}<input id="{{ frameId }}-search" class="min-w-0 p-2 text-sm" type="search" name="q" value="{{ query.q }}" maxlength="{{ searchMax|default(120) }}" placeholder="{{ searchPlaceholder|default('Family or name') }}"></label>
+        {% block fields %}{% endblock %}
+        <input type="hidden" name="page" value="1">
+        <div class="col-span-2 my-0 flex flex-wrap items-center gap-3 self-end md:col-span-1"><button type="submit" class="btn btn-neutral">{{ submitLabel }}</button><a class="link text-sm" href="{{ path(route) }}" data-turbo-frame="{{ frameId }}" data-discovery-link>Clear all</a></div>
+    </form>
+    <div class="mb-3 flex flex-wrap items-center gap-3"><p role="status" aria-live="polite" data-discovery-target="status"></p><button type="button" class="btn btn-outline btn-sm" hidden data-discovery-target="retry" data-action="discovery#retry">Retry results</button></div>
+    <div class="mb-4 flex flex-wrap items-center gap-3 rounded-box border border-base-300 bg-base-100 p-3" hidden data-discovery-target="undoNotice">
+        <span role="status" aria-live="polite" data-discovery-target="undoMessage"></span>
+        <button type="button" class="btn btn-outline btn-sm" data-discovery-target="undo" data-action="discovery#undo">Undo</button>
+        <button type="button" class="btn btn-ghost btn-sm" data-action="discovery#dismissUndo">Dismiss</button>
+    </div>
+    <turbo-frame id="{{ frameId }}" target="_top" data-turbo-action="advance" data-discovery-target="frame" data-discovery-response="{{ discoveryRequest }}">
+        <p class="mb-4 text-sm focus-visible:outline-2 focus-visible:outline-primary" tabindex="-1" data-discovery-target="summary" data-discovery-page="{{ page }}" data-discovery-total="{{ total }}" data-discovery-filters="{{ filters|json_encode|e('html_attr') }}">{{ total }} {{ total == 1 ? singular : plural }} · Page {{ page }} of {{ pages }}</p>
+        {% set active = filters|filter((value, name) => value is not same as('') and value is not same as(0) and value is not same as(false) and not (name == 'sort' and value == 'updated')) %}
+        {% if active %}<ul class="mb-4 flex flex-wrap gap-2" aria-label="Active filters">{% for name, value in active %}
+            <li class="min-w-0"><a class="badge badge-outline h-auto max-w-full whitespace-normal py-2 text-sm" href="{{ path(route, filters|filter((v, key) => key != name)|merge({page: 1})) }}" data-turbo-frame="{{ frameId }}" data-discovery-link aria-label="{{ name == 'favorites' ? 'Clear favorite filter' : 'Remove filter: ' ~ filterLabels[name] ~ ': ' ~ value }}"><span class="min-w-0 break-words">{{ name == 'favorites' ? 'Clear favorite filter' : filterLabels[name] ~ ': ' ~ value }}</span><span aria-hidden="true" class="ml-2 shrink-0">×</span></a></li>
+        {% endfor %}</ul>{% endif %}
+        {% block results %}{% endblock %}
+        {% include 'favorites/_pagination.html.twig' %}
+    </turbo-frame>
+</section>

@@ -208,3 +208,20 @@ external-write conflict/reconciliation, empty history and paging beyond twenty r
 The standalone production driver explicitly accepts these two specs and retains its
 owned-resource checks. Native confirmation behavior is browser-controlled; automated
 checks are not human screen-reader or browser-UI certification. See EDITING.md/STATUS.md.
+
+
+`discovery.spec.js` exercises direct URLs and Back/Forward for catalogue, themes and
+fonts at 390/1440 widths in light/dark, with keyboard, axe and review captures. It
+checks IME composition, actual delayed/aborted older GETs, HTTP/network/missing-frame
+failure recovery, caret continuity and long chips. Owned thirteen-favorite fixtures
+prove confirmed removal, complete count/page refresh, last-page clamp, empty results,
+explicit Undo success/failure and later-filter exclusions; regular listings keep cards.
+A JavaScript-disabled context verifies all three GET forms. Existing critical checks
+exercise the same enhanced filter/favorites controls across three engines. The production
+driver explicitly accepts this spec and retains its ownership/immutable-asset gates.
+
+The existing critical dialog workflow also freezes its opening fade during a keyboard
+check: transparent controls remain in native tab order, while hidden/disabled controls
+stay excluded. Test styling is restored before capture. This regression rejects the
+previous opacity-based focus filter; normal focus wrapping and Escape restoration
+are still asserted in all three engines.

@@ -29,12 +29,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class CatalogueController extends AbstractController
 {
     #[Route('/catalogue', name: 'catalogue_index', methods: ['GET'])]
-    public function index(CatalogueRepository $catalogue, \App\Rendering\ReleaseThumbnails $thumbnails, \App\Favorites\Favorites $favorites, #[MapQueryString(validationFailedStatusCode: 400)] SearchQuery $query = new SearchQuery()): Response
+    public function index(CatalogueRepository $catalogue, \App\Rendering\ReleaseThumbnails $thumbnails, \App\Favorites\Favorites $favorites, \App\Discovery\ListingResponse $listing, #[MapQueryString(validationFailedStatusCode: 400)] SearchQuery $query = new SearchQuery()): Response
     {
         $result=$catalogue->search($query, $favorites->owner());
         $result['hasFavorites'] = $favorites->hasCatalogueFavorites();
         foreach($result['summaries'] as &$summary)$summary['thumbnail']=$thumbnails->read($summary['archive_hash']);unset($summary);
-        return $this->render('catalogue/index.html.twig', $result);
+        return $listing->render('catalogue_index', 'catalogue/index.html.twig', $result);
     }
 
     #[Route('/catalogue/new', name: 'catalogue_new', methods: ['GET', 'POST'])]

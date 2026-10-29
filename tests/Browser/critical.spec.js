@@ -6,6 +6,7 @@ import {login} from './helpers.js';
 const fixtures = () => JSON.parse(readFileSync(process.env.STUDIO_TEST_FIXTURES_FILE, 'utf8'));
 
 async function audit(page, testInfo, exclude = []) {
+    await expect(page.locator('html')).not.toHaveAttribute('aria-busy', 'true');
     let builder = new AxeBuilder({page}).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']);
     // Imported previews and the theme demonstration have their own diagnostic scope.
     for (const selector of ['iframe', '#component-showcase', ...exclude]) builder = builder.exclude(selector);
@@ -111,8 +112,15 @@ test('critical: theme detail, disclosure and showcase keyboard dialog', async ({
     await expect(dialog).toBeVisible();
     const recovery = dialog.getByRole('button', {name: 'Restore default appearance', exact: true});
     await expect(recovery).toBeVisible(); await recovery.focus(); await expect(recovery).toBeFocused();
-    await page.keyboard.press('Tab');
+    await recovery.press('Tab');
     await expect(dialog.getByRole('button', {name: 'Cancel dialog', exact: true})).toBeFocused();
+    // Freeze the real opening fade: transparent controls remain in native keyboard order.
+    const box = dialog.locator('.modal-box');
+    await box.evaluate(el => {el.style.setProperty('transition', 'none', 'important'); el.style.setProperty('opacity', '0', 'important');});
+    try {
+        await recovery.press('Tab');
+        await expect(dialog.getByRole('button', {name: 'Cancel dialog', exact: true})).toBeFocused();
+    } finally {await box.evaluate(el => {el.style.removeProperty('opacity'); el.style.removeProperty('transition');});}
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden(); await expect(opener).toBeFocused();
 });

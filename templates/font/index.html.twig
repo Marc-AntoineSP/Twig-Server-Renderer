@@ -2,16 +2,19 @@
 {% block title %}Font library · Styleguide Studio{% endblock %}
 {% block body %}
 <h1 class="text-3xl font-bold">Local font library</h1>
-<p class="my-3">{{ families|length }} installed families for body text, headings and code. Character maps and Unicode ranges were checked for French and English. Font choice alone does not guarantee accessibility.</p>
-{% include 'font/_specimen.html.twig' %}
-<section data-controller="font-library">
-<div class="my-4 flex flex-wrap gap-4"><label>Search families <input type="search" data-font-library-target="search" data-action="input->font-library#filter"></label><label>Category <select data-font-library-target="category" data-action="change->font-library#filter"><option value="">All categories</option><option value="sans">Sans-serif</option><option value="serif">Serif</option><option value="mono">Monospace</option><option value="display">Display</option></select></label></div>
-<p role="status" data-font-library-target="status"></p>
-<div class="grid gap-4 md:grid-cols-3">{% for id, family in families %}<article class="card border border-base-300 p-4" data-font-library-target="card" data-family="{{ family.family|lower }}" data-category="{{ family.category }}">
+<p class="my-3">{{ allFamilies|length }} installed families for body text, headings and code. Character maps and Unicode ranges were checked for French and English. Font choice alone does not guarantee accessibility.</p>
+{% set filters = {q: query.q, category: query.category} %}
+{% embed 'discovery/_listing.html.twig' with {route: 'font_index', frameId: 'font-results', label: 'Font', searchLabel: 'Search families', submitLabel: 'Find fonts', singular: 'family', plural: 'families', filterLabels: {q: 'Search', category: 'Category'}} %}
+{% block fields %}
+<div class="my-0 min-w-0"><label for="font-category">Category</label><select class="min-w-0 p-2 text-sm" id="font-category" name="category"><option value="">All categories</option><option value="sans" {{ query.category == 'sans' ? 'selected' : '' }}>Sans-serif</option><option value="serif" {{ query.category == 'serif' ? 'selected' : '' }}>Serif</option><option value="mono" {{ query.category == 'mono' ? 'selected' : '' }}>Monospace</option><option value="display" {{ query.category == 'display' ? 'selected' : '' }}>Display</option></select></div>
+{% endblock %}
+{% block results %}
+<div class="grid gap-4 md:grid-cols-3">{% for id, family in families %}<article class="card border border-base-300 p-4" data-font-family="{{ id }}" data-family="{{ family.family|lower }}" data-category="{{ family.category }}">
     <h2 class="text-xl font-semibold">{{ family.family }}</h2><p>{{ family.category }} · {{ family.faces|length }} WOFF2 subset faces</p>
     <p>{% set seen = [] %}{% for face in family.faces %}{% set label = face.weightMin ~ (face.weightMax != face.weightMin ? '–' ~ face.weightMax : '') ~ ' ' ~ face.style %}{% if label not in seen %}{{ label }}{% set seen = seen|merge([label]) %}{% if not loop.last %} · {% endif %}{% endif %}{% endfor %}</p>
     <details class="mt-2"><summary>Source and licence</summary><p><a class="link" href="{{ family.source }}" rel="noreferrer">{{ family.package }} {{ family.sourceVersion }}</a> · {{ family.license }}</p><p>{{ family.attribution }}</p><a class="link" href="{{ path('font_asset', {hash:family.licenseSha256, extension:'txt'}) }}">Read local licence</a><p>Google Fonts revision {{ family.upstream.revision|slice(0,12) }}. Actual glyph coverage verified.</p></details>
-</article>{% endfor %}</div>
-<button type="button" class="btn btn-outline my-4" data-action="font-library#more" data-font-library-target="more">Show more families</button>
-</section>
+</article>{% else %}<p class="rounded-box bg-base-100 p-6">No font families match this search and category.</p>{% endfor %}</div>
+{% endblock %}
+{% endembed %}
+{% include 'font/_specimen.html.twig' with {families: allFamilies} %}
 {% endblock %}

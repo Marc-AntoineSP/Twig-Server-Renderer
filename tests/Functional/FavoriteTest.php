@@ -62,7 +62,7 @@ final class FavoriteTest extends DatabaseTestCase
         $prefix = 'page-'.strtolower((string) new Ulid()); $ids = [];
         for ($i = 0; $i < 14; ++$i) $ids[] = $this->item('component', $prefix.'-'.sprintf('%02d', $i))->getId();
         $block = $this->item('block', $prefix.'-block');
-        $client->request('GET', '/catalogue', ['favorites' => '1']); self::assertSelectorTextContains('[role="status"]', '0 items');
+        $client->request('GET', '/catalogue', ['favorites' => '1']); self::assertSelectorTextContains('[data-discovery-target="summary"]', '0 items');
         self::assertStringContainsString('No favorites yet.', $client->getResponse()->getContent());
         foreach ([...$ids, $block->getId()] as $id) $client->request('PUT', '/api/v1/favorites/catalogue/'.$id, server: $headers);
         $filters = ['q' => $prefix, 'kind' => 'component', 'sort' => 'name', 'favorites' => '1'];
@@ -97,7 +97,7 @@ final class FavoriteTest extends DatabaseTestCase
         }
         foreach ($ids as $id) $client->request('PUT', '/api/v1/favorites/theme/'.$id, server: $headers);
         $client->request('GET', '/themes', ['q' => $prefix, 'mode' => 'light', 'sort' => 'name', 'favorites' => '1']);
-        self::assertResponseIsSuccessful($client->getResponse()->getContent()); self::assertSelectorCount(12, 'article.card'); self::assertSelectorTextContains('[role="status"]', '13 themes');
+        self::assertResponseIsSuccessful($client->getResponse()->getContent()); self::assertSelectorCount(12, 'article.card'); self::assertSelectorTextContains('[data-discovery-target="summary"]', '13 themes');
         $client->click($client->getCrawler()->selectLink('Next')->link()); self::assertSelectorCount(1, 'article.card');
         $client->request('GET', '/themes', ['q' => $prefix, 'mode' => 'dark', 'favorites' => '1']);
         self::assertSelectorCount(1, 'article.card'); self::assertStringContainsString('dark · revision', $client->getResponse()->getContent());

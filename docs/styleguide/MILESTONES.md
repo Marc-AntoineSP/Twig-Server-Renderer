@@ -291,3 +291,21 @@ contrast incompletes and human screen-reader checks remain for manual review.
 All seven owned browser runs and both production fixtures are cleaned. No migration,
 dependency update or operator setting is required. See EDITING.md for usage and
 STATUS.md for exact commands, resolved failures, runtime versions and remaining limits.
+
+
+## Improvement prompt 05 — Discovery and favorites feedback
+
+Shared GET filter layout and progressive server-rendered search for catalogue, themes
+and fonts. Keep URL/history state, exact combined filtering before pagination, latest
+responses, confirmed favorites-only totals/pages and an explicit idempotent Undo.
+Preserve personal authorization, licensed lazy font specimens and composer-picker scope.
+Completed 2026-10-29: Docker build/lint, **163 PHPUnit tests /1739 assertions**,
+**129 browser tests** across three engines, twelve visual comparisons (four reviewed
+catalogue updates) and **31 final immutable-production discovery/appearance flows** pass.
+Nineteen new browser flows cover URLs/Back/Forward, combined filters, IME, response
+ordering, no-JavaScript forms, last-page/empty reconciliation and explicit Undo.
+A real opening-fade modal focus defect found during verification is fixed and proven by
+an old-shell failure plus nine passing cross-engine repetitions. Twelve final discovery
+axe scans have zero violations; gradient contrast and human screen-reader checks remain
+for manual assessment. No migration, dependency update or operator setting is needed.
+Usage is in DISCOVERY.md/FAVORITES.md; STATUS.md records commands, failures and cleanup.

@@ -12,7 +12,7 @@ test('font catalogue stays lazy and a real variable italic face loads in an opaq
     expect(requests.filter(url=>url.includes('.woff2')||url.includes('/specimen'))).toEqual([]);
     const initial=await page.evaluate(()=>({requests:performance.getEntriesByType('resource').length,bytes:performance.getEntriesByType('resource').reduce((sum,r)=>sum+r.transferSize,0),decodedResourceBytes:performance.getEntriesByType('resource').reduce((sum,r)=>sum+r.decodedBodySize,0),documentBytes:performance.getEntriesByType('navigation')[0].transferSize}));
     await page.getByLabel('Search families',{exact:true}).fill('atkinson');
-    await expect(page.locator('[data-font-library-target="card"]:visible')).toHaveCount(1);
+    await expect(page.locator('#font-results article.card')).toHaveCount(1);
     await page.getByLabel('Specimen family',{exact:true}).selectOption('inter');
     await page.getByLabel('Specimen weight',{exact:true}).fill('472');
     await page.getByLabel('Specimen style',{exact:true}).selectOption('italic');

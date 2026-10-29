@@ -18,9 +18,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class FontController extends AbstractController
 {
     #[Route('/fonts', name: 'font_index', methods: ['GET'])]
-    public function index(FontLibrary $fonts): Response
+    public function index(FontLibrary $fonts, \App\Discovery\ListingResponse $listing, #[\Symfony\Component\HttpKernel\Attribute\MapQueryString(validationFailedStatusCode: 400)] \App\Font\FontSearchQuery $query = new \App\Font\FontSearchQuery()): Response
     {
-        return $this->render('font/index.html.twig', ['families' => $fonts->catalogue()]);
+        return $listing->render('font_index', 'font/index.html.twig', $fonts->search($query));
     }
 
     #[Route('/fonts/assets/{hash}.{extension}', name: 'font_asset', methods: ['GET'], requirements: ['hash' => '[a-f0-9]{64}', 'extension' => 'woff2|txt'])]

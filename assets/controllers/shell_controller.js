@@ -21,7 +21,8 @@ export default class extends Controller {
             const modal = document.querySelector('dialog:modal');
             if (modal) {
                 if (event.key === 'Tab') {
-                    const controls = [...modal.querySelectorAll('button, a[href], input, select, textarea, [tabindex="0"]')].filter(e => !e.disabled && e.checkVisibility({checkVisibilityCSS: true, checkOpacity: true}));
+                    // Opacity changes during opening do not remove controls from keyboard order.
+                    const controls = [...modal.querySelectorAll('button, a[href], input, select, textarea, [tabindex="0"]')].filter(e => !e.disabled && e.checkVisibility({checkVisibilityCSS: true}));
                     const first = controls[0], last = controls.at(-1);
                     if (first && event.shiftKey && document.activeElement === first) {event.preventDefault(); last.focus();}
                     else if (last && !event.shiftKey && document.activeElement === last) {event.preventDefault(); first.focus();}

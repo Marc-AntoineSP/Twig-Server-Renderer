@@ -167,7 +167,7 @@ final class CatalogueTest extends DatabaseTestCase
         }
         $client->request('GET', '/catalogue', ['q' => $tag, 'kind' => 'component', 'sort' => 'name']);
         self::assertSelectorCount(12, 'article');
-        self::assertSelectorTextContains('[role="status"]', '13 items');
+        self::assertSelectorTextContains('[data-discovery-target="summary"]', '13 items');
         $client->clickLink('Next');
         self::assertSelectorCount(1, 'article');
         $client->request('GET', '/catalogue', ['q' => $tag, 'kind' => 'layout']);

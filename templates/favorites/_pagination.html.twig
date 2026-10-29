@@ -1,6 +1,6 @@
 {% if pages > 1 %}
     <nav class="mt-8 flex flex-wrap gap-4" aria-label="{{ label }} pages">
-        {% if page > 1 %}<a class="btn" rel="prev" href="{{ path(route, filters|merge({page: page - 1})) }}">Previous</a>{% endif %}
-        {% if page < pages %}<a class="btn" rel="next" href="{{ path(route, filters|merge({page: page + 1})) }}">Next</a>{% endif %}
+        {% if page > 1 %}<a class="btn" rel="prev" href="{{ path(route, filters|merge({page: page - 1})) }}" data-turbo-frame="{{ frameId }}" data-discovery-link>Previous</a>{% endif %}
+        {% if page < pages %}<a class="btn" rel="next" href="{{ path(route, filters|merge({page: page + 1})) }}" data-turbo-frame="{{ frameId }}" data-discovery-link>Next</a>{% endif %}
     </nav>
 {% endif %}

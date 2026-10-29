@@ -269,3 +269,11 @@ Twig renders forms and metadata; one scoped Stimulus controller copies one-time 
 and performs actual cookie-free same-origin MCP initialize/discovery/capabilities calls.
 It also checks OAuth discovery consistency. No draft is changed by these diagnostics,
 and external client account linking remains explicitly unverified. See PROFILE.md.
+
+
+Discovery shares a small Twig layout, a focused Stimulus controller and ListingResponse
+for catalogue/theme/font SSR. The same authorized result set supplies full visits and
+Turbo Frames; filtering precedes pagination. Abort signals and bounded request receipts
+reject obsolete results. Confirmed favorite events trigger complete result reconciliation
+and explicit PUT Undo through the existing Favorites API. No new store/search engine or
+composer picker is added; see DISCOVERY.md.

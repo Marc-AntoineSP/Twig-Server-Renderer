@@ -1,11 +1,15 @@
 import {Controller} from '@hotwired/stimulus';
+import {requestFavorite, favoriteEvent} from '../favorites.js';
 
 export default class extends Controller {
     static targets = ['button', 'icon', 'status'];
-    static values = {url: String, kind: String, id: String, saved: Boolean, csrf: String};
+    static values = {url: String, kind: String, id: String, saved: Boolean, csrf: String, label: String};
+
+    connect() {this.disconnected = false;}
+    disconnect() {this.disconnected = true; this.abort?.abort();}
 
     matches(detail) { return detail.kind === this.kindValue && detail.id === this.idValue; }
-    emit(name, detail = {}) { document.dispatchEvent(new CustomEvent(`favorite:${name}`, {detail: {kind: this.kindValue, id: this.idValue, ...detail}})); }
+    emit(name, detail = {}) { if (!this.disconnected) favoriteEvent(name, {kind: this.kindValue, id: this.idValue, ...detail}); }
     pending({detail}) {
         if (!this.matches(detail)) return;
         this.busy = detail.pending;
@@ -23,21 +27,20 @@ export default class extends Controller {
         this.statusTarget.textContent = '';
     }
     async request(method) {
-        const response = await fetch(this.urlValue, {method, credentials: 'same-origin', redirect: 'error', signal: AbortSignal.timeout(12000), headers: {'Accept': 'application/json', 'X-CSRF-Token': this.csrfValue}});
-        const data = await response.json();
-        if (!response.ok) throw Error(data.message || 'Favorite request failed.');
-        if (typeof data.favorite !== 'boolean') throw Error('Favorite status could not be confirmed.');
-        return data;
+        return requestFavorite(this.urlValue, this.csrfValue, method, this.abort?.signal);
     }
     async save(event) {
         event.preventDefault(); event.stopPropagation();
         if (this.busy) return;
+        this.abort = new AbortController();
+        const change = {previousFavorite: this.savedValue, operation: this.savedValue ? 'remove' : 'add', hadFocus: document.activeElement === this.buttonTarget, label: this.labelValue, url: this.urlValue};
         this.emit('pending', {pending: true});
         this.statusTarget.textContent = 'Saving…';
-        try { this.emit('changed', await this.request(this.savedValue ? 'DELETE' : 'PUT')); }
+        try { this.emit('changed', {...await this.request(this.savedValue ? 'DELETE' : 'PUT'), ...change}); }
         catch (error) {
+            if (this.disconnected) return;
             // A lost response may follow a committed write. Reconcile before displaying a result.
-            try { this.emit('changed', await this.request('GET')); this.statusTarget.textContent = `${error.message} Status refreshed; you can retry.`; }
+            try { this.emit('changed', {...await this.request('GET'), ...change}); this.statusTarget.textContent = `${error.message} Status refreshed; you can retry.`; }
             catch { this.statusTarget.textContent = 'Could not confirm favorite status. Refresh or retry. Your last confirmed state is shown.'; }
         }
         finally { this.emit('pending', {pending: false}); }
