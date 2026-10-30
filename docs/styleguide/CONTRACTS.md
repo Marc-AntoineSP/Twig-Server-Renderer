@@ -333,3 +333,21 @@ family ID equals its theme ID. Explicit Apply/Save/backfill resolves a persisted
 and returns its real ID. Existing family IDs and immutable releases are preserved.
 No GET attaches legacy families. The explicit command accepts --limit=1..1000 and can
 be repeated to remaining=0. See CATALOGUE_READ_PERFORMANCE.md for deployment order.
+
+
+## Synchronous publication acknowledgement and recovery
+
+Publication retains POST /api/v1/items/{id}/releases →201 with id/version/archiveHash
+and the native CSRF-protected /catalogue/{id}/publish →303 plus its existing success
+flash. ROLE_EDITOR, expected saved revision, stable new version, immutable dependencies
+and the existing20-example publication cap remain authoritative. Drafts can store up
+to30 examples; the publication cap is intentionally stricter. No job ID/polling, durable
+operation deduplication or cancellation contract is added.
+
+The form's pending state acknowledges a submitted request, not a persistent backend
+stage. After a lost response, reload Releases and inspect that exact immutable version
+before retrying. The server may finish after disconnect; with a matching expected
+draft revision, an existing version yields409 and is never replaced. A later saved draft yields412 at final revision validation.
+A failed worker request does not expose a partial release; explicit retry after recovery
+uses the same normal validation path. See PUBLICATION_DECISION.md for observed timings,
+the conditional queue decision and unimplemented restart/resumption guarantees.

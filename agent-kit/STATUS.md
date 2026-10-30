@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-10-29. Scope: M00–M08, font/theme library and M10–M15 complete, including local immutable production verification; no remote deployment or push.
+Last updated: 2026-10-30. Scope: M00–M08, font/theme library and M10–M15 complete, including local immutable production verification; no remote deployment or push.
 
 Earlier sections retain historical checkpoints. The final handoff below supersedes their in-progress notes.
 
@@ -3495,4 +3495,166 @@ tests/ReadPerformance/legacy.php
 tests/ReadPerformance/measure.php
 tests/ReadPerformance/run.py
 tests/ReadPerformance/seed.php
+```
+
+
+## Improvement prompt 11 — Publication measurement and synchronous request clarity (2026-10-30)
+
+Completed the prompt's benchmark-gated outcome on feature/m25-durable-publication-jobs,
+starting from9a1189c. Read prompts/11-durable-publication-jobs.md and its nested prompt
+pack; all three SHA256SUMS entries and embedded PROMPT.md comparison pass. Repeated
+user selections of this same prompt continued the same task. The twelve staged user
+prompt additions remain unchanged and are excluded from this implementation commit.
+
+Decision: retain synchronous publication for the measured interactive workload. No
+publication job, operation receipt, new queue routing, polling/status API, cancellation,
+lease/recovery mechanism or automatic retry is implemented/claimed. This is the prompt's
+explicitly permitted outcome when measurement does not justify a subsystem change.
+The documented gate uses the repository's existing20-second release acknowledgement
+and browser navigation checks, not an invented universal SLA. All supported measured
+profiles fit; the1.41MiB/20-example profile has only2.25 seconds of measured headroom.
+Contention, lower proxy deadlines, more examples, repeated overruns or a requirement
+to resume across web-process loss require revisiting the decision. The existing
+Doctrine Messenger/preview infrastructure remains the candidate if that need arises.
+
+Measured before application changes, owned run browser-04e5a62bb7375548a0b637c8:
+real form-login/CSRF, normal create/save APIs, isolated renderer/compiler and actual
+immutable ZIP publication. Each of three profiles has an excluded first publication
+and five measured new versions of the same saved revision/source. Normal1-example
+component (1092 source bytes,6 files) median1471.138 ms, range1409.404–1600.393;
+20 examples (3970 bytes,6 files) median15510.319, range15215.166–15643.659;
+20 examples with1409969 source bytes/7 files median17486.554,
+range17252.898–17746.342. Defaults add one render/build pair in every profile. Excluded
+first responses1614.189/15619.701/17934.711 ms are retained in logs. No injected latency,
+stub worker or cached success is used. Every success is read through the shared real
+ReleaseSourceReader/PackageArchive inventory/checksum/manifest validation and compared
+to the saved fixture sources. Whole-request HTTP/connect/TTFB/size samples are retained;
+no separate DB/compiler-time or before/after speed improvement is claimed.
+
+A real last-example division-by-zero failure returned422/release_build_failed in
+2254.715 ms, with zero visible releases and zero new archives. A valid stored21-example
+draft returned publication422 in34.405 ms, before any archive. A client disconnected
+at150.522 ms from a20-example publication; the server still committed one complete9.0.0
+release around16 seconds later. The exact-version retry returned409 in29.778 ms;
+source/ZIP integrity and one version row were verified. Stopping only the owned compiler
+returned503/worker_unavailable in119.094 ms without a release. Restarting that exact
+service and explicitly retrying8.0.0 returned201 in1533.095 ms with a matching ZIP.
+This proves a reconciliation path and retains uncertainty after network loss; it does
+not promise completion after every disconnect, crash recovery or durable status.
+
+Current request/per-worker limits and artifact order were inspected. Package text is
+1MiB/file and2MiB/closure; workers accept3MiB. Rendering has a2-second/128MiB subprocess
+and1MiB HTML bound, with a5-second client deadline. The fixed compiler has a10-second
+supervisor,7-second nested Tailwind limit, bounded memory/output and one concurrent
+build; its client deadline is12 seconds including busy retry. These repeat for defaults
+and examples; there is no aggregate17-second publication limit. Caddy adds no explicit
+whole-publication response deadline. PHP execution settings are not a wall-time proof.
+The complete content-addressed archive is installed before the transaction checks the
+saved draft revision and inserts its immutable version row. A pre-DB crash may orphan
+a blob, not expose a partial release; existing cleanup rules are unchanged. Optional
+derived thumbnails are not a source-release completion gate.
+
+Changed application behavior is deliberately limited: the native release form states
+its20-example limit, synchronous request, need to keep the page open and reload/check
+an exact version after interruption. The focused AssetMapper Stimulus controller shows
+the actual requested saved revision/version, disables repeated submissions from that
+document, and resets on pageshow/Back. It invents no percentage/backend stage or job.
+The original form action, CSRF, role enforcement, native validation, POST/303/success
+flash and JavaScript-disabled flow remain intact. Server API contracts, source and
+dependency capture/validation, version conflicts, immutable archives and worker isolation
+are unchanged. There is no migration, package, lockfile, worker or runtime-config change.
+Deployment/remote publication/working-content operations were not performed.
+
+Verification commands and outcomes:
+
+- python3 tests/BrowserHarness/run.py start --keep created the exact owned run above.
+- PYTHONPATH=. python3 var/browser-verification/publication-baseline.py rebuilt its app,
+  cleared dev cache, recreated app/consumer, seeded through actual HTTP and measured
+  tests/PublicationBenchmark/measure.php. publication-baseline.json/log were retained.
+- python3 tests/PublicationBenchmark/run.py --run-id <exact run> --faults-only completed
+  the stop/finally-restart/retry probes without reseeding. The reusable driver's full
+  workflow calls these same seed/measure/fault entry points on a fresh run; this task's
+  original baseline and outage phases ran separately as recorded.
+- PYTHONPATH=. python3 var/browser-verification/publication-check.py built app/browser
+  (actual Docker Tailwind/preview JS compilation), cleared owned APP_DEBUG=0 dev cache,
+  recreated app/consumer and ran Run.check(): strict Composer, container lint,34 YAML,
+  56 Twig files, owned test DB create/migrate and full PHPUnit all pass:
+  **180 tests /2071 assertions**. Run.test selected publication, release, catalogue,
+  catalogue_preview, editing_protection, composition and critical suites. It passed
+  37/41 cases (including all existing flows and three engines); four new pending-state
+  inspections initially failed on Playwright's native navigation waiting.
+- PYTHONPATH=. python3 var/browser-verification/publication-followup.py rebuilt the
+  runner and passed6/6 focused publication/release cases, covering those four corrected
+  inspections plus native validation/no-JS and existing immutable publishing. Thus all
+  41 distinct selected scenarios are verified across broad/focused runs, with no new
+  single41/41 invocation claim. Four final development axe reports have zero violations
+  and zero incompletes. The CLI tooling's added HMAC HTTP target check/form login passes;
+  a deliberately wrong proof is rejected before login/publication. Database/blob proof
+  and run topology verification also remain mandatory.
+- bash tests/AppearanceProduction/run.sh tests/Browser/publication.spec.js tests/Browser/release.spec.js
+  passes6/6 on the corrected exact product source in fixture
+  appearance-20261030074756-27226: actual native publishing, keyboard, Back, no-JS,
+  source/archive/thumbnail flow, schema/fonts, unchanged read-only AssetMapper manifest.
+  Four production axe reports have zero violations and zero incompletes. Four production
+  pending-state screenshots were viewed at390/1440 in light/dark. The first production
+  invocation in appearance-20261030074052-10062 passed2/6 and had the same four test
+  inspection failures; its logs/artifacts remain retained.
+
+Failed checks and correction: the first new UI tests tried querying the old document
+after its real native POST began. Playwright automatically waits for that navigation,
+so the query arrived after success at the fresh ready form. Test fixtures now hold only
+the submit event's default navigation, inspect the actual controller state and keyboard/
+axe/layout, then release the unchanged native POST and verify real immutable success
+plus409 retry. No worker/result is mocked and no baseline duration is measured using
+this hold. The application controller did not need a timing workaround. A transient
+trailing space in the new operations paragraph was removed before final diff checks.
+No other task check remains failed; no full browser-suite or visual-baseline claim.
+
+Runtime observed: FrankenPHP1.13.4 /PHP8.5.12 /Symfony8.1.9 /Caddy2.11.7 /
+PostgreSQL17.11, existing locked Tailwind4.3.3/daisyUI5.7.50/Stimulus3.2.2 /
+Playwright1.64.1/axe4.14.0. WSL2 Linux x86_64, Core i5-12500H,10 logical CPUs visible
+inside Docker,256MiB PHP limit. No versions/digests were invented or updated.
+
+Evidence: var/browser-verification/publication-*.log/.py and the owned artifact files
+publication-baseline.json, publication-worker-unavailable.json, publication-worker-retry.json;
+browser invocations c87ae4cf and a2dd2bbf under the exact browser run; production
+browser-results in both named appearance-* directories. The browser run has its CLEANED
+receipt. Both production cleanup traps removed resources/private credentials, then
+only their exact owned worker tags were removed after zero-resource verification.
+publication-resource-audit.json verifies zero containers (including stopped), volumes,
+networks, private files and owned worker tags for all three projects. Reusable app/browser
+image caches remain. Source/hash equality checks precede artifact sanitation; no raw
+cookies, passwords, ownership secret or authorization headers are exported.
+
+Remaining limits: these uncontended warm local measurements do not establish production
+load/cold-cache/concurrent-large-publication throughput. A synchronous request cannot
+resume across web-process loss or expose durable progress; cancellation, leases, queued
+revision capture and job-specific recovery checks are intentionally unimplemented.
+Existing synchronous optimistic revision checks and immutable conflicts remain covered.
+Human screen-reader/whole-page assessment is unexecuted. No push, deployment, remote
+registry publication or working catalogue mutation occurred. Exact next step: review
+the completed benchmark-gated synchronous outcome and PUBLICATION_DECISION.md; select
+another task explicitly. Do not automatically start another numbered prompt.
+
+Changed files (18 task paths; staged user prompts excluded):
+
+```text
+agent-kit/STATUS.md
+assets/controllers/publication_controller.js
+docs/styleguide/ARCHITECTURE.md
+docs/styleguide/BROWSER_TESTS.md
+docs/styleguide/CONTRACTS.md
+docs/styleguide/MILESTONES.md
+docs/styleguide/OPERATIONS.md
+docs/styleguide/PUBLICATION_DECISION.md
+templates/catalogue/_releases.html.twig
+tests/AppearanceProduction/run.sh
+tests/Browser/publication.spec.js
+tests/PublicationBenchmark/Client.php
+tests/PublicationBenchmark/Context.php
+tests/PublicationBenchmark/DECISION_GATE.md
+tests/PublicationBenchmark/fault.php
+tests/PublicationBenchmark/measure.php
+tests/PublicationBenchmark/run.py
+tests/PublicationBenchmark/seed.php
 ```

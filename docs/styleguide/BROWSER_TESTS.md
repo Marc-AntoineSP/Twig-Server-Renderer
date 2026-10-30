@@ -293,3 +293,15 @@ is enabled only in its test kernel; MCP persisted profiling stays disabled. Use
 python3 tests/ReadPerformance/run.py with an exact owned run for deterministic large
 read fixtures and separate in-process/HTTP measurements. See CATALOGUE_READ_PERFORMANCE.md
 for safe commands and actual results; no elapsed-time threshold is part of a test.
+
+
+Prompt11 adds publication.spec.js for truthful native-submit status, bounded duplicate
+submission from the current document, native invalid-input recovery, Back/pageshow
+restoration, immutable success/conflict and JavaScript-disabled POST/redirect. Four
+390/1440 light/dark keyboard/axe captures hold only the submit event's default navigation
+so Playwright can inspect the old document, then release the unchanged real native POST.
+Workers and publication results are not mocked. These UI transport fixtures are separate
+from the unmodified real-HTTP timings/disconnect/outage probes in PublicationBenchmark.
+The immutable-production driver accepts publication.spec.js and release.spec.js. See
+PUBLICATION_DECISION.md for safe owned-run reproduction, the retained synchronous
+decision, actual request/worker budgets and uncertainty after disconnect.

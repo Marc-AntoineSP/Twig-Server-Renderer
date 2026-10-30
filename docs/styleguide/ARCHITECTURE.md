@@ -340,3 +340,17 @@ Explicit writers and the bounded/restartable styleguide:themes:backfill-families
 perform attachment; GET lookups never flush missing-family repair. No schema, index,
 cache or package format changes are introduced. See CATALOGUE_READ_PERFORMANCE.md for
 actual five-run before/after data, plans, deployment order and isolated reproduction.
+
+
+## Publication decision (improvement prompt 11)
+
+Real isolated HTTP/worker measurements keep publication synchronous for the measured
+interactive workload. Five samples each of normal,20-example and1.41MiB-source/20-example
+packages fit the existing20-second interaction check, with limited large-profile headroom.
+A dropped response can still commit; an exact-version retry conflicts and must be
+reconciled through Releases/immutable ZIP inspection. Publication does not reuse the
+preview queue or promise restart recovery. The native form now explains this and reports
+a real submitting state, while no-JavaScript POST/redirect remains available.
+PUBLICATION_DECISION.md records the gate, ranges, worker-outage recovery, limits and
+conditions that warrant reconsidering durable jobs. No publication schema/transport,
+worker topology, dependency pinning or artifact commit order changed.

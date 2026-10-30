@@ -86,3 +86,18 @@ M08 must restore to a fresh volume/database and verify a saved draft, theme, rel
 download, dependency chain and consumer installation. A successful pg_dump alone is not
 a recovery test. Rollback restores compatible code/images; destructive migrations need
 an explicit backup/restore plan. Never use docker compose down -v as routine shutdown.
+
+
+## Publication workflow decision
+
+Publication remains a synchronous authenticated request after improvement prompt11's
+measurements; the existing preview consumer still handles preview jobs only. There is
+no publication migration, new worker/transport, polling service or resumable job to
+restart. Deploy the ordinary compiled studio assets for the pending/recovery guidance.
+A lost connection or web-process restart does not prove that a release was cancelled:
+reload Releases/inspect the exact version before an explicit retry. Immutable archives
+are installed before their DB row; generic cleanup must not remove published outputs.
+Review any operator proxy deadlines and contention before extrapolating the local
+20-second interaction budget. PUBLICATION_DECISION.md records measured ranges and the
+conditions for revisiting durable orchestration. No working-content operation is part
+of applying this change.

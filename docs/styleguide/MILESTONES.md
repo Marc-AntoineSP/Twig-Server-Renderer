@@ -444,3 +444,38 @@ commands, corrected fixture/instrumentation failures, the unrelated kit CRLF/run
 artifact limitation, actual versions and changed files. No migration, dependency,
 configuration, working-content change, push or deployment is needed/performed. Optional
 backfill is operator-selected maintenance. Select another numbered prompt explicitly.
+
+
+## Improvement prompt 11 — Publication decision and request clarity
+
+Completed2026-10-30 on feature/m25-durable-publication-jobs. The explicit decision gate
+retains synchronous publication: normal median1.47s,20 examples15.51s, and1.41MiB source
+with20 examples17.49s (five samples each) fit the existing20-second interaction check.
+Large-profile maximum17.75s leaves limited headroom; production contention, shorter
+proxy deadlines or a resume-across-web-restart requirement trigger reassessment.
+A client disconnect still committed one complete version; exact retry conflicts safely.
+Late-example validation and owned compiler failure produce no visible partial release;
+explicit same-version retry after compiler restart succeeds with a verified ZIP.
+
+The form now states its limit/synchronous behavior and recovery after interruption.
+Focused Stimulus reports the actual request, guards repeated submissions from that
+page and restores Back/native-validation controls. Native CSRF/POST/303, no-JavaScript
+publishing, saved-revision/immutable-version checks and isolated workers are retained.
+No publication job, polling, cancellation or durable recovery is implemented/claimed;
+this is the prompt's permitted measurement-based outcome, not an unfinished queue.
+
+Docker build/lint and180 PHPUnit tests /2071 assertions pass. All41 distinct selected
+browser scenarios are verified across broad/focused runs:37/41 initially passed, then
+6/6 corrected focused cases cover four navigation-inspection failures and two repeats.
+No single41/41/full-suite claim. Immutable production passes6/6; four final development
+and four production axe reports have zero violations/incompletes. Responsive pending
+screenshots were reviewed at390/1440 in both modes. Publication timings used real HTTP
+and unmodified workers, separately from clearly labelled held-submit UI inspections.
+
+The owned browser run and both production fixtures are cleaned, with zero containers,
+volumes, networks, private files or owned worker tags. No migration, dependency, worker
+or configuration change is needed. PUBLICATION_DECISION.md documents the criterion,
+limits, timing ranges, safe benchmark reproduction and unimplemented durable guarantees;
+STATUS records exact checks, corrected test failures, versions and changed files.
+No push, deployment, remote publication or working-content mutation occurred. Select
+another task explicitly; no numbered prompt starts automatically.

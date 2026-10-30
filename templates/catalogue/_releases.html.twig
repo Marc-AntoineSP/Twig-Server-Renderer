@@ -10,5 +10,14 @@
             <button class="btn btn-outline" type="button" data-action="package-export#build">Build export {{ release.version }}</button><p role="status" class="my-2 break-all" data-package-export-target="status"></p><a hidden class="link" data-package-export-target="link">Download ready export</a>
         </article>
         {% else %}<p class="mt-3">No published releases.</p>{% endfor %}
-        {% if is_granted('ROLE_EDITOR') and item.kind != 'theme' %}<form action="{{ path('release_publish', {id: item.id}) }}" method="post" class="mt-5" data-turbo="false"><input type="hidden" name="_token" value="{{ csrf_token('publish') }}"><input type="hidden" name="revision" value="{{ draft.revision }}"><label for="release-version">Release version</label><input id="release-version" name="version" value="{{ draft.manifestData.version }}" required pattern="[0-9]+\.[0-9]+\.[0-9]+"><p class="my-2 text-sm">Runs isolated render/build validation of defaults and examples. Existing versions cannot be replaced.</p><button class="btn btn-outline" type="submit">Publish release</button></form>{% endif %}
+        {% if is_granted('ROLE_EDITOR') and item.kind != 'theme' %}
+        <form action="{{ path('release_publish', {id: item.id}) }}" method="post" class="mt-5" data-turbo="false" data-controller="publication" data-action="submit->publication#submit">
+            <input type="hidden" name="_token" value="{{ csrf_token('publish') }}"><input type="hidden" name="revision" value="{{ draft.revision }}" data-publication-target="revision">
+            <label for="release-version">Release version</label><input id="release-version" name="version" value="{{ draft.manifestData.version }}" required pattern="[0-9]+\.[0-9]+\.[0-9]+" aria-describedby="publication-guidance" data-publication-target="version">
+            <p id="publication-guidance" class="my-2 text-sm">Validates defaults and up to 20 examples with the isolated renderer and compiler. Publishing runs in this request; keep this page open until it finishes. Existing versions cannot be replaced.</p>
+            <p class="my-2 text-sm">If the connection is lost, reload this page and check the version in Releases before retrying. Leaving the page does not confirm cancellation.</p>
+            <button class="btn btn-outline" type="submit" data-publication-target="button">Publish release</button>
+            <p class="my-2 text-sm" role="status" data-publication-target="status" hidden></p>
+        </form>
+        {% endif %}
     </details>
